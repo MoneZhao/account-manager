@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.monezhao.modules.main.mapper.SysBalanceMainMapper">
+
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.monezhao.bean.sys.SysBalanceMain">
+        select
+        a.balance_main_id as balanceMainId,
+        a.account as account,
+        a.account_date as accountDate,
+        a.user_id as userId,
+        a.remark as remark
+
+        from t_sys_balance_main a
+        where 1=1
+        <if test="entity.accountDate != null">
+            <![CDATA[	AND a.account_date = #{entity.accountDate}]]>
+        </if>
+        <if test="entity.userId != null">
+            <![CDATA[	AND a.user_id = #{entity.userId}]]>
+        </if>
+        order by a.account_date desc
+    </select>
+
+    <delete id="deleteDetail" parameterType="list">
+        delete from t_sys_balance_detail t where t.balance_main_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteMain" parameterType="list">
+        delete from t_sys_balance_main t where t.balance_main_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

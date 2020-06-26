@@ -1,0 +1,43 @@
+server:
+  port: 8686
+  servlet:
+    context-path: /@contextPath@
+  compression:
+    enabled: true
+    mime-types: application/javascript,application/json,application/xml,text/html,text/xml,text/plain,text/css,image/*
+spring:
+  profiles:
+    active: @profileActive@ #环境 dev|prod
+  mvc:
+    static-path-pattern: /**
+  resource:
+    #自定义静态资源路径,处理方式见WebMvcConfig.java
+    static-locations: classpath:/public/
+#mybatis plus 设置
+mybatis-plus:
+  mapper-locations: classpath*:com/monezhao/**/mapper/xml/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.monezhao.bean.*
+#springboot监控actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        #include: "*"
+        include: info,metrics,httptrace
+# 描述信息
+info:
+  blog-url: http://monezhao.github.io
+  author: monezhao
+  version: 1.0
+async:
+  executor:
+    thread:
+      core-pool-size: 10
+      max-pool-size: 20
+      queue-capacity: 2000
+      name-prefix: async-service-
+      keep-alive-seconds: 60
+reset:
+  # 新建用户或者重置用户密码默认密码
+  default-password: '1'
