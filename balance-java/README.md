@@ -58,3 +58,52 @@ systemctl start NetworkManager.service
 nmcli connection modify docker0 connection.zone trusted
 systemctl restart docker.service
 ```
+
+## 使用idea docker插件部署docker
+
+### 配置远程访问
+
+#### Windows
+
+打开docker的设置界面，找到`General`,在里面找到`Expose daemon on tcp://localhost:2375 without TLS`选项，打上勾，即可进行本地或远程API调用。
+
+如果无法访问，这需要在`Docker Engine`的json中加入:
+```
+  "hosts": ["tcp://0.0.0.0:2375"]
+```
+
+重启Docker，如果启动报错，这需要在状态栏图标右键，`Switch to Windows containers` 
+
+#### Linux
+
+```bash
+vim /lib/systemd/system/docker.service
+```
+
+修改以ExecStart开头的行：
+
+```text
+ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://0.0.0.0:2375
+```
+
+保存文件后执行:
+
+```bash
+systemctl daemon-reload
+service docker restart
+curl http://localhost:2375/version
+```
+
+### 配置idea连接docker服务
+
+1. 查看插件列表中是否安葬`Docker`插件并启用
+2. `设置`中`Build,Execution,Deployment - Docker`配置远程Docker
+3. `Edit Configuration`添加docker启动项
+    ```text
+    DockerFile - balance-manager/src/main/docker/Dockerfile
+    Context Folder - balance-manager/target
+    Image Tag - monezhao/balance
+    ```
+4. 取消`run built image`
+5. `Before launch`中配置`Run Maven Goal - clean package -DskipTests -Pidea`
+6. 运行`docker`启动项

@@ -74,6 +74,13 @@
                 </plugins>
             </build>
         </profile>
+        <!-- idea docker插件环境 -->
+        <profile>
+            <id>idea</id>
+            <properties>
+                <profileActive>idea</profileActive>
+            </properties>
+        </profile>
     </profiles>
     <build>
         <finalName>balance</finalName><!-- 打包不带版本号加入该行 -->
@@ -99,6 +106,7 @@
                     <exclude>dev/*</exclude>
                     <exclude>prod/*</exclude>
                     <exclude>docker/*</exclude>
+                    <exclude>idea/*</exclude>
                     <exclude>application.yml</exclude>
                 </excludes>
                 <filtering>false</filtering>
