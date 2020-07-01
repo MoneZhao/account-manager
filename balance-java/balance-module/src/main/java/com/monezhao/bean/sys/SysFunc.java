@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @TableName("t_sys_func")
 public class SysFunc extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2223614068364911533L;
 
     /**
      * 功能ID

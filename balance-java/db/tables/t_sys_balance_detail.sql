@@ -21,4 +21,3 @@ CREATE TABLE t_sys_balance_detail
 -- INSERT INTO t_sys_func VALUES ('sysBalanceDetail-1', '新增', 'sysBalanceDetail', 'sys:balanceDetail:save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);
 -- INSERT INTO t_sys_func VALUES ('sysBalanceDetail-2', '修改', 'sysBalanceDetail', 'sys:balanceDetail:update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);
 -- INSERT INTO t_sys_func VALUES ('sysBalanceDetail-3', '删除', 'sysBalanceDetail', 'sys:balanceDetail:delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);
-

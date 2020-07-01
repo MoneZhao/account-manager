@@ -62,7 +62,7 @@ spring:
         #最小空闲
         min-idle: 10
 debug: false
-swagger-enable: false #生产可关闭设置成false
+swagger-enable: true #生产可关闭设置成false
 mybatis-plus:
   global-config:
     banner: false

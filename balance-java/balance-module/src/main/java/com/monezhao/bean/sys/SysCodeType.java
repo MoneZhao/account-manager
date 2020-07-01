@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @TableName("t_sys_code_type")
 public class SysCodeType extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5982006815084154323L;
 
     /**
      * 代码类别ID

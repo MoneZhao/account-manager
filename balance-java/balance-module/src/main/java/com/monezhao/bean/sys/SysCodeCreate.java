@@ -8,53 +8,46 @@ import com.monezhao.common.validator.constraints.LengthForUtf8;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotNull;
 
 /**
- * 【账户明细】实体类
+ * 【代码在线生成】实体类
  *
  * @author monezhao@163.com
  */
 @Getter
 @Setter
-@TableName("t_sys_balance_detail")
-public class SysBalanceDetail extends BaseEntity {
+@TableName("t_sys_code_create")
+public class SysCodeCreate extends BaseEntity {
 
-    private static final long serialVersionUID = 2629999488067085680L;
+    private static final long serialVersionUID = -5798952109797512941L;
 
     /**
      * 主键id
      */
     @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
-    private String balanceDetailId;
+    private String codeCreateId;
 
     /**
-     * 账户余额
+     * 表名
      */
     @NotNull
-    @DecimalMax("999999999.99")
-    private double account = 0;
+    @LengthForUtf8(max = 50)
+    private String codeCreateTablename;
 
     /**
-     * 账户类型
+     * 模块名
      */
     @NotNull
-    @LengthForUtf8(max = 4)
-    private String accountType;
+    @LengthForUtf8(max = 200)
+    private String codeCreateModule;
 
     /**
-     * 主表id
+     * 文件名
      */
     @NotNull
-    @LengthForUtf8(max = 32)
-    private String balanceMainId;
-
-    /**
-     * 备注
-     */
-    @LengthForUtf8(max = 255)
-    private String remark;
+    @LengthForUtf8(max = 200)
+    private String codeCreateFilename;
 
 }

@@ -14,7 +14,9 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class FilterRule implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -2924970425313733083L;
+
     /**
      * 查询sql别名
      */

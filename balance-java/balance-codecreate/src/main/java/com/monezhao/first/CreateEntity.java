@@ -122,7 +122,7 @@ public class CreateEntity {
                 stringBufferHead2
                         .append("public class " + sysCodeTypeFirstUpper + " extends BaseEntity {" + "\r\n\r\n");
 
-                stringBufferHead2.append("    " + "private static final long serialVersionUID = 1L;" + "\r\n\r\n");
+                stringBufferHead2.append("    " + "private static final long serialVersionUID = 1L;//todo 生成serialVersionUID" + "\r\n\r\n");
             }
 
             // 字段名称,定义变量,方便引用,用CODE_TYPE_ID进行举例

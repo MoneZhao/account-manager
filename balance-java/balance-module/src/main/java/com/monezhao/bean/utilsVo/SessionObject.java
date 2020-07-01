@@ -16,8 +16,10 @@ import java.util.List;
  */
 @Data
 public class SessionObject implements Serializable {
+
+    private static final long serialVersionUID = 938060802653285321L;
+
     public static final String BEAN_ID = "sessionObject";
-    private static final long serialVersionUID = 1L;
     public String token;
     private SysUser sysUser;
     private SysOrg sysOrg;

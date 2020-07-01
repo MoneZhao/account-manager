@@ -13,7 +13,8 @@ import java.util.List;
  */
 @Data
 public class ElTree implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -3847234907769951488L;
 
     private String id;
     private String label;

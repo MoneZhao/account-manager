@@ -128,7 +128,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${project.parent.artifactId}-module</artifactId>
+            <artifactId>${project.parent.artifactId}-codecreate</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

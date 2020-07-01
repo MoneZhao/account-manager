@@ -7,7 +7,7 @@ package com.monezhao.common.exception;
  */
 public class AppException extends BaseException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2714985158837181914L;
 
     public AppException() {
     }
