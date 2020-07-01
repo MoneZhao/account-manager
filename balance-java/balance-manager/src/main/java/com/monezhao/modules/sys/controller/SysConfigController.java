@@ -7,6 +7,8 @@ import com.monezhao.bean.sys.SysConfig;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysConfigService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/sys/config")
+@Api(tags = "系统参数")
 public class SysConfigController extends BaseController {
     @Autowired
     private SysConfigService sysConfigService;
@@ -41,13 +44,15 @@ public class SysConfigController extends BaseController {
      */
     @RequiresPermissions("sys:config:list")
     @GetMapping(value = "/list")
+    @ApiOperation("系统参数列表")
     public Result list(SysConfig sysConfig, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysConfig> pageList = sysConfigService.list(new Page<SysConfig>(current, size), sysConfig);
+        IPage<SysConfig> pageList = sysConfigService.list(new Page<>(current, size), sysConfig);
         return Result.ok(pageList);
     }
 
     @RequiresPermissions("sys:config:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("系统参数查询")
     public Result queryById(@RequestParam String id) {
         SysConfig sysConfig = sysConfigService.getById(id);
         return Result.ok(sysConfig);
@@ -61,6 +66,7 @@ public class SysConfigController extends BaseController {
     @SysLogAuto(value = "新增系统参数")
     @RequiresPermissions("sys:config:save")
     @PostMapping(value = "/save")
+    @ApiOperation("系统参数新增")
     public Result save(@Valid @RequestBody SysConfig sysConfig) {
         sysConfigService.saveSysConfig(sysConfig);
         return Result.ok();
@@ -74,6 +80,7 @@ public class SysConfigController extends BaseController {
     @SysLogAuto(value = "修改系统参数")
     @RequiresPermissions("sys:config:update")
     @PutMapping(value = "/update")
+    @ApiOperation("系统参数修改")
     public Result update(@Valid @RequestBody SysConfig sysConfig) {
         sysConfigService.updateSysConfig(sysConfig);
         return Result.ok();
@@ -87,6 +94,7 @@ public class SysConfigController extends BaseController {
     @SysLogAuto(value = "删除系统参数")
     @RequiresPermissions("sys:config:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("系统参数删除")
     public Result delete(@RequestParam String ids) {
         sysConfigService.deleteSysConfig(ids);
         return Result.ok();

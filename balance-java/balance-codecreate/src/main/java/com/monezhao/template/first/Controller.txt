@@ -1,4 +1,4 @@
-package com.monezhao.controller;
+package com.monezhao.modules.main.controller;
 
 import java.util.Arrays;
 
@@ -20,7 +20,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.bean.{_sys}.{_Sys}{_CodeType};
-import com.monezhao.service.{_Sys}{_CodeType}Service;
+import com.monezhao.modules.main.service.{_Sys}{_CodeType}Service;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * {tableNameCn}Controller
@@ -29,6 +31,7 @@ import com.monezhao.service.{_Sys}{_CodeType}Service;
  */
 @RestController
 @RequestMapping("/{_sys}/{_codeType}")
+@Api(tags = "{tableNameCn}")
 public class {_Sys}{_CodeType}Controller extends BaseController {
     @Autowired
     private {_Sys}{_CodeType}Service {_sys}{_CodeType}Service;
@@ -43,13 +46,15 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      */
     @RequiresPermissions("{_sys}:{_codeType}:list")
     @GetMapping(value = "/list")
+    @ApiOperation("{tableNameCn}列表")
     public Result list({_Sys}{_CodeType} {_sys}{_CodeType}, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.list(new Page<{_Sys}{_CodeType}>(current, size), {_sys}{_CodeType});
+        IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.list(new Page<>(current, size), {_sys}{_CodeType});
         return Result.ok(pageList);
     }
 
     @RequiresPermissions("{_sys}:{_codeType}:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("{tableNameCn}查询")
     public Result queryById(@RequestParam String id) {
         {_Sys}{_CodeType} {_sys}{_CodeType} = {_sys}{_CodeType}Service.getById(id);
         return Result.ok({_sys}{_CodeType});
@@ -62,6 +67,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      */
     @RequiresPermissions("{_sys}:{_codeType}:save")
     @PostMapping(value = "/save")
+    @ApiOperation("{tableNameCn}新增")
     public Result save(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.save({_sys}{_CodeType});
         return Result.ok();
@@ -74,6 +80,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      */
     @RequiresPermissions("{_sys}:{_codeType}:update")
     @PutMapping(value = "/update")
+    @ApiOperation("{tableNameCn}修改")
     public Result update(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.updateById({_sys}{_CodeType});
         return Result.ok();
@@ -86,6 +93,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
      */
     @RequiresPermissions("{_sys}:{_codeType}:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("{tableNameCn}删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");

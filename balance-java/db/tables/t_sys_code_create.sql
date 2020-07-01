@@ -16,8 +16,8 @@ CREATE TABLE t_sys_code_create
 ) ENGINE=InnoDB DEFAULT CHARSET = utf8mb4  COLLATE = utf8mb4_general_ci COMMENT='sys19_代码在线生成';
 
 /**【t_sys_code_create】结束**/
-INSERT INTO t_sys_menu VALUES ('sysCodeCreate', '代码生成', 'sys', 'list', 'codeCreate', 'sys:codeCreate:list', 'views/sys/codeCreate/index', NULL, '0', '1', 'SysCodeCreate', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO t_sys_menu VALUES ('sysCodeCreate', '代码生成', 'sys', 'list', 'codeCreate', 'sys:codeCreate:list', 'views/sys/codeCreate/index', NULL, '0', '1', 'SysCodeCreate', '1', '0', '1', '11000', NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO t_sys_func VALUES ('sysCodeCreate-1', '新增', 'sysCodeCreate', 'sys:codeCreate:save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO t_sys_func VALUES ('sysCodeCreate-2', '修改', 'sysCodeCreate', 'sys:codeCreate:update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO t_sys_func VALUES ('sysCodeCreate-3', '删除', 'sysCodeCreate', 'sys:codeCreate:delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO t_sys_func VALUES ('sysCodeCreate-4', '下载', 'sysCodeCreate', 'sys:codeCreate:export', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO t_sys_func VALUES ('sysCodeCreate-4', '下载', 'sysCodeCreate', 'sys:codeCreate:export', '', '4', NULL, NULL, NULL, NULL, NULL, NULL);

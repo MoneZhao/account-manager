@@ -6,6 +6,8 @@ import com.monezhao.bean.sys.SysRoleUser;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysRoleUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,7 @@ import java.util.Arrays;
  */
 @RestController
 @RequestMapping("/sys/roleUser")
+@Api(tags = "角色和用户关系")
 public class SysRoleUserController extends BaseController {
     @Autowired
     private SysRoleUserService sysRoleUserService;
@@ -41,13 +44,15 @@ public class SysRoleUserController extends BaseController {
      */
     @RequiresPermissions("sys:roleUser:list")
     @GetMapping(value = "/list")
+    @ApiOperation("角色和用户关系列表")
     public Result list(SysRoleUser sysRoleUser, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysRoleUser> pageList = sysRoleUserService.list(new Page<SysRoleUser>(current, size), sysRoleUser);
+        IPage<SysRoleUser> pageList = sysRoleUserService.list(new Page<>(current, size), sysRoleUser);
         return Result.ok(pageList);
     }
 
     @RequiresPermissions("sys:roleUser:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("角色和用户关系查询")
     public Result queryById(@RequestParam String id) {
         SysRoleUser sysRoleUser = sysRoleUserService.getById(id);
         return Result.ok(sysRoleUser);
@@ -60,6 +65,7 @@ public class SysRoleUserController extends BaseController {
      */
     @RequiresPermissions("sys:roleUser:save")
     @PostMapping(value = "/save")
+    @ApiOperation("角色和用户关系新增")
     public Result save(@Valid @RequestBody SysRoleUser sysRoleUser) {
         sysRoleUserService.save(sysRoleUser);
         return Result.ok();
@@ -72,6 +78,7 @@ public class SysRoleUserController extends BaseController {
      */
     @RequiresPermissions("sys:roleUser:update")
     @PutMapping(value = "/update")
+    @ApiOperation("角色和用户关系修改")
     public Result update(@Valid @RequestBody SysRoleUser sysRoleUser) {
         sysRoleUserService.updateById(sysRoleUser);
         return Result.ok();
@@ -84,6 +91,7 @@ public class SysRoleUserController extends BaseController {
      */
     @RequiresPermissions("sys:roleUser:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("角色和用户关系删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");

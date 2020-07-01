@@ -74,7 +74,8 @@ public class SysLoginController {
      * @return
      */
     @SysLogAuto(value = "用户注销")
-    @RequestMapping(value = "/logout")
+    @PostMapping(value = "/logout")
+    @ApiOperation("用户注销")
     public Result logout() {
         // 用户注销逻辑
         Subject subject = ShiroUtils.getSubject();

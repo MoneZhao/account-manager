@@ -65,7 +65,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser) {
         List<SysUser> records = baseMapper.list(page, sysUser);
         if (page == null) {
-            page = new Page<SysUser>();
+            page = new Page<>();
             page.setTotal(records != null ? records.size() : 0L);
         }
         return page.setRecords(records);

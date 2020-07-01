@@ -9,6 +9,8 @@ import com.monezhao.bean.sys.SysUser;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysPostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +31,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/sys/post")
+@Api(tags = "岗位")
 public class SysPostController extends BaseController {
     @Autowired
     private SysPostService sysPostService;
@@ -43,13 +46,15 @@ public class SysPostController extends BaseController {
      */
     @RequiresPermissions("sys:post:list")
     @GetMapping(value = "/list")
+    @ApiOperation("岗位列表")
     public Result list(SysPost sysPost, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysPost> pageList = sysPostService.list(new Page<SysPost>(current, size), sysPost);
+        IPage<SysPost> pageList = sysPostService.list(new Page<>(current, size), sysPost);
         return Result.ok(pageList);
     }
 
     @RequiresPermissions("sys:post:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("岗位查询")
     public Result queryById(@RequestParam String id) {
         SysPost sysPost = sysPostService.getById(id);
         return Result.ok(sysPost);
@@ -62,6 +67,7 @@ public class SysPostController extends BaseController {
      */
     @RequiresPermissions("sys:post:save")
     @PostMapping(value = "/save")
+    @ApiOperation("岗位新增")
     public Result save(@Valid @RequestBody SysPost sysPost) {
         sysPostService.save(sysPost);
         return Result.ok();
@@ -74,6 +80,7 @@ public class SysPostController extends BaseController {
      */
     @RequiresPermissions("sys:post:update")
     @PutMapping(value = "/update")
+    @ApiOperation("岗位修改")
     public Result update(@Valid @RequestBody SysPost sysPost) {
         sysPostService.updateById(sysPost);
         return Result.ok();
@@ -86,6 +93,7 @@ public class SysPostController extends BaseController {
      */
     @RequiresPermissions("sys:post:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("岗位删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
@@ -104,8 +112,9 @@ public class SysPostController extends BaseController {
      */
     @RequiresPermissions("sys:post:getPostUser")
     @GetMapping(value = "/getPostUser")
+    @ApiOperation("获取岗位用户")
     public Result getPostUser(SysPostUser sysPostUser, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysUser> pageList = this.sysPostService.getPostUser(new Page<SysUser>(current, size), sysPostUser);
+        IPage<SysUser> pageList = this.sysPostService.getPostUser(new Page<>(current, size), sysPostUser);
         return Result.ok(pageList);
     }
 
@@ -118,6 +127,7 @@ public class SysPostController extends BaseController {
     @SysLogAuto(value = "保存岗位用户")
     @RequiresPermissions("sys:post:savePostUsers")
     @PostMapping(value = "/savePostUsers")
+    @ApiOperation("新增岗位用户")
     public Result savePostUsers(@RequestBody SysPostUser sysPostUser) {
         this.sysPostService.savePostUsers(sysPostUser.getPostId(), sysPostUser.getUserId());
         return Result.ok();
@@ -133,6 +143,7 @@ public class SysPostController extends BaseController {
     @SysLogAuto(value = "删除岗位用户")
     @RequiresPermissions("sys:post:deletePostUsers")
     @DeleteMapping(value = "/deletePostUsers")
+    @ApiOperation("删除岗位用户")
     public Result deletePostUsers(String postId, String userIds) {
         this.sysPostService.deletePostUsers(postId, userIds);
         return Result.ok();

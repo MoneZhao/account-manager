@@ -6,6 +6,8 @@ import com.monezhao.bean.sys.SysLog;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysLogService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,7 @@ import java.util.Arrays;
  */
 @RestController
 @RequestMapping("/sys/log")
+@Api(tags = "系统日志")
 public class SysLogController extends BaseController {
     @Autowired
     private SysLogService sysLogService;
@@ -41,13 +44,15 @@ public class SysLogController extends BaseController {
      */
     @RequiresPermissions("sys:log:list")
     @GetMapping(value = "/list")
+    @ApiOperation("系统日志列表")
     public Result list(SysLog sysLog, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysLog> pageList = sysLogService.list(new Page<SysLog>(current, size), sysLog);
+        IPage<SysLog> pageList = sysLogService.list(new Page<>(current, size), sysLog);
         return Result.ok(pageList);
     }
 
     @RequiresPermissions("sys:log:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("系统日志查询")
     public Result queryById(@RequestParam String id) {
         SysLog sysLog = sysLogService.getById(id);
         return Result.ok(sysLog);
@@ -60,6 +65,7 @@ public class SysLogController extends BaseController {
      */
     @RequiresPermissions("sys:log:save")
     @PostMapping(value = "/save")
+    @ApiOperation("系统日志新增")
     public Result save(@Valid @RequestBody SysLog sysLog) {
         sysLogService.save(sysLog);
         return Result.ok();
@@ -72,6 +78,7 @@ public class SysLogController extends BaseController {
      */
     @RequiresPermissions("sys:log:update")
     @PutMapping(value = "/update")
+    @ApiOperation("系统日志修改")
     public Result update(@Valid @RequestBody SysLog sysLog) {
         sysLogService.updateById(sysLog);
         return Result.ok();
@@ -84,6 +91,7 @@ public class SysLogController extends BaseController {
      */
     @RequiresPermissions("sys:log:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("系统日志删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
