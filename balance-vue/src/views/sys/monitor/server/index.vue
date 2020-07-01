@@ -307,7 +307,7 @@
 import { getAction } from '@/api/manage'
 
 export default {
-  name: 'Server',
+  name: 'MonitorServer',
   data() {
     return {
       // 服务器信息
