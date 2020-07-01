@@ -46,7 +46,7 @@ public class SysPostUserController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("岗位和用户关系列表")
     public Result list(SysPostUser sysPostUser, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysPostUser> pageList = sysPostUserService.list(new Page<SysPostUser>(current, size), sysPostUser);
+        IPage<SysPostUser> pageList = sysPostUserService.list(new Page<>(current, size), sysPostUser);
         return Result.ok(pageList);
     }
 

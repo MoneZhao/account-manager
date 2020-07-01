@@ -46,7 +46,7 @@ public class SysLogController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("系统日志列表")
     public Result list(SysLog sysLog, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysLog> pageList = sysLogService.list(new Page<SysLog>(current, size), sysLog);
+        IPage<SysLog> pageList = sysLogService.list(new Page<>(current, size), sysLog);
         return Result.ok(pageList);
     }
 

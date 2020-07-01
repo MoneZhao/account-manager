@@ -48,7 +48,7 @@ public class SysCodeInfoController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("代码信息列表")
     public Result list(SysCodeInfo sysCodeInfo, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysCodeInfo> pageList = sysCodeInfoService.list(new Page<SysCodeInfo>(current, size), sysCodeInfo);
+        IPage<SysCodeInfo> pageList = sysCodeInfoService.list(new Page<>(current, size), sysCodeInfo);
         return Result.ok(pageList);
     }
 

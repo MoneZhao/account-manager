@@ -46,7 +46,7 @@ public class SysJobController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("定时任务列表")
     public Result list(SysJob sysJob, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysJob> pageList = sysJobService.list(new Page<SysJob>(current, size), sysJob);
+        IPage<SysJob> pageList = sysJobService.list(new Page<>(current, size), sysJob);
         return Result.ok(pageList);
     }
 

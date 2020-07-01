@@ -48,7 +48,7 @@ public class SysPostController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("岗位列表")
     public Result list(SysPost sysPost, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysPost> pageList = sysPostService.list(new Page<SysPost>(current, size), sysPost);
+        IPage<SysPost> pageList = sysPostService.list(new Page<>(current, size), sysPost);
         return Result.ok(pageList);
     }
 
@@ -114,7 +114,7 @@ public class SysPostController extends BaseController {
     @GetMapping(value = "/getPostUser")
     @ApiOperation("获取岗位用户")
     public Result getPostUser(SysPostUser sysPostUser, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysUser> pageList = this.sysPostService.getPostUser(new Page<SysUser>(current, size), sysPostUser);
+        IPage<SysUser> pageList = this.sysPostService.getPostUser(new Page<>(current, size), sysPostUser);
         return Result.ok(pageList);
     }
 

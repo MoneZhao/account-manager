@@ -47,7 +47,7 @@ public class SysFuncController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("功能列表")
     public Result list(SysFunc sysFunc, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysFunc> pageList = sysFuncService.list(new Page<SysFunc>(current, size), sysFunc);
+        IPage<SysFunc> pageList = sysFuncService.list(new Page<>(current, size), sysFunc);
         return Result.ok(pageList);
     }
 

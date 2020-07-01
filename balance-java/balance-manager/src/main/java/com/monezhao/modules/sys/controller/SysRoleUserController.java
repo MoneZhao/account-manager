@@ -46,7 +46,7 @@ public class SysRoleUserController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("角色和用户关系列表")
     public Result list(SysRoleUser sysRoleUser, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysRoleUser> pageList = sysRoleUserService.list(new Page<SysRoleUser>(current, size), sysRoleUser);
+        IPage<SysRoleUser> pageList = sysRoleUserService.list(new Page<>(current, size), sysRoleUser);
         return Result.ok(pageList);
     }
 

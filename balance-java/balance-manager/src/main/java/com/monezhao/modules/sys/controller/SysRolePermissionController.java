@@ -46,7 +46,7 @@ public class SysRolePermissionController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("操作权限列表")
     public Result list(SysRolePermission sysRolePermission, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysRolePermission> pageList = sysRolePermissionService.list(new Page<SysRolePermission>(current, size), sysRolePermission);
+        IPage<SysRolePermission> pageList = sysRolePermissionService.list(new Page<>(current, size), sysRolePermission);
         return Result.ok(pageList);
     }
 

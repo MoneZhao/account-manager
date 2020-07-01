@@ -62,7 +62,7 @@ public class SysUserController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("用户列表")
     public Result list(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysUser> pageList = sysUserService.list(new Page<SysUser>(current, size), sysUser);
+        IPage<SysUser> pageList = sysUserService.list(new Page<>(current, size), sysUser);
         return Result.ok(pageList);
     }
 
@@ -77,7 +77,7 @@ public class SysUserController extends BaseController {
     @GetMapping(value = "/listSelectUser")
     @ApiOperation("公共选人查询")
     public Result listSelectUser(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysUser> pageList = sysUserService.listSelectUser(new Page<SysUser>(current, size), sysUser);
+        IPage<SysUser> pageList = sysUserService.listSelectUser(new Page<>(current, size), sysUser);
         return Result.ok(pageList);
     }
 

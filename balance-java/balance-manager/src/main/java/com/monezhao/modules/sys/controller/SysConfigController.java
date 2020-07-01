@@ -46,7 +46,7 @@ public class SysConfigController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("系统参数列表")
     public Result list(SysConfig sysConfig, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysConfig> pageList = sysConfigService.list(new Page<SysConfig>(current, size), sysConfig);
+        IPage<SysConfig> pageList = sysConfigService.list(new Page<>(current, size), sysConfig);
         return Result.ok(pageList);
     }
 

@@ -44,7 +44,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
     @RequiresPermissions("{_sys}:{_codeType}:list")
     @GetMapping(value = "/list")
     public Result list({_Sys}{_CodeType} {_sys}{_CodeType}, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.list(new Page<{_Sys}{_CodeType}>(current, size), {_sys}{_CodeType});
+        IPage<{_Sys}{_CodeType}> pageList = {_sys}{_CodeType}Service.list(new Page<>(current, size), {_sys}{_CodeType});
         return Result.ok(pageList);
     }
 

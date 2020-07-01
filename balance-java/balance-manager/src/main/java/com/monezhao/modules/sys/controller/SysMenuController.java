@@ -48,7 +48,7 @@ public class SysMenuController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("菜单列表")
     public Result list(SysMenu sysMenu, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysMenu> pageList = sysMenuService.list(new Page<SysMenu>(current, size), sysMenu);
+        IPage<SysMenu> pageList = sysMenuService.list(new Page<>(current, size), sysMenu);
         return Result.ok(pageList);
     }
 

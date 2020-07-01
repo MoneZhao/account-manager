@@ -46,7 +46,7 @@ public class SysCodeTypeController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("代码类别列表")
     public Result list(SysCodeType sysCodeType, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysCodeType> pageList = sysCodeTypeService.list(new Page<SysCodeType>(current, size), sysCodeType);
+        IPage<SysCodeType> pageList = sysCodeTypeService.list(new Page<>(current, size), sysCodeType);
         return Result.ok(pageList);
     }
 

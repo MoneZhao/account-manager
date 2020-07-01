@@ -52,7 +52,7 @@ public class SysOrgController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("机构列表")
     public Result list(SysOrg baseOrg, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysOrg> pageList = sysOrgService.list(new Page<SysOrg>(current, size), baseOrg);
+        IPage<SysOrg> pageList = sysOrgService.list(new Page<>(current, size), baseOrg);
         return Result.ok(pageList);
     }
 

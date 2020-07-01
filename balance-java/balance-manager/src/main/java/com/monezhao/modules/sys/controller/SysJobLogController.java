@@ -46,7 +46,7 @@ public class SysJobLogController extends BaseController {
     @GetMapping(value = "/list")
     @ApiOperation("定时任务执行日志列表")
     public Result list(SysJobLog sysJobLog, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysJobLog> pageList = sysJobLogService.list(new Page<SysJobLog>(current, size), sysJobLog);
+        IPage<SysJobLog> pageList = sysJobLogService.list(new Page<>(current, size), sysJobLog);
         return Result.ok(pageList);
     }
 
