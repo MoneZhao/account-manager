@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 @TableName("t_sys_user")
 public class SysUser extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5991569093540788491L;
 
     /**
      * 用户ID

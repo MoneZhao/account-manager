@@ -24,7 +24,7 @@ import java.util.Date;
 @TableName("t_sys_balance_main")
 public class SysBalanceMain extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -812196458744674160L;
 
     /**
      * 主键id

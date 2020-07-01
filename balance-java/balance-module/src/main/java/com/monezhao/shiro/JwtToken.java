@@ -9,8 +9,9 @@ import org.apache.shiro.authc.AuthenticationToken;
  */
 public class JwtToken implements AuthenticationToken {
 
-    private static final long serialVersionUID = 1L;
-    private String token;
+    private static final long serialVersionUID = 7012272403032646197L;
+
+    private final String token;
 
     public JwtToken(String token) {
         this.token = token;

@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @TableName("t_sys_menu")
 public class SysMenu extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2801102209123547913L;
 
     /**
      * 菜单ID

@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @TableName("t_sys_balance_detail")
 public class SysBalanceDetail extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2629999488067085680L;
 
     /**
      * 主键id

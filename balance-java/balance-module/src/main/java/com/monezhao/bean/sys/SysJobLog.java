@@ -24,7 +24,7 @@ import java.util.Date;
 @TableName("t_sys_job_log")
 public class SysJobLog extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2894129710015053413L;
 
     /**
      * 日志ID

@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @TableName("t_sys_org")
 public class SysOrg extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 8364134594255584785L;
 
     /**
      * 机构ID

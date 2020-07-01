@@ -11,7 +11,8 @@ import java.io.Serializable;
  */
 @Data
 public class Meta implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -7376483376636629408L;
 
     private String title;
     private String icon;

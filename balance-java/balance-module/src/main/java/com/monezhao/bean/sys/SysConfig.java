@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @TableName("t_sys_config")
 public class SysConfig extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1581735999210523657L;
 
     /**
      * 系统参数ID

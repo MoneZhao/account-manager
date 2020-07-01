@@ -18,7 +18,8 @@
         a.request_param as requestParam,
         a.request_type as requestType,
         a.operate_result as operateResult,
-        a.cost_time as costTime
+        a.cost_time as costTime,
+        a.create_time as createTime
 
         from t_sys_log a
         where 1=1

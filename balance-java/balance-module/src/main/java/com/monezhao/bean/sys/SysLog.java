@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @TableName("t_sys_log")
 public class SysLog extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4421875099563322912L;
 
     /**
      * UUID

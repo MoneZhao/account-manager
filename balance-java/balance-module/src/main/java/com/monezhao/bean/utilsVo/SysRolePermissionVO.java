@@ -11,7 +11,8 @@ import java.io.Serializable;
  */
 @Data
 public class SysRolePermissionVO implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -7309732050154128663L;
 
     private String rolePermissionId;
     private String roleId;

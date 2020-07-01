@@ -13,7 +13,8 @@ import java.util.List;
  */
 @Data
 public class Route implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 7315889671487013556L;
 
     private String routeId;
     private String path;

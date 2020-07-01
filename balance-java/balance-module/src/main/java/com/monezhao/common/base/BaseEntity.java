@@ -19,7 +19,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class BaseEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 6433634024315315400L;
 
     @TableField(fill = FieldFill.INSERT)
     @ExcelIgnore

@@ -15,7 +15,8 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Slf4j
 public class VisiableThreadPoolTaskExecutorConfig extends ThreadPoolTaskExecutor {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -7569965875387951704L;
 
     private void showThreadPoolInfo(String prefix) {
         ThreadPoolExecutor threadPoolExecutor = getThreadPoolExecutor();

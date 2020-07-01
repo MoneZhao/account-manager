@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @TableName("t_sys_role")
 public class SysRole extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 79866219961486780L;
 
     /**
      * 角色ID

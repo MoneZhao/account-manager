@@ -31,6 +31,7 @@
       <el-table-column label="操作用户姓名" prop="userName" align="center"><template slot-scope="scope"><span>{{ scope.row.userName }}</span></template></el-table-column>
       <el-table-column label="IP" prop="userName" align="center"><template slot-scope="scope"><span>{{ scope.row.ip }}</span></template></el-table-column>
       <el-table-column label="耗时" prop="costTime" align="center"><template slot-scope="scope"><span>{{ scope.row.costTime }}</span></template></el-table-column>
+      <el-table-column label="操作时间" prop="createTime" align="center"><template slot-scope="scope"><span>{{ scope.row.createTime }}</span></template></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
@@ -66,6 +67,7 @@
         <el-form-item label="请求类型" prop="requestType"><el-input v-model="temp.requestType" /></el-form-item>
         <el-form-item label="操作结果" prop="operateResult"><el-input v-model="temp.operateResult" /></el-form-item>
         <el-form-item label="耗时" prop="costTime"><el-input v-model="temp.costTime" /></el-form-item>
+        <el-form-item label="操作时间" prop="createTime"><el-input v-model="temp.createTime" /></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>

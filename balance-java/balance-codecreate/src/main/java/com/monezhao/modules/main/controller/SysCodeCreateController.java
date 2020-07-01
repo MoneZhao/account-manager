@@ -37,7 +37,7 @@ import java.util.Arrays;
 /**
  * 代码在线生成Controller
  *
- * @author lhycoding@163.com
+ * @author monezhao@163.com
  */
 @RestController
 @RequestMapping("/sys/codeCreate")
@@ -47,7 +47,7 @@ public class SysCodeCreateController extends BaseController {
     @Autowired
     private SysCodeCreateService sysCodeCreateService;
 
-    private static String excelDesignPath = CodeUtil.projectPath + "db" + File.separator;
+    private static final String EXCEL_DESIGN_PATH = CodeUtil.projectPath + "db" + File.separator;
 
     /**
      * 自定义查询列表
@@ -82,7 +82,7 @@ public class SysCodeCreateController extends BaseController {
     public Result save(@Valid @RequestBody SysCodeCreate sysCodeCreate) {
         CodeUtil.module = sysCodeCreate.getCodeCreateModule();
         CodeUtil.createTableName = sysCodeCreate.getCodeCreateTablename();
-        CodeUtil.excelDesignPath = excelDesignPath + sysCodeCreate.getCodeCreateFilename();
+        CodeUtil.excelDesignPath = EXCEL_DESIGN_PATH + sysCodeCreate.getCodeCreateFilename();
         CreateFirst.main(null);
         sysCodeCreateService.save(sysCodeCreate);
         return Result.ok();
@@ -142,7 +142,7 @@ public class SysCodeCreateController extends BaseController {
         MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
         String fileName = file.getOriginalFilename();
         if (null == filePath) {
-            filePath = excelDesignPath;
+            filePath = EXCEL_DESIGN_PATH;
         }
         FileUtil.uploadFile(file, filePath);
         return Result.ok(fileName);
@@ -162,7 +162,7 @@ public class SysCodeCreateController extends BaseController {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         response.setHeader("Content-disposition", "attachment;filename=" + sysCodeCreate.getCodeCreateFilename());
-        try (InputStream inputStream = FileUtil.downloadFile(sysCodeCreate.getCodeCreateFilename(), excelDesignPath);
+        try (InputStream inputStream = FileUtil.downloadFile(sysCodeCreate.getCodeCreateFilename(), EXCEL_DESIGN_PATH);
              OutputStream outputStream = response.getOutputStream()) {
             byte[] bytes = new byte[1024];
             int length;

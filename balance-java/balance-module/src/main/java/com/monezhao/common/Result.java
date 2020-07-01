@@ -14,7 +14,8 @@ import java.io.Serializable;
 @Data
 @ApiModel(value = "返回说明")
 public class Result implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 3571474161883509228L;
 
     private static Integer SC_INTERNAL_SERVER_ERROR = 500;
     private static Integer SC_OK = 200;

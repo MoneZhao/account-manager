@@ -7,7 +7,7 @@ package com.monezhao.common.exception;
  */
 public class BaseException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2367542322611473587L;
 
     protected String errCode;
 

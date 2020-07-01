@@ -17,7 +17,8 @@ import java.util.List;
  */
 @Getter
 public class FilterGroup implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 3872186136958997378L;
 
     /**
      * 组内筛选条件
