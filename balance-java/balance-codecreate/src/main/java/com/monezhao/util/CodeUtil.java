@@ -39,25 +39,23 @@ public class CodeUtil {
     /**
      * 开发工程所在系统绝对路径
      */
-    public static String projectPath = System.getProperty("user.dir") + "/";
+    public static String projectPath = System.getProperty("user.dir") + File.separator;
     /**
      * 开发模块
      */
-    public static String module = "balance-manager";
+    public static String module = "balance-codecreate";
     /**
      * 自动生成的建表语句的输出路径
      */
-    public static String createSqlPath = projectPath + "db/tables/";
+    public static String createSqlPath = projectPath + "db" + File.separator + "tables" + File.separator;
     /**
      * excel名
-     * todo 新建表修改
      */
-    public static String excelDesignPath = projectPath + "db/数据库设计(balance_账户余额).xlsx";
+    public static String excelDesignPath = projectPath + "db" + File.separator + "数据库设计(sys_代码在线生成).xlsx";
     /**
      * 表
-     * todo 新建表修改
      */
-    public static String createTableName = "t_sys_balance_main";
+    public static String createTableName = "t_sys_code_create";
 
     /**
      * 返回驼峰命名法结果.
