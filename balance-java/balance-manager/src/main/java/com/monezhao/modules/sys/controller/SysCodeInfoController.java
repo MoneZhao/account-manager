@@ -7,6 +7,8 @@ import com.monezhao.bean.sys.SysCodeInfo;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysCodeInfoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +31,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sys/codeInfo")
+@Api(tags = "代码信息")
 public class SysCodeInfoController extends BaseController {
     @Autowired
     private SysCodeInfoService sysCodeInfoService;
@@ -43,6 +46,7 @@ public class SysCodeInfoController extends BaseController {
      */
     @RequiresPermissions("sys:codeInfo:list")
     @GetMapping(value = "/list")
+    @ApiOperation("代码信息列表")
     public Result list(SysCodeInfo sysCodeInfo, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysCodeInfo> pageList = sysCodeInfoService.list(new Page<SysCodeInfo>(current, size), sysCodeInfo);
         return Result.ok(pageList);
@@ -50,6 +54,7 @@ public class SysCodeInfoController extends BaseController {
 
     @RequiresPermissions("sys:codeInfo:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("代码信息查询")
     public Result queryById(@RequestParam String id) {
         SysCodeInfo sysCodeInfo = sysCodeInfoService.getById(id);
         return Result.ok(sysCodeInfo);
@@ -63,6 +68,7 @@ public class SysCodeInfoController extends BaseController {
     @SysLogAuto(value = "新增代码信息")
     @RequiresPermissions("sys:codeInfo:save")
     @PostMapping(value = "/save")
+    @ApiOperation("代码信息新增")
     public Result save(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.saveSysCodeInfo(sysCodeInfo);
         return Result.ok();
@@ -76,6 +82,7 @@ public class SysCodeInfoController extends BaseController {
     @SysLogAuto(value = "修改代码信息")
     @RequiresPermissions("sys:codeInfo:update")
     @PutMapping(value = "/update")
+    @ApiOperation("代码信息修改")
     public Result update(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.updateSysCodeInfo(sysCodeInfo);
         return Result.ok();
@@ -89,6 +96,7 @@ public class SysCodeInfoController extends BaseController {
     @SysLogAuto(value = "删除代码信息")
     @RequiresPermissions("sys:codeInfo:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("代码信息删除")
     public Result delete(@RequestParam String ids) {
         sysCodeInfoService.deleteSysCodeInfo(ids);
         return Result.ok();
@@ -101,6 +109,7 @@ public class SysCodeInfoController extends BaseController {
      * @return
      */
     @GetMapping(value = "/getSysCodeInfos")
+    @ApiOperation("根据代码类型查询代码信息清单")
     public Result getSysCodeInfos(String codeTypeIds) {
         Map<String, List<SysCodeInfo>> sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromRedis(codeTypeIds);
         if (sysCodeInfosMap == null) {

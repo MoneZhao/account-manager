@@ -11,6 +11,8 @@ import com.monezhao.common.exception.SysException;
 import com.monezhao.common.permission.provider.OrgDataPermissionProvider;
 import com.monezhao.common.util.CommonUtil;
 import com.monezhao.modules.sys.service.SysOrgService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +35,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/org")
+@Api(tags = "机构")
 public class SysOrgController extends BaseController {
     @Autowired
     private SysOrgService sysOrgService;
@@ -47,6 +50,7 @@ public class SysOrgController extends BaseController {
      */
     @RequiresPermissions("sys:org:list")
     @GetMapping(value = "/list")
+    @ApiOperation("机构列表")
     public Result list(SysOrg baseOrg, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysOrg> pageList = sysOrgService.list(new Page<SysOrg>(current, size), baseOrg);
         return Result.ok(pageList);
@@ -54,6 +58,7 @@ public class SysOrgController extends BaseController {
 
     @RequiresPermissions("sys:org:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("机构查询")
     public Result queryById(@RequestParam String id) {
         SysOrg baseOrg = sysOrgService.getById(id);
         return Result.ok(baseOrg);
@@ -67,6 +72,7 @@ public class SysOrgController extends BaseController {
     @SysLogAuto(value = "新增机构")
     @RequiresPermissions("sys:org:save")
     @PostMapping(value = "/save")
+    @ApiOperation("机构新增")
     public Result save(@Valid @RequestBody SysOrg baseOrg) {
         sysOrgService.saveBaseOrg(baseOrg);
         return Result.ok(baseOrg);
@@ -80,6 +86,7 @@ public class SysOrgController extends BaseController {
     @SysLogAuto(value = "修改机构")
     @RequiresPermissions("sys:org:update")
     @PutMapping(value = "/update")
+    @ApiOperation("机构修改")
     public Result update(@Valid @RequestBody SysOrg baseOrg) {
         sysOrgService.updateBaseOrg(baseOrg);
         return Result.ok(baseOrg);
@@ -93,6 +100,7 @@ public class SysOrgController extends BaseController {
     @SysLogAuto(value = "删除机构")
     @RequiresPermissions("sys:org:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("机构删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
@@ -113,6 +121,7 @@ public class SysOrgController extends BaseController {
      */
     @RequiresPermissions("sys:org:getTreeData")
     @GetMapping(value = "/getTreeData")
+    @ApiOperation("机构树数据")
     public Result getTreeData() {
         List<ElTree> treeData = sysOrgService.getTreeData();
         return Result.ok(treeData);
@@ -124,6 +133,7 @@ public class SysOrgController extends BaseController {
      * @return
      */
     @GetMapping(value = "/getSelectTreeData")
+    @ApiOperation("公共机构选择树")
     public Result getSelectTreeData(String type) {
         // 默认type=1
         type = CommonUtil.isEmptyDefault(type, "1");

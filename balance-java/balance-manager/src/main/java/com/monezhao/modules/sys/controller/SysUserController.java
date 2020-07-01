@@ -18,6 +18,8 @@ import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.modules.sys.service.SysUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,6 +42,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/sys/user")
+@Api(tags = "用户")
 public class SysUserController extends BaseController {
     @Autowired
     private SysUserService sysUserService;
@@ -57,6 +60,7 @@ public class SysUserController extends BaseController {
      */
     @RequiresPermissions("sys:user:list")
     @GetMapping(value = "/list")
+    @ApiOperation("用户列表")
     public Result list(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysUser> pageList = sysUserService.list(new Page<SysUser>(current, size), sysUser);
         return Result.ok(pageList);
@@ -71,6 +75,7 @@ public class SysUserController extends BaseController {
      * @return
      */
     @GetMapping(value = "/listSelectUser")
+    @ApiOperation("公共选人查询")
     public Result listSelectUser(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysUser> pageList = sysUserService.listSelectUser(new Page<SysUser>(current, size), sysUser);
         return Result.ok(pageList);
@@ -78,6 +83,7 @@ public class SysUserController extends BaseController {
 
     @RequiresPermissions("sys:user:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("用户查询")
     public Result queryById(@RequestParam String id) {
         SysUser sysUser = sysUserService.getById(id);
         return Result.ok(sysUser);
@@ -91,6 +97,7 @@ public class SysUserController extends BaseController {
     @SysLogAuto(value = "新增用户")
     @RequiresPermissions("sys:user:save")
     @PostMapping(value = "/save")
+    @ApiOperation("用户新增")
     public Result save(@Valid @RequestBody SysUser sysUser) {
         sysUserService.saveSysUser(sysUser);
         return Result.ok();
@@ -104,6 +111,7 @@ public class SysUserController extends BaseController {
     @SysLogAuto(value = "修改用户")
     @RequiresPermissions("sys:user:update")
     @PutMapping(value = "/update")
+    @ApiOperation("用户修改")
     public Result update(@Valid @RequestBody SysUser sysUser) {
         sysUserService.updateSysUser(sysUser);
         return Result.ok();
@@ -117,6 +125,7 @@ public class SysUserController extends BaseController {
     @SysLogAuto(value = "删除用户")
     @RequiresPermissions("sys:user:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("用户删除")
     public Result delete(@RequestParam String ids) {
         sysUserService.delete(ids);
         return Result.ok();
@@ -124,6 +133,7 @@ public class SysUserController extends BaseController {
 
     @SysLogAuto(value = "获取用户信息")
     @GetMapping(value = "/getUserInfo")
+    @ApiOperation("获取用户信息")
     public Result getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
         SysUser sysUser = sysUserService.getById(ShiroUtils.getUserId());
         SessionObject sessionObject = sysUserService.saveGetUserInfo(sysUser, roleId);
@@ -135,6 +145,7 @@ public class SysUserController extends BaseController {
     }
 
     @PostMapping(value = "/updatePassword")
+    @ApiOperation("用户更新密码")
     public Result updatePassword(@RequestBody SysPasswordForm sysPasswordForm) {
         boolean success = sysUserService.updatePassword(sysPasswordForm);
         if (!success) {
@@ -151,6 +162,7 @@ public class SysUserController extends BaseController {
     @SysLogAuto(value = "重置密码")
     @RequiresPermissions("sys:user:update")
     @PostMapping(value = "/resetPassword")
+    @ApiOperation("用户重置密码")
     public Result resetPassword(@RequestBody SysUser sysUser) {
         sysUserService.resetPassword(sysUser.getUserId());
         return Result.ok();
@@ -159,6 +171,7 @@ public class SysUserController extends BaseController {
     @SysLogAuto(value = "导出用户信息")
     @RequiresPermissions("sys:user:export")
     @GetMapping(value = "/export")
+    @ApiOperation("导出用户信息")
     public void export(SysUser sysUser, HttpServletResponse response) {
         try {
             IPage<SysUser> page = sysUserService.list(null, sysUser);
@@ -172,6 +185,7 @@ public class SysUserController extends BaseController {
     }
 
     @PostMapping("index")
+    @ApiOperation("首页")
     public Result index(@RequestBody SysUser sysUser) {
         SysUserIndex sysUserIndex = new SysUserIndex();
         sysUserIndex.setTotalVisitCount(sysUserService.findTotalVisitCount());

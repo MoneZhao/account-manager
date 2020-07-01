@@ -13,6 +13,8 @@ import com.monezhao.common.util.DateTimeUtil;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.modules.main.service.SysBalanceMainService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,6 +40,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/sys/balanceMain")
+@Api(tags = "账户余额")
 public class SysBalanceMainController extends BaseController {
     @Autowired
     private SysBalanceMainService sysBalanceMainService;
@@ -52,6 +55,7 @@ public class SysBalanceMainController extends BaseController {
      */
     @RequiresPermissions("sys:balanceMain:list")
     @GetMapping(value = "/list")
+    @ApiOperation("账户余额列表")
     public Result list(SysBalanceMain sysBalanceMain, @RequestParam Integer current, @RequestParam Integer size) {
         SysUser sysUser = ShiroUtils.getSysUser();
         sysBalanceMain.setUserId(sysUser.getUserId());
@@ -61,6 +65,7 @@ public class SysBalanceMainController extends BaseController {
 
     @RequiresPermissions("sys:balanceMain:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("账户余额查询")
     public Result queryById(@RequestParam String id) {
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(id);
         return Result.ok(sysBalanceMain);
@@ -74,6 +79,7 @@ public class SysBalanceMainController extends BaseController {
     @RequiresPermissions("sys:balanceMain:save")
     @PostMapping(value = "/save")
     @SysLogAuto(value = "新增账户余额")
+    @ApiOperation("账户余额新增")
     public Result save(@Valid @RequestBody SysBalanceMain sysBalanceMain) {
         SysUser sysUser = ShiroUtils.getSysUser();
         sysBalanceMain.setUserId(sysUser.getUserId());
@@ -89,6 +95,7 @@ public class SysBalanceMainController extends BaseController {
     @RequiresPermissions("sys:balanceMain:update")
     @PutMapping(value = "/update")
     @SysLogAuto(value = "修改账户余额")
+    @ApiOperation("账户余额修改")
     public Result update(@Valid @RequestBody SysBalanceMain sysBalanceMain) {
         SysUser sysUser = ShiroUtils.getSysUser();
         sysBalanceMain.setUserId(sysUser.getUserId());
@@ -104,6 +111,7 @@ public class SysBalanceMainController extends BaseController {
     @RequiresPermissions("sys:balanceMain:delete")
     @DeleteMapping(value = "/delete")
     @SysLogAuto(value = "删除账户余额")
+    @ApiOperation("账户余额删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
@@ -119,6 +127,7 @@ public class SysBalanceMainController extends BaseController {
      * @功能：账户余额对比
      */
     @PostMapping(value = "/compare")
+    @ApiOperation("账户余额对比")
     public Result compare(@RequestBody SysBalanceMain sysBalanceMain) {
         if (sysBalanceMain.getAccountDate() == null) {
             return Result.error("请输入对比日期");

@@ -7,6 +7,8 @@ import com.monezhao.bean.sys.SysCodeType;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysCodeTypeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/sys/codeType")
+@Api(tags = "代码类别")
 public class SysCodeTypeController extends BaseController {
     @Autowired
     private SysCodeTypeService sysCodeTypeService;
@@ -41,6 +44,7 @@ public class SysCodeTypeController extends BaseController {
      */
     @RequiresPermissions("sys:codeType:list")
     @GetMapping(value = "/list")
+    @ApiOperation("代码类别列表")
     public Result list(SysCodeType sysCodeType, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysCodeType> pageList = sysCodeTypeService.list(new Page<SysCodeType>(current, size), sysCodeType);
         return Result.ok(pageList);
@@ -48,6 +52,7 @@ public class SysCodeTypeController extends BaseController {
 
     @RequiresPermissions("sys:codeType:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("代码类别查询")
     public Result queryById(@RequestParam String id) {
         SysCodeType sysCodeType = sysCodeTypeService.getById(id);
         return Result.ok(sysCodeType);
@@ -61,6 +66,7 @@ public class SysCodeTypeController extends BaseController {
     @SysLogAuto(value = "新增代码类别")
     @RequiresPermissions("sys:codeType:save")
     @PostMapping(value = "/save")
+    @ApiOperation("代码类别新增")
     public Result save(@Valid @RequestBody SysCodeType sysCodeType) {
         sysCodeTypeService.save(sysCodeType);
         return Result.ok();
@@ -74,6 +80,7 @@ public class SysCodeTypeController extends BaseController {
     @SysLogAuto(value = "修改代码类别")
     @RequiresPermissions("sys:codeType:update")
     @PutMapping(value = "/update")
+    @ApiOperation("代码类别修改")
     public Result update(@Valid @RequestBody SysCodeType sysCodeType) {
         sysCodeTypeService.updateById(sysCodeType);
         return Result.ok();
@@ -87,6 +94,7 @@ public class SysCodeTypeController extends BaseController {
     @SysLogAuto(value = "删除代码类别")
     @RequiresPermissions("sys:codeType:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("代码类别删除")
     public Result delete(@RequestParam String ids) {
         sysCodeTypeService.deleteSysCodeType(ids);
         return Result.ok();

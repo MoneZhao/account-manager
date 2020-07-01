@@ -11,6 +11,8 @@ import com.monezhao.common.exception.SysException;
 import com.monezhao.common.util.FileUtil;
 import com.monezhao.modules.main.service.SysCodeCreateService;
 import com.monezhao.util.CodeUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,7 @@ import java.util.Arrays;
 @RestController
 @RequestMapping("/sys/codeCreate")
 @Slf4j
+@Api(tags = "后台代码生成")
 public class SysCodeCreateController extends BaseController {
 
     @Autowired
@@ -59,6 +62,7 @@ public class SysCodeCreateController extends BaseController {
      */
     @RequiresPermissions("sys:codeCreate:list")
     @GetMapping(value = "/list")
+    @ApiOperation("代码生成列表")
     public Result list(SysCodeCreate sysCodeCreate, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysCodeCreate> pageList = sysCodeCreateService.list(new Page<>(current, size), sysCodeCreate);
         return Result.ok(pageList);
@@ -66,6 +70,7 @@ public class SysCodeCreateController extends BaseController {
 
     @RequiresPermissions("sys:codeCreate:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("代码生成查询")
     public Result queryById(@RequestParam String id) {
         SysCodeCreate sysCodecreate = sysCodeCreateService.getById(id);
         return Result.ok(sysCodecreate);
@@ -79,6 +84,7 @@ public class SysCodeCreateController extends BaseController {
     @SysLogAuto(value = "新增代码生成")
     @RequiresPermissions("sys:codeCreate:save")
     @PostMapping(value = "/save")
+    @ApiOperation("新增代码生成")
     public Result save(@Valid @RequestBody SysCodeCreate sysCodeCreate) {
         CodeUtil.module = sysCodeCreate.getCodeCreateModule();
         CodeUtil.createTableName = sysCodeCreate.getCodeCreateTablename();
@@ -96,6 +102,7 @@ public class SysCodeCreateController extends BaseController {
     @SysLogAuto(value = "修改代码生成")
     @RequiresPermissions("sys:codeCreate:update")
     @PutMapping(value = "/update")
+    @ApiOperation("修改代码生成")
     public Result update(@Valid @RequestBody SysCodeCreate sysCodeCreate) {
         sysCodeCreateService.updateById(sysCodeCreate);
         return Result.ok();
@@ -109,6 +116,7 @@ public class SysCodeCreateController extends BaseController {
     @SysLogAuto(value = "删除代码生成")
     @RequiresPermissions("sys:codeCreate:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("删除代码生成")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
@@ -131,6 +139,7 @@ public class SysCodeCreateController extends BaseController {
      */
     @SysLogAuto(value = "代码生成文件上传")
     @PostMapping(value = "/doImport")
+    @ApiOperation("代码生成文件上传")
     public Result doImport(@RequestParam(required = false) String filePath, HttpServletRequest request) {
         if (!(request instanceof MultipartHttpServletRequest)) {
             throw new IllegalArgumentException("request must instance of MultipartHttpServletRequest");
@@ -158,6 +167,7 @@ public class SysCodeCreateController extends BaseController {
     @SysLogAuto(value = "代码生成文件下载")
     @GetMapping(value = "/doExport")
     @RequiresPermissions("sys:codeCreate:export")
+    @ApiOperation("代码生成文件下载")
     public void doExport(SysCodeCreate sysCodeCreate, HttpServletResponse response) {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");

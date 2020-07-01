@@ -6,6 +6,8 @@ import com.monezhao.bean.sys.SysPostUser;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysPostUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,7 @@ import java.util.Arrays;
  */
 @RestController
 @RequestMapping("/sys/postUser")
+@Api(tags = "岗位和用户关系")
 public class SysPostUserController extends BaseController {
     @Autowired
     private SysPostUserService sysPostUserService;
@@ -41,6 +44,7 @@ public class SysPostUserController extends BaseController {
      */
     @RequiresPermissions("sys:postUser:list")
     @GetMapping(value = "/list")
+    @ApiOperation("岗位和用户关系列表")
     public Result list(SysPostUser sysPostUser, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysPostUser> pageList = sysPostUserService.list(new Page<SysPostUser>(current, size), sysPostUser);
         return Result.ok(pageList);
@@ -48,6 +52,7 @@ public class SysPostUserController extends BaseController {
 
     @RequiresPermissions("sys:postUser:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("岗位和用户关系查询")
     public Result queryById(@RequestParam String id) {
         SysPostUser sysPostUser = sysPostUserService.getById(id);
         return Result.ok(sysPostUser);
@@ -60,6 +65,7 @@ public class SysPostUserController extends BaseController {
      */
     @RequiresPermissions("sys:postUser:save")
     @PostMapping(value = "/save")
+    @ApiOperation("岗位和用户关系新增")
     public Result save(@Valid @RequestBody SysPostUser sysPostUser) {
         sysPostUserService.save(sysPostUser);
         return Result.ok();
@@ -72,6 +78,7 @@ public class SysPostUserController extends BaseController {
      */
     @RequiresPermissions("sys:postUser:update")
     @PutMapping(value = "/update")
+    @ApiOperation("岗位和用户关系修改")
     public Result update(@Valid @RequestBody SysPostUser sysPostUser) {
         sysPostUserService.updateById(sysPostUser);
         return Result.ok();
@@ -84,6 +91,7 @@ public class SysPostUserController extends BaseController {
      */
     @RequiresPermissions("sys:postUser:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("岗位和用户关系删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");

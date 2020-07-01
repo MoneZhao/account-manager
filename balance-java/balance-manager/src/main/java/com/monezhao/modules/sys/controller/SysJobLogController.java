@@ -6,6 +6,8 @@ import com.monezhao.bean.sys.SysJobLog;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysJobLogService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,7 @@ import java.util.Arrays;
  */
 @RestController
 @RequestMapping("/sys/jobLog")
+@Api(tags = "定时任务执行日志")
 public class SysJobLogController extends BaseController {
     @Autowired
     private SysJobLogService sysJobLogService;
@@ -41,6 +44,7 @@ public class SysJobLogController extends BaseController {
      */
     @RequiresPermissions("sys:jobLog:list")
     @GetMapping(value = "/list")
+    @ApiOperation("定时任务执行日志列表")
     public Result list(SysJobLog sysJobLog, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysJobLog> pageList = sysJobLogService.list(new Page<SysJobLog>(current, size), sysJobLog);
         return Result.ok(pageList);
@@ -48,6 +52,7 @@ public class SysJobLogController extends BaseController {
 
     @RequiresPermissions("sys:jobLog:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("定时任务执行日志查询")
     public Result queryById(@RequestParam String id) {
         SysJobLog sysJobLog = sysJobLogService.getById(id);
         return Result.ok(sysJobLog);
@@ -60,6 +65,7 @@ public class SysJobLogController extends BaseController {
      */
     @RequiresPermissions("sys:jobLog:save")
     @PostMapping(value = "/save")
+    @ApiOperation("定时任务执行日志新增")
     public Result save(@Valid @RequestBody SysJobLog sysJobLog) {
         sysJobLogService.save(sysJobLog);
         return Result.ok();
@@ -72,6 +78,7 @@ public class SysJobLogController extends BaseController {
      */
     @RequiresPermissions("sys:jobLog:update")
     @PutMapping(value = "/update")
+    @ApiOperation("定时任务执行日志修改")
     public Result update(@Valid @RequestBody SysJobLog sysJobLog) {
         sysJobLogService.updateById(sysJobLog);
         return Result.ok();
@@ -84,6 +91,7 @@ public class SysJobLogController extends BaseController {
      */
     @RequiresPermissions("sys:jobLog:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("定时任务执行日志删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");

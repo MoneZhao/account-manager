@@ -6,6 +6,8 @@ import com.monezhao.bean.sys.SysJob;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysJobService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/sys/job")
+@Api(tags = "定时任务")
 public class SysJobController extends BaseController {
     @Autowired
     private SysJobService sysJobService;
@@ -41,6 +44,7 @@ public class SysJobController extends BaseController {
      */
     @RequiresPermissions("sys:job:list")
     @GetMapping(value = "/list")
+    @ApiOperation("定时任务列表")
     public Result list(SysJob sysJob, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysJob> pageList = sysJobService.list(new Page<SysJob>(current, size), sysJob);
         return Result.ok(pageList);
@@ -48,6 +52,7 @@ public class SysJobController extends BaseController {
 
     @RequiresPermissions("sys:job:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("定时任务查询")
     public Result queryById(@RequestParam String id) {
         SysJob sysJob = sysJobService.getById(id);
         return Result.ok(sysJob);
@@ -56,12 +61,12 @@ public class SysJobController extends BaseController {
     /**
      * @param sysJob
      * @return
-     * @throws JobException
      * @throws SchedulerException
      * @功能：新增
      */
     @RequiresPermissions("sys:job:save")
     @PostMapping(value = "/save")
+    @ApiOperation("定时任务新增")
     public Result save(@Valid @RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.saveJob(sysJob);
         return Result.ok();
@@ -74,6 +79,7 @@ public class SysJobController extends BaseController {
      */
     @RequiresPermissions("sys:job:update")
     @PutMapping(value = "/update")
+    @ApiOperation("定时任务修改")
     public Result update(@Valid @RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.updateJob(sysJob);
         return Result.ok();
@@ -87,6 +93,7 @@ public class SysJobController extends BaseController {
      */
     @RequiresPermissions("sys:job:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("定时任务删除")
     public Result delete(@RequestParam String ids) throws SchedulerException {
         sysJobService.delete(ids);
         return Result.ok();
@@ -94,6 +101,7 @@ public class SysJobController extends BaseController {
 
     @RequiresPermissions("sys:job:changeStatus")
     @PutMapping("/changeStatus")
+    @ApiOperation("定时任务改变状态")
     public Result changeStatus(@RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.changeStatus(sysJob.getJobId());
         return Result.ok();
@@ -101,6 +109,7 @@ public class SysJobController extends BaseController {
 
     @RequiresPermissions("sys:job:run")
     @PutMapping("/run")
+    @ApiOperation("定时任务运行")
     public Result run(@RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.run(sysJob.getJobId());
         return Result.ok();

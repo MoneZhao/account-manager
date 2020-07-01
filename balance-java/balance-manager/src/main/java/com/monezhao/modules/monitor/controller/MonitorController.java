@@ -3,6 +3,8 @@ package com.monezhao.modules.monitor.controller;
 import com.monezhao.bean.utilsVo.RedisInfo;
 import com.monezhao.common.Result;
 import com.monezhao.modules.monitor.service.RedisService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,28 +25,33 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/actuator")
+@Api(tags = "服务器监控")
 public class MonitorController {
 
     @Autowired
     private RedisService redisService;
 
     @GetMapping("/redis/info")
+    @ApiOperation("redis信息")
     public Result getRedisInfo() throws Exception {
         List<RedisInfo> infoList = this.redisService.getInfo();
         return Result.ok(infoList);
     }
 
     @GetMapping("/redis/keysSize")
+    @ApiOperation("redis key容量")
     public Map<String, Object> getKeysSize() throws Exception {
         return redisService.getKeysSize();
     }
 
     @GetMapping("/redis/memoryInfo")
+    @ApiOperation("内存信息")
     public Map<String, Object> getMemoryInfo() throws Exception {
         return redisService.getMemoryInfo();
     }
 
     @GetMapping("/queryDiskInfo")
+    @ApiOperation("磁盘信息")
     public Result queryDiskInfo() {
         try {
             // 当前文件系统类

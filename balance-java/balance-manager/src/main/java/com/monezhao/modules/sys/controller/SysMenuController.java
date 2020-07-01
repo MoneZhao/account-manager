@@ -8,6 +8,8 @@ import com.monezhao.bean.utilsVo.ElTree;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysMenuService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +31,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/menu")
+@Api(tags = "菜单")
 public class SysMenuController extends BaseController {
     @Autowired
     private SysMenuService sysMenuService;
@@ -43,6 +46,7 @@ public class SysMenuController extends BaseController {
      */
     @RequiresPermissions("sys:menu:list")
     @GetMapping(value = "/list")
+    @ApiOperation("菜单列表")
     public Result list(SysMenu sysMenu, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysMenu> pageList = sysMenuService.list(new Page<SysMenu>(current, size), sysMenu);
         return Result.ok(pageList);
@@ -50,6 +54,7 @@ public class SysMenuController extends BaseController {
 
     @RequiresPermissions("sys:menu:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("菜单查询")
     public Result queryById(@RequestParam String id) {
         SysMenu sysMenu = sysMenuService.getById(id);
         return Result.ok(sysMenu);
@@ -63,6 +68,7 @@ public class SysMenuController extends BaseController {
     @SysLogAuto(value = "新增功能菜单")
     @RequiresPermissions("sys:menu:save")
     @PostMapping(value = "/save")
+    @ApiOperation("菜单新增")
     public Result save(@Valid @RequestBody SysMenu sysMenu) {
         sysMenuService.saveSysMenu(sysMenu);
         return Result.ok(sysMenu);
@@ -76,6 +82,7 @@ public class SysMenuController extends BaseController {
     @SysLogAuto(value = "修改功能菜单")
     @RequiresPermissions("sys:menu:update")
     @PutMapping(value = "/update")
+    @ApiOperation("菜单修改")
     public Result update(@Valid @RequestBody SysMenu sysMenu) {
         sysMenuService.updateSysMenu(sysMenu);
         return Result.ok(sysMenu);
@@ -89,6 +96,7 @@ public class SysMenuController extends BaseController {
     @SysLogAuto(value = "删除功能菜单")
     @RequiresPermissions("sys:menu:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("菜单删除")
     public Result delete(@RequestParam String id) {
         sysMenuService.delete(id);
         return Result.ok();
@@ -101,6 +109,7 @@ public class SysMenuController extends BaseController {
      */
     @RequiresPermissions("sys:menu:getTreeData")
     @GetMapping(value = "/getTreeData")
+    @ApiOperation("菜单树数据")
     public Result getTreeData() {
         List<ElTree> treeData = sysMenuService.getTreeData();
         return Result.ok(treeData);

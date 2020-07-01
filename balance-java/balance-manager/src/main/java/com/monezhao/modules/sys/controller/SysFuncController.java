@@ -7,6 +7,8 @@ import com.monezhao.bean.sys.SysFunc;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.modules.sys.service.SysFuncService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,6 +30,7 @@ import java.util.Arrays;
  */
 @RestController
 @RequestMapping("/sys/func")
+@Api(tags = "功能")
 public class SysFuncController extends BaseController {
     @Autowired
     private SysFuncService sysFuncService;
@@ -42,6 +45,7 @@ public class SysFuncController extends BaseController {
      */
     @RequiresPermissions("sys:func:list")
     @GetMapping(value = "/list")
+    @ApiOperation("功能列表")
     public Result list(SysFunc sysFunc, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysFunc> pageList = sysFuncService.list(new Page<SysFunc>(current, size), sysFunc);
         return Result.ok(pageList);
@@ -49,6 +53,7 @@ public class SysFuncController extends BaseController {
 
     @RequiresPermissions("sys:func:list")
     @GetMapping(value = "/queryById")
+    @ApiOperation("功能查询")
     public Result queryById(@RequestParam String id) {
         SysFunc sysFunc = sysFuncService.getById(id);
         return Result.ok(sysFunc);
@@ -62,6 +67,7 @@ public class SysFuncController extends BaseController {
     @SysLogAuto(value = "新增功能按钮")
     @RequiresPermissions("sys:func:save")
     @PostMapping(value = "/save")
+    @ApiOperation("功能新增")
     public Result save(@Valid @RequestBody SysFunc sysFunc) {
         sysFuncService.save(sysFunc);
         return Result.ok();
@@ -75,6 +81,7 @@ public class SysFuncController extends BaseController {
     @SysLogAuto(value = "修改功能按钮")
     @RequiresPermissions("sys:func:update")
     @PutMapping(value = "/update")
+    @ApiOperation("功能修改")
     public Result update(@Valid @RequestBody SysFunc sysFunc) {
         sysFuncService.updateById(sysFunc);
         return Result.ok();
@@ -88,6 +95,7 @@ public class SysFuncController extends BaseController {
     @SysLogAuto(value = "删除功能按钮")
     @RequiresPermissions("sys:func:delete")
     @DeleteMapping(value = "/delete")
+    @ApiOperation("功能删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
