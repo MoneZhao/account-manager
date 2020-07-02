@@ -21,4 +21,6 @@ INSERT INTO t_sys_menu VALUES ('sysBalanceMain', '账户余额', 'sys', 'list', 
 INSERT INTO t_sys_func VALUES ('sysBalanceMain-1', '新增', 'sysBalanceMain', 'sys:balanceMain:save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO t_sys_func VALUES ('sysBalanceMain-2', '修改', 'sysBalanceMain', 'sys:balanceMain:update', '', '2', NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO t_sys_func VALUES ('sysBalanceMain-3', '删除', 'sysBalanceMain', 'sys:balanceMain:delete', '', '3', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO t_sys_func VALUES ('sysBalanceMain-4', '导出', 'sysBalanceMain', 'sys:balanceMain:export', '', '4', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO t_sys_func VALUES ('sysBalanceMain-5', '导入', 'sysBalanceMain', 'sys:balanceMain:import', '', '5', NULL, NULL, NULL, NULL, NULL, NULL);
 

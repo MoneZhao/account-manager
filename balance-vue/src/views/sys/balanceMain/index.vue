@@ -9,10 +9,11 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-button-group>
-        <el-button v-permission="'sys:balanceMain:save'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出当前页
+        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出当前页
         </el-button>
-        <el-button v-permission="'sys:balanceMain:save'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExportAll">导出全部
+        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExportAll">导出全部
         </el-button>
+        <el-button v-permission="'sys:balanceMain:import'" icon="el-icon-upload" type="primary" class="filter-item" @click="btnImport">导入</el-button>
         <el-button v-permission="'sys:balanceMain:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增</el-button>
         <el-button v-permission="'sys:balanceMain:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
@@ -99,6 +100,19 @@
         <el-button icon="el-icon-check" type="primary" @click="compareData">对比</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="文件导入" :visible.sync="dialogImportVisible">
+      <el-upload
+        class="upload-demo"
+        drag
+        action
+        :show-file-list="false"
+        :http-request="doImport"
+      >
+        <i class="el-icon-upload" />
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div slot="tip" class="el-upload__tip">请选择需要上传的文件</div>
+      </el-upload>
+    </el-dialog>
   </div>
 </template>
 
@@ -163,7 +177,8 @@ export default {
       },
       compareRules: {
         compareDate: [{ required: true, message: '该项不能为空', trigger: 'change' }]
-      }
+      },
+      dialogImportVisible: false
     }
   },
   beforeCreate() {
@@ -192,6 +207,18 @@ export default {
         const { data } = res
         this.records = data.records
         this.total = data.total
+      })
+    },
+    btnImport() {
+      this.dialogImportVisible = true
+    },
+    doImport(fileObj) {
+      const formData = new FormData()
+      formData.set('file', fileObj.file)
+      postAction('/sys/balanceMain/import', formData).then(({ msg }) => {
+        this.dialogImportVisible = false
+        Message.success(msg)
+        this.list()
       })
     },
     btnExport() {
@@ -264,9 +291,20 @@ export default {
         Message.error('请选择要删除的记录')
         return
       }
-      deleteAction('/sys/balanceMain/delete', { ids: ids.toString() }).then(({ msg }) => {
-        Message.success(msg)
-        this.list()
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteAction('/sys/balanceMain/delete', { ids: ids.toString() }).then(({ msg }) => {
+          Message.success(msg)
+          this.list()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     },
     btnDetail(id) {

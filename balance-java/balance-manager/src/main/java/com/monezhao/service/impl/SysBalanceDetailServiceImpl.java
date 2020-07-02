@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 账户明细Service
@@ -66,6 +68,23 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
         sysBalanceMain.setAccount(account == null ? 0 : account);
         sysBalanceMainService.updateById(sysBalanceMain);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean doImport(List<SysBalanceMain> list) {
+        List<SysBalanceDetail> detailList = new ArrayList<>();
+        SysBalanceDetail detail;
+        for (SysBalanceMain main : list) {
+            detail = new SysBalanceDetail();
+            detail.setAccount(main.getAccount());
+            detail.setAccountType("0");
+            detail.setBalanceMainId(main.getBalanceMainId());
+            detailList.add(detail);
+        }
+        sysBalanceMainService.saveBatch(list);
+        super.saveBatch(detailList);
         return true;
     }
 

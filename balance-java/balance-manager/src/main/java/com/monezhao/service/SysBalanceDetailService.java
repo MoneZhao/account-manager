@@ -2,7 +2,10 @@ package com.monezhao.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysBalanceDetail;
+import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.common.base.BaseService;
+
+import java.util.List;
 
 /**
  * 账户明细Service
@@ -43,4 +46,12 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
      * @return
      */
     boolean delete(String[] idsArr);
+
+    /**
+     * 分页查询账户余额
+     *
+     * @param list
+     * @return
+     */
+    boolean doImport(List<SysBalanceMain> list);
 }

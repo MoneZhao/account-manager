@@ -15,6 +15,8 @@ import com.monezhao.common.util.CustomCellWriteHandler;
 import com.monezhao.common.util.DateTimeUtil;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.excel.UploadSysBalanceMainListener;
+import com.monezhao.service.SysBalanceDetailService;
 import com.monezhao.service.SysBalanceMainService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,10 +30,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -46,8 +53,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/sys/balanceMain")
 @Api(tags = "账户余额")
 public class SysBalanceMainController extends BaseController {
+
     @Autowired
     private SysBalanceMainService sysBalanceMainService;
+
+    @Autowired
+    private SysBalanceDetailService sysBalanceDetailService;
 
     /**
      * 自定义查询列表
@@ -169,7 +180,7 @@ public class SysBalanceMainController extends BaseController {
      * @功能：导出全部账户余额
      */
     @SysLogAuto(value = "导出全部账户余额")
-    @RequiresPermissions("sys:balanceMain:save")
+    @RequiresPermissions("sys:balanceMain:export")
     @GetMapping(value = "/exportAll")
     @ApiOperation("导出全部账户余额")
     public void exportAll(SysBalanceMain sysBalanceMain, HttpServletResponse response) {
@@ -177,6 +188,7 @@ public class SysBalanceMainController extends BaseController {
             SysUser sysUser = ShiroUtils.getSysUser();
             sysBalanceMain.setUserId(sysUser.getUserId());
             IPage<SysBalanceMain> page = sysBalanceMainService.list(null, sysBalanceMain);
+            Collections.reverse(page.getRecords());
             response.setContentType("application/vnd.ms-excel");
             response.setCharacterEncoding("utf-8");
             response.setHeader("Content-disposition", "attachment;filename=SysBalanceMainExport.xlsx");
@@ -194,7 +206,7 @@ public class SysBalanceMainController extends BaseController {
      * @功能：导出当前页面账户余额
      */
     @SysLogAuto(value = "导出当前页面账户余额")
-    @RequiresPermissions("sys:balanceMain:save")
+    @RequiresPermissions("sys:balanceMain:export")
     @GetMapping(value = "/export")
     @ApiOperation("导出当前页面账户余额")
     public void export(SysBalanceMain sysBalanceMain, @RequestParam Integer current, @RequestParam Integer size,
@@ -203,6 +215,7 @@ public class SysBalanceMainController extends BaseController {
             SysUser sysUser = ShiroUtils.getSysUser();
             sysBalanceMain.setUserId(sysUser.getUserId());
             IPage<SysBalanceMain> page = sysBalanceMainService.list(new Page<>(current, size), sysBalanceMain);
+            Collections.reverse(page.getRecords());
             response.setContentType("application/vnd.ms-excel");
             response.setCharacterEncoding("utf-8");
             response.setHeader("Content-disposition", "attachment;filename=SysBalanceMainExport.xlsx");
@@ -212,5 +225,29 @@ public class SysBalanceMainController extends BaseController {
         } catch (Exception e) {
             throw new SysException("下载文件失败：" + e.getMessage());
         }
+    }
+
+    /**
+     * 账户余额excel 文件上传
+     *
+     * @param request
+     * @return
+     */
+    @SysLogAuto(value = "账户余额文件上传")
+    @PostMapping(value = "/import")
+    @RequiresPermissions("sys:balanceMain:import")
+    @ApiOperation("账户余额文件上传")
+    public Result doImport(HttpServletRequest request) throws IOException {
+        if (!(request instanceof MultipartHttpServletRequest)) {
+            throw new IllegalArgumentException("上传文件请求格式错误");
+        }
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        if (multipartRequest.getFileMap().size() == 0) {
+            throw new IllegalArgumentException("上传文件为空");
+        }
+        MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
+        EasyExcel.read(file.getInputStream(), SysBalanceMain.class,
+                new UploadSysBalanceMainListener(sysBalanceDetailService)).sheet().doRead();
+        return Result.ok();
     }
 }

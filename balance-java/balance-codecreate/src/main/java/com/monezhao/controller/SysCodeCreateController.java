@@ -142,11 +142,11 @@ public class SysCodeCreateController extends BaseController {
     @ApiOperation("代码生成文件上传")
     public Result doImport(@RequestParam(required = false) String filePath, HttpServletRequest request) {
         if (!(request instanceof MultipartHttpServletRequest)) {
-            throw new IllegalArgumentException("request must instance of MultipartHttpServletRequest");
+            throw new IllegalArgumentException("上传文件请求格式错误");
         }
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         if (multipartRequest.getFileMap().size() == 0) {
-            throw new IllegalArgumentException("request file is empty");
+            throw new IllegalArgumentException("上传文件为空");
         }
         MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
         String fileName = file.getOriginalFilename();
