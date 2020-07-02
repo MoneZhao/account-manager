@@ -1,7 +1,7 @@
 package com.monezhao.init;
 
-import com.monezhao.modules.sys.service.SysCodeInfoService;
-import com.monezhao.modules.sys.service.SysConfigService;
+import com.monezhao.service.SysCodeInfoService;
+import com.monezhao.service.SysConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;

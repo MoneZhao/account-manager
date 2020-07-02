@@ -78,7 +78,7 @@ public class CreateController {
 
         // Controller的Controller类.
         try {
-            String filePath = CodeUtil.projectPath + CodeUtil.module + "/src/main/java/com/monezhao/modules/main/controller/";
+            String filePath = CodeUtil.projectPath + CodeUtil.module + "/src/main/java/com/monezhao/controller/";
             File file = new File(filePath);
             file.mkdirs();
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(filePath + aSys + aCodeType + "Controller.java")));
