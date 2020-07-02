@@ -1,4 +1,4 @@
-package com.monezhao.modules.main.mapper;
+package com.monezhao.mapper;
 
 import java.util.List;
 

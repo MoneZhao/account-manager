@@ -1,4 +1,4 @@
-package com.monezhao.modules.main.controller;
+package com.monezhao.controller;
 
 import java.util.Arrays;
 
@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.bean.{_sys}.{_Sys}{_CodeType};
-import com.monezhao.modules.main.service.{_Sys}{_CodeType}Service;
+import com.monezhao.service.{_Sys}{_CodeType}Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 

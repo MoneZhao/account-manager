@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.monezhao.mapper.SysBalanceDetailMapper">
+
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.monezhao.bean.sys.SysBalanceDetail">
+        select
+        a.balance_detail_id as balanceDetailId,
+        a.account as account,
+        a.account_type as accountType,
+        a.balance_main_id as balanceMainId,
+        a.remark as remark
+
+        from t_sys_balance_detail a
+        where 1=1
+        <if test="entity.accountType != null and entity.accountType !=''">
+            <![CDATA[    AND a.account_type = #{entity.accountType}    ]]>
+        </if>
+        <if test="entity.balanceMainId != null and entity.balanceMainId !=''">
+            <![CDATA[    AND a.balance_main_id = #{entity.balanceMainId}    ]]>
+        </if>
+        order by a.create_time desc
+    </select>
+
+    <select id="account" resultType="java.lang.Double">
+        select sum(account) account from t_sys_balance_detail a where 1=1
+        <if test="id != null and id !=''">
+            <![CDATA[    AND a.balance_main_id = #{id}    ]]>
+        </if>
+    </select>
+</mapper>
