@@ -9,6 +9,10 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-button-group>
+        <el-button v-permission="'sys:balanceMain:save'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出当前页
+        </el-button>
+        <el-button v-permission="'sys:balanceMain:save'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExportAll">导出全部
+        </el-button>
         <el-button v-permission="'sys:balanceMain:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增</el-button>
         <el-button v-permission="'sys:balanceMain:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
@@ -101,7 +105,7 @@
 <script>
 import Pagination from '@/components/Pagination'
 import SysBalanceDetail from '@/views/sys/balanceDetail'
-import { getAction, putAction, postAction, deleteAction } from '@/api/manage'
+import { getAction, putAction, postAction, deleteAction, downloadAction } from '@/api/manage'
 import { Message } from 'element-ui'
 
 export default {
@@ -189,6 +193,12 @@ export default {
         this.records = data.records
         this.total = data.total
       })
+    },
+    btnExport() {
+      downloadAction('/sys/balanceMain/export', 'get', this.listQuery, 'SysBalanceMainExport.xlsx')
+    },
+    btnExportAll() {
+      downloadAction('/sys/balanceMain/exportAll', 'get', '', 'SysBalanceMainExport.xlsx')
     },
     btnQuery() {
       this.listQuery.current = 1

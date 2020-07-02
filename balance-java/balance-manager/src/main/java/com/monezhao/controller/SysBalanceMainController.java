@@ -1,5 +1,6 @@
 package com.monezhao.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,6 +10,8 @@ import com.monezhao.bean.sys.SysUser;
 import com.monezhao.bean.utilsVo.YearMonthDayStartAndEnd;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
+import com.monezhao.common.exception.SysException;
+import com.monezhao.common.util.CustomCellWriteHandler;
 import com.monezhao.common.util.DateTimeUtil;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.ShiroUtils;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Date;
@@ -156,6 +160,57 @@ public class SysBalanceMainController extends BaseController {
             }
         } else {
             return Result.ok("查询成功", sysBalanceMain);
+        }
+    }
+
+    /**
+     * @param sysBalanceMain
+     * @return
+     * @功能：导出全部账户余额
+     */
+    @SysLogAuto(value = "导出全部账户余额")
+    @RequiresPermissions("sys:balanceMain:save")
+    @GetMapping(value = "/exportAll")
+    @ApiOperation("导出全部账户余额")
+    public void exportAll(SysBalanceMain sysBalanceMain, HttpServletResponse response) {
+        try {
+            SysUser sysUser = ShiroUtils.getSysUser();
+            sysBalanceMain.setUserId(sysUser.getUserId());
+            IPage<SysBalanceMain> page = sysBalanceMainService.list(null, sysBalanceMain);
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            response.setHeader("Content-disposition", "attachment;filename=SysBalanceMainExport.xlsx");
+            EasyExcel.write(response.getOutputStream(), SysBalanceMain.class)
+                    .registerWriteHandler(new CustomCellWriteHandler())
+                    .sheet("SysBalanceMain").doWrite(page.getRecords());
+        } catch (Exception e) {
+            throw new SysException("下载文件失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * @param sysBalanceMain
+     * @return
+     * @功能：导出当前页面账户余额
+     */
+    @SysLogAuto(value = "导出当前页面账户余额")
+    @RequiresPermissions("sys:balanceMain:save")
+    @GetMapping(value = "/export")
+    @ApiOperation("导出当前页面账户余额")
+    public void export(SysBalanceMain sysBalanceMain, @RequestParam Integer current, @RequestParam Integer size,
+                       HttpServletResponse response) {
+        try {
+            SysUser sysUser = ShiroUtils.getSysUser();
+            sysBalanceMain.setUserId(sysUser.getUserId());
+            IPage<SysBalanceMain> page = sysBalanceMainService.list(new Page<>(current, size), sysBalanceMain);
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            response.setHeader("Content-disposition", "attachment;filename=SysBalanceMainExport.xlsx");
+            EasyExcel.write(response.getOutputStream(), SysBalanceMain.class)
+                    .registerWriteHandler(new CustomCellWriteHandler())
+                    .sheet("SysBalanceMain").doWrite(page.getRecords());
+        } catch (Exception e) {
+            throw new SysException("下载文件失败：" + e.getMessage());
         }
     }
 }

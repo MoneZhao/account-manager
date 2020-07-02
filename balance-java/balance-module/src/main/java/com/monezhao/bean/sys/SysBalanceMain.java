@@ -1,6 +1,8 @@
 package com.monezhao.bean.sys;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -31,12 +33,14 @@ public class SysBalanceMain extends BaseEntity {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
+    @ExcelProperty("主键")
     private String balanceMainId;
 
     /**
      * 账户余额
      */
     @DecimalMax("999999999.99")
+    @ExcelProperty("账户余额")
     private double account = 0;
 
     /**
@@ -45,18 +49,28 @@ public class SysBalanceMain extends BaseEntity {
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ExcelProperty("记录时间")
     private Date accountDate;
 
     /**
      * 所属用户
      */
     @LengthForUtf8(max = 32)
+    @ExcelProperty("用户id")
     private String userId;
+
+    /**
+     * 用户名
+     */
+    @TableField(exist = false)
+    @ExcelProperty("用户名")
+    private String userName;
 
     /**
      * 备注
      */
     @LengthForUtf8(max = 255)
+    @ExcelProperty("备注")
     private String remark;
 
 }

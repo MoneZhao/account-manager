@@ -1,6 +1,7 @@
 package com.monezhao.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.mapper.SysBalanceMainMapper;
@@ -20,7 +21,12 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
         implements SysBalanceMainService {
     @Override
     public IPage<SysBalanceMain> list(IPage<SysBalanceMain> page, SysBalanceMain sysBalanceMain) {
-        return page.setRecords(baseMapper.list(page, sysBalanceMain));
+        List<SysBalanceMain> records = baseMapper.list(page, sysBalanceMain);
+        if (page == null) {
+            page = new Page<>();
+            page.setTotal(records != null ? records.size() : 0L);
+        }
+        return page.setRecords(records);
     }
 
     @Override

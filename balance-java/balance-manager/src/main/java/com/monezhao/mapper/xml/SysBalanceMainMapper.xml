@@ -10,9 +10,11 @@
         a.account as account,
         a.account_date as accountDate,
         a.user_id as userId,
-        a.remark as remark
+        a.remark as remark,
+        o.user_name as userName
 
         from t_sys_balance_main a
+        left join t_sys_user o ON o.user_id=a.user_id
         where 1=1
         <if test="entity.accountDate != null">
             <![CDATA[	AND a.account_date = #{entity.accountDate}]]>

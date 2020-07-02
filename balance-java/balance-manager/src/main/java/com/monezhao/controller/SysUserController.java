@@ -12,6 +12,7 @@ import com.monezhao.common.Constants;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.common.exception.SysException;
+import com.monezhao.common.util.CustomCellWriteHandler;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.IpUtils;
 import com.monezhao.common.util.JwtUtil;
@@ -178,7 +179,9 @@ public class SysUserController extends BaseController {
             response.setContentType("application/vnd.ms-excel");
             response.setCharacterEncoding("utf-8");
             response.setHeader("Content-disposition", "attachment;filename=SysUserExport.xlsx");
-            EasyExcel.write(response.getOutputStream(), SysUser.class).sheet("SysUser").doWrite(page.getRecords());
+            EasyExcel.write(response.getOutputStream(), SysUser.class)
+                    .registerWriteHandler(new CustomCellWriteHandler())
+                    .sheet("SysUser").doWrite(page.getRecords());
         } catch (Exception e) {
             throw new SysException("下载文件失败：" + e.getMessage());
         }
