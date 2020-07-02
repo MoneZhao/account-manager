@@ -9,11 +9,10 @@
         <version>0.0.1</version>
     </parent>
     <artifactId>balance-manager</artifactId>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>${project.artifactId}</name>
     <properties>
         <contextPath>${project.build.finalName}</contextPath>
-        <docker.image.prefix>monezhao</docker.image.prefix>
     </properties>
     <profiles>
         <!-- 开发环境 -->
@@ -31,54 +30,6 @@
             <id>prod</id>
             <properties>
                 <profileActive>prod</profileActive>
-            </properties>
-        </profile>
-        <!-- docker环境 -->
-        <profile>
-            <id>docker</id>
-            <properties>
-                <profileActive>docker</profileActive>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.spotify</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>1.2.1</version>
-                        <executions>
-                            <!--执行 mvn package 时 自动 执行 mvn docker:build-->
-                            <execution>
-                                <id>build-image</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <imageName>${docker.image.prefix}/${project.build.finalName}</imageName>
-                            <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-                            <!--                            <imageTags>-->
-                            <!--                                <imageTag>${project.version}</imageTag>-->
-                            <!--                            </imageTags>-->
-                            <forceTags>true</forceTags>
-                            <resources>
-                                <resource>
-                                    <targetPath>/</targetPath>
-                                    <directory>${project.build.directory}</directory>
-                                    <include>${project.build.finalName}.jar</include>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <!-- idea docker插件环境 -->
-        <profile>
-            <id>idea</id>
-            <properties>
-                <profileActive>idea</profileActive>
             </properties>
         </profile>
     </profiles>
@@ -105,8 +56,6 @@
                 <excludes>
                     <exclude>dev/*</exclude>
                     <exclude>prod/*</exclude>
-                    <exclude>docker/*</exclude>
-                    <exclude>idea/*</exclude>
                     <exclude>application.yml</exclude>
                 </excludes>
                 <filtering>false</filtering>
@@ -131,6 +80,12 @@
             <artifactId>${project.parent.artifactId}-codecreate</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
