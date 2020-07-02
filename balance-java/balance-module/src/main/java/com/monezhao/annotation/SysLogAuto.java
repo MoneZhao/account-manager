@@ -25,7 +25,7 @@ public @interface SysLogAuto {
     /**
      * 日志类型
      *
-     * @return 1:登录日志 2:操作日志 3:定时任务
+     * @return 1:登录日志 2:操作日志
      */
     String logType() default "2";
 }
