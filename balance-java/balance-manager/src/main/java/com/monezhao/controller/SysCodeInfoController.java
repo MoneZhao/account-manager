@@ -114,6 +114,7 @@ public class SysCodeInfoController extends BaseController {
         Map<String, List<SysCodeInfo>> sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromRedis(codeTypeIds);
         if (sysCodeInfosMap == null) {
             sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromDb(codeTypeIds);
+            sysCodeInfoService.loadSysCodeInfoToRedis(codeTypeIds);
         }
         return Result.ok(sysCodeInfosMap);
     }

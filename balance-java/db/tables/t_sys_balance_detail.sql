@@ -13,6 +13,7 @@ CREATE TABLE t_sys_balance_detail
     update_by varchar(32) NULL COMMENT '修改人',
     update_date date NULL COMMENT '修改日期',
     update_time datetime NULL COMMENT '修改时间',
+    delete_type int(1) NULL COMMENT '0 不删除 1 删除',
     PRIMARY KEY (balance_detail_id)
 ) ENGINE=InnoDB DEFAULT CHARSET = utf8mb4  COLLATE = utf8mb4_general_ci COMMENT='SYS18_账户明细表';
 

@@ -10,10 +10,11 @@
         a.account as account,
         a.account_type as accountType,
         a.balance_main_id as balanceMainId,
+        a.delete_type as deleteType,
         a.remark as remark
 
         from t_sys_balance_detail a
-        where 1=1
+        where a.delete_type=0
         <if test="entity.accountType != null and entity.accountType !=''">
             <![CDATA[    AND a.account_type = #{entity.accountType}    ]]>
         </if>
@@ -24,7 +25,7 @@
     </select>
 
     <select id="account" resultType="java.lang.Double">
-        select sum(account) account from t_sys_balance_detail a where 1=1
+        select sum(account) account from t_sys_balance_detail a where a.delete_type=0
         <if test="id != null and id !=''">
             <![CDATA[    AND a.balance_main_id = #{id}    ]]>
         </if>

@@ -18,6 +18,11 @@ mybatis-plus:
   mapper-locations: classpath*:com/monezhao/**/mapper/xml/*.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.monezhao.bean.*
+  global-config:
+    db-config:
+      logic-delete-field: flag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
 #springboot监控actuator
 management:
   endpoints:

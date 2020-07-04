@@ -132,7 +132,7 @@ public class SysBalanceMainController extends BaseController {
             return Result.error("ids can't be empty");
         }
         String[] idsArr = ids.split(",");
-        sysBalanceMainService.delete(Arrays.asList(idsArr));
+        sysBalanceDetailService.deleteMain(Arrays.asList(idsArr));
         return Result.ok();
     }
 

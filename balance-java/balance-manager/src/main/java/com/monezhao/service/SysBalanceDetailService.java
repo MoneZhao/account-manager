@@ -48,6 +48,14 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
     boolean delete(String[] idsArr);
 
     /**
+     * 删除账户余额
+     *
+     * @param idsArr
+     * @return
+     */
+    boolean deleteMain(List<String> idsArr);
+
+    /**
      * 分页查询账户余额
      *
      * @param list

@@ -1,9 +1,11 @@
 package com.monezhao.bean.sys;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.monezhao.common.base.BaseEntity;
@@ -13,12 +15,13 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * 【账户余额主】实体类
- *
+ * 【账户余额】实体类
+ * 
  * @author monezhao@163.com
  */
 @Getter
@@ -72,5 +75,13 @@ public class SysBalanceMain extends BaseEntity {
     @LengthForUtf8(max = 255)
     @ExcelProperty("备注")
     private String remark;
+
+    /**
+     * 是否删除
+     */
+    @Max(9)
+    @TableLogic
+    @TableField(fill = FieldFill.INSERT)
+    private Integer deleteType;
 
 }

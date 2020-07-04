@@ -1,5 +1,6 @@
 package com.monezhao.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.bean.sys.SysBalanceMain;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 账户明细Service
@@ -68,6 +70,29 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
         sysBalanceMain.setAccount(account == null ? 0 : account);
         sysBalanceMainService.updateById(sysBalanceMain);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteMain(List<String> idsArr) {
+        QueryWrapper<SysBalanceDetail> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(SysBalanceDetail::getDeleteType, 0)
+                .in(SysBalanceDetail::getBalanceMainId, idsArr);
+        List<String> ids = baseMapper.selectList(queryWrapper).stream()
+                .map(SysBalanceDetail::getBalanceDetailId)
+                .collect(Collectors.toList());
+        if (ids.size() > 1) {
+            super.removeByIds(ids);
+        } else if (ids.size() == 1) {
+            super.removeById(ids.get(0));
+        }
+        if (idsArr.size() > 1) {
+            sysBalanceMainService.removeByIds(idsArr);
+        } else {
+            sysBalanceMainService.removeById(idsArr.get(0));
+        }
         return true;
     }
 

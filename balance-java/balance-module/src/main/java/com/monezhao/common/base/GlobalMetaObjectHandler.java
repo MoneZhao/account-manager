@@ -22,6 +22,7 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
     private static final String UPDATE_BY = "updateBy";
     private static final String UPDATE_DATE = "updateDate";
     private static final String UPDATE_TIME = "updateTime";
+    private static final String DELETE_TYPE = "deleteType";
 
     @Override
     public void insertFill(MetaObject metaObject) {
@@ -57,6 +58,10 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
         Object createTime = getFieldValByName(CREATE_TIME, metaObject);
         if (createTime == null) {
             setFieldValByName(CREATE_TIME, now, metaObject);
+        }
+        Object deleteType = getFieldValByName(DELETE_TYPE, metaObject);
+        if (deleteType == null) {
+            setFieldValByName(DELETE_TYPE, 0, metaObject);
         }
     }
 

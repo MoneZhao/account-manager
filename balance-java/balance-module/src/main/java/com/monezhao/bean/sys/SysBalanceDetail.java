@@ -1,7 +1,10 @@
 package com.monezhao.bean.sys;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
@@ -9,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -56,5 +60,10 @@ public class SysBalanceDetail extends BaseEntity {
      */
     @LengthForUtf8(max = 255)
     private String remark;
+
+    @Max(9)
+    @TableLogic
+    @TableField(fill = FieldFill.INSERT)
+    private Integer deleteType;
 
 }

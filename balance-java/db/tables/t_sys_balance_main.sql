@@ -13,8 +13,9 @@ CREATE TABLE t_sys_balance_main
     update_by varchar(32) NULL COMMENT '修改人',
     update_date date NULL COMMENT '修改日期',
     update_time datetime NULL COMMENT '修改时间',
+    delete_type int(1) NULL COMMENT '0 不删除 1 删除',
     PRIMARY KEY (balance_main_id)
-) ENGINE=InnoDB DEFAULT CHARSET = utf8mb4  COLLATE = utf8mb4_general_ci COMMENT='SYS17_账户余额主表';
+) ENGINE=InnoDB DEFAULT CHARSET = utf8mb4  COLLATE = utf8mb4_general_ci COMMENT='SYS17_账户余额表';
 
 /**【t_sys_balance_main】结束**/
 INSERT INTO t_sys_menu VALUES ('sysBalanceMain', '账户余额', 'sys', 'list', 'balanceMain', 'sys:balanceMain:list', 'views/sys/balanceMain/index', NULL, '0', '1', 'SysBalanceMain', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);

@@ -7,7 +7,6 @@ import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.mapper.SysBalanceMainMapper;
 import com.monezhao.service.SysBalanceMainService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,13 +26,5 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
             page.setTotal(records != null ? records.size() : 0L);
         }
         return page.setRecords(records);
-    }
-
-    @Override
-    @Transactional
-    public boolean delete(List<String> ids) {
-        baseMapper.deleteDetail(ids);
-        baseMapper.deleteMain(ids);
-        return true;
     }
 }
