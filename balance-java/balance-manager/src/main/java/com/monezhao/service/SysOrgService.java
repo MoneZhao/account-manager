@@ -1,6 +1,5 @@
 package com.monezhao.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysOrg;
 import com.monezhao.bean.utilsVo.ElTree;
 import com.monezhao.common.base.BaseService;
@@ -13,14 +12,6 @@ import java.util.List;
  * @author monezhao@163.com
  */
 public interface SysOrgService extends BaseService<SysOrg> {
-    /**
-     * 分页查询机构
-     *
-     * @param page
-     * @param baseOrg
-     * @return
-     */
-    IPage<SysOrg> list(IPage<SysOrg> page, SysOrg baseOrg);
 
     /**
      * 查询机构数据权限

@@ -10,12 +10,4 @@ import com.monezhao.bean.{_sys}.{_Sys}{_CodeType};
  * @author {author}
  */
 public interface {_Sys}{_CodeType}Service extends BaseService<{_Sys}{_CodeType}> {
-    /**
-     * 分页查询{tableNameCn}
-     *
-     * @param page
-     * @param {_sys}{_CodeType}
-     * @return
-     */
-    IPage<{_Sys}{_CodeType}> list(IPage<{_Sys}{_CodeType}> page, {_Sys}{_CodeType} {_sys}{_CodeType});
 }

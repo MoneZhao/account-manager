@@ -1,6 +1,5 @@
 package com.monezhao.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysJob;
 import com.monezhao.common.base.BaseService;
 import org.quartz.SchedulerException;
@@ -11,14 +10,6 @@ import org.quartz.SchedulerException;
  * @author monezhao@163.com
  */
 public interface SysJobService extends BaseService<SysJob> {
-    /**
-     * 分页查询定时任务
-     *
-     * @param page
-     * @param sysJob
-     * @return
-     */
-    IPage<SysJob> list(IPage<SysJob> page, SysJob sysJob);
 
     /**
      * 新增任务

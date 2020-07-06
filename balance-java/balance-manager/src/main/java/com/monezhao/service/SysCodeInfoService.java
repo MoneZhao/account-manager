@@ -1,6 +1,5 @@
 package com.monezhao.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysCodeInfo;
 import com.monezhao.common.base.BaseService;
 
@@ -13,15 +12,6 @@ import java.util.Map;
  * @author monezhao@163.com
  */
 public interface SysCodeInfoService extends BaseService<SysCodeInfo> {
-
-    /**
-     * 分页查询代码信息
-     *
-     * @param page
-     * @param sysCodeInfo
-     * @return
-     */
-    IPage<SysCodeInfo> list(IPage<SysCodeInfo> page, SysCodeInfo sysCodeInfo);
 
     /**
      * 加载数据字典进redis

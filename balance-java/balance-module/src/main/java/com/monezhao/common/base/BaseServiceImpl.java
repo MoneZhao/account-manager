@@ -10,5 +10,5 @@ import org.springframework.stereotype.Service;
  * @Description:
  */
 @Service
-public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements BaseService<T> {
+public abstract class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T> implements BaseService<T> {
 }

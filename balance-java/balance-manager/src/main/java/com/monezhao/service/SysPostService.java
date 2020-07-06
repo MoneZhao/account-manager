@@ -15,15 +15,6 @@ import com.monezhao.common.base.BaseService;
 public interface SysPostService extends BaseService<SysPost> {
 
     /**
-     * 分页查询岗位
-     *
-     * @param page
-     * @param sysPost
-     * @return
-     */
-    IPage<SysPost> list(IPage<SysPost> page, SysPost sysPost);
-
-    /**
      * 查询岗位用户
      *
      * @param page

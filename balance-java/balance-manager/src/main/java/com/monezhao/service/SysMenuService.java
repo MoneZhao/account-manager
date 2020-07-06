@@ -1,6 +1,5 @@
 package com.monezhao.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysMenu;
 import com.monezhao.bean.utilsVo.ElTree;
 import com.monezhao.common.base.BaseService;
@@ -13,14 +12,6 @@ import java.util.List;
  * @author monezhao@163.com
  */
 public interface SysMenuService extends BaseService<SysMenu> {
-    /**
-     * 分页查询菜单
-     *
-     * @param page
-     * @param sysMenu
-     * @return
-     */
-    IPage<SysMenu> list(IPage<SysMenu> page, SysMenu sysMenu);
 
     /**
      * 新增菜单，自动计算是否叶子

@@ -1,5 +1,6 @@
 package com.monezhao.common.base;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -8,4 +9,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @Description:
  */
 public interface BaseService<T> extends IService<T> {
+    /**
+     * 分页查询
+     *
+     * @param page page
+     * @param t t
+     * @return IPage
+     */
+    IPage<T> list(IPage<T> page, T t);
 }

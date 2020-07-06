@@ -1,6 +1,5 @@
 package com.monezhao.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysConfig;
 import com.monezhao.common.base.BaseService;
 
@@ -10,15 +9,6 @@ import com.monezhao.common.base.BaseService;
  * @author monezhao@163.com
  */
 public interface SysConfigService extends BaseService<SysConfig> {
-
-    /**
-     * 分页查询系统参数
-     *
-     * @param page
-     * @param sysConfig
-     * @return
-     */
-    IPage<SysConfig> list(IPage<SysConfig> page, SysConfig sysConfig);
 
     /**
      * 加载系统参数到redis

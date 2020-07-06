@@ -18,14 +18,6 @@ import java.util.List;
  * @author monezhao@163.com
  */
 public interface SysUserService extends BaseService<SysUser> {
-    /**
-     * 分页查询用户
-     *
-     * @param page
-     * @param sysUser
-     * @return
-     */
-    IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser);
 
     /**
      * 公共选人查询

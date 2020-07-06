@@ -17,15 +17,6 @@ import java.util.Map;
 public interface SysRoleService extends BaseService<SysRole> {
 
     /**
-     * 分页查询角色
-     *
-     * @param page
-     * @param sysRole
-     * @return
-     */
-    IPage<SysRole> list(IPage<SysRole> page, SysRole sysRole);
-
-    /**
      * 查询角色权限
      *
      * @param sysUser
