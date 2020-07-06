@@ -29,9 +29,9 @@ import permission from './directive/permission/permission'
 
 // 开发环境若需要走mock挡板，将注释去掉即可 development-开发 production-生产
 // import { mockXHR } from '../mock'
-if (process.env.NODE_ENV === 'development') {
-  // mockXHR()
-}
+// if (process.env.NODE_ENV === 'development') {
+//   mockXHR()
+// }
 
 import vueParticles from 'vue-particles'
 Vue.use(vueParticles)

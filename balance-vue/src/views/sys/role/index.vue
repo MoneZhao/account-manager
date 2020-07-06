@@ -121,9 +121,8 @@
           class="filter-tree"
           show-checkbox
           check-on-click-node
-          accordion
+          default-expand-all
           check-strictly
-          render-after-expand
           :expand-on-click-node="false"
           @check-change="checkChange"
         />
