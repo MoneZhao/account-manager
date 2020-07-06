@@ -85,7 +85,7 @@ public class CreateMybatisMapperXml {
         String searchColumns = getSearchColumns(list);
         // where条件
         String whereConditions = getWhereConditions(list);
-        String orderBy = getOrderBy(primaryKey);
+        String orderBy = getOrderBy();
 
         // 【3】得到插入的insertColumns和insertValues
         // 插入列
@@ -196,12 +196,11 @@ public class CreateMybatisMapperXml {
     /**
      * 得到查询list的where条件字符串--单表查询
      *
-     * @param primaryKey
      * @return
      */
-    private static String getOrderBy(String primaryKey) {
+    private static String getOrderBy() {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("        " + "order by a." + primaryKey);
+        stringBuffer.append("        " + "order by a.create_time");
         return stringBuffer.toString();
     }
 

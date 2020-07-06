@@ -1366,7 +1366,7 @@ CREATE TABLE `t_sys_user`
 -- ----------------------------
 BEGIN;
 INSERT INTO `t_sys_user`
-VALUES ('admin', 'admin', '99f8090e4ca3c97db6d806c6b263b4daf402703121a1c5622b3f17dbde64feaa', '1tw8Yj3S', '1', 'admin',
+VALUES ('admin', 'admin', 'fb62166170636cb98a92ce5e4037ff3f39def8a67e1e490ff32ea68b01280004', 'AVeQ62S2', '1', 'admin',
         '1000000000', '18888888888', 'xxx', 'xxx@yyy.zz', '1', 1, '1', NULL, NULL, NULL, 'admin', '2020-06-08',
         '2020-06-08 06:52:30');
 COMMIT;

@@ -18,6 +18,6 @@
         <if test="entity.menuId != null and entity.menuId !=''">
             <![CDATA[	AND a.menu_id=#{entity.menuId}	]]>
         </if>
-        order by a.func_id
+        order by a.sort_no
     </select>
 </mapper>
