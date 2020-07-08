@@ -1,4 +1,4 @@
-package com.monezhao.bean.to;
+package com.monezhao.controller.command;
 
 import lombok.Data;
 

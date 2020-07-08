@@ -86,6 +86,7 @@
               <el-dropdown-item v-permission="'sys:user:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">修改</el-dropdown-item>
               <el-dropdown-item v-permission="'sys:user:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.userId)">删除</el-dropdown-item>
               <el-dropdown-item v-permission="'sys:user:update'" icon="el-icon-delete" divided @click.native="btnResetPassword(row.userId)">重置密码</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-collection-tag" divided @click.native="btnShortCut(row)">快捷方式</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -197,6 +198,18 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="配置快捷方式" :visible.sync="showShortCutModal" destroy-on-close>
+      <short-cut v-if="showShortCutModal" ref="shortCut" :role-id="temp.roleId" :user-id="temp.userId" @shotCutEnd="shotCutEnd" />
+      <div slot="footer" class="dialog-footer">
+        <el-button icon="el-icon-close" @click="showShortCutModal = false">
+          取消
+        </el-button>
+        <el-button :loading="menuModalLoading" icon="el-icon-check" type="primary" @click="editShortCut">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
+
     <select-org
       ref="selectOrg"
       :visible.sync="selectOrgVisible"
@@ -212,10 +225,11 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import { getAction, putAction, postAction, deleteAction, downloadAction } from '@/api/manage'
 import { Message } from 'element-ui'
 import SelectOrg from '@/components/select/SelectOrg'
+import ShortCut from '@/components/ShortCut'
 
 export default {
   name: 'SysUser',
-  components: { Pagination, SelectOrg },
+  components: { Pagination, SelectOrg, ShortCut },
   data() {
     return {
       dicts: [],
@@ -257,6 +271,8 @@ export default {
         status: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         sortNo: [{ required: true, message: '该项不能为空', trigger: 'change' }]
       },
+      showShortCutModal: false,
+      menuModalLoading: false,
       selectOrgVisible: false
     }
   },
@@ -382,6 +398,18 @@ export default {
         Message.success(msg)
         this.list()
       })
+    },
+    btnShortCut(row) {
+      this.temp = Object.assign({}, row)
+      this.showShortCutModal = true
+    },
+    editShortCut() {
+      this.menuModalLoading = true
+      this.$refs.shortCut.editShortCut()
+    },
+    shotCutEnd() {
+      this.menuModalLoading = false
+      this.showShortCutModal = false
     },
     selectionChange(selectedRecords) {
       this.selectedRecords = selectedRecords

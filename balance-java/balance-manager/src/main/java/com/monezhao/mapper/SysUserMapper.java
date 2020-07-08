@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysMenu;
 import com.monezhao.bean.sys.SysRole;
 import com.monezhao.bean.sys.SysUser;
-import com.monezhao.bean.to.VisitCount;
 import com.monezhao.bean.utilsVo.SysRolePermissionVO;
+import com.monezhao.controller.command.VisitCount;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -85,4 +85,20 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return
      */
     List<VisitCount> findLastSevenDaysVisitCount(String username);
+
+    /**
+     * 查询角色授权菜单
+     *
+     * @param roleId
+     * @return
+     */
+    List<SysMenu> listMenuByRoleId(String roleId);
+
+    /**
+     * 查询用户快捷方式
+     *
+     * @param userId
+     * @return
+     */
+    List<String> listPermissionsByUserId(String userId);
 }

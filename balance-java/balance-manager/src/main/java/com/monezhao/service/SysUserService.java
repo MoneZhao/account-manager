@@ -3,13 +3,16 @@ package com.monezhao.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysRole;
 import com.monezhao.bean.sys.SysUser;
-import com.monezhao.bean.to.VisitCount;
+import com.monezhao.controller.command.ShortCut;
+import com.monezhao.controller.command.VisitCount;
 import com.monezhao.bean.utilsVo.Route;
 import com.monezhao.bean.utilsVo.SessionObject;
 import com.monezhao.bean.utilsVo.SysPasswordForm;
 import com.monezhao.common.base.BaseService;
+import com.monezhao.controller.command.UserShortCut;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -131,4 +134,29 @@ public interface SysUserService extends BaseService<SysUser> {
      * @return
      */
     List<VisitCount> findLastSevenDaysVisitCount(String username);
+
+    /**
+     * 查询用户已授权快捷方式
+     *
+     * @param sysUser
+     * @param roleId
+     * @return
+     */
+    Map<String, Object> getAuthMenuList(SysUser sysUser, String roleId);
+
+    /**
+     * 用户快捷方式修改
+     *
+     * @param userShortCut
+     * @return
+     */
+    boolean userShortCutSave(UserShortCut userShortCut);
+
+    /**
+     * 用户快捷方式查询
+     *
+     * @param userId
+     * @return
+     */
+    List<ShortCut> getMenuShortCut(String userId);
 }

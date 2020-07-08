@@ -8,7 +8,8 @@ import com.monezhao.bean.sys.SysOrg;
 import com.monezhao.bean.sys.SysRole;
 import com.monezhao.bean.sys.SysRoleUser;
 import com.monezhao.bean.sys.SysUser;
-import com.monezhao.bean.to.VisitCount;
+import com.monezhao.bean.sys.SysUserShortCut;
+import com.monezhao.bean.utilsVo.ElTree;
 import com.monezhao.bean.utilsVo.Meta;
 import com.monezhao.bean.utilsVo.Route;
 import com.monezhao.bean.utilsVo.SessionObject;
@@ -22,18 +23,26 @@ import com.monezhao.common.util.PasswordUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.config.DefaultPasswordConfig;
+import com.monezhao.controller.command.ShortCut;
+import com.monezhao.controller.command.UserShortCut;
+import com.monezhao.controller.command.VisitCount;
+import com.monezhao.mapper.SysMenuMapper;
 import com.monezhao.mapper.SysUserMapper;
+import com.monezhao.mapper.SysUserShortCutMapper;
 import com.monezhao.service.SysUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 用户Service
@@ -59,7 +68,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private RedisUtil redisUtil;
 
     @Autowired
-    private SysUserMapper sysUserMapper;
+    private SysUserShortCutMapper sysUserShortCutMapper;
+
+    @Autowired
+    private SysMenuMapper sysMenuMapper;
 
     @Override
     public IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser) {
@@ -392,21 +404,101 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     @Override
     public long findTotalVisitCount() {
-        return sysUserMapper.findTotalVisitCount();
+        return baseMapper.findTotalVisitCount();
     }
 
     @Override
     public long findTodayVisitCount() {
-        return sysUserMapper.findTodayVisitCount();
+        return baseMapper.findTodayVisitCount();
     }
 
     @Override
     public long findTodayIp() {
-        return sysUserMapper.findTodayIp();
+        return baseMapper.findTodayIp();
     }
 
     @Override
     public List<VisitCount> findLastSevenDaysVisitCount(String username) {
-        return sysUserMapper.findLastSevenDaysVisitCount(username);
+        return baseMapper.findLastSevenDaysVisitCount(username);
+    }
+
+    @Override
+    public Map<String, Object> getAuthMenuList(SysUser sysUser, String roleId) {
+        List<SysMenu> list = baseMapper.listMenuByRoleId(roleId);
+        Map<String, ElTree> menuMap = new LinkedHashMap<>();
+        for (SysMenu sysMenu : list) {
+            ElTree elTree = new ElTree();
+            elTree.setId(sysMenu.getMenuId());
+            elTree.setLabel(sysMenu.getMenuName());
+            elTree.setIsLeaf("1".equals(sysMenu.getIsLeaf()));
+            elTree.setData(sysMenu);
+            menuMap.put(sysMenu.getMenuId(), elTree);
+            if (CommonUtil.isNotEmptyStr(sysMenu.getParentMenuId()) && menuMap.containsKey(sysMenu.getParentMenuId())) {
+                elTree.setParentId(sysMenu.getParentMenuId());
+                ElTree parentElTree = menuMap.get(sysMenu.getParentMenuId());
+                parentElTree.addChildren(elTree);
+            }
+        }
+
+        List<ElTree> permissionTree = new ArrayList<>();
+        menuMap.forEach((k, v) -> {
+            if (CommonUtil.isEmptyStr(v.getParentId())) {
+                permissionTree.add(v);
+            }
+        });
+
+        List<String> permissions = baseMapper.listPermissionsByUserId(sysUser.getUserId());
+        Map<String, Object> result = new HashMap<>(2);
+        result.put("permissionTree", permissionTree);
+        result.put("permissions", permissions);
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public boolean userShortCutSave(UserShortCut userShortCut) {
+        String userId = userShortCut.getUserId();
+        for (String menuId : userShortCut.getAdd()) {
+            SysUserShortCut shortCut = new SysUserShortCut();
+            shortCut.setUserId(userId);
+            shortCut.setMenuId(menuId);
+            sysUserShortCutMapper.insert(shortCut);
+        }
+        List<String> delIds = userShortCut.getDel();
+        if (Objects.nonNull(delIds) && !delIds.isEmpty()) {
+            QueryWrapper<SysUserShortCut> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda()
+                    .eq(SysUserShortCut::getUserId, userId)
+                    .in(SysUserShortCut::getMenuId, delIds);
+            sysUserShortCutMapper.delete(queryWrapper);
+        }
+        return true;
+    }
+
+    @Override
+    public List<ShortCut> getMenuShortCut(String userId) {
+        List<String> menuIds = baseMapper.listPermissionsByUserId(userId);
+        List<ShortCut> shortCuts = new ArrayList<>();
+        for (String menuId : menuIds) {
+            ShortCut shortCut = new ShortCut();
+            SysMenu menu = sysMenuMapper.selectById(menuId);
+            shortCut.setName(menu.getMenuName());
+            shortCut.setIcon(menu.getMenuIcon());
+            List<String> urls = new ArrayList<>();
+            urls.add(pathFormat(menu));
+            while (!StringUtils.isEmpty(menu.getParentMenuId()) && !menu.getMenuUrl().startsWith(Constants.FORWARD_SLASH)) {
+                menu = sysMenuMapper.selectById(menu.getParentMenuId());
+                urls.add(pathFormat(menu));
+            }
+            Collections.reverse(urls);
+            shortCut.setPath(Constants.FORWARD_SLASH + String.join(Constants.FORWARD_SLASH, urls));
+            shortCuts.add(shortCut);
+        }
+        return shortCuts;
+    }
+
+    private String pathFormat(SysMenu menu) {
+        String url = menu.getMenuUrl();
+        return url.replaceAll(Constants.FORWARD_SLASH, "");
     }
 }

@@ -125,7 +125,8 @@
           and datediff(create_date, now()) = 0
     </select>
 
-    <select id="findLastSevenDaysVisitCount" resultType="com.monezhao.bean.to.VisitCount" parameterType="string">
+    <select id="findLastSevenDaysVisitCount" resultType="com.monezhao.controller.command.VisitCount"
+            parameterType="string">
         select
         date_format(l.create_date, '%m-%d') days,
         count(1) count
@@ -143,5 +144,19 @@
         </if>
         group by
         days
+    </select>
+    <select id="listMenuByRoleId" resultType="com.monezhao.bean.sys.SysMenu">
+        SELECT m.*
+        FROM t_sys_role_permission rp
+                 LEFT JOIN t_sys_menu m
+                           ON m.menu_id = rp.menu_or_func_id
+        WHERE rp.role_id = #{roleId}
+          AND rp.permission_type = 1
+        order by m.sort_no
+    </select>
+    <select id="listPermissionsByUserId" resultType="java.lang.String">
+        SELECT a.menu_id
+        FROM t_sys_user_short_cut a
+        WHERE a.user_id = #{userId}
     </select>
 </mapper>

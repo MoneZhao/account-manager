@@ -23,7 +23,10 @@
           <el-dropdown-item>
             <span style="display:block;" @click="updatePasswordHandle">修改密码</span>
           </el-dropdown-item>
-          <el-dropdown-item>
+          <el-dropdown-item divided>
+            <span style="display:block;" @click="btnShortCut">快捷方式</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
             <span style="display:block;" @click="logout">注销</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -31,6 +34,17 @@
     </div>
     <!-- 弹窗, 修改密码 -->
     <update-password v-if="updatePassowrdVisible" ref="updatePassowrd" />
+    <el-dialog title="配置快捷方式" :visible.sync="showShortCutModal" destroy-on-close>
+      <short-cut v-if="showShortCutModal" ref="shortCut" :role-id="sysUser.roleId" :user-id="sysUser.userId" @shotCutEnd="shotCutEnd" />
+      <div slot="footer" class="dialog-footer">
+        <el-button icon="el-icon-close" @click="showShortCutModal = false">
+          取消
+        </el-button>
+        <el-button :loading="menuModalLoading" icon="el-icon-check" type="primary" @click="editShortCut">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -42,6 +56,7 @@ import SwitchRoles from '@/components/SwitchRoles'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import UpdatePassword from '@/components/UpdatePassword'
+import ShortCut from '@/components/ShortCut'
 
 export default {
   components: {
@@ -50,10 +65,13 @@ export default {
     SwitchRoles,
     Screenfull,
     SizeSelect,
-    UpdatePassword
+    UpdatePassword,
+    ShortCut
   },
   data() {
     return {
+      showShortCutModal: false,
+      menuModalLoading: false,
       updatePassowrdVisible: false
     }
   },
@@ -62,6 +80,7 @@ export default {
       'sidebar',
       'avatar',
       'device',
+      'sysUser',
       'name'
     ])
   },
@@ -78,6 +97,17 @@ export default {
       this.$nextTick(() => {
         this.$refs.updatePassowrd.init()
       })
+    },
+    btnShortCut() {
+      this.showShortCutModal = true
+    },
+    editShortCut() {
+      this.menuModalLoading = true
+      this.$refs.shortCut.editShortCut()
+    },
+    shotCutEnd() {
+      this.menuModalLoading = false
+      this.showShortCutModal = false
     }
   }
 }

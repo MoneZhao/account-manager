@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysUser;
-import com.monezhao.bean.to.SysUserIndex;
+import com.monezhao.controller.command.SysUserIndex;
 import com.monezhao.bean.utilsVo.SessionObject;
 import com.monezhao.bean.utilsVo.SysPasswordForm;
 import com.monezhao.common.Constants;
@@ -18,6 +18,7 @@ import com.monezhao.common.util.IpUtils;
 import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * 用户Controller
@@ -196,6 +198,36 @@ public class SysUserController extends BaseController {
         sysUserIndex.setTodayIp(sysUserService.findTodayIp());
         sysUserIndex.setLastSevenVisitCount(sysUserService.findLastSevenDaysVisitCount(null));
         sysUserIndex.setLastSevenUserVisitCount(sysUserService.findLastSevenDaysVisitCount(sysUser.getUserName()));
+        sysUserIndex.setMenuList(sysUserService.getMenuShortCut(sysUser.getUserId()));
         return Result.ok(sysUserIndex);
+    }
+
+    /**
+     * 查询用户已授权快捷方式
+     *
+     * @param roleId
+     * @return
+     */
+    @GetMapping(value = "/getAuthMenuList")
+    @ApiOperation("查询用户已授权快捷方式")
+    public Result getAuthMenuList(String roleId) {
+        SysUser sysUser = ShiroUtils.getSysUser();
+        Map<String, Object> data = sysUserService.getAuthMenuList(sysUser, roleId);
+        return Result.ok(data);
+    }
+
+    /**
+     * 修改用户快捷方式
+     *
+     * @return
+     */
+    @PostMapping(value = "/userShortCutSave")
+    @ApiOperation("修改用户快捷方式")
+    public Result userShortCutSave(@RequestBody UserShortCut userShortCut){
+        if (userShortCut.getUserId() == null) {
+            return Result.error("未指定用户");
+        }
+        sysUserService.userShortCutSave(userShortCut);
+        return Result.ok();
     }
 }

@@ -1,41 +1,58 @@
 <template>
   <div class="home-page">
     <el-row :gutter="8" class="head-info">
-      <el-card class="head-info-card">
-        <el-col :span="12">
-          <div class="head-info-avatar">
-            <img alt="头像" :src="avatar">
-          </div>
-          <div class="head-info-count">
-            <div class="head-info-welcome">
-              {{ welcomeMessage }}
+      <el-col :span="12">
+        <el-card class="head-info-card box-card" shadow="hover">
+          <el-row :span="12">
+            <div class="head-info-avatar">
+              <img alt="头像" :src="avatar">
             </div>
-            <div class="head-info-desc">
-              <p>{{ sysOrg ? sysOrg.orgName : '暂无部门' }} | {{ sysRole ? sysRole.roleName : '暂无角色' }}</p>
+            <div class="head-info-count">
+              <div class="head-info-welcome">
+                {{ welcomeMessage }}
+              </div>
+              <div class="head-info-desc">
+                <p>{{ sysOrg ? sysOrg.orgName : '暂无部门' }} | {{ sysRole ? sysRole.roleName : '暂无角色' }}</p>
+              </div>
             </div>
+          </el-row>
+          <el-divider />
+          <el-row :span="12">
+            <div>
+              <el-row>
+                <el-col :span="8">
+                  <head-info title="今日IP" :content="todayIp" />
+                </el-col>
+                <el-col :span="8">
+                  <head-info title="今日访问" :content="todayVisitCount" />
+                </el-col>
+                <el-col :span="8">
+                  <head-info title="总访问量" :content="totalVisitCount" />
+                </el-col>
+              </el-row>
+            </div>
+          </el-row>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card class="head-info-card box-card" shadow="hover">
+          <div slot="header" class="clearfix">
+            <span>快捷方式</span>
           </div>
-        </el-col>
-        <el-col :span="12">
-          <div>
-            <el-row class="more-info">
-              <el-col :span="12" />
-              <el-col :span="4">
-                <head-info title="今日IP" :content="todayIp" />
-              </el-col>
-              <el-col :span="4">
-                <head-info title="今日访问" :content="todayVisitCount" />
-              </el-col>
-              <el-col :span="4">
-                <head-info title="总访问量" :content="totalVisitCount" />
-              </el-col>
-            </el-row>
-          </div>
-        </el-col>
-      </el-card>
+          <span>
+            <div v-for="(value, index) in menuList" :key="index" style="float: left">
+              <router-link :to="value.path" :class="['pan-btn', colorList[index%7]]">
+                <svg-icon :icon-class="value.icon" />
+                {{ value.name }}
+              </router-link>
+            </div>
+          </span>
+        </el-card>
+      </el-col>
     </el-row>
     <el-row :gutter="8" class="count-info">
       <el-col :span="24" class="visit-count-wrapper">
-        <el-card class="visit-count">
+        <el-card class="visit-count box-card" shadow="hover">
           <apex-chart ref="count" type="bar" height="400" :options="chartOptions" :series="series" />
         </el-card>
       </el-col>
@@ -83,6 +100,16 @@ export default {
       todayIp: 0,
       todayVisitCount: 0,
       totalVisitCount: 0,
+      menuList: [],
+      colorList: [
+        'blue-btn',
+        'red-btn',
+        'light-blue-btn',
+        'pink-btn',
+        'green-btn',
+        'tiffany-btn',
+        'yellow-btn'
+      ],
       welcomeMessage: ''
     }
   },
@@ -90,6 +117,7 @@ export default {
     ...mapGetters([
       'avatar',
       'name',
+      'sysUser',
       'sysRole',
       'sysOrg'
     ])
@@ -119,14 +147,12 @@ export default {
       return `${time}，${this.name}，${welcomeArr[index]}`
     },
     getChart() {
-      const params = {
-        userName: this.name
-      }
-      postAction(`/sys/user/index`, params).then((r) => {
+      postAction(`/sys/user/index`, this.sysUser).then((r) => {
         const data = r.data
         this.todayIp = data.todayIp
         this.todayVisitCount = data.todayVisitCount
         this.totalVisitCount = data.totalVisitCount
+        this.menuList = data.menuList
         const sevenVisitCount = []
         const dateArr = []
         for (let i = 6; i >= 0; i--) {
@@ -193,6 +219,7 @@ export default {
       .head-info-card {
         padding: .5rem;
         border-color: #f1f1f1;
+        min-height: 260px;
         .head-info-avatar {
           display: inline-block;
           float: left;
@@ -233,5 +260,13 @@ export default {
         }
       }
     }
+  }
+  .pan-btn {
+    width: 170px;
+    height: 55px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 16px;
+    margin: 5px;
   }
 </style>
