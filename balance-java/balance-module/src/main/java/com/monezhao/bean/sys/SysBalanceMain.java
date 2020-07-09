@@ -1,5 +1,6 @@
 package com.monezhao.bean.sys;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -82,6 +83,7 @@ public class SysBalanceMain extends BaseEntity {
     @Max(9)
     @TableLogic
     @TableField(fill = FieldFill.INSERT)
+    @ExcelIgnore
     private Integer deleteType;
 
 }

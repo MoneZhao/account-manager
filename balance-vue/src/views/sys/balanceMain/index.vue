@@ -222,10 +222,10 @@ export default {
       })
     },
     btnExport() {
-      downloadAction('/sys/balanceMain/export', 'get', this.listQuery, 'SysBalanceMainExport.xlsx')
+      downloadAction('/sys/balanceMain/export', 'get', this.listQuery, 'SysBalanceMainExportCur.xlsx')
     },
     btnExportAll() {
-      downloadAction('/sys/balanceMain/exportAll', 'get', '', 'SysBalanceMainExport.xlsx')
+      downloadAction('/sys/balanceMain/exportAll', 'get', '', 'SysBalanceMainExportAll.xlsx')
     },
     btnQuery() {
       this.listQuery.current = 1

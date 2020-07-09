@@ -338,8 +338,9 @@ CREATE TABLE `t_sys_balance_detail`
 (
     `balance_detail_id` varchar(32)   NOT NULL COMMENT '主键id',
     `account`           double(12, 2) NOT NULL COMMENT '账户余额',
-    `account_type`      varchar(4)    NOT NULL COMMENT '账户类型',
+    `balance_type`      varchar(4)    NOT NULL COMMENT '账户类型',
     `balance_main_id`   varchar(32)   NOT NULL COMMENT '主表id',
+    `user_id`           varchar(32)   NOT NULL COMMENT '主表id',
     `remark`            varchar(255) DEFAULT NULL COMMENT '备注',
     `create_by`         varchar(32)  DEFAULT NULL COMMENT '创建人',
     `create_date`       date         DEFAULT NULL COMMENT '创建日期',

@@ -2,9 +2,9 @@ package com.monezhao.excel;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
-import com.monezhao.bean.sys.SysBalanceMain;
+import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.common.util.JacksonUtil;
-import com.monezhao.service.SysBalanceMainService;
+import com.monezhao.service.SysBalanceDetailService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -15,22 +15,22 @@ import java.util.List;
  * @date 2020/7/2 5:31 下午
  */
 @Slf4j
-public class UploadSysBalanceMainListener extends AnalysisEventListener<SysBalanceMain> {
+public class UploadSysBalanceDetailListener extends AnalysisEventListener<SysBalanceDetail> {
 
     private static final int BATCH_COUNT = 100;
 
-    List<SysBalanceMain> list = new ArrayList<>();
+    List<SysBalanceDetail> list = new ArrayList<>();
 
-    private SysBalanceMainService mainService;
+    private SysBalanceDetailService detailService;
 
-    public UploadSysBalanceMainListener(SysBalanceMainService mainService) {
-        this.mainService = mainService;
+    public UploadSysBalanceDetailListener(SysBalanceDetailService detailService) {
+        this.detailService = detailService;
     }
 
     @Override
-    public void invoke(SysBalanceMain sysBalanceMain, AnalysisContext analysisContext) {
-        log.info("解析到一条数据:{}", JacksonUtil.objToStr(sysBalanceMain));
-        list.add(sysBalanceMain);
+    public void invoke(SysBalanceDetail sysBalanceDetail, AnalysisContext analysisContext) {
+        log.info("解析到一条数据:{}", JacksonUtil.objToStr(sysBalanceDetail));
+        list.add(sysBalanceDetail);
         if (list.size() >= BATCH_COUNT) {
             saveData();
             list.clear();
@@ -44,6 +44,6 @@ public class UploadSysBalanceMainListener extends AnalysisEventListener<SysBalan
     }
 
     private void saveData() {
-        mainService.doImport(list);
+        detailService.doImport(list);
     }
 }

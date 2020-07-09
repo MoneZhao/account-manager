@@ -1,7 +1,6 @@
 package com.monezhao.service;
 
 import com.monezhao.bean.sys.SysBalanceDetail;
-import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.common.base.BaseService;
 
 import java.util.List;
@@ -47,10 +46,19 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
     boolean deleteMain(List<String> idsArr);
 
     /**
-     * 导入账户余额
+     * 导入账户明细
      *
      * @param list
      * @return
      */
-    boolean doImport(List<SysBalanceMain> list);
+    boolean doImport(List<SysBalanceDetail> list);
+
+    /**
+     * 导出当前页明细列表
+     *
+     * @param mainIds 账户余额表id
+     * @param mainIds 用户id
+     * @return
+     */
+    List<SysBalanceDetail> list(List<String> mainIds, String userId);
 }

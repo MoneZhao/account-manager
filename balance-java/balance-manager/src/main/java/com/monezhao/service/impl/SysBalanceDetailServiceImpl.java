@@ -2,6 +2,7 @@ package com.monezhao.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.common.base.BaseServiceImpl;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,15 +31,21 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
 
     @Override
     public IPage<SysBalanceDetail> list(IPage<SysBalanceDetail> page, SysBalanceDetail sysBalanceDetail) {
-        return page.setRecords(baseMapper.list(page, sysBalanceDetail));
+        List<SysBalanceDetail> records =  baseMapper.list(page, sysBalanceDetail);
+        if (page == null) {
+            page = new Page<>();
+            page.setTotal(records != null ? records.size() : 0L);
+        }
+        return page.setRecords(records);
     }
 
     @Override
     @Transactional
     public boolean save(SysBalanceDetail sysBalanceDetail) {
+        SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
+        sysBalanceDetail.setUserId(sysBalanceMain.getUserId());
         super.save(sysBalanceDetail);
         Double account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
-        SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
         sysBalanceMain.setAccount(account == null ? 0 : account);
         sysBalanceMainService.updateById(sysBalanceMain);
         return true;
@@ -98,19 +104,17 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
 
     @Override
     @Transactional
-    public boolean doImport(List<SysBalanceMain> list) {
-        List<SysBalanceDetail> detailList = new ArrayList<>();
-        SysBalanceDetail detail;
-        for (SysBalanceMain main : list) {
-            detail = new SysBalanceDetail();
-            detail.setAccount(main.getAccount());
-            detail.setAccountType("0");
-            detail.setBalanceMainId(main.getBalanceMainId());
-            detailList.add(detail);
-        }
-        sysBalanceMainService.saveBatch(list);
-        super.saveBatch(detailList);
+    public boolean doImport(List<SysBalanceDetail> list) {
+        baseMapper.deleteDetailIds(
+                list.parallelStream().map(SysBalanceDetail::getBalanceDetailId).collect(Collectors.toList())
+        );
+        this.saveBatch(list);
         return true;
+    }
+
+    @Override
+    public List<SysBalanceDetail> list(List<String> mainIds, String userId) {
+        return baseMapper.listExport(mainIds, userId);
     }
 
 }

@@ -7,8 +7,10 @@ import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.mapper.SysBalanceMainMapper;
 import com.monezhao.service.SysBalanceMainService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 账户余额主Service
@@ -26,5 +28,15 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
             page.setTotal(records != null ? records.size() : 0L);
         }
         return page.setRecords(records);
+    }
+
+    @Override
+    @Transactional
+    public boolean doImport(List<SysBalanceMain> list) {
+        baseMapper.deleteMainIds(
+                list.parallelStream().map(SysBalanceMain::getBalanceMainId).collect(Collectors.toList())
+        );
+        this.saveBatch(list);
+        return true;
     }
 }

@@ -14,11 +14,19 @@ import java.util.List;
  */
 public interface SysBalanceMainMapper extends BaseMapper<SysBalanceMain> {
     /**
-     * 查询账户余额主列表
+     * 查询账户余额列表
      *
      * @param page
      * @param entity
      * @return
      */
-    public List<SysBalanceMain> list(IPage<SysBalanceMain> page, @Param("entity") SysBalanceMain entity);
+    List<SysBalanceMain> list(IPage<SysBalanceMain> page, @Param("entity") SysBalanceMain entity);
+
+    /**
+     * 根据id物理删除账户余额
+     *
+     * @param mainIds
+     * @return
+     */
+    boolean deleteMainIds(@Param("list")List<String> mainIds);
 }

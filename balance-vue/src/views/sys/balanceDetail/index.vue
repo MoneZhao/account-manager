@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.accountType" placeholder="账户类型" class="filter-item"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select>
+      <el-select v-model="listQuery.balanceType" placeholder="账户类型" class="filter-item"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select>
       <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
         <i class="el-icon-search el-icon--left" />查询
         <el-dropdown-menu slot="dropdown">
@@ -25,7 +25,7 @@
     >
       <el-table-column type="selection" align="center" />
       <el-table-column label="账户余额" prop="account" align="center"><template slot-scope="scope"><span>{{ formatMoney(scope.row.account) }}</span></template></el-table-column>
-      <el-table-column label="账户类型" prop="accountType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.balanceType,scope.row.accountType)" /></template></el-table-column>
+      <el-table-column label="账户类型" prop="balanceType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.balanceType,scope.row.balanceType)" /></template></el-table-column>
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
@@ -46,7 +46,7 @@
     <el-dialog title="账户明细" :visible.sync="dialogFormDetailVisible" append-to-body>
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="账户余额" prop="account"><el-input v-model.number="temp.account" /></el-form-item>
-        <el-form-item label="账户类型" prop="accountType"><el-select v-model="temp.accountType" placeholder="账户类型"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
+        <el-form-item label="账户类型" prop="balanceType"><el-select v-model="temp.balanceType" placeholder="账户类型"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
         <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark" /></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -80,20 +80,20 @@ export default {
       listQuery: {
         current: 1,
         size: 10,
-        accountType: undefined,
+        balanceType: undefined,
         balanceMainId: this.balanceMainId
       },
       dialogFormDetailVisible: false,
       dialogStatus: '',
       temp: {
         account: '',
-        accountType: '',
+        balanceType: '',
         remark: '',
         balanceMainId: this.balanceMainId
       },
       rules: {
         account: [{ required: true, message: '该项不能为空', trigger: 'change' }],
-        accountType: [{ required: true, message: '该项不能为空', trigger: 'change' }]
+        balanceType: [{ required: true, message: '该项不能为空', trigger: 'change' }]
       }
     }
   },
@@ -130,7 +130,7 @@ export default {
       this.listQuery = {
         current: 1,
         size: 10,
-        accountType: undefined,
+        balanceType: undefined,
         balanceMainId: this.balanceMainId
       }
       this.list()
@@ -138,7 +138,7 @@ export default {
     resetTemp() {
       this.temp = {
         account: '',
-        accountType: '',
+        balanceType: '',
         remark: '',
         balanceMainId: this.balanceMainId
       }
