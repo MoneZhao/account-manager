@@ -7,6 +7,7 @@ package com.monezhao.common;
  */
 public class Constants {
     public static final String X_ACCESS_TOKEN = "token";
+    public static final String PREFIX_USER_KAPTCHA = "prefix_user_kaptcha:";
     public static final String PREFIX_USER_TOKEN = "prefix_user_token:";
     public static final String PREFIX_USER_SESSION_OBJECT = "prefix_user_session_object:";
 

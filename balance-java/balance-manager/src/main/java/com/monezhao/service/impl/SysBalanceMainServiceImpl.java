@@ -31,7 +31,7 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean doImport(List<SysBalanceMain> list) {
         baseMapper.deleteMainIds(
                 list.parallelStream().map(SysBalanceMain::getBalanceMainId).collect(Collectors.toList())

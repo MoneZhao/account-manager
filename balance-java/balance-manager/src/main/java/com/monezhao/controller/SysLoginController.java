@@ -1,11 +1,13 @@
 package com.monezhao.controller;
 
+import com.google.code.kaptcha.Producer;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysUser;
 import com.monezhao.bean.utilsVo.SessionObject;
 import com.monezhao.bean.utilsVo.SysLoginForm;
 import com.monezhao.common.Constants;
 import com.monezhao.common.Result;
+import com.monezhao.common.exception.SysException;
 import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.PasswordUtil;
@@ -17,14 +19,22 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.entity.ContentType;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 /**
@@ -43,6 +53,25 @@ public class SysLoginController {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Autowired
+    private Producer producer;
+
+    @GetMapping("captcha.jpg")
+    public void captcha(HttpServletResponse response, String uuid) {
+        response.setHeader("Cache-Control", "no-store, no-cache");
+        response.setContentType(ContentType.IMAGE_JPEG.getMimeType());
+        String text = producer.createText();
+        redisUtil.set(Constants.PREFIX_USER_KAPTCHA + uuid, text, 60);
+        BufferedImage image = producer.createImage(text);
+        try (ServletOutputStream out = response.getOutputStream()) {
+            ImageIO.write(image, "jpg", out);
+        } catch (IOException e) {
+            log.error("生成验证码失败", e);
+            throw new SysException("生成验证码失败", e);
+        }
+
+    }
+
     @SysLogAuto(value = "用户登录", logType = "1")
     @PostMapping(value = "/login")
     @ApiOperation("用户登录")
@@ -50,6 +79,17 @@ public class SysLoginController {
     public Result login(@RequestBody SysLoginForm sysLoginForm) {
         CommonUtil.isEmptyStr(sysLoginForm.getUserId(), "用户名不能为空");
         CommonUtil.isEmptyStr(sysLoginForm.getPassword(), "密码不能为空");
+
+        // 验证码校验
+        CommonUtil.isEmptyStr(sysLoginForm.getUuid(), "验证码uuid不能为空");
+        CommonUtil.isEmptyStr(sysLoginForm.getCaptcha(), "验证码不能为空");
+        Object o = redisUtil.get(Constants.PREFIX_USER_KAPTCHA + sysLoginForm.getUuid());
+        redisUtil.del(Constants.PREFIX_USER_KAPTCHA + sysLoginForm.getUuid());
+        if (Objects.isNull(o)) {
+            return Result.error("验证码已失效");
+        } else if (!Objects.equals(sysLoginForm.getCaptcha(), o)) {
+            return Result.error("验证码错误");
+        }
 
         String userId = sysLoginForm.getUserId();
         SysUser sysUser = sysUserService.getById(userId);

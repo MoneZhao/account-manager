@@ -38,6 +38,8 @@ public class ShiroConfig {
         // 配置不会被拦截的链接 顺序判断
         // 登录接口
         filterChainDefinitionMap.put("/sys/login", "anon");
+        // 登录验证码
+        filterChainDefinitionMap.put("/sys/captcha.jpg", "anon");
         // 开放测试URL，生产应关闭
         filterChainDefinitionMap.put("/test/**", "anon");
 

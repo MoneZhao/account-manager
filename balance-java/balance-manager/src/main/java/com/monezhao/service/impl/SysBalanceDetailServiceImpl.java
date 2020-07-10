@@ -40,7 +40,7 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(SysBalanceDetail sysBalanceDetail) {
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
         sysBalanceDetail.setUserId(sysBalanceMain.getUserId());
@@ -52,7 +52,7 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(SysBalanceDetail sysBalanceDetail) {
         super.updateById(sysBalanceDetail);
         Double account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
@@ -63,7 +63,7 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean delete(String[] idsArr) {
         String id = idsArr[0];
         SysBalanceDetail sysBalanceDetail = baseMapper.selectById(id);
@@ -80,7 +80,7 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteMain(List<String> idsArr) {
         QueryWrapper<SysBalanceDetail> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
@@ -103,7 +103,7 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean doImport(List<SysBalanceDetail> list) {
         baseMapper.deleteDetailIds(
                 list.parallelStream().map(SysBalanceDetail::getBalanceDetailId).collect(Collectors.toList())

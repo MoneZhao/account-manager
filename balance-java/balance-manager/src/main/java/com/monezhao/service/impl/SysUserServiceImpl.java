@@ -455,7 +455,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean userShortCutSave(UserShortCut userShortCut) {
         String userId = userShortCut.getUserId();
         for (String menuId : userShortCut.getAdd()) {

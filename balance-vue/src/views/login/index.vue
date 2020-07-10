@@ -61,8 +61,23 @@
           tabindex="2"
           auto-complete="on"
           show-password
+        />
+      </el-form-item>
+
+      <el-form-item>
+        <span class="svg-container">
+          <svg-icon icon-class="code" />
+        </span>
+        <el-input
+          v-model="loginForm.captcha"
+          size="medium"
+          placeholder="验证码"
+          style="width: 200px"
           @keyup.enter.native="handleLogin"
         />
+        <span class="show-captcha">
+          <img :src="captchaPath" alt="点击刷新图片" @click="getCaptcha">
+        </span>
       </el-form-item>
 
       <el-button
@@ -78,7 +93,8 @@
 </template>
 
 <script>
-import { md5 } from '@/utils'
+import { md5, getUUID } from '@/utils'
+import { getAction } from '@/api/manage'
 
 export default {
   name: 'Login',
@@ -98,9 +114,12 @@ export default {
       }
     }
     return {
+      captchaPath: '',
       loginForm: {
         userId: '',
-        password: ''
+        password: '',
+        uuid: '',
+        captcha: ''
       },
       loginRules: {
         userId: [{ required: true, trigger: 'blur', validator: validateUserId }],
@@ -119,10 +138,12 @@ export default {
     }
   },
   created() {
+    this.getCaptcha()
   },
   methods: {
     handleLogin() {
       const loginParams = {
+        ...this.loginForm,
         userId: this.loginForm.userId.trim(),
         password: md5(this.loginForm.password.trim())
       }
@@ -140,6 +161,10 @@ export default {
           return false
         }
       })
+    },
+    getCaptcha() {
+      this.loginForm.uuid = getUUID()
+      this.captchaPath = `${process.env.VUE_APP_BASE_API}/sys/captcha.jpg?uuid=${this.loginForm.uuid}`
     }
   }
 }
@@ -256,6 +281,16 @@ export default {
             color: $dark_gray;
             cursor: pointer;
             user-select: none;
+        }
+
+        .show-captcha {
+          position: absolute;
+          top: 5px;
+          right: 1px;
+          font-size: 16px;
+          color: $dark_gray;
+          cursor: pointer;
+          user-select: none;
         }
     }
 </style>
