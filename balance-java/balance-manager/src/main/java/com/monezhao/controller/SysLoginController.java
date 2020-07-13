@@ -57,6 +57,7 @@ public class SysLoginController {
     private Producer producer;
 
     @GetMapping("captcha.jpg")
+    @ApiOperation("获取验证码")
     public void captcha(HttpServletResponse response, String uuid) {
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType(ContentType.IMAGE_JPEG.getMimeType());

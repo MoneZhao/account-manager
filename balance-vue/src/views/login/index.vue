@@ -84,7 +84,7 @@
         size="medium"
         :loading="loading"
         type="primary"
-        style="width:100%;margin-bottom:30px;"
+        style="width:30%;margin-bottom:30px;margin-left:170px"
         @click.native.prevent="handleLogin"
       >登录
       </el-button>
