@@ -6,7 +6,7 @@
     <property name="LOG_FILE_LOCATION" value="./logs/@contextPath@" />
 
     <property name="CONSOLE_LOG_PATTERN_CONSOLE"
-              value="%red(%date{yyyy-MM-dd HH:mm:ss}) %highlight(%-5level) %red([%thread]) %boldMagenta(%logger{50}) %cyan(%msg%n)"/>
+              value="%red(%date{yyyy-MM-dd HH:mm:ss}) %highlight(%-5level) %red([%thread]) %boldMagenta(%replace(%caller{1}){'at| |\t|Caller.{1}0|\r|\n', ''}) %cyan(%msg%n)"/>
 
     <property name="CONSOLE_LOG_PATTERN_LOG"
               value="%date{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{50} %msg%n"/>
