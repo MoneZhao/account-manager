@@ -13,6 +13,7 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -66,13 +67,13 @@ public class Swagger2Config implements WebMvcConfigurer {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("balance后台服务API接口文档").version("1.0")
+        return new ApiInfoBuilder().title("账户余额后台服务API接口文档").version("1.0")
                 // 描述
-                .description("balance-Restful接口")
+                .description("账户余额-Restful接口")
                 // 作者
-                // .contact(new Contact("zjm", "http://xxx.com", "xxx@163.com"))
-                // .license("The Apache License, Version 2.0")
-                // .licenseUrl("http://xxx.com/xxx-1.0.html")
+                .contact(new Contact("Mone Zhao", "https://github.com/MoneZhao", "monezhao@163.com"))
+                .license("Apache License, Version 2.0")
+                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0.html")
                 .build();
     }
 
