@@ -2,7 +2,6 @@
   <el-dialog
     title="修改密码"
     :visible.sync="visible"
-    :append-to-body="true"
   >
     <el-form
       ref="dataForm"

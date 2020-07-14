@@ -33,7 +33,7 @@
       </el-dropdown>
     </div>
     <!-- 弹窗, 修改密码 -->
-    <update-password v-if="updatePassowrdVisible" ref="updatePassowrd" />
+    <update-password v-if="updatePasswordVisible" ref="updatePassword" />
     <el-dialog title="配置快捷方式" :visible.sync="showShortCutModal" destroy-on-close>
       <short-cut v-if="showShortCutModal" ref="shortCut" :role-id="sysUser.roleId" :user-id="sysUser.userId" @shotCutEnd="shotCutEnd" />
       <div slot="footer" class="dialog-footer">
@@ -72,7 +72,7 @@ export default {
     return {
       showShortCutModal: false,
       menuModalLoading: false,
-      updatePassowrdVisible: false
+      updatePasswordVisible: false
     }
   },
   computed: {
@@ -93,9 +93,9 @@ export default {
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     },
     updatePasswordHandle() {
-      this.updatePassowrdVisible = true
+      this.updatePasswordVisible = true
       this.$nextTick(() => {
-        this.$refs.updatePassowrd.init()
+        this.$refs.updatePassword.init()
       })
     },
     btnShortCut() {

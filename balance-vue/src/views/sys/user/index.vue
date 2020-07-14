@@ -367,7 +367,6 @@ export default {
       postAction('/sys/user/resetPassword', { userId: id }).then(({ msg }) => {
         Message.success(msg)
         this.list()
-        debugger
         if (id === userId) {
           this.$store.dispatch('user/clearLoginInfo').then(() => {
             this.$router.push(`/login?redirect=${this.$route.fullPath}`)
