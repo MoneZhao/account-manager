@@ -1,19 +1,21 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.roleId" placeholder="角色ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-      <el-input v-model="listQuery.roleName" placeholder="角色名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-      <el-dropdown v-permission="'sys:role:list'" split-button type="primary" class="filter-item" @click="btnQuery">
-        <i class="el-icon-search el-icon--left" />查询
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
       <el-button-group>
         <el-button v-permission="'sys:role:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增
         </el-button>
         <el-button v-permission="'sys:role:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
+      <div style="float: right">
+        <el-input v-model="listQuery.roleId" placeholder="角色ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+        <el-input v-model="listQuery.roleName" placeholder="角色名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+        <el-dropdown v-permission="'sys:role:list'" split-button type="primary" class="filter-item" @click="btnQuery">
+          <i class="el-icon-search el-icon--left" />查询
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
     <el-table
       ref="roleTable"
@@ -75,13 +77,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :current.sync="listQuery.current"
-      :size.sync="listQuery.size"
-      @pagination="list"
-    />
+    <div class="pagination-position">
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :current.sync="listQuery.current"
+        :size.sync="listQuery.size"
+        @pagination="list"
+      />
+    </div>
 
     <el-dialog title="角色" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
@@ -132,8 +136,13 @@
         <el-button icon="el-icon-check" type="primary" @click="permissionData">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :title="roleUserTitle" fullscreen :visible.sync="dialogRoleUserFormVisible" custom-class="el-dialog-custom-height">
+    <el-dialog :title="roleUserTitle" width="80%" :visible.sync="dialogRoleUserFormVisible" custom-class="el-dialog-custom-height">
       <div class="filter-container">
+        <el-button-group>
+          <el-button icon="el-icon-plus" type="primary" class="filter-item" @click="btnRoleUserAdd">新增</el-button>
+          <el-button icon="el-icon-delete" class="filter-item" @click="btnRoleUserDelete">批量删除</el-button>
+        </el-button-group>
+        <div style="float: right">
         <el-input
           v-model="listQueryRoleUser.userId"
           placeholder="用户ID"
@@ -154,10 +163,7 @@
             <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnRoleUserReset">重置</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button-group>
-          <el-button icon="el-icon-plus" type="primary" class="filter-item" @click="btnRoleUserAdd">新增</el-button>
-          <el-button icon="el-icon-delete" class="filter-item" @click="btnRoleUserDelete">批量删除</el-button>
-        </el-button-group>
+        </div>
       </div>
       <el-table
         ref="roleUserTable"
@@ -191,13 +197,15 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
-        v-show="totalRoleUser>0"
-        :total="totalRoleUser"
-        :current.sync="listQueryRoleUser.current"
-        :size.sync="listQueryRoleUser.size"
-        @pagination="getRoleUser"
-      />
+      <div class="pagination-position">
+        <pagination
+          v-show="totalRoleUser>0"
+          :total="totalRoleUser"
+          :current.sync="listQueryRoleUser.current"
+          :size.sync="listQueryRoleUser.size"
+          @pagination="getRoleUser"
+        />
+      </div>
     </el-dialog>
     <select-user
       ref="selectUser"

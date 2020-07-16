@@ -4,15 +4,13 @@
       <span>字典类别</span>
     </div>
     <div class="filter-container">
-      <el-button-group>
-        <el-button
-          v-permission="'sys:codeType:save'"
-          icon="el-icon-plus"
-          type="primary"
-          class="filter-item"
-          @click="btnCreate"
-        >新增</el-button>
-      </el-button-group>
+      <el-button
+        v-permission="'sys:codeType:save'"
+        icon="el-icon-plus"
+        type="primary"
+        class="filter-item"
+        @click="btnCreate"
+      >新增</el-button>
 
       <div style="float: right;">
         <el-input
@@ -92,7 +90,7 @@
       </el-table-column>
     </el-table>
 
-    <div class="pagination-pos">
+    <div class="pagination-position">
       <pagination
         v-show="total>0"
         :total="total"

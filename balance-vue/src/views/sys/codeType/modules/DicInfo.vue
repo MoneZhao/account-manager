@@ -99,7 +99,7 @@
       </el-table-column>
     </el-table>
 
-    <div class="pagination-pos">
+    <div class="pagination-position">
       <pagination
         v-show="totalCodeInfo>0"
         :total="totalCodeInfo"

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <div class="filter-container" style="float: right">
       <el-select v-model="listQuery.logType" placeholder="日志类型" class="filter-item"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value" /></el-select>
       <el-input v-model="listQuery.userId" placeholder="操作用户" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
       <el-input v-model="listQuery.userName" placeholder="操作用户姓名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
@@ -45,13 +45,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :current.sync="listQuery.current"
-      :size.sync="listQuery.size"
-      @pagination="list"
-    />
+    <div class="pagination-position">
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :current.sync="listQuery.current"
+        :size.sync="listQuery.size"
+        @pagination="list"
+      />
+    </div>
 
     <el-dialog title="系统日志" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">

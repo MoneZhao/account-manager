@@ -1,22 +1,26 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-date-picker v-model="listQuery.accountDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" placeholder="记录时间" type="date" style="width: 200px;" class="filter-item" />
-      <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
-        <i class="el-icon-search el-icon--left" />查询
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
       <el-button-group>
-        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出当前页
-        </el-button>
-        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExportAll">导出全部
-        </el-button>
-        <el-button v-permission="'sys:balanceMain:import'" icon="el-icon-upload" type="primary" class="filter-item" @click="btnImport">导入</el-button>
         <el-button v-permission="'sys:balanceMain:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增</el-button>
         <el-button v-permission="'sys:balanceMain:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
+      <el-button-group>
+        <el-button v-permission="'sys:balanceMain:import'" icon="el-icon-upload" type="primary" class="filter-item" @click="btnImport">导入</el-button>
+        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" class="filter-item" @click="btnExport">导出当前页
+        </el-button>
+        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" class="filter-item" @click="btnExportAll">导出全部
+        </el-button>
+      </el-button-group>
+      <div style="float: right">
+        <el-date-picker v-model="listQuery.accountDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" placeholder="记录时间" type="date" style="width: 200px;" class="filter-item" />
+        <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
+          <i class="el-icon-search el-icon--left" />查询
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
     <el-table
       ref="multipleTable"
@@ -44,13 +48,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :current.sync="listQuery.current"
-      :size.sync="listQuery.size"
-      @pagination="list"
-    />
+    <div class="pagination-position">
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :current.sync="listQuery.current"
+        :size.sync="listQuery.size"
+        @pagination="list"
+      />
+    </div>
 
     <el-dialog title="账户余额" :visible.sync="dialogFormVisible" destroy-on-close>
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
@@ -63,7 +69,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="账户详情" :visible="dialogDetailVisible" destroy-on-close fullscreen :before-close="detailClose">
+    <el-dialog title="账户详情" :visible="dialogDetailVisible" destroy-on-close width="80%" :before-close="detailClose">
       <sys-balance-detail v-if="dialogDetailVisible" :balance-main-id="balanceMainId" />
     </el-dialog>
 

@@ -1,17 +1,19 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.balanceType" placeholder="账户类型" class="filter-item"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select>
-      <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
-        <i class="el-icon-search el-icon--left" />查询
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
       <el-button-group>
         <el-button icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增</el-button>
         <el-button icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
+      <div style="float: right">
+        <el-select v-model="listQuery.balanceType" placeholder="账户类型" class="filter-item"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select>
+        <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
+          <i class="el-icon-search el-icon--left" />查询
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
     <el-table
       ref="multipleTable"
@@ -35,13 +37,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :current.sync="listQuery.current"
-      :size.sync="listQuery.size"
-      @pagination="list"
-    />
+    <div class="pagination-position">
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :current.sync="listQuery.current"
+        :size.sync="listQuery.size"
+        @pagination="list"
+      />
+    </div>
 
     <el-dialog title="账户明细" :visible.sync="dialogFormDetailVisible" append-to-body>
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">

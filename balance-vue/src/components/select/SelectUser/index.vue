@@ -24,7 +24,7 @@
         </el-col>
         <el-col :span="16">
           <div>
-            <div class="filter-container">
+            <div class="filter-container" style="float: right">
               <el-input
                 v-model="listQuery.userId"
                 placeholder="用户ID"
@@ -79,13 +79,15 @@
                 </template>
               </el-table-column>
             </el-table>
-            <pagination
-              v-show="total>0"
-              :total="total"
-              :current.sync="listQuery.current"
-              :size.sync="listQuery.size"
-              @pagination="listSysUsers"
-            />
+            <div class="pagination-position">
+              <pagination
+                v-show="total>0"
+                :total="total"
+                :current.sync="listQuery.current"
+                :size.sync="listQuery.size"
+                @pagination="listSysUsers"
+              />
+            </div>
           </div>
         </el-col>
       </el-row>

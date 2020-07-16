@@ -1,32 +1,6 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input
-        v-model="listQuery.userId"
-        placeholder="用户ID"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="btnQuery"
-      />
-      <el-input
-        v-model="listQuery.userName"
-        placeholder="用户姓名"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="btnQuery"
-      />
-      <el-dropdown
-        v-permission="'sys:user:list'"
-        split-button
-        type="primary"
-        class="filter-item"
-        @click="btnQuery"
-      >
-        <i class="el-icon-search el-icon--left" />查询
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
       <el-button-group>
         <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出
         </el-button>
@@ -34,6 +8,34 @@
         </el-button>
         <el-button v-permission="'sys:user:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
+      <div style="float: right">
+        <el-input
+          v-model="listQuery.userId"
+          placeholder="用户ID"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="btnQuery"
+        />
+        <el-input
+          v-model="listQuery.userName"
+          placeholder="用户姓名"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="btnQuery"
+        />
+        <el-dropdown
+          v-permission="'sys:user:list'"
+          split-button
+          type="primary"
+          class="filter-item"
+          @click="btnQuery"
+        >
+          <i class="el-icon-search el-icon--left" />查询
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
     <el-table
       ref="multipleTable"
@@ -92,13 +94,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :current.sync="listQuery.current"
-      :size.sync="listQuery.size"
-      @pagination="list"
-    />
+    <div class="pagination-position">
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :current.sync="listQuery.current"
+        :size.sync="listQuery.size"
+        @pagination="list"
+      />
+    </div>
 
     <el-dialog title="用户" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">

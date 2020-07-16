@@ -18,8 +18,10 @@
 
       <el-col :span="16">
         <div>
-          <el-button v-permission="'sys:func:save'" icon="el-icon-plus" type="primary" class="filter-item" style="margin-bottom:10px" @click="btnFuncCreate">新增</el-button>
-          <el-button v-permission="'sys:func:delete'" icon="el-icon-delete" class="filter-item" style="margin-bottom:10px" @click="btnFuncDelete()">批量删除</el-button>
+          <el-button-group>
+            <el-button v-permission="'sys:func:save'" icon="el-icon-plus" type="primary" class="filter-item" style="margin-bottom:10px" @click="btnFuncCreate">新增</el-button>
+            <el-button v-permission="'sys:func:delete'" icon="el-icon-delete" class="filter-item" style="margin-bottom:10px" @click="btnFuncDelete()">批量删除</el-button>
+          </el-button-group>
           <el-table
             ref="funcTable"
             :data="funcRecords"
@@ -59,13 +61,15 @@
               </template>
             </el-table-column>
           </el-table>
-          <pagination
-            v-show="total>0"
-            :total="total"
-            :current.sync="listQuery.current"
-            :size.sync="listQuery.size"
-            @pagination="listFuncs"
-          />
+          <div class="pagination-position">
+            <pagination
+              v-show="total>0"
+              :total="total"
+              :current.sync="listQuery.current"
+              :size.sync="listQuery.size"
+              @pagination="listFuncs"
+            />
+          </div>
         </div>
       </el-col>
     </el-row>

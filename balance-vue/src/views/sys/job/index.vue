@@ -1,21 +1,24 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.jobName" placeholder="任务名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-      <el-input v-model="listQuery.jobGroup" placeholder="任务组名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-      <el-select v-model="listQuery.misfirePolicy" placeholder="计划执行错误策略" class="filter-item"><el-option v-for="(item, index) in dicts.misfirePolicy" :key="index" :label="item.content" :value="item.value" /></el-select>
-      <el-select v-model="listQuery.concurrent" placeholder="是否并发执行" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
-      <el-select v-model="listQuery.status" placeholder="是否正常状态" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
-      <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
-        <i class="el-icon-search el-icon--left" />查询
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
       <el-button-group>
         <el-button v-permission="'sys:job:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增</el-button>
         <el-button v-permission="'sys:job:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
+
+      <div style="float: right">
+        <el-input v-model="listQuery.jobName" placeholder="任务名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+        <el-input v-model="listQuery.jobGroup" placeholder="任务组名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+        <el-select v-model="listQuery.misfirePolicy" placeholder="计划执行错误策略" class="filter-item"><el-option v-for="(item, index) in dicts.misfirePolicy" :key="index" :label="item.content" :value="item.value" /></el-select>
+        <el-select v-model="listQuery.concurrent" placeholder="是否并发执行" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
+        <el-select v-model="listQuery.status" placeholder="是否正常状态" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
+        <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
+          <i class="el-icon-search el-icon--left" />查询
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
     <el-table
       ref="multipleTable"
@@ -48,13 +51,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :current.sync="listQuery.current"
-      :size.sync="listQuery.size"
-      @pagination="list"
-    />
+    <div class="pagination-position">
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :current.sync="listQuery.current"
+        :size.sync="listQuery.size"
+        @pagination="list"
+      />
+    </div>
 
     <el-dialog title="定时任务" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">

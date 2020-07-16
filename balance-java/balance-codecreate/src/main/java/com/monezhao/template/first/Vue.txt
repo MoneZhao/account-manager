@@ -1,17 +1,19 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-{_searchConditions}
-            <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
-                <i class="el-icon-search el-icon--left"></i>查询
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
             <el-button-group>
                 <el-button v-permission="'{_sys}:{_codeType}:save'" icon="el-icon-plus" type="primary" @click="btnCreate" class="filter-item">新增</el-button>
                 <el-button v-permission="'{_sys}:{_codeType}:delete'" icon="el-icon-delete" @click="btnDelete()" class="filter-item">批量删除</el-button>
             </el-button-group>
+            <div style="float: right">
+                {_searchConditions}
+                <el-dropdown split-button type="primary" @click="btnQuery" class="filter-item">
+                    <i class="el-icon-search el-icon--left"></i>查询
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </div>
         </div>
         <el-table
                 :data="records"
@@ -39,8 +41,10 @@
                 </template>
             </el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :current.sync="listQuery.current" :size.sync="listQuery.size"
+        <div class="pagination-position">
+            <pagination v-show="total>0" :total="total" :current.sync="listQuery.current" :size.sync="listQuery.size"
                     @pagination="list"/>
+        </div>
 
         <el-dialog title="{tableNameCn}" :visible.sync="dialogFormVisible">
             <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">

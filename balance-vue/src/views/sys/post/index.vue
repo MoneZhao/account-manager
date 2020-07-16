@@ -1,18 +1,20 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.postId" placeholder="岗位ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-      <el-input v-model="listQuery.postName" placeholder="岗位名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-      <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
-        <i class="el-icon-search el-icon--left" />查询
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
       <el-button-group>
         <el-button v-permission="'sys:post:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增</el-button>
         <el-button v-permission="'sys:post:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
+      <div style="float: right">
+        <el-input v-model="listQuery.postId" placeholder="岗位ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+        <el-input v-model="listQuery.postName" placeholder="岗位名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+        <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
+          <i class="el-icon-search el-icon--left" />查询
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
     <el-table
       ref="multipleTable"
@@ -43,13 +45,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :current.sync="listQuery.current"
-      :size.sync="listQuery.size"
-      @pagination="list"
-    />
+    <div class="pagination-position">
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :current.sync="listQuery.current"
+        :size.sync="listQuery.size"
+        @pagination="list"
+      />
+    </div>
 
     <el-dialog title="岗位" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
@@ -64,8 +68,13 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="postUserTitle" fullscreen :visible.sync="dialogPostUserVisible" custom-class="el-dialog-custom-height">
+    <el-dialog :title="postUserTitle" width="80%" :visible.sync="dialogPostUserVisible" custom-class="el-dialog-custom-height">
       <div class="filter-container">
+        <el-button-group>
+          <el-button icon="el-icon-plus" type="primary" class="filter-item" @click="btnPostUserAdd">新增</el-button>
+          <el-button icon="el-icon-delete" class="filter-item" @click="btnPostUserDelete">批量删除</el-button>
+        </el-button-group>
+        <div style="float: right">
         <el-input
           v-model="listQueryPostUser.userId"
           placeholder="用户ID"
@@ -86,10 +95,7 @@
             <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnPostUserReset">重置</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button-group>
-          <el-button icon="el-icon-plus" type="primary" class="filter-item" @click="btnPostUserAdd">新增</el-button>
-          <el-button icon="el-icon-delete" class="filter-item" @click="btnPostUserDelete">批量删除</el-button>
-        </el-button-group>
+        </div>
       </div>
       <el-table
         ref="postUserTable"
@@ -123,13 +129,15 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
-        v-show="totalPostUser>0"
-        :total="totalPostUser"
-        :current.sync="listQueryPostUser.current"
-        :size.sync="listQueryPostUser.size"
-        @pagination="getPostUser"
-      />
+      <div class="pagination-position">
+        <pagination
+          v-show="totalPostUser>0"
+          :total="totalPostUser"
+          :current.sync="listQueryPostUser.current"
+          :size.sync="listQueryPostUser.size"
+          @pagination="getPostUser"
+        />
+      </div>
     </el-dialog>
     <select-user
       ref="selectUser"

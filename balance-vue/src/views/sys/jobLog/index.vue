@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <div class="filter-container" style="float: right">
       <el-input v-model="listQuery.jobName" placeholder="任务名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
       <el-input v-model="listQuery.jobGroup" placeholder="任务组名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
       <el-select v-model="listQuery.status" placeholder="是否正常执行" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
@@ -39,13 +39,15 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :current.sync="listQuery.current"
-      :size.sync="listQuery.size"
-      @pagination="list"
-    />
+    <div class="pagination-position">
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :current.sync="listQuery.current"
+        :size.sync="listQuery.size"
+        @pagination="list"
+      />
+    </div>
 
     <el-dialog title="定时任务执行日志" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">

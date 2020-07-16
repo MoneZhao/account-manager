@@ -208,3 +208,9 @@ aside {
     height: calc(100vh - 214px);
   }
 }
+
+.pagination-position {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+}
