@@ -3,8 +3,9 @@
     title="选择用户"
     :visible.sync="visibleInChild"
     :append-to-body="appendToBody"
-    fullscreen
+    width="80%"
     :before-close="close"
+    destroy-on-close
   >
     <div class="el-dialog-body-custom-height">
       <el-row :gutter="5">
@@ -18,6 +19,9 @@
               :props="defaultProps"
               :filter-node-method="filterNode"
               class="filter-tree"
+              :highlight-current="highlight"
+              default-expand-all
+              :expand-on-click-node="false"
               @node-click="handleNodeClick"
             />
           </div>
@@ -25,13 +29,6 @@
         <el-col :span="16">
           <div>
             <div class="filter-container" style="float: right">
-              <el-input
-                v-model="listQuery.userId"
-                placeholder="用户ID"
-                style="width: 200px;"
-                class="filter-item"
-                @keyup.enter.native="btnQuery"
-              />
               <el-input
                 v-model="listQuery.userName"
                 placeholder="用户姓名"
@@ -58,19 +55,9 @@
               @row-click="rowClick"
             >
               <el-table-column v-if="multipleSelect" type="selection" align="center" />
-              <el-table-column label="用户ID" prop="userId" align="center">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.userId }}</span>
-                </template>
-              </el-table-column>
               <el-table-column label="用户姓名" prop="userName" align="center">
                 <template slot-scope="scope">
                   <span>{{ scope.row.userName }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="所属机构ID" prop="orgId" align="center">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.orgId }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="所属机构" prop="orgName" align="center">
@@ -142,11 +129,11 @@ export default {
       listQuery: {
         current: 1,
         size: 10,
-        userId: undefined,
         userName: undefined,
         orgId: undefined
       },
-      currOrgId: ''
+      currOrgId: '',
+      highlight: true
     }
   },
   computed: {
@@ -164,6 +151,9 @@ export default {
       this.$refs._selectOrgTree.filter(val)
     }
   },
+  created() {
+    this.btnReset()
+  },
   methods: {
     close() {
       this.visibleInChild = false
@@ -179,7 +169,12 @@ export default {
       })
     },
     handleNodeClick(node) {
-      this.currOrgId = node.id
+      this.highlight = !this.highlight
+      if (!this.highlight) {
+        this.currOrgId = ''
+      } else {
+        this.currOrgId = node.id
+      }
       this.listSysUsers()
     },
     listSysUsers() {
@@ -199,7 +194,6 @@ export default {
       this.listQuery = {
         current: 1,
         size: 10,
-        userId: undefined,
         userName: undefined,
         orgId: undefined
       }

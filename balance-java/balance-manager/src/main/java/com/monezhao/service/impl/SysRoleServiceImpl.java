@@ -224,7 +224,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         } else {
             this.removeById(idsArr[0]);
         }
-        this.sysRoleUserService.remove(new QueryWrapper<SysRoleUser>().in("ROLE_ID", (Object[]) idsArr));
-        this.sysRolePermissionService.remove(new QueryWrapper<SysRolePermission>().in("ROLE_ID", (Object[]) idsArr));
+        this.sysRoleUserService.remove(new QueryWrapper<SysRoleUser>().in("role_id", idsArr));
+        this.sysRolePermissionService.remove(new QueryWrapper<SysRolePermission>().in("role_id", idsArr));
     }
 }

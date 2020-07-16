@@ -62,7 +62,9 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
 
         // 【2】保存岗位用户
         for (int i = 0; i < userIdArray.length; i++) {
-            SysPostUser sysPostUser = new SysPostUser(postId, userIdArray[i]);
+            SysPostUser sysPostUser = new SysPostUser();
+            sysPostUser.setPostId(postId);
+            sysPostUser.setUserId(userIdArray[i]);
             this.sysPostUserService.save(sysPostUser);
         }
     }
@@ -97,6 +99,6 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
         } else {
             this.removeById(idsArr[0]);
         }
-        this.sysPostUserService.remove(new QueryWrapper<SysPostUser>().in("POST_ID", (Object[]) idsArr));
+        this.sysPostUserService.remove(new QueryWrapper<SysPostUser>().in("post_id", idsArr));
     }
 }

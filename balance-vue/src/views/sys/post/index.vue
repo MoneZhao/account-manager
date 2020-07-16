@@ -6,7 +6,6 @@
         <el-button v-permission="'sys:post:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
       <div style="float: right">
-        <el-input v-model="listQuery.postId" placeholder="岗位ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
         <el-input v-model="listQuery.postName" placeholder="岗位名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
         <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
           <i class="el-icon-search el-icon--left" />查询
@@ -27,7 +26,6 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
-      <el-table-column label="岗位ID" prop="postId" align="center"><template slot-scope="scope"><span>{{ scope.row.postId }}</span></template></el-table-column>
       <el-table-column label="岗位名称" prop="postName" align="center"><template slot-scope="scope"><span>{{ scope.row.postName }}</span></template></el-table-column>
       <el-table-column label="排序号" prop="sortNo" align="center"><template slot-scope="scope"><span>{{ scope.row.sortNo }}</span></template></el-table-column>
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
@@ -57,7 +55,6 @@
 
     <el-dialog title="岗位" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
-        <el-form-item label="岗位ID" prop="postId"><el-input v-model="temp.postId" :readonly="dialogStatus==='update'" /></el-form-item>
         <el-form-item label="岗位名称" prop="postName"><el-input v-model="temp.postName" /></el-form-item>
         <el-form-item label="排序号" prop="sortNo"><el-input v-model="temp.sortNo" /></el-form-item>
         <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark" /></el-form-item>
@@ -75,26 +72,19 @@
           <el-button icon="el-icon-delete" class="filter-item" @click="btnPostUserDelete">批量删除</el-button>
         </el-button-group>
         <div style="float: right">
-        <el-input
-          v-model="listQueryPostUser.userId"
-          placeholder="用户ID"
-          style="width: 120px;"
-          class="filter-item"
-          @keyup.enter.native="getPostUser"
-        />
-        <el-input
-          v-model="listQueryPostUser.userName"
-          placeholder="用户姓名"
-          style="width: 120px;"
-          class="filter-item"
-          @keyup.enter.native="getPostUser"
-        />
-        <el-dropdown split-button type="primary" class="filter-item" @click="getPostUser">
-          <i class="el-icon-search el-icon--left" />查询
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnPostUserReset">重置</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+          <el-input
+            v-model="listQueryPostUser.userName"
+            placeholder="用户姓名"
+            style="width: 120px;"
+            class="filter-item"
+            @keyup.enter.native="getPostUser"
+          />
+          <el-dropdown split-button type="primary" class="filter-item" @click="getPostUser">
+            <i class="el-icon-search el-icon--left" />查询
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnPostUserReset">重置</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
       <el-table
@@ -108,22 +98,12 @@
         @selection-change="selectionChangePostUser"
       >
         <el-table-column type="selection" align="center" />
-        <el-table-column label="用户ID" prop="userId" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.userId }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="用户姓名" prop="userName" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.userName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="所属机构ID" prop="orgId" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.orgId }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="所属机构" prop="orgId" align="center">
+        <el-table-column label="所属机构" prop="orgName" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.orgName }}</span>
           </template>
@@ -167,19 +147,16 @@ export default {
       listQuery: {
         current: 1,
         size: 10,
-        postId: undefined,
         postName: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
       temp: {
-        postId: undefined,
         postName: '',
         sortNo: '',
         remark: ''
       },
       rules: {
-        postId: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         postName: [{ required: true, message: '该项不能为空', trigger: 'change' }]
       },
       dialogPostUserVisible: false,
@@ -192,7 +169,6 @@ export default {
         current: 1,
         size: 10,
         postId: undefined,
-        userId: undefined,
         userName: undefined
       },
       selectUserVisible: false
@@ -227,14 +203,12 @@ export default {
       this.listQuery = {
         current: 1,
         size: 10,
-        postId: undefined,
         postName: undefined
       }
       this.list()
     },
     resetTemp() {
       this.temp = {
-        postId: undefined,
         postName: '',
         sortNo: '',
         remark: ''
@@ -325,7 +299,6 @@ export default {
         current: 1,
         size: 10,
         postId: undefined,
-        userId: undefined,
         userName: undefined
       }
       this.getPostUser()

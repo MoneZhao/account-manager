@@ -27,7 +27,6 @@ public class SysPostUser extends BaseEntity {
      * UUID
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    @NotNull
     @LengthForUtf8(max = 32)
     private String postUserId;
 
@@ -51,12 +50,4 @@ public class SysPostUser extends BaseEntity {
     @TableField(exist = false)
     private String authFilterSql;
 
-    public SysPostUser() {
-    }
-
-    public SysPostUser(String postId, String userId) {
-        this.postUserId = postId + '-' + userId;
-        this.postId = postId;
-        this.userId = userId;
-    }
 }

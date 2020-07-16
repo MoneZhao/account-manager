@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.bean.sys.SysMenu;
 import com.monezhao.bean.sys.SysOrg;
+import com.monezhao.bean.sys.SysPostUser;
 import com.monezhao.bean.sys.SysRole;
 import com.monezhao.bean.sys.SysRoleUser;
 import com.monezhao.bean.sys.SysUser;
@@ -26,10 +27,11 @@ import com.monezhao.config.DefaultPasswordConfig;
 import com.monezhao.controller.command.ShortCut;
 import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.controller.command.VisitCount;
-import com.monezhao.mapper.SysMenuMapper;
 import com.monezhao.mapper.SysUserMapper;
-import com.monezhao.mapper.SysUserShortCutMapper;
+import com.monezhao.service.SysMenuService;
+import com.monezhao.service.SysPostUserService;
 import com.monezhao.service.SysUserService;
+import com.monezhao.service.SysUserShortCutService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,10 +70,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private RedisUtil redisUtil;
 
     @Autowired
-    private SysUserShortCutMapper sysUserShortCutMapper;
+    private SysUserShortCutService sysUserShortCutService;
 
     @Autowired
-    private SysMenuMapper sysMenuMapper;
+    private SysMenuService sysMenuService;
+
+    @Autowired
+    private SysPostUserService sysPostUserService;
 
     @Override
     public IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser) {
@@ -357,8 +362,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         } else {
             removeById(idsArr[0]);
         }
-        QueryWrapper<SysRoleUser> queryWrapper = new QueryWrapper<>();
-        sysRoleUserService.remove(queryWrapper.in("user_id", (Object[]) idsArr));
+        sysRoleUserService.remove( new QueryWrapper<SysRoleUser>().in("user_id", idsArr));
+        sysPostUserService.remove(new QueryWrapper<SysPostUser>().in("user_id", idsArr));
+        sysUserShortCutService.remove(new QueryWrapper<SysUserShortCut>().in("user_id", idsArr));
     }
 
     /**
@@ -462,7 +468,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             SysUserShortCut shortCut = new SysUserShortCut();
             shortCut.setUserId(userId);
             shortCut.setMenuId(menuId);
-            sysUserShortCutMapper.insert(shortCut);
+            sysUserShortCutService.save(shortCut);
         }
         List<String> delIds = userShortCut.getDel();
         if (Objects.nonNull(delIds) && !delIds.isEmpty()) {
@@ -470,7 +476,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             queryWrapper.lambda()
                     .eq(SysUserShortCut::getUserId, userId)
                     .in(SysUserShortCut::getMenuId, delIds);
-            sysUserShortCutMapper.delete(queryWrapper);
+            sysUserShortCutService.remove(queryWrapper);
         }
         return true;
     }
@@ -481,13 +487,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         List<ShortCut> shortCuts = new ArrayList<>();
         for (String menuId : menuIds) {
             ShortCut shortCut = new ShortCut();
-            SysMenu menu = sysMenuMapper.selectById(menuId);
+            SysMenu menu = sysMenuService.getById(menuId);
             shortCut.setName(menu.getMenuName());
             shortCut.setIcon(menu.getMenuIcon());
             List<String> urls = new ArrayList<>();
             urls.add(pathFormat(menu));
             while (!StringUtils.isEmpty(menu.getParentMenuId()) && !menu.getMenuUrl().startsWith(Constants.FORWARD_SLASH)) {
-                menu = sysMenuMapper.selectById(menu.getParentMenuId());
+                menu = sysMenuService.getById(menu.getParentMenuId());
                 urls.add(pathFormat(menu));
             }
             Collections.reverse(urls);

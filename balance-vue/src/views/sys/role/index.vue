@@ -143,26 +143,19 @@
           <el-button icon="el-icon-delete" class="filter-item" @click="btnRoleUserDelete">批量删除</el-button>
         </el-button-group>
         <div style="float: right">
-        <el-input
-          v-model="listQueryRoleUser.userId"
-          placeholder="用户ID"
-          style="width: 120px;"
-          class="filter-item"
-          @keyup.enter.native="getRoleUser"
-        />
-        <el-input
-          v-model="listQueryRoleUser.userName"
-          placeholder="用户姓名"
-          style="width: 120px;"
-          class="filter-item"
-          @keyup.enter.native="getRoleUser"
-        />
-        <el-dropdown split-button type="primary" class="filter-item" @click="getRoleUser">
-          <i class="el-icon-search el-icon--left" />查询
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnRoleUserReset">重置</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+          <el-input
+            v-model="listQueryRoleUser.userName"
+            placeholder="用户姓名"
+            style="width: 120px;"
+            class="filter-item"
+            @keyup.enter.native="getRoleUser"
+          />
+          <el-dropdown split-button type="primary" class="filter-item" @click="getRoleUser">
+            <i class="el-icon-search el-icon--left" />查询
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnRoleUserReset">重置</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
       <el-table
@@ -176,22 +169,12 @@
         @selection-change="selectionChangeRoleUser"
       >
         <el-table-column type="selection" align="center" />
-        <el-table-column label="用户ID" prop="userId" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.userId }}</span>
-          </template>
-        </el-table-column>
         <el-table-column label="用户姓名" prop="userName" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.userName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="所属机构ID" prop="orgId" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.orgId }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="所属机构" prop="orgId" align="center">
+        <el-table-column label="所属机构" prop="orgName" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.orgName }}</span>
           </template>
@@ -267,7 +250,6 @@ export default {
         current: 1,
         size: 10,
         roleId: undefined,
-        userId: undefined,
         userName: undefined
       },
       selectUserVisible: false
@@ -459,7 +441,6 @@ export default {
         current: 1,
         size: 10,
         roleId: undefined,
-        userId: undefined,
         userName: undefined
       }
       this.getRoleUser()
