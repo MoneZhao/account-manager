@@ -2,16 +2,18 @@
   <div class="app-container">
     <div class="filter-container">
       <el-button-group>
-        <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出
-        </el-button>
         <el-button v-permission="'sys:user:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增
         </el-button>
         <el-button v-permission="'sys:user:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
+      <el-button-group>
+        <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出
+        </el-button>
+      </el-button-group>
       <div style="float: right">
         <el-input
           v-model="listQuery.userId"
-          placeholder="用户ID"
+          placeholder="登录账户名"
           style="width: 200px;"
           class="filter-item"
           @keyup.enter.native="btnQuery"
@@ -48,7 +50,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
-      <el-table-column label="用户ID" prop="userId" align="center">
+      <el-table-column label="登录账户名" prop="userId" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.userId }}</span>
         </template>
@@ -108,7 +110,7 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="用户ID" prop="userId">
+            <el-form-item label="登录账户名" prop="userId">
               <el-input v-model="temp.userId" :readonly="dialogStatus==='update'" />
             </el-form-item>
           </el-col>
@@ -227,7 +229,7 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getAction, putAction, postAction, deleteAction, downloadAction } from '@/api/manage'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import SelectOrg from '@/components/select/SelectOrg'
 import ShortCut from '@/components/ShortCut'
 
@@ -368,14 +370,20 @@ export default {
     },
     btnResetPassword(id) {
       const userId = this.$store.getters.sysUser.userId
-      postAction('/sys/user/resetPassword', { userId: id }).then(({ msg }) => {
-        Message.success(msg)
-        this.list()
-        if (id === userId) {
-          this.$store.dispatch('user/clearLoginInfo').then(() => {
-            this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-          })
-        }
+      MessageBox.confirm('是否确定重置密码', '提示', {
+        confirmButtonText: '重置密码',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        postAction('/sys/user/resetPassword', { userId: id }).then(({ msg }) => {
+          Message.success(msg)
+          this.list()
+          if (id === userId) {
+            this.$store.dispatch('user/clearLoginInfo').then(() => {
+              this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+            })
+          }
+        })
       })
     },
     updateData() {

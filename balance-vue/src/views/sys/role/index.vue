@@ -7,7 +7,6 @@
         <el-button v-permission="'sys:role:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
       <div style="float: right">
-        <el-input v-model="listQuery.roleId" placeholder="角色ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
         <el-input v-model="listQuery.roleName" placeholder="角色名称" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
         <el-dropdown v-permission="'sys:role:list'" split-button type="primary" class="filter-item" @click="btnQuery">
           <i class="el-icon-search el-icon--left" />查询
@@ -28,11 +27,6 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
-      <el-table-column label="角色ID" prop="roleId" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.roleId }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="角色名称" prop="roleName" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.roleName }}</span>
@@ -62,14 +56,14 @@
                 v-permission="'sys:role:getRolePermissions'"
                 icon="el-icon-setting"
                 divided
-                @click.native="btnPermission(row.roleId)"
+                @click.native="btnPermission(row)"
               >
                 角色授权</el-dropdown-item>
               <el-dropdown-item
                 v-permission="'sys:role:getRoleUser'"
                 icon="el-icon-setting"
                 divided
-                @click.native="btnRoleUser(row.roleId)"
+                @click.native="btnRoleUser(row)"
               >
                 分配用户</el-dropdown-item>
             </el-dropdown-menu>
@@ -89,9 +83,6 @@
 
     <el-dialog title="角色" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
-        <el-form-item label="角色ID" prop="roleId">
-          <el-input v-model="temp.roleId" :readonly="dialogStatus==='update'" />
-        </el-form-item>
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="temp.roleName" />
         </el-form-item>
@@ -217,19 +208,16 @@ export default {
       listQuery: {
         current: 1,
         size: 10,
-        roleId: undefined,
         roleName: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
       temp: {
-        roleId: undefined,
         roleName: '',
         sortNo: '',
         remark: ''
       },
       rules: {
-        roleId: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         roleName: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         sortNo: [{ required: true, message: '该项不能为空', trigger: 'change' }]
       },
@@ -243,6 +231,7 @@ export default {
         data: 'data'
       },
       currRoleId: '',
+      currRoleName: '',
       recordsRoleUser: null,
       selectedRecordsRoleUser: [],
       totalRoleUser: 0,
@@ -258,12 +247,12 @@ export default {
   computed: {
     rolePermissionTitle: {
       get() {
-        return '角色【' + this.currRoleId + '】授权'
+        return '角色【' + this.currRoleName + '】授权'
       }
     },
     roleUserTitle: {
       get() {
-        return '角色【' + this.currRoleId + '】分配用户'
+        return '角色【' + this.currRoleName + '】分配用户'
       }
     }
   },
@@ -286,14 +275,12 @@ export default {
       this.listQuery = {
         current: 1,
         size: 10,
-        roleId: undefined,
         roleName: undefined
       }
       this.list()
     },
     resetTemp() {
       this.temp = {
-        roleId: undefined,
         roleName: '',
         sortNo: '',
         remark: ''
@@ -394,10 +381,11 @@ export default {
         }
       }
     },
-    btnPermission(roleId) {
-      this.currRoleId = roleId
+    btnPermission(row) {
+      this.currRoleId = row.roleId
+      this.currRoleName = row.roleName
       this.dialogPermissionFormVisible = true
-      this.getTreeData(roleId)
+      this.getTreeData(row.roleId)
     },
     permissionData() {
       const menuOrFuncIdNodes = this.$refs.permissionTree.getCheckedNodes()
@@ -419,8 +407,9 @@ export default {
         this.dialogPermissionFormVisible = false
       })
     },
-    btnRoleUser(roleId) {
-      this.currRoleId = roleId
+    btnRoleUser(row) {
+      this.currRoleId = row.roleId
+      this.currRoleName = row.roleName
       this.dialogRoleUserFormVisible = true
       this.getRoleUser()
     },
