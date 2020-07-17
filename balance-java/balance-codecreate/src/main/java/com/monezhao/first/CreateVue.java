@@ -68,15 +68,16 @@ public class CreateVue {
                     || "updateDate".equals(codeTypeId) || "updateTime".equals(codeTypeId)) {
                 continue;
             }
-            Boolean isPrimaryKey = CommonUtil.isExist("UUID主键,数据库生成主键,前台输入主键", tableObject.getIsNull(), ",");
-            Boolean isNotNull = CommonUtil.isExist("UUID主键,数据库生成主键,前台输入主键,不空", tableObject.getIsNull(), ",");
+            boolean isPrimaryKey = CommonUtil.isExist("UUID主键,数据库生成主键,前台输入主键", tableObject.getIsNull(), ",");
+            boolean inputPrimaryKey = CommonUtil.isExist("前台输入主键", tableObject.getIsNull(), ",");
+            boolean isNotNull = CommonUtil.isExist("不空", tableObject.getIsNull(), ",");
             String readOnlyStr = "";
             if (isPrimaryKey) {
                 primaryKey = codeTypeId;
+            }
+            if (inputPrimaryKey) {
                 readOnlyStr = " :readonly=\"dialogStatus==='update'\"";
                 allColumnsData += "                    " + codeTypeId + ": undefined," + "\r\n";
-            } else {
-                allColumnsData += "                    " + codeTypeId + ": ''," + "\r\n";
             }
             // 该字段是查询条件
             if (tableObject.getIsSearch()) {
@@ -87,7 +88,8 @@ public class CreateVue {
             if (tableObject.getIsList()) {
                 searchColumnsList = resolveSearchColumnsList(searchColumnsList, tableObject, codeTypeId);
             }
-            allColumnsDialog = resolveAllColumnsDialog(allColumnsDialog, tableObject, codeTypeId, readOnlyStr);
+            allColumnsDialog = resolveAllColumnsDialog(allColumnsDialog, tableObject, codeTypeId, readOnlyStr,
+                    isPrimaryKey, inputPrimaryKey);
             if (isNotNull) {
                 allColumnsRules += "                    " + codeTypeId + ": [{required: true, message: '该项不能为空', trigger: 'change'}]," + "\r\n";
             }
@@ -177,7 +179,11 @@ public class CreateVue {
         }
     }
 
-    private static String resolveAllColumnsDialog(String allColumnsDialog, TableObject tableObject, String codeTypeId, String readOnlyStr) {
+    private static String resolveAllColumnsDialog(String allColumnsDialog, TableObject tableObject, String codeTypeId,
+                                                  String readOnlyStr, boolean isPrimaryKey, boolean inputPrimaryKey) {
+        if (isPrimaryKey && !inputPrimaryKey) {
+            return "";
+        }
         if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {
             allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
                     + "\"><el-select v-model=\"temp." + codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn()
