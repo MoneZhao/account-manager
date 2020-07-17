@@ -1,5 +1,6 @@
 package com.monezhao.bean.sys;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monezhao.common.base.BaseEntity;
@@ -25,8 +26,7 @@ public class SysCodeInfo extends BaseEntity {
     /**
      * 代码信息ID
      */
-    @TableId
-    @NotNull
+    @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
     private String codeInfoId;
 

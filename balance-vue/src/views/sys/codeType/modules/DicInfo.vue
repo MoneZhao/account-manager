@@ -22,15 +22,15 @@
 
       <div style="float: right;">
         <el-input
-          v-model="listCodeInfoQuery.value"
-          placeholder="下拉框值"
+          v-model="listCodeInfoQuery.content"
+          placeholder="下拉框内容"
           style="width: 120px;"
           class="filter-item"
           @keyup.enter.native="btnCodeInfoQuery"
         />
         <el-input
-          v-model="listCodeInfoQuery.content"
-          placeholder="下拉框内容"
+          v-model="listCodeInfoQuery.value"
+          placeholder="下拉框值"
           style="width: 120px;"
           class="filter-item"
           @keyup.enter.native="btnCodeInfoQuery"
@@ -52,19 +52,14 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
-      <el-table-column label="代码信息ID" prop="codeInfoId" align="center">
+      <el-table-column label="下拉框内容" prop="content" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.codeInfoId }}</span>
+          <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
       <el-table-column label="下拉框值" prop="value" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.value }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="下拉框内容" prop="content" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
       <el-table-column label="排序号" prop="sortNo" align="center">
@@ -118,9 +113,6 @@
         label-position="right"
         label-width="140px"
       >
-        <el-form-item label="代码信息ID" prop="codeInfoId">
-          <el-input v-model="temp.codeInfoId" :readonly="dialogStatus==='update'" style="width: 90%;" />
-        </el-form-item>
         <el-form-item label="下拉框值" prop="value">
           <el-input v-model="temp.value" style="width: 90%;" />
         </el-form-item>
@@ -194,7 +186,6 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       temp: {
-        codeInfoId: undefined,
         codeTypeId: this.currCodeTypeId,
         value: '',
         content: '',
@@ -204,7 +195,6 @@ export default {
         remark: ''
       },
       rules: {
-        codeInfoId: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         value: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         content: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         isOk: [{ required: true, message: '该项不能为空', trigger: 'change' }],
@@ -248,14 +238,14 @@ export default {
       this.listCodeInfoQuery = {
         current: 1,
         size: 10,
-        codeInfoId: undefined,
+        codeTypeId: this.currCodeTypeId,
+        value: undefined,
         content: undefined
       }
       this.listCodeInfo()
     },
     resetTemp() {
       this.temp = {
-        codeInfoId: undefined,
         codeTypeId: this.currCodeTypeId,
         value: '',
         content: '',
