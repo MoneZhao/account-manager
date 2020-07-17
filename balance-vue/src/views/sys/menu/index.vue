@@ -14,6 +14,9 @@
             :filter-node-method="filterNode"
             class="filter-tree"
             @node-click="handleNodeClick"
+            highlight-current
+            default-expand-all
+            :expand-on-click-node="false"
           />
         </div>
       </el-col>

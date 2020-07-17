@@ -12,6 +12,9 @@
             :filter-node-method="filterNode"
             class="filter-tree"
             @node-click="handleNodeClick"
+            highlight-current
+            default-expand-all
+            :expand-on-click-node="false"
           />
         </div>
       </el-col>
@@ -33,11 +36,6 @@
             @selection-change="selectionChange"
           >
             <el-table-column type="selection" align="center" />
-            <el-table-column label="功能ID" prop="funcId" align="center">
-              <template slot-scope="scope">
-                <span>{{ scope.row.funcId }}</span>
-              </template>
-            </el-table-column>
             <el-table-column label="功能名称" prop="funcName" align="center">
               <template slot-scope="scope">
                 <span>{{ scope.row.funcName }}</span>
@@ -76,9 +74,6 @@
 
     <el-dialog title="功能" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
-        <el-form-item label="功能ID" prop="funcId">
-          <el-input v-model="temp.funcId" :readonly="dialogStatus==='update'" />
-        </el-form-item>
         <el-form-item label="功能名称" prop="funcName">
           <el-input v-model="temp.funcName" />
         </el-form-item>
@@ -129,7 +124,6 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       temp: {
-        funcId: undefined,
         funcName: '',
         menuId: '',
         funcPermissions: '',
@@ -137,7 +131,6 @@ export default {
         remark: ''
       },
       rules: {
-        funcId: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         funcName: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         sortNo: [{ required: true, message: '该项不能为空', trigger: 'change' }]
       },
@@ -187,7 +180,6 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        funcId: undefined,
         funcName: '',
         menuId: this.currMenuId,
         funcPermissions: '',

@@ -1,5 +1,6 @@
 package com.monezhao.bean.sys;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monezhao.common.base.BaseEntity;
@@ -26,8 +27,7 @@ public class SysFunc extends BaseEntity {
     /**
      * 功能ID
      */
-    @TableId
-    @NotNull
+    @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
     private String funcId;
 
