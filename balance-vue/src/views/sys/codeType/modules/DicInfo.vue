@@ -67,6 +67,11 @@
           <span>{{ scope.row.sortNo }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="是否显示" prop="isOk" align="center">
+        <template slot-scope="scope">
+          <span v-html="formatDictText(dicts.yesOrNo,scope.row.isOk)" />
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
@@ -104,7 +109,7 @@
       />
     </div>
 
-    <el-dialog title="代码信息" :visible.sync="dialogFormVisible">
+    <el-dialog title="字典信息" :visible.sync="dialogFormVisible">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -113,11 +118,11 @@
         label-position="right"
         label-width="140px"
       >
-        <el-form-item label="下拉框值" prop="value">
-          <el-input v-model="temp.value" style="width: 90%;" />
-        </el-form-item>
         <el-form-item label="下拉框内容" prop="content">
           <el-input v-model="temp.content" style="width: 90%;" />
+        </el-form-item>
+        <el-form-item label="下拉框值" prop="value">
+          <el-input v-model="temp.value" style="width: 90%;" />
         </el-form-item>
         <el-form-item label="上级联动值" prop="parentValue">
           <el-input v-model="temp.parentValue" style="width: 90%;" />

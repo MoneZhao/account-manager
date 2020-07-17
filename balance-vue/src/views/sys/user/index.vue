@@ -66,11 +66,6 @@
           <span>{{ scope.row.orgName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="手机号" prop="mobile" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.mobile }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="用户状态" prop="status" align="center">
         <template slot-scope="scope">
           <span v-html="formatDictText(dicts.userStatus,scope.row.status)" />

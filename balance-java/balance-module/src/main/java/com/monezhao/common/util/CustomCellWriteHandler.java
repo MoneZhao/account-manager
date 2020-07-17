@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class CustomCellWriteHandler extends AbstractColumnWidthStyleStrategy {
 
-    private Map<Integer, Map<Integer, Integer>> CACHE = new HashMap<>();
+    private final Map<Integer, Map<Integer, Integer>> CACHE = new HashMap<>();
 
     @Override
     protected void setColumnWidth(WriteSheetHolder writeSheetHolder, List<CellData> cellDataList, Cell cell, Head head, Integer relativeRowIndex, Boolean isHead) {
@@ -26,7 +26,7 @@ public class CustomCellWriteHandler extends AbstractColumnWidthStyleStrategy {
         if (needSetWidth) {
             Map<Integer, Integer> maxColumnWidthMap = CACHE.get(writeSheetHolder.getSheetNo());
             if (maxColumnWidthMap == null) {
-                maxColumnWidthMap = new HashMap<>();
+                maxColumnWidthMap = new HashMap<>(16);
                 CACHE.put(writeSheetHolder.getSheetNo(), maxColumnWidthMap);
             }
 

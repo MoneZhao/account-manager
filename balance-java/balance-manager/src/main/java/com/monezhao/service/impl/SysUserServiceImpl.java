@@ -45,6 +45,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 用户Service
@@ -482,10 +483,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @Override
-    public List<ShortCut> getMenuShortCut(String userId) {
+    public List<ShortCut> getMenuShortCut(String userId, String roleId) {
+        List<String> list = baseMapper.listMenuByRoleId(roleId).stream()
+                .map(SysMenu::getMenuId).collect(Collectors.toList());
+
         List<String> menuIds = baseMapper.listPermissionsByUserId(userId);
         List<ShortCut> shortCuts = new ArrayList<>();
         for (String menuId : menuIds) {
+            if (!list.contains(menuId)) {
+                continue;
+            }
             ShortCut shortCut = new ShortCut();
             SysMenu menu = sysMenuService.getById(menuId);
             shortCut.setName(menu.getMenuName());

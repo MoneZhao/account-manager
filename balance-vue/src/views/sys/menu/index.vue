@@ -13,10 +13,10 @@
             :props="defaultProps"
             :filter-node-method="filterNode"
             class="filter-tree"
-            @node-click="handleNodeClick"
             highlight-current
             default-expand-all
             :expand-on-click-node="false"
+            @node-click="handleNodeClick"
           />
         </div>
       </el-col>
@@ -171,7 +171,10 @@ export default {
       },
       rules: {
         menuId: [{ required: true, message: '该项不能为空', trigger: 'change' }],
-        menuName: [{ required: true, message: '该项不能为空', trigger: 'change' }],
+        menuName: [
+          { required: true, message: '该项不能为空', trigger: 'change' },
+          { min: 0, max: 7, message: '长度不能超过7个字符', trigger: 'blur' }
+        ],
         menuUrl: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         sortNo: [{ required: true, message: '该项不能为空', trigger: 'change' }]
       },
@@ -288,4 +291,3 @@ export default {
   }
 }
 </script>
-

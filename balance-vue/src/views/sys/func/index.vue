@@ -11,10 +11,10 @@
             :props="defaultProps"
             :filter-node-method="filterNode"
             class="filter-tree"
-            @node-click="handleNodeClick"
             highlight-current
             default-expand-all
             :expand-on-click-node="false"
+            @node-click="handleNodeClick"
           />
         </div>
       </el-col>
@@ -39,6 +39,11 @@
             <el-table-column label="功能名称" prop="funcName" align="center">
               <template slot-scope="scope">
                 <span>{{ scope.row.funcName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="授权" prop="funcPermissions" align="center">
+              <template slot-scope="scope">
+                <span>{{ scope.row.funcPermissions }}</span>
               </template>
             </el-table-column>
             <el-table-column label="排序号" prop="sortNo" align="center">
@@ -256,4 +261,3 @@ export default {
   }
 }
 </script>
-

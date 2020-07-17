@@ -156,7 +156,8 @@ public interface SysUserService extends BaseService<SysUser> {
      * 用户快捷方式查询
      *
      * @param userId
+     * @param roleId
      * @return
      */
-    List<ShortCut> getMenuShortCut(String userId);
+    List<ShortCut> getMenuShortCut(String userId, String roleId);
 }
