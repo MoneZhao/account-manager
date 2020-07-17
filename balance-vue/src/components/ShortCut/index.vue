@@ -85,7 +85,8 @@ export default {
       loading: true
     }
     const param = {
-      roleId: this.roleId
+      roleId: this.roleId,
+      userId: this.userId
     }
     getAction('/sys/user/getAuthMenuList', param).then(res => {
       const { data } = res

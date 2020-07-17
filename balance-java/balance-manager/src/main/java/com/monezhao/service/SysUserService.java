@@ -138,11 +138,11 @@ public interface SysUserService extends BaseService<SysUser> {
     /**
      * 查询用户已授权快捷方式
      *
-     * @param sysUser
      * @param roleId
+     * @param userId
      * @return
      */
-    Map<String, Object> getAuthMenuList(SysUser sysUser, String roleId);
+    Map<String, Object> getAuthMenuList(String roleId, String userId);
 
     /**
      * 用户快捷方式修改

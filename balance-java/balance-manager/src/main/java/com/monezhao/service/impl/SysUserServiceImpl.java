@@ -429,7 +429,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @Override
-    public Map<String, Object> getAuthMenuList(SysUser sysUser, String roleId) {
+    public Map<String, Object> getAuthMenuList(String roleId, String userId) {
         List<SysMenu> list = baseMapper.listMenuByRoleId(roleId);
         Map<String, ElTree> menuMap = new LinkedHashMap<>();
         for (SysMenu sysMenu : list) {
@@ -453,7 +453,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             }
         });
 
-        List<String> permissions = baseMapper.listPermissionsByUserId(sysUser.getUserId());
+        List<String> permissions = baseMapper.listPermissionsByUserId(userId);
         Map<String, Object> result = new HashMap<>(2);
         result.put("permissionTree", permissionTree);
         result.put("permissions", permissions);

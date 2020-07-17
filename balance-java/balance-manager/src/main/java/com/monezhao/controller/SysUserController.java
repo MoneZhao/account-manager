@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 用户Controller
@@ -206,13 +207,17 @@ public class SysUserController extends BaseController {
      * 查询用户已授权快捷方式
      *
      * @param roleId
+     * @param userId
      * @return
      */
     @GetMapping(value = "/getAuthMenuList")
     @ApiOperation("查询用户已授权快捷方式")
-    public Result getAuthMenuList(String roleId) {
-        SysUser sysUser = ShiroUtils.getSysUser();
-        Map<String, Object> data = sysUserService.getAuthMenuList(sysUser, roleId);
+    public Result getAuthMenuList(String roleId, String userId) {
+        if (Objects.isNull(userId)) {
+            SysUser sysUser = ShiroUtils.getSysUser();
+            userId = sysUser.getUserId();
+        }
+        Map<String, Object> data = sysUserService.getAuthMenuList(roleId, userId);
         return Result.ok(data);
     }
 
