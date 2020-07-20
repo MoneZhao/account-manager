@@ -1,5 +1,5 @@
 # 基镜像
-FROM amd64/openjdk:8u232-jre
+FROM openjdk:8u232-jre
 # 设置时区
 ENV TZ=Asia/Shanghai
 # 定义匿名卷
