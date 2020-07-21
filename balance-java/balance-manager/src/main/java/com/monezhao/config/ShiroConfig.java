@@ -61,6 +61,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/druid/**", "anon");
         // swagger相关begin
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/doc.html", "anon");
         filterChainDefinitionMap.put("/csrf", "anon");
         filterChainDefinitionMap.put("/**/*swagger*/**", "anon");
         filterChainDefinitionMap.put("/webjars/**", "anon");

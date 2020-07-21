@@ -8,7 +8,7 @@ export default {
   name: 'MonitorSwagger',
   data() {
     return {
-      src: process.env.VUE_APP_BASE_API + '/swagger-ui.html',
+      src: process.env.VUE_APP_BASE_API + '/doc.html',
       height: document.documentElement.clientHeight + 'px;',
       loading: true
     }
