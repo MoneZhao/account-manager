@@ -23,7 +23,7 @@ import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.PasswordUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
-import com.monezhao.config.DefaultPasswordConfig;
+import com.monezhao.config.DefaultSystemConfig;
 import com.monezhao.module.sys.controller.command.ShortCut;
 import com.monezhao.module.sys.controller.command.UserShortCut;
 import com.monezhao.module.sys.controller.command.VisitCount;
@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     @Autowired
-    private DefaultPasswordConfig defaultPasswordConfig;
+    private DefaultSystemConfig defaultSystemConfig;
 
     @Autowired
     private SysRoleServiceImpl sysRoleService;
@@ -306,15 +306,14 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         // 默认密码
         String defaultPassword = (String) redisUtil.get(
                 Constants.PREFIX_SYS_CONFIG + "defaultPassword",
-                defaultPasswordConfig.getDefaultPassword()
+                defaultSystemConfig.getDefaultPassword()
         );
         String password = PasswordUtil.encrypt(PasswordUtil.md5Encode(defaultPassword), salt);
         sysUser.setSalt(salt);
         sysUser.setPassword(password);
         SysRoleUser sysRoleUser = new SysRoleUser(sysUser.getRoleId(), sysUser.getUserId());
         sysRoleUserService.saveOrUpdate(sysRoleUser);
-        boolean result = this.save(sysUser);
-        return result;
+        return this.save(sysUser);
     }
 
     /**
@@ -401,7 +400,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         // 默认密码
         String defaultPassword = (String) redisUtil.get(
                 Constants.PREFIX_SYS_CONFIG + "defaultPassword",
-                defaultPasswordConfig.getDefaultPassword()
+                defaultSystemConfig.getDefaultPassword()
         );
         String password = PasswordUtil.encrypt(PasswordUtil.md5Encode(defaultPassword), salt);
         sysUser.setSalt(salt);

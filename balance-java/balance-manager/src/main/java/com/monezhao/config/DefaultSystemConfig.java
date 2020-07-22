@@ -10,7 +10,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Getter
-public class DefaultPasswordConfig {
-    @Value("${reset.default-password}")
+public class DefaultSystemConfig {
+
+    @Value("${system-config.default-password}")
     private String defaultPassword;
+
+    @Value("${system-config.use-captcha}")
+    private String useCaptcha;
+
 }

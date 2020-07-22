@@ -40,6 +40,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/sys/login", "anon");
         // 登录验证码
         filterChainDefinitionMap.put("/sys/captcha.jpg", "anon");
+        // 登录是否使用图片验证码
+        filterChainDefinitionMap.put("/sys/useCaptcha", "anon");
         // 开放测试URL，生产应关闭
         filterChainDefinitionMap.put("/test/**", "anon");
 

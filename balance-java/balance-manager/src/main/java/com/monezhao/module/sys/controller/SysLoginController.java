@@ -13,6 +13,7 @@ import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.PasswordUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.config.DefaultSystemConfig;
 import com.monezhao.module.sys.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,6 +48,7 @@ import java.util.Objects;
 @Slf4j
 @Api(tags = "后台用户登录")
 public class SysLoginController {
+
     @Autowired
     private SysUserService sysUserService;
 
@@ -55,6 +57,9 @@ public class SysLoginController {
 
     @Autowired
     private Producer producer;
+
+    @Autowired
+    private DefaultSystemConfig defaultSystemConfig;
 
     @GetMapping("captcha.jpg")
     @ApiOperation("获取验证码")
@@ -70,7 +75,16 @@ public class SysLoginController {
             log.error("生成验证码失败", e);
             throw new SysException("生成验证码失败", e);
         }
+    }
 
+    @GetMapping("useCaptcha")
+    @ApiOperation("是否使用图片验证码")
+    public Result useCaptcha() {
+        String useCaptcha = (String) redisUtil.get(
+                Constants.PREFIX_SYS_CONFIG + "useCaptcha",
+                defaultSystemConfig.getUseCaptcha()
+        );
+        return Result.ok(useCaptcha);
     }
 
     @SysLogAuto(value = "用户登录", logType = "1")
@@ -81,15 +95,21 @@ public class SysLoginController {
         CommonUtil.isEmptyStr(sysLoginForm.getUserId(), "用户名不能为空");
         CommonUtil.isEmptyStr(sysLoginForm.getPassword(), "密码不能为空");
 
+        String useCaptcha = (String) redisUtil.get(
+                Constants.PREFIX_SYS_CONFIG + "useCaptcha",
+                defaultSystemConfig.getUseCaptcha()
+        );
         // 验证码校验
-        CommonUtil.isEmptyStr(sysLoginForm.getUuid(), "验证码uuid不能为空");
-        CommonUtil.isEmptyStr(sysLoginForm.getCaptcha(), "验证码不能为空");
-        Object o = redisUtil.get(Constants.PREFIX_USER_KAPTCHA + sysLoginForm.getUuid());
-        redisUtil.del(Constants.PREFIX_USER_KAPTCHA + sysLoginForm.getUuid());
-        if (Objects.isNull(o)) {
-            return Result.error("验证码已失效");
-        } else if (!Objects.equals(sysLoginForm.getCaptcha(), o)) {
-            return Result.error("验证码错误");
+        if ("0".equals(useCaptcha)) {
+            CommonUtil.isEmptyStr(sysLoginForm.getUuid(), "验证码uuid不能为空");
+            CommonUtil.isEmptyStr(sysLoginForm.getCaptcha(), "验证码不能为空");
+            Object o = redisUtil.get(Constants.PREFIX_USER_KAPTCHA + sysLoginForm.getUuid());
+            redisUtil.del(Constants.PREFIX_USER_KAPTCHA + sysLoginForm.getUuid());
+            if (Objects.isNull(o)) {
+                return Result.error("验证码已失效");
+            } else if (!Objects.equals(sysLoginForm.getCaptcha(), o)) {
+                return Result.error("验证码错误");
+            }
         }
 
         String userId = sysLoginForm.getUserId();

@@ -28,7 +28,7 @@
     >
 
       <div class="title-container">
-        <h3 class="title">登录界面</h3>
+        <h3 class="title">系统登录</h3>
       </div>
 
       <el-form-item prop="userId">
@@ -61,10 +61,11 @@
           tabindex="2"
           auto-complete="on"
           show-password
+          @keyup.enter.native="handleLogin"
         />
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item v-if="useCaptcha">
         <span class="svg-container">
           <svg-icon icon-class="code" />
         </span>
@@ -115,6 +116,7 @@ export default {
     }
     return {
       captchaPath: '',
+      useCaptcha: false,
       loginForm: {
         userId: '',
         password: '',
@@ -138,7 +140,14 @@ export default {
     }
   },
   created() {
-    this.getCaptcha()
+    getAction('/sys/useCaptcha').then(res => {
+      const { msg } = res
+      console.log(msg)
+      if (msg === '0') {
+        this.useCaptcha = true
+        this.getCaptcha()
+      }
+    })
   },
   methods: {
     handleLogin() {

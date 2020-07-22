@@ -43,6 +43,8 @@ async:
       queue-capacity: 2000
       name-prefix: async-service-
       keep-alive-seconds: 60
-reset:
+system-config:
   # 新建用户或者重置用户密码默认密码
   default-password: '1'
+  # 是否使用验证码, 0 使用 1不使用
+  use-captcha: '1'
