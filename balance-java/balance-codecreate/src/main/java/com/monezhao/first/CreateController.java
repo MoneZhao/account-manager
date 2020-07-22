@@ -1,5 +1,6 @@
 package com.monezhao.first;
 
+import com.monezhao.common.util.CommonUtil;
 import com.monezhao.util.CodeUtil;
 import com.monezhao.util.TableObject;
 import org.apache.commons.lang3.StringUtils;
@@ -65,6 +66,7 @@ public class CreateController {
         ArrayList<TableObject> list = hashMap.get(createTableName);
         // 中文表名
         String tableNameCn = "";
+        String codeTypeIdFirstLower = "";
         for (int i = 0; i < list.size(); i++) {
             TableObject tableObject = list.get(i);
 
@@ -73,6 +75,10 @@ public class CreateController {
                 // 取出中文表名中的前缀,A01_系统参数表.
                 tableNameCn = StringUtils.substringAfter(tableNameCn, "_");
                 tableNameCn = StringUtils.substringBeforeLast(tableNameCn, "表");
+            }
+
+            if (CommonUtil.isExist("UUID主键,数据库生成主键,前台输入主键", tableObject.getIsNull(), ",")) {
+                codeTypeIdFirstLower = CodeUtil.getTuoFengName(tableObject.getColumnNameEn(), false);
             }
         }
 
@@ -92,6 +98,7 @@ public class CreateController {
             temp = StringUtils.replace(temp, "{_CodeType}", aCodeType);
             temp = StringUtils.replace(temp, "{_codeType}", codeType);
 
+            temp = StringUtils.replace(temp, "{_id}", codeTypeIdFirstLower);
             temp = StringUtils.replace(temp, "{tableNameCn}", tableNameCn);
 
             // 替换开发人员姓名

@@ -66,6 +66,10 @@ public class CreateEntity {
                     "import com.monezhao.common.base.BaseEntity;\r\n");
             importHashMap.put("import com.monezhao.common.validator.constraints.LengthForUtf8;\r\n",
                     "import com.monezhao.common.validator.constraints.LengthForUtf8;\r\n");
+            importHashMap.put("import io.swagger.annotations.ApiModel;\r\n",
+                    "import io.swagger.annotations.ApiModel;\r\n");
+            importHashMap.put("import io.swagger.annotations.ApiModelProperty;\r\n",
+                    "import io.swagger.annotations.ApiModelProperty;\r\n");
             importHashMap.put("import lombok.Getter;\r\n", "import lombok.Getter;\r\n");
             importHashMap.put("import lombok.Setter;\r\n", "import lombok.Setter;\r\n");
 
@@ -119,6 +123,7 @@ public class CreateEntity {
                 stringBufferHead2.append("@Getter" + "\r\n");
                 stringBufferHead2.append("@Setter" + "\r\n");
                 stringBufferHead2.append("@TableName(\"" + tableName + "\")" + "\r\n");
+                stringBufferHead2.append("@ApiModel(value = \"BaseEntity\", description = \"" + tableNameCn + "\")" + "\r\n");
                 stringBufferHead2
                         .append("public class " + sysCodeTypeFirstUpper + " extends BaseEntity {" + "\r\n\r\n");
 
@@ -149,6 +154,7 @@ public class CreateEntity {
             if (CommonUtil.isExist("前台输入主键,不空", tableObject.getIsNull(), ",")) {
                 stringBufferMid.append("    " + "@NotNull" + "\r\n");
             }
+            stringBufferMid.append("    " + "@ApiModelProperty(value = \"" + tableObject.getColumnNameCn() + "\"）" + "\r\n");
             // 处理数据类型
             if ("字符型".equals(tableObject.getDataType())) {
                 processingDataTypeString(stringBufferMid, stringBufferFoot, tableObject, codeTypeIdFirstUpper,
