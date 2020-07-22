@@ -86,7 +86,7 @@ public class SysCodeCreateController extends BaseController {
     @PostMapping(value = "/save")
     @ApiOperation("新增代码生成")
     public Result save(@Valid @RequestBody SysCodeCreate sysCodeCreate) {
-        CodeUtil.module = sysCodeCreate.getCodeCreateModule();
+//        CodeUtil.module = sysCodeCreate.getCodeCreateModule();
         CodeUtil.createTableName = sysCodeCreate.getCodeCreateTablename();
         CodeUtil.excelDesignPath = EXCEL_DESIGN_PATH + sysCodeCreate.getCodeCreateFilename();
         CreateFirst.main(null);

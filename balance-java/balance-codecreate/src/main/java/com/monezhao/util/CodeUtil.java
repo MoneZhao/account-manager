@@ -43,7 +43,7 @@ public class CodeUtil {
     /**
      * 开发模块
      */
-    public static String module = "balance-codecreate";
+    public static String module = "balance-manager";
     /**
      * 自动生成的建表语句的输出路径
      */

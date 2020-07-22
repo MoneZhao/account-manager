@@ -1,4 +1,4 @@
-package com.monezhao.mapper;
+package com.monezhao.module.{_sys}.mapper;
 
 import java.util.List;
 
