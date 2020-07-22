@@ -48,3 +48,7 @@ system-config:
   default-password: '1'
   # 是否使用验证码, 0 使用 1不使用
   use-captcha: '1'
+# Swagger的bug, 忽略报错
+logging:
+  level:
+    io.swagger.models.parameters.AbstractSerializableParameter: error

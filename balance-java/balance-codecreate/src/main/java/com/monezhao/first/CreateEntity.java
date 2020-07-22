@@ -123,7 +123,7 @@ public class CreateEntity {
                 stringBufferHead2.append("@Getter" + "\r\n");
                 stringBufferHead2.append("@Setter" + "\r\n");
                 stringBufferHead2.append("@TableName(\"" + tableName + "\")" + "\r\n");
-                stringBufferHead2.append("@ApiModel(value = \"BaseEntity\", description = \"" + tableNameCn + "\")" + "\r\n");
+                stringBufferHead2.append("@ApiModel(value = \"" + tableNameCn + "\")" + "\r\n");
                 stringBufferHead2
                         .append("public class " + sysCodeTypeFirstUpper + " extends BaseEntity {" + "\r\n\r\n");
 
