@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,6 +30,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("t_sys_balance_main")
+@ApiModel(value = "账户余额")
 public class SysBalanceMain extends BaseEntity {
 
     private static final long serialVersionUID = -812196458744674160L;
@@ -37,7 +40,8 @@ public class SysBalanceMain extends BaseEntity {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
-    @ExcelProperty("主键")
+    @ExcelProperty("主键id")
+    @ApiModelProperty(value = "主键id")
     private String balanceMainId;
 
     /**
@@ -45,6 +49,7 @@ public class SysBalanceMain extends BaseEntity {
      */
     @DecimalMax("999999999.99")
     @ExcelProperty("账户余额")
+    @ApiModelProperty(value = "账户余额")
     private double account = 0;
 
     /**
@@ -54,6 +59,7 @@ public class SysBalanceMain extends BaseEntity {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty("记录时间")
+    @ApiModelProperty(value = "记录时间")
     private Date accountDate;
 
     /**
@@ -61,13 +67,17 @@ public class SysBalanceMain extends BaseEntity {
      */
     @LengthForUtf8(max = 32)
     @ExcelProperty("用户id")
+    @ApiModelProperty(value = "所属用户")
     private String userId;
 
     /**
      * 用户名
+     * @TableField(exist = false)之后要加上一行注解
+     * @ApiModelProperty(hidden = true)
      */
     @TableField(exist = false)
     @ExcelProperty("用户名")
+    @ApiModelProperty(hidden = true)
     private String userName;
 
     /**
@@ -75,6 +85,7 @@ public class SysBalanceMain extends BaseEntity {
      */
     @LengthForUtf8(max = 255)
     @ExcelProperty("备注")
+    @ApiModelProperty(value = "备注")
     private String remark;
 
     /**
@@ -84,6 +95,7 @@ public class SysBalanceMain extends BaseEntity {
     @TableLogic
     @TableField(fill = FieldFill.INSERT)
     @ExcelIgnore
+    @ApiModelProperty(value = "是否删除")
     private Integer deleteType;
 
 }

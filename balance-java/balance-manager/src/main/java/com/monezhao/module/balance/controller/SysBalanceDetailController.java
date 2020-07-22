@@ -2,6 +2,7 @@ package com.monezhao.module.balance.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.common.Result;
@@ -67,6 +68,16 @@ public class SysBalanceDetailController extends BaseController {
     @PostMapping(value = "/save")
     @SysLogAuto(value = "新增账户明细")
     @ApiOperation("账户明细新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysBalanceDetail.balanceDetailId",
+            "sysBalanceDetail.parentMenuName",
+            "sysBalanceDetail.createBy",
+            "sysBalanceDetail.createDate",
+            "sysBalanceDetail.createTime",
+            "sysBalanceDetail.updateBy",
+            "sysBalanceDetail.updateDate",
+            "sysBalanceDetail.updateTime"
+    })
     public Result save(@Valid @RequestBody SysBalanceDetail sysBalanceDetail) {
         sysBalanceDetailService.save(sysBalanceDetail);
         return Result.ok();
@@ -81,6 +92,15 @@ public class SysBalanceDetailController extends BaseController {
     @PutMapping(value = "/update")
     @SysLogAuto(value = "修改账户明细")
     @ApiOperation("账户明细修改")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysBalanceDetail.parentMenuName",
+            "sysBalanceDetail.createBy",
+            "sysBalanceDetail.createDate",
+            "sysBalanceDetail.createTime",
+            "sysBalanceDetail.updateBy",
+            "sysBalanceDetail.updateDate",
+            "sysBalanceDetail.updateTime"
+    })
     public Result update(@Valid @RequestBody SysBalanceDetail sysBalanceDetail) {
         sysBalanceDetailService.update(sysBalanceDetail);
         return Result.ok();

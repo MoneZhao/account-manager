@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +27,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @TableName("t_sys_balance_detail")
+@ApiModel(value = "账户明细")
 public class SysBalanceDetail extends BaseEntity {
 
     private static final long serialVersionUID = 2629999488067085680L;
@@ -34,7 +37,8 @@ public class SysBalanceDetail extends BaseEntity {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
-    @ExcelProperty("主键")
+    @ExcelProperty("主键id")
+    @ApiModelProperty(value = "主键id")
     private String balanceDetailId;
 
     /**
@@ -43,6 +47,7 @@ public class SysBalanceDetail extends BaseEntity {
     @NotNull
     @DecimalMax("999999999.99")
     @ExcelProperty("账户余额")
+    @ApiModelProperty(value = "账户余额")
     private double account = 0;
 
     /**
@@ -51,6 +56,7 @@ public class SysBalanceDetail extends BaseEntity {
     @NotNull
     @LengthForUtf8(max = 4)
     @ExcelProperty("账户类型")
+    @ApiModelProperty(value = "账户类型")
     private String balanceType;
 
     /**
@@ -58,6 +64,7 @@ public class SysBalanceDetail extends BaseEntity {
      */
     @TableField(exist = false)
     @ExcelProperty("账户名")
+    @ApiModelProperty(hidden = true)
     private String balanceName;
 
     /**
@@ -66,6 +73,7 @@ public class SysBalanceDetail extends BaseEntity {
     @NotNull
     @LengthForUtf8(max = 32)
     @ExcelProperty("主表id")
+    @ApiModelProperty(value = "主表id")
     private String balanceMainId;
 
     /**
@@ -73,6 +81,7 @@ public class SysBalanceDetail extends BaseEntity {
      */
     @LengthForUtf8(max = 32)
     @ExcelProperty("用户id")
+    @ApiModelProperty(value = "所属用户id")
     private String userId;
 
     /**
@@ -80,12 +89,14 @@ public class SysBalanceDetail extends BaseEntity {
      */
     @LengthForUtf8(max = 255)
     @ExcelProperty("备注")
+    @ApiModelProperty(value = "备注")
     private String remark;
 
     @Max(9)
     @TableLogic
     @TableField(fill = FieldFill.INSERT)
     @ExcelIgnore
+    @ApiModelProperty(value = "是否删除")
     private Integer deleteType;
 
 }

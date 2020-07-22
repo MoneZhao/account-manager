@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysMenu;
 import com.monezhao.bean.utilsVo.ElTree;
@@ -69,6 +70,15 @@ public class SysMenuController extends BaseController {
     @RequiresPermissions("sys:menu:save")
     @PostMapping(value = "/save")
     @ApiOperation("菜单新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysMenu.menuId",
+            "sysMenu.createBy",
+            "sysMenu.createDate",
+            "sysMenu.createTime",
+            "sysMenu.updateBy",
+            "sysMenu.updateDate",
+            "sysMenu.updateTime"
+    })
     public Result save(@Valid @RequestBody SysMenu sysMenu) {
         sysMenuService.saveSysMenu(sysMenu);
         return Result.ok(sysMenu);
@@ -83,6 +93,14 @@ public class SysMenuController extends BaseController {
     @RequiresPermissions("sys:menu:update")
     @PutMapping(value = "/update")
     @ApiOperation("菜单修改")
+    @ApiOperationSupport(ignoreParameters = {
+            "sysMenu.createBy",
+            "sysMenu.createDate",
+            "sysMenu.createTime",
+            "sysMenu.updateBy",
+            "sysMenu.updateDate",
+            "sysMenu.updateTime"
+    })
     public Result update(@Valid @RequestBody SysMenu sysMenu) {
         sysMenuService.updateSysMenu(sysMenu);
         return Result.ok(sysMenu);
