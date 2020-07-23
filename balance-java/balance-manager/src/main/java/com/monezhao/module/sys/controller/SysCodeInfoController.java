@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysCodeInfo;
 import com.monezhao.common.Result;
@@ -69,6 +70,15 @@ public class SysCodeInfoController extends BaseController {
     @RequiresPermissions("sys:codeInfo:save")
     @PostMapping(value = "/save")
     @ApiOperation("代码信息新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "codeInfoId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result save(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.saveSysCodeInfo(sysCodeInfo);
         return Result.ok();
@@ -83,6 +93,14 @@ public class SysCodeInfoController extends BaseController {
     @RequiresPermissions("sys:codeInfo:update")
     @PutMapping(value = "/update")
     @ApiOperation("代码信息修改")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result update(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.updateSysCodeInfo(sysCodeInfo);
         return Result.ok();

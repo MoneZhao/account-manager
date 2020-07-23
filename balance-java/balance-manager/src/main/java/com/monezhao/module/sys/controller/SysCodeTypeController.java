@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysCodeType;
 import com.monezhao.common.Result;
@@ -67,6 +68,15 @@ public class SysCodeTypeController extends BaseController {
     @RequiresPermissions("sys:codeType:save")
     @PostMapping(value = "/save")
     @ApiOperation("代码类别新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "codeTypeId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result save(@Valid @RequestBody SysCodeType sysCodeType) {
         sysCodeTypeService.save(sysCodeType);
         return Result.ok();
@@ -81,6 +91,14 @@ public class SysCodeTypeController extends BaseController {
     @RequiresPermissions("sys:codeType:update")
     @PutMapping(value = "/update")
     @ApiOperation("代码类别修改")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result update(@Valid @RequestBody SysCodeType sysCodeType) {
         sysCodeTypeService.updateById(sysCodeType);
         return Result.ok();
