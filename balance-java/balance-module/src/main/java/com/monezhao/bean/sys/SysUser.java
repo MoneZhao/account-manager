@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +24,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @TableName("t_sys_user")
+@ApiModel(value = "用户")
 public class SysUser extends BaseEntity {
 
     private static final long serialVersionUID = 5991569093540788491L;
@@ -33,6 +36,7 @@ public class SysUser extends BaseEntity {
     @NotNull
     @LengthForUtf8(max = 32)
     @ExcelProperty("用户ID")
+    @ApiModelProperty(value = "用户ID")
     private String userId;
 
     /**
@@ -41,6 +45,7 @@ public class SysUser extends BaseEntity {
     @NotNull
     @LengthForUtf8(max = 100)
     @ExcelProperty("用户姓名")
+    @ApiModelProperty(value = "用户姓名")
     private String userName;
 
     /**
@@ -48,10 +53,12 @@ public class SysUser extends BaseEntity {
      */
     @JsonIgnore
     @ExcelIgnore
+    @ApiModelProperty(value = "密码")
     private String password;
 
     @JsonIgnore
     @ExcelIgnore
+    @ApiModelProperty(value = "盐")
     private String salt;
 
     /**
@@ -59,6 +66,7 @@ public class SysUser extends BaseEntity {
      */
     @LengthForUtf8(max = 1)
     @ExcelProperty(value = "性别")
+    @ApiModelProperty(value = "性别")
     private String sex;
 
     /**
@@ -66,6 +74,7 @@ public class SysUser extends BaseEntity {
      */
     @LengthForUtf8(max = 32)
     @ExcelProperty("角色ID")
+    @ApiModelProperty(value = "所属角色ID")
     private String roleId;
 
     /**
@@ -73,6 +82,7 @@ public class SysUser extends BaseEntity {
      */
     @LengthForUtf8(max = 32)
     @ExcelProperty("所属机构")
+    @ApiModelProperty(value = "所属机构ID")
     private String orgId;
 
     /**
@@ -80,6 +90,7 @@ public class SysUser extends BaseEntity {
      */
     @LengthForUtf8(max = 20)
     @ExcelProperty("手机号")
+    @ApiModelProperty(value = "手机号码")
     private String mobile;
 
     /**
@@ -87,6 +98,7 @@ public class SysUser extends BaseEntity {
      */
     @LengthForUtf8(max = 20)
     @ExcelProperty("身份证号")
+    @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
 
     /**
@@ -94,6 +106,7 @@ public class SysUser extends BaseEntity {
      */
     @LengthForUtf8(max = 100)
     @ExcelProperty("email")
+    @ApiModelProperty(value = "邮箱")
     private String email;
 
     /**
@@ -101,6 +114,7 @@ public class SysUser extends BaseEntity {
      */
     @LengthForUtf8(max = 1)
     @ExcelProperty("状态")
+    @ApiModelProperty(value = "用户状态")
     private String status;
 
     /**
@@ -108,6 +122,7 @@ public class SysUser extends BaseEntity {
      */
     @Max(999999)
     @ExcelProperty("排序号")
+    @ApiModelProperty(value = "排序号")
     private Integer sortNo;
 
     /**
@@ -115,13 +130,16 @@ public class SysUser extends BaseEntity {
      */
     @LengthForUtf8(max = 255)
     @ExcelProperty("备注")
+    @ApiModelProperty(value = "备注")
     private String remark;
 
     @TableField(exist = false)
     @ExcelProperty("机构名称")
+    @ApiModelProperty(hidden = true)
     private String orgName;
 
     @TableField(exist = false)
     @ExcelIgnore
+    @ApiModelProperty(hidden = true)
     private String authFilterSql;
 }

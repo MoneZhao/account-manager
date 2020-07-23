@@ -3,9 +3,9 @@ package com.monezhao.module.sys.controller;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysUser;
-import com.monezhao.module.sys.controller.command.SysUserIndex;
 import com.monezhao.bean.utilsVo.SessionObject;
 import com.monezhao.bean.utilsVo.SysPasswordForm;
 import com.monezhao.common.Constants;
@@ -18,6 +18,7 @@ import com.monezhao.common.util.IpUtils;
 import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.module.sys.controller.command.SysUserIndex;
 import com.monezhao.module.sys.controller.command.UserShortCut;
 import com.monezhao.module.sys.service.SysUserService;
 import io.swagger.annotations.Api;
@@ -102,6 +103,15 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("sys:user:save")
     @PostMapping(value = "/save")
     @ApiOperation("用户新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "userId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result save(@Valid @RequestBody SysUser sysUser) {
         sysUserService.saveSysUser(sysUser);
         return Result.ok();
@@ -116,6 +126,14 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("sys:user:update")
     @PutMapping(value = "/update")
     @ApiOperation("用户修改")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result update(@Valid @RequestBody SysUser sysUser) {
         sysUserService.updateSysUser(sysUser);
         return Result.ok();
@@ -168,6 +186,26 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("sys:user:update")
     @PostMapping(value = "/resetPassword")
     @ApiOperation("用户重置密码")
+    @ApiOperationSupport(ignoreParameters = {
+            "userName",
+            "password",
+            "salt",
+            "sex",
+            "roleId",
+            "orgId",
+            "mobile",
+            "idCardNo",
+            "email",
+            "status",
+            "sortNo",
+            "remark",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result resetPassword(@RequestBody SysUser sysUser) {
         sysUserService.resetPassword(sysUser.getUserId());
         return Result.ok();
@@ -177,6 +215,14 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("sys:user:export")
     @GetMapping(value = "/export")
     @ApiOperation("导出用户信息")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public void export(SysUser sysUser, HttpServletResponse response) {
         try {
             IPage<SysUser> page = sysUserService.list(null, sysUser);
