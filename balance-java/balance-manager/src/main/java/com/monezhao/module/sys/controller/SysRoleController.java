@@ -3,6 +3,7 @@ package com.monezhao.module.sys.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysRole;
 import com.monezhao.bean.sys.SysRolePermission;
@@ -74,6 +75,15 @@ public class SysRoleController extends BaseController {
     @RequiresPermissions("sys:role:save")
     @PostMapping(value = "/save")
     @ApiOperation("角色新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "roleId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result save(@Valid @RequestBody SysRole sysRole) {
         sysRoleService.save(sysRole);
         return Result.ok();
@@ -88,6 +98,14 @@ public class SysRoleController extends BaseController {
     @RequiresPermissions("sys:role:update")
     @PutMapping(value = "/update")
     @ApiOperation("角色修改")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result update(@Valid @RequestBody SysRole sysRole) {
         sysRoleService.updateById(sysRole);
         return Result.ok();
@@ -135,6 +153,14 @@ public class SysRoleController extends BaseController {
     @RequiresPermissions("sys:role:saveRolePermissions")
     @PostMapping(value = "/saveRolePermissions")
     @ApiOperation("角色权限保存")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result saveRolePermissions(@RequestBody SysRolePermission sysRolePermission) {
         this.sysRoleService.saveRolePermissions(sysRolePermission.getRoleId(), sysRolePermission.getMenuOrFuncId(),
                 sysRolePermission.getPermissionType());
@@ -167,6 +193,14 @@ public class SysRoleController extends BaseController {
     @RequiresPermissions("sys:role:saveRoleUsers")
     @PostMapping(value = "/saveRoleUsers")
     @ApiOperation("角色用户保存")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result saveRoleUsers(@RequestBody SysRoleUser sysRoleUser) {
         this.sysRoleService.saveRoleUsers(sysRoleUser.getRoleId(), sysRoleUser.getUserId());
         return Result.ok();
