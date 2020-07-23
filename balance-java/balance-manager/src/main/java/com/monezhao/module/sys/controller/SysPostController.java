@@ -67,6 +67,7 @@ public class SysPostController extends BaseController {
      */
     @RequiresPermissions("sys:post:save")
     @PostMapping(value = "/save")
+    @SysLogAuto(value = "岗位新增")
     @ApiOperation("岗位新增")
     public Result save(@Valid @RequestBody SysPost sysPost) {
         sysPostService.save(sysPost);
@@ -80,6 +81,7 @@ public class SysPostController extends BaseController {
      */
     @RequiresPermissions("sys:post:update")
     @PutMapping(value = "/update")
+    @SysLogAuto(value = "岗位修改")
     @ApiOperation("岗位修改")
     public Result update(@Valid @RequestBody SysPost sysPost) {
         sysPostService.updateById(sysPost);
@@ -93,6 +95,7 @@ public class SysPostController extends BaseController {
      */
     @RequiresPermissions("sys:post:delete")
     @DeleteMapping(value = "/delete")
+    @SysLogAuto(value = "岗位删除")
     @ApiOperation("岗位删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

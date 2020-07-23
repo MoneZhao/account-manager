@@ -167,6 +167,7 @@ public class SysBalanceMainController extends BaseController {
      */
     @PostMapping(value = "/compare")
     @ApiOperation("账户余额对比")
+    @SysLogAuto(value = "账户余额对比")
     @ApiOperationSupport(ignoreParameters = {
             "balanceMainId",
             "account",

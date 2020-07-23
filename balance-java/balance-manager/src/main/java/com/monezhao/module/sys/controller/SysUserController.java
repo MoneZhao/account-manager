@@ -149,6 +149,7 @@ public class SysUserController extends BaseController {
     }
 
     @PostMapping(value = "/updatePassword")
+    @SysLogAuto(value = "用户更新密码")
     @ApiOperation("用户更新密码")
     public Result updatePassword(@RequestBody SysPasswordForm sysPasswordForm) {
         boolean success = sysUserService.updatePassword(sysPasswordForm);
@@ -227,6 +228,7 @@ public class SysUserController extends BaseController {
      * @return
      */
     @PostMapping(value = "/userShortCutSave")
+    @SysLogAuto(value = "修改用户快捷方式")
     @ApiOperation("修改用户快捷方式")
     public Result userShortCutSave(@RequestBody UserShortCut userShortCut){
         if (userShortCut.getUserId() == null) {

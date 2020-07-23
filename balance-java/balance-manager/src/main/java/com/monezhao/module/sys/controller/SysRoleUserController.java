@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysRoleUser;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
@@ -65,6 +66,7 @@ public class SysRoleUserController extends BaseController {
      */
     @RequiresPermissions("sys:roleUser:save")
     @PostMapping(value = "/save")
+    @SysLogAuto(value = "角色和用户关系新增")
     @ApiOperation("角色和用户关系新增")
     public Result save(@Valid @RequestBody SysRoleUser sysRoleUser) {
         sysRoleUserService.save(sysRoleUser);
@@ -78,6 +80,7 @@ public class SysRoleUserController extends BaseController {
      */
     @RequiresPermissions("sys:roleUser:update")
     @PutMapping(value = "/update")
+    @SysLogAuto(value = "角色和用户关系修改")
     @ApiOperation("角色和用户关系修改")
     public Result update(@Valid @RequestBody SysRoleUser sysRoleUser) {
         sysRoleUserService.updateById(sysRoleUser);
@@ -91,6 +94,7 @@ public class SysRoleUserController extends BaseController {
      */
     @RequiresPermissions("sys:roleUser:delete")
     @DeleteMapping(value = "/delete")
+    @SysLogAuto(value = "角色和用户关系删除")
     @ApiOperation("角色和用户关系删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

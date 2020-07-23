@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysLog;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
@@ -65,6 +66,7 @@ public class SysLogController extends BaseController {
      */
     @RequiresPermissions("sys:log:save")
     @PostMapping(value = "/save")
+    @SysLogAuto(value = "系统日志新增")
     @ApiOperation("系统日志新增")
     public Result save(@Valid @RequestBody SysLog sysLog) {
         sysLogService.save(sysLog);
@@ -78,6 +80,7 @@ public class SysLogController extends BaseController {
      */
     @RequiresPermissions("sys:log:update")
     @PutMapping(value = "/update")
+    @SysLogAuto(value = "系统日志修改")
     @ApiOperation("系统日志修改")
     public Result update(@Valid @RequestBody SysLog sysLog) {
         sysLogService.updateById(sysLog);
@@ -91,6 +94,7 @@ public class SysLogController extends BaseController {
      */
     @RequiresPermissions("sys:log:delete")
     @DeleteMapping(value = "/delete")
+    @SysLogAuto(value = "系统日志删除")
     @ApiOperation("系统日志删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

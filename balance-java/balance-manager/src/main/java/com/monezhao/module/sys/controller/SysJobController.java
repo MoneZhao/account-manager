@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysJob;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
@@ -66,6 +67,7 @@ public class SysJobController extends BaseController {
      */
     @RequiresPermissions("sys:job:save")
     @PostMapping(value = "/save")
+    @SysLogAuto(value = "定时任务新增")
     @ApiOperation("定时任务新增")
     public Result save(@Valid @RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.saveJob(sysJob);
@@ -79,6 +81,7 @@ public class SysJobController extends BaseController {
      */
     @RequiresPermissions("sys:job:update")
     @PutMapping(value = "/update")
+    @SysLogAuto(value = "定时任务修改")
     @ApiOperation("定时任务修改")
     public Result update(@Valid @RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.updateJob(sysJob);
@@ -93,6 +96,7 @@ public class SysJobController extends BaseController {
      */
     @RequiresPermissions("sys:job:delete")
     @DeleteMapping(value = "/delete")
+    @SysLogAuto(value = "定时任务删除")
     @ApiOperation("定时任务删除")
     public Result delete(@RequestParam String ids) throws SchedulerException {
         sysJobService.delete(ids);
@@ -101,6 +105,7 @@ public class SysJobController extends BaseController {
 
     @RequiresPermissions("sys:job:changeStatus")
     @PutMapping("/changeStatus")
+    @SysLogAuto(value = "定时任务改变状态")
     @ApiOperation("定时任务改变状态")
     public Result changeStatus(@RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.changeStatus(sysJob.getJobId());
@@ -109,6 +114,7 @@ public class SysJobController extends BaseController {
 
     @RequiresPermissions("sys:job:run")
     @PutMapping("/run")
+    @SysLogAuto(value = "定时任务运行")
     @ApiOperation("定时任务运行")
     public Result run(@RequestBody SysJob sysJob) throws SchedulerException {
         sysJobService.run(sysJob.getJobId());

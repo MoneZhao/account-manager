@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysJobLog;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
@@ -65,6 +66,7 @@ public class SysJobLogController extends BaseController {
      */
     @RequiresPermissions("sys:jobLog:save")
     @PostMapping(value = "/save")
+    @SysLogAuto(value = "定时任务执行日志新增")
     @ApiOperation("定时任务执行日志新增")
     public Result save(@Valid @RequestBody SysJobLog sysJobLog) {
         sysJobLogService.save(sysJobLog);
@@ -78,6 +80,7 @@ public class SysJobLogController extends BaseController {
      */
     @RequiresPermissions("sys:jobLog:update")
     @PutMapping(value = "/update")
+    @SysLogAuto(value = "定时任务执行日志修改")
     @ApiOperation("定时任务执行日志修改")
     public Result update(@Valid @RequestBody SysJobLog sysJobLog) {
         sysJobLogService.updateById(sysJobLog);
@@ -91,6 +94,7 @@ public class SysJobLogController extends BaseController {
      */
     @RequiresPermissions("sys:jobLog:delete")
     @DeleteMapping(value = "/delete")
+    @SysLogAuto(value = "定时任务执行日志删除")
     @ApiOperation("定时任务执行日志删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

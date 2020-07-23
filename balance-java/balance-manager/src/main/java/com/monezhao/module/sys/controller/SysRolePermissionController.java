@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysRolePermission;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
@@ -65,6 +66,7 @@ public class SysRolePermissionController extends BaseController {
      */
     @RequiresPermissions("sys:rolePermission:save")
     @PostMapping(value = "/save")
+    @SysLogAuto(value = "操作权限新增")
     @ApiOperation("操作权限新增")
     public Result save(@Valid @RequestBody SysRolePermission sysRolePermission) {
         sysRolePermissionService.save(sysRolePermission);
@@ -78,6 +80,7 @@ public class SysRolePermissionController extends BaseController {
      */
     @RequiresPermissions("sys:rolePermission:update")
     @PutMapping(value = "/update")
+    @SysLogAuto(value = "操作权限修改")
     @ApiOperation("操作权限修改")
     public Result update(@Valid @RequestBody SysRolePermission sysRolePermission) {
         sysRolePermissionService.updateById(sysRolePermission);
@@ -91,6 +94,7 @@ public class SysRolePermissionController extends BaseController {
      */
     @RequiresPermissions("sys:rolePermission:delete")
     @DeleteMapping(value = "/delete")
+    @SysLogAuto(value = "操作权限删除")
     @ApiOperation("操作权限删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {

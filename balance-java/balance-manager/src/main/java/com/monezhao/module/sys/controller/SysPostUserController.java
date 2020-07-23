@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysPostUser;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
@@ -65,6 +66,7 @@ public class SysPostUserController extends BaseController {
      */
     @RequiresPermissions("sys:postUser:save")
     @PostMapping(value = "/save")
+    @SysLogAuto(value = "岗位和用户关系新增")
     @ApiOperation("岗位和用户关系新增")
     public Result save(@Valid @RequestBody SysPostUser sysPostUser) {
         sysPostUserService.save(sysPostUser);
@@ -78,6 +80,7 @@ public class SysPostUserController extends BaseController {
      */
     @RequiresPermissions("sys:postUser:update")
     @PutMapping(value = "/update")
+    @SysLogAuto(value = "岗位和用户关系修改")
     @ApiOperation("岗位和用户关系修改")
     public Result update(@Valid @RequestBody SysPostUser sysPostUser) {
         sysPostUserService.updateById(sysPostUser);
@@ -91,6 +94,7 @@ public class SysPostUserController extends BaseController {
      */
     @RequiresPermissions("sys:postUser:delete")
     @DeleteMapping(value = "/delete")
+    @SysLogAuto(value = "岗位和用户关系删除")
     @ApiOperation("岗位和用户关系删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
