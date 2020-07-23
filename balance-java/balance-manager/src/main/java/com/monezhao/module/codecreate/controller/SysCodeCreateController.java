@@ -2,6 +2,7 @@ package com.monezhao.module.codecreate.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.monezhao.CreateFirst;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysCodeCreate;
@@ -44,7 +45,7 @@ import java.util.Arrays;
 @RestController
 @RequestMapping("/sys/codeCreate")
 @Slf4j
-@Api(tags = "后台代码生成")
+@Api(tags = "代码在线生成")
 public class SysCodeCreateController extends BaseController {
 
     @Autowired
@@ -62,7 +63,7 @@ public class SysCodeCreateController extends BaseController {
      */
     @RequiresPermissions("sys:codeCreate:list")
     @GetMapping(value = "/list")
-    @ApiOperation("代码生成列表")
+    @ApiOperation("代码在线生成列表")
     public Result list(SysCodeCreate sysCodeCreate, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysCodeCreate> pageList = sysCodeCreateService.list(new Page<>(current, size), sysCodeCreate);
         return Result.ok(pageList);
@@ -70,7 +71,7 @@ public class SysCodeCreateController extends BaseController {
 
     @RequiresPermissions("sys:codeCreate:list")
     @GetMapping(value = "/queryById")
-    @ApiOperation("代码生成查询")
+    @ApiOperation("代码在线生成查询")
     public Result queryById(@RequestParam String id) {
         SysCodeCreate sysCodecreate = sysCodeCreateService.getById(id);
         return Result.ok(sysCodecreate);
@@ -84,7 +85,16 @@ public class SysCodeCreateController extends BaseController {
     @SysLogAuto(value = "新增代码生成")
     @RequiresPermissions("sys:codeCreate:save")
     @PostMapping(value = "/save")
-    @ApiOperation("新增代码生成")
+    @ApiOperation("代码在线生成新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "codeCreateId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result save(@Valid @RequestBody SysCodeCreate sysCodeCreate) {
 //        CodeUtil.module = sysCodeCreate.getCodeCreateModule();
         CodeUtil.createTableName = sysCodeCreate.getCodeCreateTablename();
@@ -102,7 +112,15 @@ public class SysCodeCreateController extends BaseController {
     @SysLogAuto(value = "修改代码生成")
     @RequiresPermissions("sys:codeCreate:update")
     @PutMapping(value = "/update")
-    @ApiOperation("修改代码生成")
+    @ApiOperation("代码在线生成修改")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result update(@Valid @RequestBody SysCodeCreate sysCodeCreate) {
         sysCodeCreateService.updateById(sysCodeCreate);
         return Result.ok();
@@ -116,7 +134,7 @@ public class SysCodeCreateController extends BaseController {
     @SysLogAuto(value = "删除代码生成")
     @RequiresPermissions("sys:codeCreate:delete")
     @DeleteMapping(value = "/delete")
-    @ApiOperation("删除代码生成")
+    @ApiOperation("代码在线生成删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
@@ -168,6 +186,17 @@ public class SysCodeCreateController extends BaseController {
     @GetMapping(value = "/doExport")
     @RequiresPermissions("sys:codeCreate:export")
     @ApiOperation("代码生成文件下载")
+    @ApiOperationSupport(ignoreParameters = {
+            "codeCreateId",
+            "codeCreateModule",
+            "codeCreateTablename",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public void doExport(SysCodeCreate sysCodeCreate, HttpServletResponse response) {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
