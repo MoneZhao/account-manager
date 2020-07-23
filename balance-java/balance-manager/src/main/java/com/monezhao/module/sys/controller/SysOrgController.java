@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysOrg;
 import com.monezhao.bean.utilsVo.ElTree;
@@ -73,6 +74,15 @@ public class SysOrgController extends BaseController {
     @RequiresPermissions("sys:org:save")
     @PostMapping(value = "/save")
     @ApiOperation("机构新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "orgId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result save(@Valid @RequestBody SysOrg baseOrg) {
         sysOrgService.saveBaseOrg(baseOrg);
         return Result.ok(baseOrg);
@@ -87,6 +97,14 @@ public class SysOrgController extends BaseController {
     @RequiresPermissions("sys:org:update")
     @PutMapping(value = "/update")
     @ApiOperation("机构修改")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result update(@Valid @RequestBody SysOrg baseOrg) {
         sysOrgService.updateBaseOrg(baseOrg);
         return Result.ok(baseOrg);
