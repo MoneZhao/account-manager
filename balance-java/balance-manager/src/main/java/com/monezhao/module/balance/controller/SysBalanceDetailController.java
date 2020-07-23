@@ -70,12 +70,6 @@ public class SysBalanceDetailController extends BaseController {
     @ApiOperation("账户明细新增")
     @ApiOperationSupport(ignoreParameters = {
             "balanceDetailId",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody SysBalanceDetail sysBalanceDetail) {
         sysBalanceDetailService.save(sysBalanceDetail);
@@ -91,14 +85,6 @@ public class SysBalanceDetailController extends BaseController {
     @PutMapping(value = "/update")
     @SysLogAuto(value = "修改账户明细")
     @ApiOperation("账户明细修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody SysBalanceDetail sysBalanceDetail) {
         sysBalanceDetailService.update(sysBalanceDetail);
         return Result.ok();

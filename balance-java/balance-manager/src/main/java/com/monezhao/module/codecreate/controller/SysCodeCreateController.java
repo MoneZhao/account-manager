@@ -88,12 +88,6 @@ public class SysCodeCreateController extends BaseController {
     @ApiOperation("代码在线生成新增")
     @ApiOperationSupport(ignoreParameters = {
             "codeCreateId",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody SysCodeCreate sysCodeCreate) {
 //        CodeUtil.module = sysCodeCreate.getCodeCreateModule();
@@ -113,14 +107,6 @@ public class SysCodeCreateController extends BaseController {
     @RequiresPermissions("sys:codeCreate:update")
     @PutMapping(value = "/update")
     @ApiOperation("代码在线生成修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody SysCodeCreate sysCodeCreate) {
         sysCodeCreateService.updateById(sysCodeCreate);
         return Result.ok();
@@ -190,12 +176,6 @@ public class SysCodeCreateController extends BaseController {
             "codeCreateId",
             "codeCreateModule",
             "codeCreateTablename",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public void doExport(SysCodeCreate sysCodeCreate, HttpServletResponse response) {
         response.setContentType("application/vnd.ms-excel");

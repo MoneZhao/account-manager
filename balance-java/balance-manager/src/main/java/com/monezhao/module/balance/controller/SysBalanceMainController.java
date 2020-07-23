@@ -104,12 +104,6 @@ public class SysBalanceMainController extends BaseController {
     @ApiOperation("账户余额新增")
     @ApiOperationSupport(ignoreParameters = {
             "balanceMainId",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody SysBalanceMain sysBalanceMain) {
         SysUser sysUser = ShiroUtils.getSysUser();
@@ -127,14 +121,6 @@ public class SysBalanceMainController extends BaseController {
     @PutMapping(value = "/update")
     @SysLogAuto(value = "修改账户余额")
     @ApiOperation("账户余额修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody SysBalanceMain sysBalanceMain) {
         SysUser sysUser = ShiroUtils.getSysUser();
         sysBalanceMain.setUserId(sysUser.getUserId());
@@ -174,12 +160,6 @@ public class SysBalanceMainController extends BaseController {
             "userId",
             "remark",
             "deleteType",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result compare(@RequestBody SysBalanceMain sysBalanceMain) {
         if (sysBalanceMain.getAccountDate() == null) {
@@ -227,12 +207,6 @@ public class SysBalanceMainController extends BaseController {
             "accountDate",
             "remark",
             "deleteType",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public void exportAll(SysBalanceMain sysBalanceMain, HttpServletResponse response) {
         try {
@@ -281,12 +255,6 @@ public class SysBalanceMainController extends BaseController {
             "sysBalanceMain.accountDate",
             "sysBalanceMain.remark",
             "sysBalanceMain.deleteType",
-            "sysBalanceMain.createBy",
-            "sysBalanceMain.createDate",
-            "sysBalanceMain.createTime",
-            "sysBalanceMain.updateBy",
-            "sysBalanceMain.updateDate",
-            "sysBalanceMain.updateTime"
     })
     public void export(SysBalanceMain sysBalanceMain, @RequestParam Integer current, @RequestParam Integer size,
                        HttpServletResponse response) {

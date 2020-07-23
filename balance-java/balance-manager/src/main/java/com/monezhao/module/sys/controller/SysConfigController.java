@@ -70,12 +70,6 @@ public class SysConfigController extends BaseController {
     @ApiOperation("系统参数新增")
     @ApiOperationSupport(ignoreParameters = {
             "configId",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody SysConfig sysConfig) {
         sysConfigService.saveSysConfig(sysConfig);
@@ -91,14 +85,6 @@ public class SysConfigController extends BaseController {
     @RequiresPermissions("sys:config:update")
     @PutMapping(value = "/update")
     @ApiOperation("系统参数修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody SysConfig sysConfig) {
         sysConfigService.updateSysConfig(sysConfig);
         return Result.ok();

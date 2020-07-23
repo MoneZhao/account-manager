@@ -72,12 +72,6 @@ public class SysMenuController extends BaseController {
     @ApiOperation("菜单新增")
     @ApiOperationSupport(ignoreParameters = {
             "menuId",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody SysMenu sysMenu) {
         sysMenuService.saveSysMenu(sysMenu);
@@ -93,14 +87,6 @@ public class SysMenuController extends BaseController {
     @RequiresPermissions("sys:menu:update")
     @PutMapping(value = "/update")
     @ApiOperation("菜单修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody SysMenu sysMenu) {
         sysMenuService.updateSysMenu(sysMenu);
         return Result.ok(sysMenu);

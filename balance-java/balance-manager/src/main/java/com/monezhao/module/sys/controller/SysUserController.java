@@ -105,12 +105,6 @@ public class SysUserController extends BaseController {
     @ApiOperation("用户新增")
     @ApiOperationSupport(ignoreParameters = {
             "userId",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody SysUser sysUser) {
         sysUserService.saveSysUser(sysUser);
@@ -126,14 +120,6 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("sys:user:update")
     @PutMapping(value = "/update")
     @ApiOperation("用户修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody SysUser sysUser) {
         sysUserService.updateSysUser(sysUser);
         return Result.ok();
@@ -199,12 +185,6 @@ public class SysUserController extends BaseController {
             "status",
             "sortNo",
             "remark",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result resetPassword(@RequestBody SysUser sysUser) {
         sysUserService.resetPassword(sysUser.getUserId());
@@ -215,14 +195,6 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("sys:user:export")
     @GetMapping(value = "/export")
     @ApiOperation("导出用户信息")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public void export(SysUser sysUser, HttpServletResponse response) {
         try {
             IPage<SysUser> page = sysUserService.list(null, sysUser);

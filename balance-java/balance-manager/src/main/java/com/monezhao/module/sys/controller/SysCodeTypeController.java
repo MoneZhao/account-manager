@@ -70,12 +70,6 @@ public class SysCodeTypeController extends BaseController {
     @ApiOperation("代码类别新增")
     @ApiOperationSupport(ignoreParameters = {
             "codeTypeId",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody SysCodeType sysCodeType) {
         sysCodeTypeService.save(sysCodeType);
@@ -91,14 +85,6 @@ public class SysCodeTypeController extends BaseController {
     @RequiresPermissions("sys:codeType:update")
     @PutMapping(value = "/update")
     @ApiOperation("代码类别修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody SysCodeType sysCodeType) {
         sysCodeTypeService.updateById(sysCodeType);
         return Result.ok();

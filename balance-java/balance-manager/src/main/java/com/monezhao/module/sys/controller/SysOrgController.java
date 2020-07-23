@@ -76,12 +76,6 @@ public class SysOrgController extends BaseController {
     @ApiOperation("机构新增")
     @ApiOperationSupport(ignoreParameters = {
             "orgId",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody SysOrg baseOrg) {
         sysOrgService.saveBaseOrg(baseOrg);
@@ -97,14 +91,6 @@ public class SysOrgController extends BaseController {
     @RequiresPermissions("sys:org:update")
     @PutMapping(value = "/update")
     @ApiOperation("机构修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody SysOrg baseOrg) {
         sysOrgService.updateBaseOrg(baseOrg);
         return Result.ok(baseOrg);

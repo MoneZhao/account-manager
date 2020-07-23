@@ -72,12 +72,6 @@ public class SysCodeInfoController extends BaseController {
     @ApiOperation("代码信息新增")
     @ApiOperationSupport(ignoreParameters = {
             "codeInfoId",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.saveSysCodeInfo(sysCodeInfo);
@@ -93,14 +87,6 @@ public class SysCodeInfoController extends BaseController {
     @RequiresPermissions("sys:codeInfo:update")
     @PutMapping(value = "/update")
     @ApiOperation("代码信息修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
         sysCodeInfoService.updateSysCodeInfo(sysCodeInfo);
         return Result.ok();

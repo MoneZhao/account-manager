@@ -73,12 +73,6 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
     @SysLogAuto(value = "{tableNameCn}新增")
     @ApiOperationSupport(ignoreParameters = {
             "{_id}",
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
     })
     public Result save(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.save({_sys}{_CodeType});
@@ -94,14 +88,6 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
     @PutMapping(value = "/update")
     @ApiOperation("{tableNameCn}修改")
     @SysLogAuto(value = "{tableNameCn}修改")
-    @ApiOperationSupport(ignoreParameters = {
-            "createBy",
-            "createDate",
-            "createTime",
-            "updateBy",
-            "updateDate",
-            "updateTime"
-    })
     public Result update(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.updateById({_sys}{_CodeType});
         return Result.ok();
