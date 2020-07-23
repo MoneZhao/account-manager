@@ -2,6 +2,7 @@ package com.monezhao.module.sys.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysConfig;
 import com.monezhao.common.Result;
@@ -67,6 +68,15 @@ public class SysConfigController extends BaseController {
     @RequiresPermissions("sys:config:save")
     @PostMapping(value = "/save")
     @ApiOperation("系统参数新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "configId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result save(@Valid @RequestBody SysConfig sysConfig) {
         sysConfigService.saveSysConfig(sysConfig);
         return Result.ok();
@@ -81,6 +91,14 @@ public class SysConfigController extends BaseController {
     @RequiresPermissions("sys:config:update")
     @PutMapping(value = "/update")
     @ApiOperation("系统参数修改")
+    @ApiOperationSupport(ignoreParameters = {
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
+    })
     public Result update(@Valid @RequestBody SysConfig sysConfig) {
         sysConfigService.updateSysConfig(sysConfig);
         return Result.ok();
