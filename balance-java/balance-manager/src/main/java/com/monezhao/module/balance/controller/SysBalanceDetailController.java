@@ -69,14 +69,13 @@ public class SysBalanceDetailController extends BaseController {
     @SysLogAuto(value = "新增账户明细")
     @ApiOperation("账户明细新增")
     @ApiOperationSupport(ignoreParameters = {
-            "sysBalanceDetail.balanceDetailId",
-            "sysBalanceDetail.parentMenuName",
-            "sysBalanceDetail.createBy",
-            "sysBalanceDetail.createDate",
-            "sysBalanceDetail.createTime",
-            "sysBalanceDetail.updateBy",
-            "sysBalanceDetail.updateDate",
-            "sysBalanceDetail.updateTime"
+            "balanceDetailId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public Result save(@Valid @RequestBody SysBalanceDetail sysBalanceDetail) {
         sysBalanceDetailService.save(sysBalanceDetail);
@@ -93,13 +92,12 @@ public class SysBalanceDetailController extends BaseController {
     @SysLogAuto(value = "修改账户明细")
     @ApiOperation("账户明细修改")
     @ApiOperationSupport(ignoreParameters = {
-            "sysBalanceDetail.parentMenuName",
-            "sysBalanceDetail.createBy",
-            "sysBalanceDetail.createDate",
-            "sysBalanceDetail.createTime",
-            "sysBalanceDetail.updateBy",
-            "sysBalanceDetail.updateDate",
-            "sysBalanceDetail.updateTime"
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public Result update(@Valid @RequestBody SysBalanceDetail sysBalanceDetail) {
         sysBalanceDetailService.update(sysBalanceDetail);

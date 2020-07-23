@@ -103,13 +103,13 @@ public class SysBalanceMainController extends BaseController {
     @SysLogAuto(value = "新增账户余额")
     @ApiOperation("账户余额新增")
     @ApiOperationSupport(ignoreParameters = {
-            "sysBalanceMain.balanceMainId",
-            "sysBalanceMain.createBy",
-            "sysBalanceMain.createDate",
-            "sysBalanceMain.createTime",
-            "sysBalanceMain.updateBy",
-            "sysBalanceMain.updateDate",
-            "sysBalanceMain.updateTime"
+            "balanceMainId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public Result save(@Valid @RequestBody SysBalanceMain sysBalanceMain) {
         SysUser sysUser = ShiroUtils.getSysUser();
@@ -128,12 +128,12 @@ public class SysBalanceMainController extends BaseController {
     @SysLogAuto(value = "修改账户余额")
     @ApiOperation("账户余额修改")
     @ApiOperationSupport(ignoreParameters = {
-            "sysBalanceMain.createBy",
-            "sysBalanceMain.createDate",
-            "sysBalanceMain.createTime",
-            "sysBalanceMain.updateBy",
-            "sysBalanceMain.updateDate",
-            "sysBalanceMain.updateTime"
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public Result update(@Valid @RequestBody SysBalanceMain sysBalanceMain) {
         SysUser sysUser = ShiroUtils.getSysUser();
@@ -168,17 +168,17 @@ public class SysBalanceMainController extends BaseController {
     @PostMapping(value = "/compare")
     @ApiOperation("账户余额对比")
     @ApiOperationSupport(ignoreParameters = {
-            "sysBalanceMain.balanceMainId",
-            "sysBalanceMain.account",
-            "sysBalanceMain.userId",
-            "sysBalanceMain.remark",
-            "sysBalanceMain.deleteType",
-            "sysBalanceMain.createBy",
-            "sysBalanceMain.createDate",
-            "sysBalanceMain.createTime",
-            "sysBalanceMain.updateBy",
-            "sysBalanceMain.updateDate",
-            "sysBalanceMain.updateTime"
+            "balanceMainId",
+            "account",
+            "userId",
+            "remark",
+            "deleteType",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public Result compare(@RequestBody SysBalanceMain sysBalanceMain) {
         if (sysBalanceMain.getAccountDate() == null) {
@@ -221,17 +221,17 @@ public class SysBalanceMainController extends BaseController {
     @GetMapping(value = "/exportAll")
     @ApiOperation("导出全部账户余额")
     @ApiOperationSupport(ignoreParameters = {
-            "sysBalanceMain.balanceMainId",
-            "sysBalanceMain.account",
-            "sysBalanceMain.accountDate",
-            "sysBalanceMain.remark",
-            "sysBalanceMain.deleteType",
-            "sysBalanceMain.createBy",
-            "sysBalanceMain.createDate",
-            "sysBalanceMain.createTime",
-            "sysBalanceMain.updateBy",
-            "sysBalanceMain.updateDate",
-            "sysBalanceMain.updateTime"
+            "balanceMainId",
+            "account",
+            "accountDate",
+            "remark",
+            "deleteType",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public void exportAll(SysBalanceMain sysBalanceMain, HttpServletResponse response) {
         try {

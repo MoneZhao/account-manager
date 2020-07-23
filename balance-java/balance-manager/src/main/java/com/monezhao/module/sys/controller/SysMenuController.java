@@ -71,13 +71,13 @@ public class SysMenuController extends BaseController {
     @PostMapping(value = "/save")
     @ApiOperation("菜单新增")
     @ApiOperationSupport(ignoreParameters = {
-            "sysMenu.menuId",
-            "sysMenu.createBy",
-            "sysMenu.createDate",
-            "sysMenu.createTime",
-            "sysMenu.updateBy",
-            "sysMenu.updateDate",
-            "sysMenu.updateTime"
+            "menuId",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public Result save(@Valid @RequestBody SysMenu sysMenu) {
         sysMenuService.saveSysMenu(sysMenu);
@@ -94,12 +94,12 @@ public class SysMenuController extends BaseController {
     @PutMapping(value = "/update")
     @ApiOperation("菜单修改")
     @ApiOperationSupport(ignoreParameters = {
-            "sysMenu.createBy",
-            "sysMenu.createDate",
-            "sysMenu.createTime",
-            "sysMenu.updateBy",
-            "sysMenu.updateDate",
-            "sysMenu.updateTime"
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public Result update(@Valid @RequestBody SysMenu sysMenu) {
         sysMenuService.updateSysMenu(sysMenu);

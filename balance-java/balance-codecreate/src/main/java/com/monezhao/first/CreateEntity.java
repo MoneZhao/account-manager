@@ -117,7 +117,7 @@ public class CreateEntity {
 
                 stringBufferHead2.append("/**" + "\r\n");
                 stringBufferHead2.append(" * 【" + tableNameCn + "】实体类" + "\r\n");
-                stringBufferHead2.append(" * " + "\r\n");
+                stringBufferHead2.append(" *" + "\r\n");
                 stringBufferHead2.append(" * @author " + CodeUtil.author + "\r\n");
                 stringBufferHead2.append(" */" + "\r\n");
                 stringBufferHead2.append("@Getter" + "\r\n");
@@ -154,7 +154,7 @@ public class CreateEntity {
             if (CommonUtil.isExist("前台输入主键,不空", tableObject.getIsNull(), ",")) {
                 stringBufferMid.append("    " + "@NotNull" + "\r\n");
             }
-            stringBufferMid.append("    " + "@ApiModelProperty(value = \"" + tableObject.getColumnNameCn() + "\"）" + "\r\n");
+            stringBufferMid.append("    " + "@ApiModelProperty(value = \"" + tableObject.getColumnNameCn() + "\")" + "\r\n");
             // 处理数据类型
             if ("字符型".equals(tableObject.getDataType())) {
                 processingDataTypeString(stringBufferMid, stringBufferFoot, tableObject, codeTypeIdFirstUpper,

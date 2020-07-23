@@ -24,6 +24,7 @@ import com.monezhao.module.{_sys}.service.{_Sys}{_CodeType}Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.monezhao.annotation.SysLogAuto;
 
 /**
  * {tableNameCn}Controller
@@ -69,14 +70,15 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
     @RequiresPermissions("{_sys}:{_codeType}:save")
     @PostMapping(value = "/save")
     @ApiOperation("{tableNameCn}新增")
+    @SysLogAuto(value = "{tableNameCn}新增")
     @ApiOperationSupport(ignoreParameters = {
-            "{_sys}{_CodeType}.{_id}",
-            "{_sys}{_CodeType}.createBy",
-            "{_sys}{_CodeType}.createDate",
-            "{_sys}{_CodeType}.createTime",
-            "{_sys}{_CodeType}.updateBy",
-            "{_sys}{_CodeType}.updateDate",
-            "{_sys}{_CodeType}.updateTime"
+            "{_id}",
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public Result save(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.save({_sys}{_CodeType});
@@ -91,13 +93,14 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
     @RequiresPermissions("{_sys}:{_codeType}:update")
     @PutMapping(value = "/update")
     @ApiOperation("{tableNameCn}修改")
+    @SysLogAuto(value = "{tableNameCn}修改")
     @ApiOperationSupport(ignoreParameters = {
-            "{_sys}{_CodeType}.createBy",
-            "{_sys}{_CodeType}.createDate",
-            "{_sys}{_CodeType}.createTime",
-            "{_sys}{_CodeType}.updateBy",
-            "{_sys}{_CodeType}.updateDate",
-            "{_sys}{_CodeType}.updateTime"
+            "createBy",
+            "createDate",
+            "createTime",
+            "updateBy",
+            "updateDate",
+            "updateTime"
     })
     public Result update(@Valid @RequestBody {_Sys}{_CodeType} {_sys}{_CodeType}) {
         {_sys}{_CodeType}Service.updateById({_sys}{_CodeType});
@@ -112,6 +115,7 @@ public class {_Sys}{_CodeType}Controller extends BaseController {
     @RequiresPermissions("{_sys}:{_codeType}:delete")
     @DeleteMapping(value = "/delete")
     @ApiOperation("{tableNameCn}删除")
+    @SysLogAuto(value = "{tableNameCn}删除")
     public Result delete(@RequestParam String ids) {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
