@@ -69,8 +69,7 @@ public class CreateServiceImpl {
 
         // Service的Service类.
         try {
-            String filePath = CodeUtil.projectPath + CodeUtil.module
-                    + "/src/main/java/com/monezhao/module/" + sys + "/service/impl/";
+            String filePath = CodeUtil.projectPath + CodeUtil.module + "/src/main/java/com/monezhao/service/impl/";
             File file = new File(filePath);
             file.mkdirs();
             BufferedWriter bufferedWriter = new BufferedWriter(

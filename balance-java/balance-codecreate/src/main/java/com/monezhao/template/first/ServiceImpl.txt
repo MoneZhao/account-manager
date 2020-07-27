@@ -1,12 +1,12 @@
-package com.monezhao.module.{_sys}.service.impl;
+package com.monezhao..service.impl;
 
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.bean.{_sys}.{_Sys}{_CodeType};
-import com.monezhao.module.{_sys}.mapper.{_Sys}{_CodeType}Mapper;
-import com.monezhao.module.{_sys}.service.{_Sys}{_CodeType}Service;
+import com.monezhao..mapper.{_Sys}{_CodeType}Mapper;
+import com.monezhao..service.{_Sys}{_CodeType}Service;
 
 /**
  * {tableNameCn}Service

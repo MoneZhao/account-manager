@@ -3,7 +3,7 @@ package com.monezhao.common.util;
 import com.monezhao.bean.sys.SysUser;
 import com.monezhao.common.Constants;
 import com.monezhao.config.DefaultSystemConfig;
-import com.monezhao.module.sys.service.SysUserService;
+import com.monezhao.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

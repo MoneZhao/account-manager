@@ -7,7 +7,7 @@ import com.monezhao.common.Constants;
 import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.RedisUtil;
-import com.monezhao.module.sys.service.SysUserService;
+import com.monezhao.service.SysUserService;
 import com.monezhao.shiro.JwtToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;

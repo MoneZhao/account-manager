@@ -6,7 +6,7 @@ import com.monezhao.common.Constants;
 import com.monezhao.common.job.ScheduleConstants;
 import com.monezhao.common.util.ExceptionUtil;
 import com.monezhao.common.util.SpringContextUtils;
-import com.monezhao.module.sys.service.SysJobLogService;
+import com.monezhao.service.SysJobLogService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

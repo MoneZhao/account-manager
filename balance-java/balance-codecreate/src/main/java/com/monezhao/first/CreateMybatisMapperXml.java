@@ -97,8 +97,7 @@ public class CreateMybatisMapperXml {
         String updateSetValues = getUpdateSetValues(list);
 
         try {
-            String filePath = CodeUtil.projectPath + CodeUtil.module
-                    + "/src/main/java/com/monezhao/module/" + sys + "/mapper/xml/";
+            String filePath = CodeUtil.projectPath + CodeUtil.module + "/src/main/java/com/monezhao/mapper/xml/";
             File file = new File(filePath);
             file.mkdirs();
             BufferedWriter bufferedWriter = new BufferedWriter(

@@ -67,8 +67,7 @@ public class CreateMybatisMapper {
         }
         // Mapper的Mapper类.
         try {
-            String filePath = CodeUtil.projectPath + CodeUtil.module
-                    + "/src/main/java/com/monezhao/module/" + sys + "/mapper/";
+            String filePath = CodeUtil.projectPath + CodeUtil.module + "/src/main/java/com/monezhao/mapper/";
             File file = new File(filePath);
             file.mkdirs();
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(filePath + aSys + aCodeType + "Mapper.java")));
