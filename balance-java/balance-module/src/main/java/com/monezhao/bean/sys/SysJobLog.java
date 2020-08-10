@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +23,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("t_sys_job_log")
+@ApiModel(value = "定时任务执行日志")
 public class SysJobLog extends BaseEntity {
 
     private static final long serialVersionUID = 2894129710015053413L;

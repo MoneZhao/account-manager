@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @TableName("t_sys_job")
+@ApiModel(value = "定时任务")
 public class SysJob extends BaseEntity {
 
     private static final long serialVersionUID = -1197429938396957764L;

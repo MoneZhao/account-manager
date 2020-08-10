@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +21,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @TableName("t_sys_role_permission")
+@ApiModel(value = "操作权限")
 public class SysRolePermission extends BaseEntity {
 
     private static final long serialVersionUID = -4905268058234210462L;
@@ -28,6 +31,7 @@ public class SysRolePermission extends BaseEntity {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
+    @ApiModelProperty(value = "主键id")
     private String rolePermissionId;
 
     /**
@@ -35,6 +39,7 @@ public class SysRolePermission extends BaseEntity {
      */
     @NotNull
     @LengthForUtf8(max = 32)
+    @ApiModelProperty(value = "角色ID")
     private String roleId;
 
     /**
@@ -42,6 +47,7 @@ public class SysRolePermission extends BaseEntity {
      */
     @NotNull
     @LengthForUtf8(max = 1)
+    @ApiModelProperty(value = "权限类型")
     private String permissionType;
 
     /**
@@ -49,9 +55,11 @@ public class SysRolePermission extends BaseEntity {
      */
     @NotNull
     @LengthForUtf8(max = 32)
+    @ApiModelProperty(value = "菜单或功能ID")
     private String menuOrFuncId;
 
     @TableField(exist = false)
+    @ApiModelProperty(value = "菜单或功能名")
     private String menuOrFuncName;
 
     public SysRolePermission() {

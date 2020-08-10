@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +21,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @TableName("t_sys_role_user")
+@ApiModel(value = "角色和用户关系")
 public class SysRoleUser extends BaseEntity {
 
     private static final long serialVersionUID = -1962700815037183162L;
@@ -29,6 +32,7 @@ public class SysRoleUser extends BaseEntity {
     @TableId(type = IdType.ASSIGN_UUID)
     @NotNull
     @LengthForUtf8(max = 32)
+    @ApiModelProperty(value = "主键id")
     private String roleUserId;
 
     /**
@@ -36,6 +40,7 @@ public class SysRoleUser extends BaseEntity {
      */
     @NotNull
     @LengthForUtf8(max = 32)
+    @ApiModelProperty(value = "角色ID")
     private String roleId;
 
     /**
@@ -43,9 +48,11 @@ public class SysRoleUser extends BaseEntity {
      */
     @NotNull
     @LengthForUtf8(max = 32)
+    @ApiModelProperty(value = "用户ID")
     private String userId;
 
     @TableField(exist = false)
+    @ApiModelProperty(value = "用户名")
     private String userName;
 
     @TableField(exist = false)

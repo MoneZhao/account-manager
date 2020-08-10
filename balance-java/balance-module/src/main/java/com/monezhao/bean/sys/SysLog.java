@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +20,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @TableName("t_sys_log")
+@ApiModel(value = "系统日志")
 public class SysLog extends BaseEntity {
 
     private static final long serialVersionUID = 4421875099563322912L;
@@ -27,6 +30,7 @@ public class SysLog extends BaseEntity {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
+    @ApiModelProperty(value = "主键id")
     private String logId;
 
     /**
@@ -34,6 +38,7 @@ public class SysLog extends BaseEntity {
      */
     @NotNull
     @LengthForUtf8(max = 2)
+    @ApiModelProperty(value = "日志类型")
     private String logType;
 
     /**
@@ -41,63 +46,74 @@ public class SysLog extends BaseEntity {
      */
     @NotNull
     @LengthForUtf8(max = 100)
+    @ApiModelProperty(value = "日志内容")
     private String logContent;
 
     /**
      * 操作类型
      */
     @LengthForUtf8(max = 2)
+    @ApiModelProperty(value = "操作类型")
     private String operateType;
 
     /**
      * 操作用户
      */
     @LengthForUtf8(max = 32)
+    @ApiModelProperty(value = "操作用户")
     private String userId;
 
     /**
      * 操作用户姓名
      */
     @LengthForUtf8(max = 100)
+    @ApiModelProperty(value = "操作用户姓名")
     private String userName;
 
     /**
      * IP地址
      */
     @LengthForUtf8(max = 100)
+    @ApiModelProperty(value = "IP地址")
     private String ip;
 
     /**
      * 请求方法
      */
     @LengthForUtf8(max = 255)
+    @ApiModelProperty(value = "请求方法")
     private String method;
 
     /**
      * 请求路径
      */
     @LengthForUtf8(max = 255)
+    @ApiModelProperty(value = "请求路径")
     private String requestUrl;
 
     /**
      * 请求参数
      */
+    @ApiModelProperty(value = "请求参数")
     private String requestParam;
 
     /**
      * 请求类型
      */
     @LengthForUtf8(max = 10)
+    @ApiModelProperty(value = "请求类型")
     private String requestType;
 
     /**
      * 操作结果
      */
+    @ApiModelProperty(value = "操作结果")
     private String operateResult;
 
     /**
      * 耗时
      */
+    @ApiModelProperty(value = "耗时")
     private Long costTime;
 
 }
