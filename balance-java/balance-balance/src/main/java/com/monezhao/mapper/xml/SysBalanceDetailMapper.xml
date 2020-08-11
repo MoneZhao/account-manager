@@ -33,7 +33,7 @@
         <if test="entity.balanceMainId != null and entity.balanceMainId !=''">
             <![CDATA[    AND a.balance_main_id = #{entity.balanceMainId}    ]]>
         </if>
-        order by a.create_time desc
+        order by a.create_time asc
     </select>
 
     <select id="account" resultType="java.lang.Double">
