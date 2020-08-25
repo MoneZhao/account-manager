@@ -20,3 +20,7 @@ FLUSH PRIVILEGES;
 # 新建数据库时执行
 # ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '112012';
 # ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '112012';
+
+# 数据库时区差8小时需执行
+# show variables like '%time_zone%';
+# set time_zone = '+8:00';
