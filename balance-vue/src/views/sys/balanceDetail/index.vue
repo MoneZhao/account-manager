@@ -49,7 +49,9 @@
 
     <el-dialog title="账户明细" :visible.sync="dialogFormDetailVisible" append-to-body>
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
-        <el-form-item label="账户余额" prop="account"><el-input v-model.number="temp.account" /></el-form-item>
+        <el-form-item label="账户余额" prop="account">
+          <el-input-number v-model="temp.account" controls-position="right" :min="0" :precision="2" :step="1" />
+        </el-form-item>
         <el-form-item label="账户类型" prop="balanceType"><el-select v-model="temp.balanceType" filterable placeholder="账户类型"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
         <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark" /></el-form-item>
       </el-form>
