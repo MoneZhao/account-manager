@@ -4,6 +4,10 @@
 
     <breadcrumb class="breadcrumb-container" />
 
+    <div class="middle-date">
+      {{ nowDateTime }}
+    </div>
+
     <div class="right-menu">
       <div class="right-menu-item hover-effect">
         {{ name }}
@@ -70,6 +74,8 @@ export default {
   },
   data() {
     return {
+      nowDateTime: null, // 存放年月日变量
+      timer: '', // 定义一个定时器的变量
       showShortCutModal: false,
       menuModalLoading: false,
       updatePasswordVisible: false
@@ -84,7 +90,18 @@ export default {
       'name'
     ])
   },
+  created() {
+    this.timer = setInterval(this.getTime, 1000)
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer) // 在Vue实例销毁前，清除定时器
+    }
+  },
   methods: {
+    getTime() {
+      this.nowDateTime = this.$moment().format('YYYY 年 MM 月 DD 日, ddd, a hh:mm:ss')
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -138,6 +155,18 @@ export default {
             float: left;
         }
 
+        .middle-date {
+          display: inline-block;
+          padding: 0 8px;
+          font-size: 18px;
+          color: #5a5e66;
+          vertical-align: text-bottom;
+          float: left;
+          height: 100%;
+          line-height: 50px;
+          margin-left: 25%;
+        }
+
         .right-menu {
             float: right;
             height: 100%;
@@ -155,14 +184,14 @@ export default {
                 color: #5a5e66;
                 vertical-align: text-bottom;
 
-                &.hover-effect {
-                    cursor: pointer;
-                    transition: background .3s;
-
-                    &:hover {
-                        background: rgba(0, 0, 0, .025)
-                    }
-                }
+                //&.hover-effect {
+                //    cursor: pointer;
+                //    transition: background .3s;
+                //
+                //    &:hover {
+                //        background: rgba(0, 0, 0, .025)
+                //    }
+                //}
             }
 
             .avatar-container {
