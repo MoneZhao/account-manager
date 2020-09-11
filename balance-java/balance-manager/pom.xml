@@ -14,7 +14,6 @@
     <properties>
         <contextPath>${project.parent.artifactId}</contextPath>
         <docker.image.prefix>monezhao</docker.image.prefix>
-        <kaptcha.version>0.0.9</kaptcha.version>
     </properties>
     <profiles>
         <!-- 开发环境 -->
@@ -135,6 +134,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>${project.parent.artifactId}-system</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>${project.parent.artifactId}-balance</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -165,11 +170,6 @@
                     <groupId>org.ow2.asm</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.axet</groupId>
-            <artifactId>kaptcha</artifactId>
-            <version>${kaptcha.version}</version>
         </dependency>
     </dependencies>
 </project>
