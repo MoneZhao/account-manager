@@ -8,6 +8,16 @@
       {{ nowDateTime }}
     </div>
 
+    <iframe
+      name="weather-inc"
+      src="https://tianqiapi.com/api.php?skin=apple&city=%E7%BB%B5%E9%98%B3&c=code&id=99&color=5A5E66&fontsize=18&paddingtop=15"
+      frameborder="0"
+      marginwidth="0"
+      marginheight="15"
+      scrolling="no"
+      style="positon: absolute;margin-left: 5px"
+    />
+
     <div class="right-menu">
       <div class="right-menu-item hover-effect">
         {{ name }}
@@ -163,8 +173,8 @@ export default {
           vertical-align: text-bottom;
           float: left;
           height: 100%;
-          line-height: 50px;
-          margin-left: 25%;
+          line-height: 58px;
+          margin-left: 21%;
         }
 
         .right-menu {
