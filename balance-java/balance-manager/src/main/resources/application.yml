@@ -23,6 +23,8 @@ mybatis-plus:
       logic-delete-field: flag
       logic-delete-value: 1
       logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
 #springboot监控actuator
 management:
   endpoints:
