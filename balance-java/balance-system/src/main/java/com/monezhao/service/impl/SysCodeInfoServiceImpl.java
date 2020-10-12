@@ -72,17 +72,18 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
      */
     @Override
     public Map<String, List<SysCodeInfo>> getSysCodeInfosFromDb(String codeTypeIds) {
-        Map<String, List<SysCodeInfo>> codeInfoMap = new HashMap<String, List<SysCodeInfo>>(16);
+        Map<String, List<SysCodeInfo>> codeInfoMap = new HashMap<>(16);
         QueryWrapper<SysCodeInfo> queryWrapper = new QueryWrapper<>();
         if (CommonUtil.isNotEmptyAfterTrim(codeTypeIds)) {
             QueryWrapperGenerator.addEasyQuery(queryWrapper, "codeTypeId", FilterOperate.IN, codeTypeIds);
         }
+        QueryWrapperGenerator.addEasyQuery(queryWrapper, "isOk", FilterOperate.EQ, "1");
         queryWrapper.orderByAsc("CODE_TYPE_ID", "SORT_NO");
         List<SysCodeInfo> codeInfoList = this.list(queryWrapper);
         for (SysCodeInfo sysCodeInfo : codeInfoList) {
-            List<SysCodeInfo> subList = null;
+            List<SysCodeInfo> subList;
             if (!codeInfoMap.containsKey(sysCodeInfo.getCodeTypeId())) {
-                subList = new ArrayList<SysCodeInfo>();
+                subList = new ArrayList<>();
                 SysCodeInfo emptySysCodeInfo = new SysCodeInfo();
                 emptySysCodeInfo.setCodeInfoId("");
                 emptySysCodeInfo.setCodeTypeId(sysCodeInfo.getCodeTypeId());
