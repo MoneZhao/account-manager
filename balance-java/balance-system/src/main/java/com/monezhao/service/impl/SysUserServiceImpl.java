@@ -362,7 +362,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         } else {
             removeById(idsArr[0]);
         }
-        sysRoleUserService.remove( new QueryWrapper<SysRoleUser>().in("user_id", idsArr));
+        sysRoleUserService.remove(new QueryWrapper<SysRoleUser>().in("user_id", idsArr));
         sysPostUserService.remove(new QueryWrapper<SysPostUser>().in("user_id", idsArr));
         sysUserShortCutService.remove(new QueryWrapper<SysUserShortCut>().in("user_id", idsArr));
     }
@@ -433,6 +433,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         List<SysMenu> list = baseMapper.listMenuByRoleId(roleId);
         Map<String, ElTree> menuMap = new LinkedHashMap<>();
         for (SysMenu sysMenu : list) {
+            if (sysMenu == null) {
+                continue;
+            }
             ElTree elTree = new ElTree();
             elTree.setId(sysMenu.getMenuId());
             elTree.setLabel(sysMenu.getMenuName());
@@ -483,7 +486,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     @Override
     public List<ShortCut> getMenuShortCut(String userId, String roleId) {
-        List<String> list = baseMapper.listMenuByRoleId(roleId).stream()
+        List<String> list = baseMapper.listMenuByRoleId(roleId).parallelStream().filter(Objects::nonNull)
                 .map(SysMenu::getMenuId).collect(Collectors.toList());
 
         List<String> menuIds = baseMapper.listPermissionsByUserId(userId);
