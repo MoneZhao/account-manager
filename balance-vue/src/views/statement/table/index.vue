@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-card style="border-color: #f1f1f1;" shadow="hover">
-        <span style="margin-left:70%">查询范围：</span>
+        <span style="margin-left:22rem">查询范围：</span>
         <el-date-picker
           v-model="value"
           :editable="false"
