@@ -11,6 +11,7 @@
     <artifactId>balance-manager</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
+    <description>程序启动模块，配置文件和静态资源</description>
     <properties>
         <contextPath>${project.parent.artifactId}</contextPath>
         <docker.image.prefix>monezhao</docker.image.prefix>

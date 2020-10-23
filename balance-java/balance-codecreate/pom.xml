@@ -10,6 +10,7 @@
     </parent>
     <artifactId>balance-codecreate</artifactId>
     <name>balance-codecreate</name>
+    <description>代码自动生成</description>
 
     <build>
         <finalName>balance-codecreate</finalName>

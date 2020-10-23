@@ -10,6 +10,7 @@
     </parent>
     <artifactId>balance-system</artifactId>
     <name>balance-system</name>
+    <description>系统基础资源</description>
     <properties>
         <kaptcha.version>0.0.9</kaptcha.version>
     </properties>

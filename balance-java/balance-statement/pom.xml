@@ -8,12 +8,12 @@
         <artifactId>balance</artifactId>
         <version>0.0.1</version>
     </parent>
-    <artifactId>balance-balance</artifactId>
-    <name>balance-balance</name>
-    <description>账户功能</description>
+    <artifactId>balance-statement</artifactId>
+    <name>balance-statement</name>
+    <description>报表功能</description>
 
     <build>
-        <finalName>balance-balance</finalName>
+        <finalName>balance-statement</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -27,7 +27,13 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>${project.parent.artifactId}-module</artifactId>
+            <artifactId>${project.parent.artifactId}-balance</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${project.parent.artifactId}-system</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
