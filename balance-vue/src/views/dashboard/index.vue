@@ -12,7 +12,10 @@
                 {{ welcomeMessage }}
               </div>
               <div class="head-info-desc">
-                <p>{{ sysOrg ? sysOrg.orgName : '暂无部门' }} | {{ sysRole ? sysRole.roleName : '暂无角色' }}</p>
+                <p>
+                  {{ sysOrg ? sysOrg.orgName : "暂无部门" }} |
+                  {{ sysRole ? sysRole.roleName : "暂无角色" }}
+                </p>
               </div>
             </div>
           </el-row>
@@ -40,8 +43,15 @@
             <span>快捷方式</span>
           </div>
           <span>
-            <div v-for="(value, index) in menuList" :key="index" style="float: left">
-              <router-link :to="value.path" :class="['pan-btn', colorList[index%7]]">
+            <div
+              v-for="(value, index) in menuList"
+              :key="index"
+              style="float: left"
+            >
+              <router-link
+                :to="value.path"
+                :class="['pan-btn', colorList[index % 7]]"
+              >
                 <svg-icon :icon-class="value.icon" />
                 {{ value.name }}
               </router-link>
@@ -53,7 +63,7 @@
     <el-row :gutter="8" class="count-info">
       <el-col :span="24" class="visit-count-wrapper">
         <el-card class="visit-count box-card" shadow="hover">
-          <apex-chart ref="count" type="bar" height="400" :options="chartOptions" :series="series" />
+          <div id="dashboard_chart" style="height: 400px" />
         </el-card>
       </el-col>
     </el-row>
@@ -69,34 +79,6 @@ export default {
   components: { HeadInfo },
   data() {
     return {
-      series: [],
-      chartOptions: {
-        chart: {
-          toolbar: {
-            show: false
-          }
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: '50%'
-          }
-        },
-        dataLabels: {
-          enabled: true
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-        xaxis: {
-          categories: []
-        },
-        fill: {
-          opacity: 1
-        }
-      },
       todayIp: 0,
       todayVisitCount: 0,
       totalVisitCount: 0,
@@ -185,25 +167,40 @@ export default {
             sevenUserVisitCount.push(0)
           }
         }
-        this.$refs.count.updateSeries([
-          {
-            name: '您',
-            data: sevenUserVisitCount
-          },
-          {
-            name: '总数',
-            data: sevenVisitCount
-          }
-        ], true)
-        this.$refs.count.updateOptions({
-          xaxis: {
-            categories: dateArr
-          },
+        const chart = this.$echarts.init(document.getElementById('dashboard_chart'))
+        chart.setOption({
           title: {
             text: '近七日系统访问记录',
-            align: 'left'
-          }
-        }, true, true)
+            left: 'left'
+          },
+          xAxis: {
+            data: dateArr
+          },
+          yAxis: {
+            minInterval: 1
+          },
+          legend: {
+            data: ['您', '总数']
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          series: [
+            {
+              name: '您',
+              type: 'bar',
+              data: sevenUserVisitCount
+            },
+            {
+              name: '总数',
+              type: 'bar',
+              data: sevenVisitCount
+            }
+          ]
+        })
       }).catch((r) => {
         console.error(r)
         this.$message.error('获取首页信息失败')
@@ -213,60 +210,60 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .home-page {
-    .head-info {
-      padding: 10px;
-      .head-info-card {
-        padding: .5rem;
+.home-page {
+  .head-info {
+    padding: 10px;
+    .head-info-card {
+      padding: 0.5rem;
+      border-color: #f1f1f1;
+      min-height: 260px;
+      .head-info-avatar {
+        display: inline-block;
+        float: left;
+        margin-right: 1rem;
+        img {
+          width: 5rem;
+          border-radius: 2px;
+        }
+      }
+      .head-info-count {
+        display: inline-block;
+        float: left;
+        .head-info-welcome {
+          font-size: 1.05rem;
+          margin-bottom: 0.1rem;
+        }
+        .head-info-desc {
+          color: rgba(0, 0, 0, 0.45);
+          font-size: 0.8rem;
+          padding: 0.2rem 0;
+          p {
+            margin-bottom: 0;
+          }
+        }
+        .head-info-time {
+          color: rgba(0, 0, 0, 0.45);
+          font-size: 0.8rem;
+          padding: 0.2rem 0;
+        }
+      }
+    }
+  }
+  .count-info {
+    padding: 10px;
+    .visit-count-wrapper {
+      .visit-count {
         border-color: #f1f1f1;
-        min-height: 260px;
-        .head-info-avatar {
-          display: inline-block;
-          float: left;
-          margin-right: 1rem;
-          img {
-            width: 5rem;
-            border-radius: 2px;
-          }
-        }
-        .head-info-count {
-          display: inline-block;
-          float: left;
-          .head-info-welcome {
-            font-size: 1.05rem;
-            margin-bottom: .1rem;
-          }
-          .head-info-desc {
-            color: rgba(0, 0, 0, 0.45);
-            font-size: .8rem;
-            padding: .2rem 0;
-            p {
-              margin-bottom: 0;
-            }
-          }
-          .head-info-time {
-            color: rgba(0, 0, 0, 0.45);
-            font-size: .8rem;
-            padding: .2rem 0;
-          }
-        }
-      }
-    }
-    .count-info {
-      padding: 10px;
-      .visit-count-wrapper {
-        .visit-count {
-          border-color: #f1f1f1;
-        }
       }
     }
   }
-  .pan-btn {
-    width: 170px;
-    height: 55px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 16px;
-    margin: 5px;
-  }
+}
+.pan-btn {
+  width: 170px;
+  height: 55px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 16px;
+  margin: 5px;
+}
 </style>

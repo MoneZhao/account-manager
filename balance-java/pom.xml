@@ -23,6 +23,7 @@
         <module>balance-system</module>
         <module>balance-codecreate</module>
         <module>balance-balance</module>
+        <module>balance-statement</module>
         <module>balance-module</module>
     </modules>
     <dependencies>

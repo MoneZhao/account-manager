@@ -3,10 +3,13 @@ package com.monezhao.common.util;
 import java.lang.management.ManagementFactory;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author monezhao@163.com
@@ -298,7 +301,7 @@ public class DateUtil {
      * @param endDate
      * @return
      */
-    public static int getDateDeff(Date startDate, Date endDate) {
+    public static int getDateDiff(Date startDate, Date endDate) {
         int intValue = 0;
         String df = DATE_FORMAT_DEFAULT;
         startDate = DateUtil.strToDate(DateUtil.dateToStr(startDate, df), df);
@@ -336,5 +339,31 @@ public class DateUtil {
     public static Date getServerStartDate() {
         long time = ManagementFactory.getRuntimeMXBean().getStartTime();
         return new Date(time);
+    }
+
+    /**
+     * DateUtil.findMonth()
+     *
+     * @Description: 传入时间段，返回之间的月份
+     * @Date: [ 2020-10-23 15:27:48 ]
+     * @author: monezhao@163.com
+     * @param: [start, end, dateFormat]
+     * @return: java.util.List<java.lang.String>
+     * @Version: v1.0
+     */
+    public static List<String> findMonth(Date start, Date end, String dateFormat) {
+        SimpleDateFormat format = getSimpleDateFormat(dateFormat);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(start);
+        List<String> dateList = new ArrayList<>();
+        while (end.after(calendar.getTime())) {
+            dateList.add(format.format(calendar.getTime()));
+            calendar.add(Calendar.MONTH, 1);
+        }
+        String endStr = format.format(end);
+        if (!Objects.equals(endStr, dateList.get(dateList.size() - 1))) {
+            dateList.add(endStr);
+        }
+        return dateList;
     }
 }

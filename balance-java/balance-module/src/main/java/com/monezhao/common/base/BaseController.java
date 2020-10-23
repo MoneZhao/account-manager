@@ -1,7 +1,6 @@
 package com.monezhao.common.base;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Date: 2020/5/23 9:58
  * @Description:
  */
-@Controller
-@RequestMapping("/sys/base")
+@RestController
 public class BaseController {
 }

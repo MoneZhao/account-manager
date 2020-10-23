@@ -36,10 +36,8 @@ import permission from './directive/permission/permission'
 import vueParticles from 'vue-particles'
 Vue.use(vueParticles)
 
-import VueApexCharts from 'vue-apexcharts'
-Vue.use(VueApexCharts)
-
-Vue.component('apex-chart', VueApexCharts)
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 
 const size = Cookies.get('size') || 'mini'
 Vue.use(ElementUI, { locale, size })
