@@ -28,6 +28,7 @@ import com.monezhao.controller.command.ShortCut;
 import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.controller.command.VisitCount;
 import com.monezhao.mapper.SysUserMapper;
+import com.monezhao.service.SysConfigService;
 import com.monezhao.service.SysMenuService;
 import com.monezhao.service.SysPostUserService;
 import com.monezhao.service.SysUserService;
@@ -78,6 +79,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     @Autowired
     private SysPostUserService sysPostUserService;
+
+    @Autowired
+    private SysConfigService sysConfigService;
 
     @Override
     public IPage<SysUser> list(IPage<SysUser> page, SysUser sysUser) {
@@ -304,10 +308,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public boolean saveSysUser(SysUser sysUser) {
         String salt = PasswordUtil.randomGen(8);
         // 默认密码
-        String defaultPassword = (String) redisUtil.get(
-                Constants.PREFIX_SYS_CONFIG + "defaultPassword",
-                defaultSystemConfig.getDefaultPassword()
-        );
+        String defaultPassword = sysConfigService.getSysConfig("defaultPassword",
+                defaultSystemConfig.getDefaultPassword());
         String password = PasswordUtil.encrypt(PasswordUtil.md5Encode(defaultPassword), salt);
         sysUser.setSalt(salt);
         sysUser.setPassword(password);
@@ -398,10 +400,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         }
         String salt = PasswordUtil.randomGen(8);
         // 默认密码
-        String defaultPassword = (String) redisUtil.get(
-                Constants.PREFIX_SYS_CONFIG + "defaultPassword",
-                defaultSystemConfig.getDefaultPassword()
-        );
+        String defaultPassword = sysConfigService.getSysConfig("defaultPassword",
+                defaultSystemConfig.getDefaultPassword());
         String password = PasswordUtil.encrypt(PasswordUtil.md5Encode(defaultPassword), salt);
         sysUser.setSalt(salt);
         sysUser.setPassword(password);

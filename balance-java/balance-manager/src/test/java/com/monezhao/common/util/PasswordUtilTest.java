@@ -1,8 +1,8 @@
 package com.monezhao.common.util;
 
 import com.monezhao.bean.sys.SysUser;
-import com.monezhao.common.Constants;
 import com.monezhao.config.DefaultSystemConfig;
+import com.monezhao.service.SysConfigService;
 import com.monezhao.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -29,15 +29,16 @@ public class PasswordUtilTest {
     @Autowired
     private DefaultSystemConfig defaultSystemConfig;
 
+    @Autowired
+    private SysConfigService sysConfigService;
+
     @Test
     public void md5Encode() {
         SysUser sysUser = sysUserService.getById("admin");
         String salt = PasswordUtil.randomGen(8);
         // 默认密码
-        String defaultPassword = (String) redisUtil.get(
-                Constants.PREFIX_SYS_CONFIG + "defaultPassword",
-                defaultSystemConfig.getDefaultPassword()
-        );
+        String defaultPassword = sysConfigService.getSysConfig("defaultPassword",
+                defaultSystemConfig.getDefaultPassword());
         String password = PasswordUtil.encrypt(PasswordUtil.md5Encode(defaultPassword), salt);
         sysUser.setSalt(salt);
         sysUser.setPassword(password);

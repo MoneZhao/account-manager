@@ -14,6 +14,7 @@ import com.monezhao.common.util.PasswordUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.config.DefaultSystemConfig;
+import com.monezhao.service.SysConfigService;
 import com.monezhao.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,6 +62,9 @@ public class SysLoginController {
     @Autowired
     private DefaultSystemConfig defaultSystemConfig;
 
+    @Autowired
+    private SysConfigService sysConfigService;
+
     @GetMapping("captcha.jpg")
     @ApiOperation("获取验证码")
     public void captcha(HttpServletResponse response, String uuid) {
@@ -80,10 +84,7 @@ public class SysLoginController {
     @GetMapping("useCaptcha")
     @ApiOperation("是否使用图片验证码")
     public Result useCaptcha() {
-        String useCaptcha = (String) redisUtil.get(
-                Constants.PREFIX_SYS_CONFIG + "useCaptcha",
-                defaultSystemConfig.getUseCaptcha()
-        );
+        String useCaptcha = sysConfigService.getSysConfig("useCaptcha", defaultSystemConfig.getUseCaptcha());
         return Result.ok(useCaptcha);
     }
 
@@ -95,10 +96,7 @@ public class SysLoginController {
         CommonUtil.isEmptyStr(sysLoginForm.getUserId(), "用户名不能为空");
         CommonUtil.isEmptyStr(sysLoginForm.getPassword(), "密码不能为空");
 
-        String useCaptcha = (String) redisUtil.get(
-                Constants.PREFIX_SYS_CONFIG + "useCaptcha",
-                defaultSystemConfig.getUseCaptcha()
-        );
+        String useCaptcha = sysConfigService.getSysConfig("useCaptcha", defaultSystemConfig.getUseCaptcha());
         // 验证码校验
         if ("0".equals(useCaptcha)) {
             CommonUtil.isEmptyStr(sysLoginForm.getUuid(), "验证码uuid不能为空");

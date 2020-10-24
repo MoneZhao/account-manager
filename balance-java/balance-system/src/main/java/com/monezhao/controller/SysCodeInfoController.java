@@ -116,7 +116,7 @@ public class SysCodeInfoController extends BaseController {
     @ApiOperation("根据代码类型查询代码信息清单")
     public Result getSysCodeInfos(String codeTypeIds) {
         Map<String, List<SysCodeInfo>> sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromRedis(codeTypeIds);
-        if (sysCodeInfosMap == null) {
+        if (sysCodeInfosMap == null|| sysCodeInfosMap.containsValue(null)) {
             sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromDb(codeTypeIds);
             sysCodeInfoService.loadSysCodeInfoToRedis(codeTypeIds);
         }

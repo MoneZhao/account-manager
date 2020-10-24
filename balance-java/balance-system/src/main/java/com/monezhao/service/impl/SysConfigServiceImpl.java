@@ -13,6 +13,7 @@ import com.monezhao.service.SysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -99,5 +100,23 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigMapper, SysCo
             this.removeById(idsArr[0]);
         }
         this.loadSysConfigToRedis(null);
+    }
+
+    @Override
+    public String getSysConfig(String configId, String defaultValue) {
+        if (StringUtils.isEmpty(configId)) {
+            return defaultValue;
+        }
+        String sysConfig = (String) redisUtil.get(Constants.PREFIX_SYS_CONFIG + configId);
+        if (sysConfig == null) {
+            SysConfig config = this.getById(configId);
+            if (config != null) {
+                sysConfig = config.getConfigValue();
+                redisUtil.set(Constants.PREFIX_SYS_CONFIG + config.getConfigId(), config.getConfigValue());
+            } else {
+                return defaultValue;
+            }
+        }
+        return sysConfig;
     }
 }

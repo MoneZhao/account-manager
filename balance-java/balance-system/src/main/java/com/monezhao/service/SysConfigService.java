@@ -37,4 +37,13 @@ public interface SysConfigService extends BaseService<SysConfig> {
      * @param ids
      */
     void deleteSysConfig(String ids);
+
+    /**
+     * 获取系统参数
+     *
+     * @param configId configId
+     * @param defaultValue defaultValue
+     * @return SysConfig
+     */
+    String getSysConfig(String configId, String defaultValue);
 }
