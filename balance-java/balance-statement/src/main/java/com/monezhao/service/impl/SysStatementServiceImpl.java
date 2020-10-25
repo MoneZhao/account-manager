@@ -85,7 +85,7 @@ public class SysStatementServiceImpl implements SysStatementService {
                 data1.add(null);
             }
 
-            if (i == 0 || i == dates.size() - 1) {
+            if (i == 0) {
                 data2.add(null);
             } else {
                 Double before = record.getOrDefault(dates.get(i - 1), null);
