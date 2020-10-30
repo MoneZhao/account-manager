@@ -107,16 +107,16 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigMapper, SysCo
         if (StringUtils.isEmpty(configId)) {
             return defaultValue;
         }
-        String sysConfig = (String) redisUtil.get(Constants.PREFIX_SYS_CONFIG + configId);
-        if (sysConfig == null) {
+        String sysConfigValue = (String) redisUtil.get(Constants.PREFIX_SYS_CONFIG + configId);
+        if (sysConfigValue == null) {
             SysConfig config = this.getById(configId);
             if (config != null) {
-                sysConfig = config.getConfigValue();
-                redisUtil.set(Constants.PREFIX_SYS_CONFIG + config.getConfigId(), config.getConfigValue());
+                sysConfigValue = config.getConfigValue();
+                redisUtil.set(Constants.PREFIX_SYS_CONFIG + configId, sysConfigValue);
             } else {
                 return defaultValue;
             }
         }
-        return sysConfig;
+        return sysConfigValue;
     }
 }

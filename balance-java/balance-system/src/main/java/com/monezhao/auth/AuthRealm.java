@@ -7,6 +7,7 @@ import com.monezhao.common.Constants;
 import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.RedisUtil;
+import com.monezhao.service.SysConfigService;
 import com.monezhao.service.SysUserService;
 import com.monezhao.shiro.JwtToken;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,8 @@ public class AuthRealm extends AuthorizingRealm {
     @Autowired
     @Lazy
     private SysUserService sysUserService;
+    @Autowired
+    private SysConfigService sysConfigService;
     @Autowired
     private RedisUtil redisUtil;
 
@@ -75,7 +78,7 @@ public class AuthRealm extends AuthorizingRealm {
     /**
      * 获取身份验证信息 Shiro中，默认使用此方法进行用户名正确与否验证，错误抛出异常即可。
      *
-     * @param authenticationToken 用户身份信息 token
+     * @param auth 用户身份信息 token
      * @return 返回封装了用户信息的 AuthenticationInfo 实例
      */
     @Override
@@ -125,8 +128,10 @@ public class AuthRealm extends AuthorizingRealm {
         String userTokenKey = Constants.PREFIX_USER_TOKEN + userId;
         // 校验token有效性，若验证通过，刷新token缓存时间
         if (token.equals(redisUtil.get(userTokenKey)) && JwtUtil.verify(token, userId, password)) {
-            redisUtil.expire(userTokenKey, JwtUtil.EXPIRE_TIME);
-            redisUtil.expire(Constants.PREFIX_USER_SESSION_OBJECT + userId, JwtUtil.EXPIRE_TIME);
+            String expireTime = sysConfigService.getSysConfig("expireTime", String.valueOf(JwtUtil.EXPIRE_TIME));
+            long expireTimeL = Long.parseLong(expireTime);
+            redisUtil.expire(userTokenKey, expireTimeL);
+            redisUtil.expire(Constants.PREFIX_USER_SESSION_OBJECT + userId, expireTimeL);
             return true;
         }
         return false;

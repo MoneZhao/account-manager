@@ -144,6 +144,8 @@ export default {
       this.temp = {}
       this.temp.parentOrgName = row.label
       this.temp.parentOrgId = row.id
+      this.temp.orgLevel = ''
+      this.temp.orgLevelCode = ''
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
