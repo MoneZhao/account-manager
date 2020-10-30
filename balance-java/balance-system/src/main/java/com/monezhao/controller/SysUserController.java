@@ -20,6 +20,7 @@ import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.controller.command.SysUserIndex;
 import com.monezhao.controller.command.UserShortCut;
+import com.monezhao.service.SysConfigService;
 import com.monezhao.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,6 +52,9 @@ import java.util.Objects;
 public class SysUserController extends BaseController {
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private SysConfigService sysConfigService;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -148,7 +152,8 @@ public class SysUserController extends BaseController {
         sessionObject.setLoginTime(DateUtil.getNow());
         sessionObject.setIpAddr(IpUtils.getIpAddr(request));
         sessionObject.setToken((String) redisUtil.get(Constants.PREFIX_USER_TOKEN + sysUser.getUserId()));
-        redisUtil.set(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId(), sessionObject, JwtUtil.EXPIRE_TIME);
+        String expireTime = sysConfigService.getSysConfig("expireTime", String.valueOf(JwtUtil.EXPIRE_TIME));
+        redisUtil.set(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId(), sessionObject, Long.parseLong(expireTime));
         return Result.ok(sessionObject);
     }
 

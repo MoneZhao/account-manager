@@ -120,8 +120,9 @@ public class SysLoginController {
         }
         // 生成token,不传入token过期时间，在使用JwtUtil.verify时不会校验过期时间
         String token = JwtUtil.sign(userId, password);
+        String expireTime = sysConfigService.getSysConfig("expireTime", String.valueOf(JwtUtil.EXPIRE_TIME));
         // 使用redis管理token过期时间
-        redisUtil.set(Constants.PREFIX_USER_TOKEN + userId, token, JwtUtil.EXPIRE_TIME);
+        redisUtil.set(Constants.PREFIX_USER_TOKEN + userId, token, Long.parseLong(expireTime));
         HashMap<String, String> obj = new HashMap<>(1);
         obj.put("token", token);
         return Result.ok(obj);
