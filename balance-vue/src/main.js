@@ -36,6 +36,9 @@ import permission from './directive/permission/permission'
 import vueParticles from 'vue-particles'
 Vue.use(vueParticles)
 
+import vue2OrgTree from 'vue2-org-tree'
+Vue.use(vue2OrgTree)
+
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
