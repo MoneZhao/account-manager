@@ -245,7 +245,7 @@ export default {
             position: relative;
             width: 520px;
             max-width: 100%;
-            padding: 100px 35px 0;
+            padding: 13% 35px 0;
             margin: 0 auto;
             overflow: hidden;
         }
