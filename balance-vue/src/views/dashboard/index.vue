@@ -192,11 +192,15 @@ export default {
             {
               name: '您',
               type: 'bar',
+              barWidth: '30%', // 柱图宽度
+              barGap: '10%', // 柱图间距
               data: sevenUserVisitCount
             },
             {
               name: '总数',
               type: 'bar',
+              barWidth: '30%', // 柱图宽度
+              barGap: '10%', // 柱图间距
               data: sevenVisitCount
             }
           ]
