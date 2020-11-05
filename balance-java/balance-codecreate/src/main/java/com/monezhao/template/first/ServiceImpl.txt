@@ -3,10 +3,13 @@ package com.monezhao..service.impl;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.bean.{_sys}.{_Sys}{_CodeType};
 import com.monezhao..mapper.{_Sys}{_CodeType}Mapper;
 import com.monezhao..service.{_Sys}{_CodeType}Service;
+
+import java.util.List;
 
 /**
  * {tableNameCn}Service
@@ -18,6 +21,11 @@ public class {_Sys}{_CodeType}ServiceImpl extends BaseServiceImpl<{_Sys}{_CodeTy
         implements {_Sys}{_CodeType}Service {
     @Override
     public IPage<{_Sys}{_CodeType}> list(IPage<{_Sys}{_CodeType}> page, {_Sys}{_CodeType} {_sys}{_CodeType}) {
-        return page.setRecords(baseMapper.list(page, {_sys}{_CodeType}));
+        List<{_Sys}{_CodeType}> records = baseMapper.list(page, {_sys}{_CodeType});
+        if (page == null) {
+            page = new Page<>();
+            page.setTotal(records != null ? records.size() : 0L);
+        }
+        return page.setRecords(records);
     }
 }
