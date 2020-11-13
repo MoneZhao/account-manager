@@ -1,7 +1,8 @@
-package com.monezhao..mapper;
+package com.monezhao.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -13,6 +14,8 @@ import com.monezhao.bean.{_sys}.{_Sys}{_CodeType};
  *
  * @author {author}
  */
+
+@Mapper
 public interface {_Sys}{_CodeType}Mapper extends BaseMapper<{_Sys}{_CodeType}> {
     /**
      * 查询{tableNameCn}列表

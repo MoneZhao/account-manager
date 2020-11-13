@@ -7,6 +7,7 @@ import com.monezhao.bean.sys.SysRole;
 import com.monezhao.bean.sys.SysUser;
 import com.monezhao.bean.utilsVo.SysRolePermissionVO;
 import com.monezhao.controller.command.VisitCount;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.List;
  *
  * @author monezhao@163.com
  */
+
+@Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 查询用户列表
@@ -24,7 +27,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param entity
      * @return
      */
-    public List<SysUser> list(IPage<SysUser> page, @Param("entity") SysUser entity);
+    List<SysUser> list(IPage<SysUser> page, @Param("entity") SysUser entity);
 
     /**
      * 根据用户Id查询角色列表
@@ -32,14 +35,14 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param userId
      * @return
      */
-    public List<SysRole> getRolesByUserId(@Param("userId") String userId);
+    List<SysRole> getRolesByUserId(@Param("userId") String userId);
 
     /**
      * 查询所有权限清单
      *
      * @return
      */
-    public List<SysRolePermissionVO> getAdminPermissions();
+    List<SysRolePermissionVO> getAdminPermissions();
 
     /**
      * 根据角色Id查询角色权限清单
@@ -47,7 +50,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param roleId
      * @return
      */
-    public List<SysRolePermissionVO> getRolePermissions(@Param("roleId") String roleId);
+    List<SysRolePermissionVO> getRolePermissions(@Param("roleId") String roleId);
 
     /**
      * 根据角色Id查询菜单列表
@@ -55,7 +58,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param roleId
      * @return
      */
-    public List<SysMenu> getRoleMenus(@Param("roleId") String roleId);
+    List<SysMenu> getRoleMenus(@Param("roleId") String roleId);
 
     /**
      * 总访问量

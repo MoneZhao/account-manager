@@ -3,6 +3,7 @@ package com.monezhao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysBalanceMain;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  *
  * @author monezhao@163.com
  */
+
+@Mapper
 public interface SysBalanceMainMapper extends BaseMapper<SysBalanceMain> {
     /**
      * 查询账户余额列表
@@ -28,5 +31,5 @@ public interface SysBalanceMainMapper extends BaseMapper<SysBalanceMain> {
      * @param mainIds
      * @return
      */
-    boolean deleteMainIds(@Param("list")List<String> mainIds);
+    boolean deleteMainIds(@Param("list") List<String> mainIds);
 }

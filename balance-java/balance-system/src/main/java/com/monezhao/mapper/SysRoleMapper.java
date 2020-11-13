@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysRole;
 import com.monezhao.bean.sys.SysRoleUser;
 import com.monezhao.bean.sys.SysUser;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
  *
  * @author monezhao@163.com
  */
+
+@Mapper
 public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
      * 查询角色列表
@@ -22,7 +25,7 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @param entity
      * @return
      */
-    public List<SysRole> list(IPage<SysRole> page, @Param("entity") SysRole entity);
+    List<SysRole> list(IPage<SysRole> page, @Param("entity") SysRole entity);
 
     /**
      * 根据角色I点查询菜单按钮列表
@@ -30,7 +33,7 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @param roleId
      * @return
      */
-    public List<String> listMenuOrFuncIdsByRoleId(String roleId);
+    List<String> listMenuOrFuncIdsByRoleId(String roleId);
 
     /**
      * 查询角色用户列表
@@ -39,5 +42,5 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      * @param entity
      * @return
      */
-    public List<SysUser> getRoleUser(IPage<SysUser> page, @Param("entity") SysRoleUser entity);
+    List<SysUser> getRoleUser(IPage<SysUser> page, @Param("entity") SysRoleUser entity);
 }

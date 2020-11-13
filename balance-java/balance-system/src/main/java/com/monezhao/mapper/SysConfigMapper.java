@@ -3,6 +3,7 @@ package com.monezhao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysConfig;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  *
  * @author monezhao@163.com
  */
+
+@Mapper
 public interface SysConfigMapper extends BaseMapper<SysConfig> {
     /**
      * 查询系统参数列表
@@ -20,5 +23,5 @@ public interface SysConfigMapper extends BaseMapper<SysConfig> {
      * @param entity
      * @return
      */
-    public List<SysConfig> list(IPage<SysConfig> page, @Param("entity") SysConfig entity);
+    List<SysConfig> list(IPage<SysConfig> page, @Param("entity") SysConfig entity);
 }

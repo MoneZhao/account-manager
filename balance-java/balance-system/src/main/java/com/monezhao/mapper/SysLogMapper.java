@@ -3,6 +3,7 @@ package com.monezhao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysLog;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  *
  * @author monezhao@163.com
  */
+
+@Mapper
 public interface SysLogMapper extends BaseMapper<SysLog> {
     /**
      * 查询系统日志列表
@@ -20,5 +23,5 @@ public interface SysLogMapper extends BaseMapper<SysLog> {
      * @param entity
      * @return
      */
-    public List<SysLog> list(IPage<SysLog> page, @Param("entity") SysLog entity);
+    List<SysLog> list(IPage<SysLog> page, @Param("entity") SysLog entity);
 }

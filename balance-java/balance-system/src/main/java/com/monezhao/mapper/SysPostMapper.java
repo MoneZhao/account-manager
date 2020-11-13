@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysPost;
 import com.monezhao.bean.sys.SysPostUser;
 import com.monezhao.bean.sys.SysUser;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
  *
  * @author monezhao@163.com
  */
+
+@Mapper
 public interface SysPostMapper extends BaseMapper<SysPost> {
     /**
      * 查询岗位列表
@@ -22,7 +25,7 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
      * @param entity
      * @return
      */
-    public List<SysPost> list(IPage<SysPost> page, @Param("entity") SysPost entity);
+    List<SysPost> list(IPage<SysPost> page, @Param("entity") SysPost entity);
 
     /**
      * 查询岗位用户列表
@@ -31,5 +34,5 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
      * @param entity
      * @return
      */
-    public List<SysUser> getPostUser(IPage<SysUser> page, @Param("entity") SysPostUser entity);
+    List<SysUser> getPostUser(IPage<SysUser> page, @Param("entity") SysPostUser entity);
 }

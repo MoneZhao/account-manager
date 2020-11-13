@@ -3,6 +3,7 @@ package com.monezhao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysPostUser;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  *
  * @author monezhao@163.com
  */
+
+@Mapper
 public interface SysPostUserMapper extends BaseMapper<SysPostUser> {
     /**
      * 查询岗位和用户关系列表
@@ -20,5 +23,5 @@ public interface SysPostUserMapper extends BaseMapper<SysPostUser> {
      * @param entity
      * @return
      */
-    public List<SysPostUser> list(IPage<SysPostUser> page, @Param("entity") SysPostUser entity);
+    List<SysPostUser> list(IPage<SysPostUser> page, @Param("entity") SysPostUser entity);
 }

@@ -3,6 +3,7 @@ package com.monezhao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysCodeType;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  *
  * @author monezhao@163.com
  */
+
+@Mapper
 public interface SysCodeTypeMapper extends BaseMapper<SysCodeType> {
     /**
      * 查询代码类别列表
@@ -20,5 +23,5 @@ public interface SysCodeTypeMapper extends BaseMapper<SysCodeType> {
      * @param entity
      * @return
      */
-    public List<SysCodeType> list(IPage<SysCodeType> page, @Param("entity") SysCodeType entity);
+    List<SysCodeType> list(IPage<SysCodeType> page, @Param("entity") SysCodeType entity);
 }

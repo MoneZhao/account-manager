@@ -3,6 +3,7 @@ package com.monezhao.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.bean.sys.SysRolePermission;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  *
  * @author monezhao@163.com
  */
+
+@Mapper
 public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
     /**
      * 查询操作权限列表
@@ -20,5 +23,5 @@ public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
      * @param entity
      * @return
      */
-    public List<SysRolePermission> list(IPage<SysRolePermission> page, @Param("entity") SysRolePermission entity);
+    List<SysRolePermission> list(IPage<SysRolePermission> page, @Param("entity") SysRolePermission entity);
 }
