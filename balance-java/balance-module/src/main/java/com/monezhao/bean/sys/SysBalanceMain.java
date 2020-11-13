@@ -24,7 +24,7 @@ import java.util.Date;
 
 /**
  * 【账户余额】实体类
- * 
+ *
  * @author monezhao@163.com
  */
 @Getter
@@ -72,6 +72,7 @@ public class SysBalanceMain extends BaseEntity {
 
     /**
      * 用户名
+     *
      * @TableField(exist = false)之后要加上一行注解
      * @ApiModelProperty(hidden = true)
      */

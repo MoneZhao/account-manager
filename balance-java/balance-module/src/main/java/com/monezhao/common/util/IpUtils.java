@@ -29,7 +29,7 @@ public class IpUtils {
             //打印所有头信息
             String s = headerNames.nextElement();
             String header = request.getHeader(s);
-            System.out.println(s+"::::"+header);
+            System.out.println(s + "::::" + header);
         }
         String ipAddress = request.getHeader("x-forwarded-for");
         if (ipAddress == null || ipAddress.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddress)) {

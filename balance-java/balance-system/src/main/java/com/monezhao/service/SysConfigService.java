@@ -41,7 +41,7 @@ public interface SysConfigService extends BaseService<SysConfig> {
     /**
      * 获取系统参数
      *
-     * @param configId configId
+     * @param configId     configId
      * @param defaultValue defaultValue
      * @return SysConfig
      */

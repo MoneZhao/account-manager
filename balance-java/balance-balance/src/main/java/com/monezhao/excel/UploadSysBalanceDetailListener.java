@@ -18,10 +18,8 @@ import java.util.List;
 public class UploadSysBalanceDetailListener extends AnalysisEventListener<SysBalanceDetail> {
 
     private static final int BATCH_COUNT = 100;
-
+    private final SysBalanceDetailService detailService;
     List<SysBalanceDetail> list = new ArrayList<>();
-
-    private SysBalanceDetailService detailService;
 
     public UploadSysBalanceDetailListener(SysBalanceDetailService detailService) {
         this.detailService = detailService;

@@ -31,7 +31,7 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
 
     @Override
     public IPage<SysBalanceDetail> list(IPage<SysBalanceDetail> page, SysBalanceDetail sysBalanceDetail) {
-        List<SysBalanceDetail> records =  baseMapper.list(page, sysBalanceDetail);
+        List<SysBalanceDetail> records = baseMapper.list(page, sysBalanceDetail);
         if (page == null) {
             page = new Page<>();
             page.setTotal(records != null ? records.size() : 0L);

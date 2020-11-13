@@ -48,10 +48,9 @@ import java.util.Arrays;
 @Api(tags = "代码在线生成")
 public class SysCodeCreateController extends BaseController {
 
+    private static final String EXCEL_DESIGN_PATH = CodeUtil.projectPath + "db" + File.separator;
     @Autowired
     private SysCodeCreateService sysCodeCreateService;
-
-    private static final String EXCEL_DESIGN_PATH = CodeUtil.projectPath + "db" + File.separator;
 
     /**
      * 自定义查询列表

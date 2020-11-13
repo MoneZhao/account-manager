@@ -253,7 +253,7 @@ public class SysUserController extends BaseController {
     @PostMapping(value = "/userShortCutSave")
     @SysLogAuto(value = "修改用户快捷方式")
     @ApiOperation("修改用户快捷方式")
-    public Result userShortCutSave(@RequestBody UserShortCut userShortCut){
+    public Result userShortCutSave(@RequestBody UserShortCut userShortCut) {
         if (userShortCut.getUserId() == null) {
             return Result.error("未指定用户");
         }

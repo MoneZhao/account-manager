@@ -13,7 +13,7 @@ public interface BaseService<T> extends IService<T> {
      * 分页查询
      *
      * @param page page
-     * @param t t
+     * @param t    t
      * @return IPage
      */
     IPage<T> list(IPage<T> page, T t);

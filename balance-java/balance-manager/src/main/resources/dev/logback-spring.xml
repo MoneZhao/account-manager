@@ -3,7 +3,7 @@
 
 <configuration scan="true" scanPeriod="30 minutes" debug="true">
 
-    <property name="LOG_FILE_LOCATION" value="./logs/@contextPath@" />
+    <property name="LOG_FILE_LOCATION" value="./logs/@contextPath@"/>
 
     <property name="CONSOLE_LOG_PATTERN_CONSOLE"
               value="%red(%date{yyyy-MM-dd HH:mm:ss}) %highlight(%-5level) %red([%thread]) %boldMagenta(%replace(%caller{1}){'at| |\t|Caller.{1}0|\r|\n', ''}) %cyan(%msg%n)"/>
