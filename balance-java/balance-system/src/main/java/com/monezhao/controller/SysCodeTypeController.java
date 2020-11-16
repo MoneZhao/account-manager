@@ -3,6 +3,7 @@ package com.monezhao.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysCodeType;
 import com.monezhao.common.Result;
@@ -31,6 +32,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/sys/codeType")
 @Api(tags = "代码类别")
+@ApiSupport(author = "monezhao@163.com")
 public class SysCodeTypeController extends BaseController {
     @Autowired
     private SysCodeTypeService sysCodeTypeService;

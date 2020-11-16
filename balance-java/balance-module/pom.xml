@@ -27,11 +27,11 @@
         <jwt.version>3.10.3</jwt.version>
         <shiro.version>1.5.3</shiro.version>
         <jsoup.version>1.13.1</jsoup.version>
-        <swagger.version>2.9.2</swagger.version>
+        <swagger.version>2.10.5</swagger.version>
         <oshi.version>3.9.1</oshi.version>
         <quartz.version>2.3.2</quartz.version>
         <easyexcel.version>2.2.4</easyexcel.version>
-        <knife4j.version>2.0.5</knife4j.version>
+        <knife4j.version>2.0.7</knife4j.version>
     </properties>
 
     <dependencies>
@@ -128,22 +128,21 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${swagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>${knife4j.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>swagger-models</artifactId>
                     <groupId>io.swagger</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>swagger-annotations</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
         </dependency>
 
         <dependency>

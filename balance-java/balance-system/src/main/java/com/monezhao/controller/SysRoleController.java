@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysRole;
 import com.monezhao.bean.sys.SysRolePermission;
@@ -38,6 +39,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/role")
 @Api(tags = "角色")
+@ApiSupport(author = "monezhao@163.com")
 public class SysRoleController extends BaseController {
     @Autowired
     private SysRoleService sysRoleService;

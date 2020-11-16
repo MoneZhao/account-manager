@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.bean.sys.SysBalanceMain;
@@ -59,6 +60,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/sys/balanceMain")
 @Api(tags = "账户余额")
+@ApiSupport(author = "monezhao@163.com")
 public class SysBalanceMainController extends BaseController {
 
     @Autowired

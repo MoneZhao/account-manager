@@ -2,6 +2,7 @@ package com.monezhao.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysPost;
 import com.monezhao.bean.sys.SysPostUser;
@@ -32,6 +33,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/sys/post")
 @Api(tags = "岗位")
+@ApiSupport(author = "monezhao@163.com")
 public class SysPostController extends BaseController {
     @Autowired
     private SysPostService sysPostService;

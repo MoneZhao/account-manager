@@ -3,6 +3,7 @@ package com.monezhao.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysConfig;
 import com.monezhao.common.Result;
@@ -31,6 +32,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/sys/config")
 @Api(tags = "系统参数")
+@ApiSupport(author = "monezhao@163.com")
 public class SysConfigController extends BaseController {
     @Autowired
     private SysConfigService sysConfigService;

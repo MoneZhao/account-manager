@@ -34,6 +34,7 @@ import com.monezhao.annotation.SysLogAuto;
 @RestController
 @RequestMapping("/{_sys}/{_codeType}")
 @Api(tags = "{tableNameCn}")
+@ApiSupport(author = "monezhao@163.com")
 public class {_Sys}{_CodeType}Controller extends BaseController {
     @Autowired
     private {_Sys}{_CodeType}Service {_sys}{_CodeType}Service;

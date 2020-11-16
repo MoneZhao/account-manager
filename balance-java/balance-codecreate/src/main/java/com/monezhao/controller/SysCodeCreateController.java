@@ -3,6 +3,7 @@ package com.monezhao.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.CreateFirst;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysCodeCreate;
@@ -46,6 +47,7 @@ import java.util.Arrays;
 @RequestMapping("/sys/codeCreate")
 @Slf4j
 @Api(tags = "代码在线生成")
+@ApiSupport(author = "monezhao@163.com")
 public class SysCodeCreateController extends BaseController {
 
     private static final String EXCEL_DESIGN_PATH = CodeUtil.projectPath + "db" + File.separator;

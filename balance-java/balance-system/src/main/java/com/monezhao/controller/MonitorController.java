@@ -1,5 +1,6 @@
 package com.monezhao.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.bean.utilsVo.RedisInfo;
 import com.monezhao.common.Result;
 import com.monezhao.service.RedisService;
@@ -26,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/actuator")
 @Api(tags = "服务器监控")
+@ApiSupport(author = "monezhao@163.com")
 public class MonitorController {
 
     @Autowired

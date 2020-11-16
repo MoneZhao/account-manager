@@ -3,6 +3,7 @@ package com.monezhao.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.common.Result;
@@ -31,6 +32,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/sys/balanceDetail")
 @Api(tags = "账户明细")
+@ApiSupport(author = "monezhao@163.com")
 public class SysBalanceDetailController extends BaseController {
     @Autowired
     private SysBalanceDetailService sysBalanceDetailService;

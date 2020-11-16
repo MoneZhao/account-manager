@@ -2,6 +2,7 @@ package com.monezhao.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysRolePermission;
 import com.monezhao.common.Result;
@@ -31,6 +32,7 @@ import java.util.Arrays;
 @RestController
 @RequestMapping("/sys/rolePermission")
 @Api(tags = "操作权限")
+@ApiSupport(author = "monezhao@163.com")
 public class SysRolePermissionController extends BaseController {
     @Autowired
     private SysRolePermissionService sysRolePermissionService;

@@ -47,10 +47,21 @@ async:
       keep-alive-seconds: 60
 system-config:
   # 新建用户或者重置用户密码默认密码
-  default-password: '1'
+  default-password: 1
   # 是否使用验证码, 0 使用 1不使用
-  use-captcha: '1'
+  use-captcha: 1
 # Swagger的bug, 忽略报错
 logging:
   level:
     io.swagger.models.parameters.AbstractSerializableParameter: error
+knife4j:
+  enable: true
+  basic:
+    enable: true
+    username: admin
+    password: 123456
+  setting:
+    enableVersion: false
+    enableSwaggerModels: true
+    swaggerModelName: 实体类列表
+    enableFilterMultipartApis: true

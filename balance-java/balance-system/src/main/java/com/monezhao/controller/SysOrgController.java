@@ -3,6 +3,7 @@ package com.monezhao.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysOrg;
 import com.monezhao.bean.utilsVo.ElTree;
@@ -37,6 +38,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/org")
 @Api(tags = "机构")
+@ApiSupport(author = "monezhao@163.com")
 public class SysOrgController extends BaseController {
     @Autowired
     private SysOrgService sysOrgService;

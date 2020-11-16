@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysUser;
 import com.monezhao.bean.utilsVo.SessionObject;
@@ -49,6 +50,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/sys/user")
 @Api(tags = "用户")
+@ApiSupport(author = "monezhao@163.com")
 public class SysUserController extends BaseController {
     @Autowired
     private SysUserService sysUserService;

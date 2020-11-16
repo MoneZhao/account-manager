@@ -2,6 +2,7 @@ package com.monezhao.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysRoleUser;
 import com.monezhao.common.Result;
@@ -31,6 +32,7 @@ import java.util.Arrays;
 @RestController
 @RequestMapping("/sys/roleUser")
 @Api(tags = "角色和用户关系")
+@ApiSupport(author = "monezhao@163.com")
 public class SysRoleUserController extends BaseController {
     @Autowired
     private SysRoleUserService sysRoleUserService;

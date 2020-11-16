@@ -3,6 +3,7 @@ package com.monezhao.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysCodeInfo;
 import com.monezhao.common.Result;
@@ -33,6 +34,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/sys/codeInfo")
 @Api(tags = "代码信息")
+@ApiSupport(author = "monezhao@163.com")
 public class SysCodeInfoController extends BaseController {
     @Autowired
     private SysCodeInfoService sysCodeInfoService;

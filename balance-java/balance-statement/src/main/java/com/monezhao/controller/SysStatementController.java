@@ -1,5 +1,6 @@
 package com.monezhao.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.command.StatementCommand;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/sys/statement")
 @Api(tags = "账户报表")
+@ApiSupport(author = "monezhao@163.com")
 public class SysStatementController extends BaseController {
 
     @Autowired

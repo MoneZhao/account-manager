@@ -1,5 +1,6 @@
 package com.monezhao.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.google.code.kaptcha.Producer;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysUser;
@@ -48,6 +49,7 @@ import java.util.Objects;
 @RequestMapping("/sys")
 @Slf4j
 @Api(tags = "后台用户登录")
+@ApiSupport(author = "monezhao@163.com")
 public class SysLoginController {
 
     @Autowired

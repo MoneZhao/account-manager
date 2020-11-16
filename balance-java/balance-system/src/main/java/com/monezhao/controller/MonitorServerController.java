@@ -1,5 +1,6 @@
 package com.monezhao.controller;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.common.server.Server;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/sys/monitor/server")
 @Api(tags = "服务器监控")
+@ApiSupport(author = "monezhao@163.com")
 public class MonitorServerController extends BaseController {
     @RequiresPermissions("monitor:server:getServerInfo")
     @GetMapping(value = "/getServerInfo")

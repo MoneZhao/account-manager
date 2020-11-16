@@ -3,6 +3,7 @@ package com.monezhao.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysMenu;
 import com.monezhao.bean.utilsVo.ElTree;
@@ -33,6 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/menu")
 @Api(tags = "菜单")
+@ApiSupport(author = "monezhao@163.com")
 public class SysMenuController extends BaseController {
     @Autowired
     private SysMenuService sysMenuService;
