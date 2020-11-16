@@ -80,6 +80,7 @@ public class SysBalanceMainController extends BaseController {
     @RequiresPermissions("sys:balanceMain:list")
     @GetMapping(value = "/list")
     @ApiOperation("账户余额列表")
+    @ApiOperationSupport(author = "monezhao@163.com")
     public Result list(SysBalanceMain sysBalanceMain, @RequestParam Integer current, @RequestParam Integer size) {
         SysUser sysUser = ShiroUtils.getSysUser();
         sysBalanceMain.setUserId(sysUser.getUserId());
@@ -90,6 +91,7 @@ public class SysBalanceMainController extends BaseController {
     @RequiresPermissions("sys:balanceMain:list")
     @GetMapping(value = "/queryById")
     @ApiOperation("账户余额查询")
+    @ApiOperationSupport(author = "monezhao@163.com")
     public Result queryById(@RequestParam String id) {
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(id);
         return Result.ok(sysBalanceMain);
