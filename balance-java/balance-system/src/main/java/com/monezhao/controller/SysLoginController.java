@@ -8,6 +8,7 @@ import com.monezhao.bean.utilsVo.SessionObject;
 import com.monezhao.bean.utilsVo.SysLoginForm;
 import com.monezhao.common.Constants;
 import com.monezhao.common.Result;
+import com.monezhao.common.exception.BaseException;
 import com.monezhao.common.exception.SysException;
 import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.JwtUtil;
@@ -116,9 +117,23 @@ public class SysLoginController {
         SysUser sysUser = sysUserService.getById(userId);
         CommonUtil.isEmptyObject(sysUser, "该用户不存在");
 
+        if (!Objects.equals("1", sysUser.getStatus())) {
+            throw new BaseException("该用户已被锁定, 请联系系统管理员解锁");
+        }
+
         String password = PasswordUtil.encrypt(sysLoginForm.getPassword(), sysUser.getSalt());
         if (!password.equals(sysUser.getPassword())) {
+            Integer count = (Integer) redisUtil.get(Constants.PREFIX_LOGIN_COUNT + userId);
+            Integer setCount = Integer.valueOf(sysConfigService.getSysConfig("loginCount", "5"));
+            if (count < setCount) {
+                redisUtil.set(Constants.PREFIX_LOGIN_COUNT + userId, count + 1);
+            } else {
+                sysUser.setStatus("2");
+                sysUserService.updateById(sysUser);
+            }
             return Result.error("用户名或密码错误");
+        } else {
+            redisUtil.del(Constants.PREFIX_LOGIN_COUNT + userId);
         }
         // 生成token,不传入token过期时间，在使用JwtUtil.verify时不会校验过期时间
         String token = JwtUtil.sign(userId, password);
