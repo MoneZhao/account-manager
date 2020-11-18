@@ -123,15 +123,17 @@ public class SysLoginController {
 
         String password = PasswordUtil.encrypt(sysLoginForm.getPassword(), sysUser.getSalt());
         if (!password.equals(sysUser.getPassword())) {
-            Integer count = (Integer) redisUtil.get(Constants.PREFIX_LOGIN_COUNT + userId);
+            Integer count = (Integer) redisUtil.get(Constants.PREFIX_LOGIN_COUNT + userId, 0);
             Integer setCount = Integer.valueOf(sysConfigService.getSysConfig("loginCount", "5"));
-            if (count < setCount) {
+            if (count < setCount - 1) {
+                Integer tryCount = setCount - 1 - count;
                 redisUtil.set(Constants.PREFIX_LOGIN_COUNT + userId, count + 1);
+                return Result.error("用户名或密码错误, 还可以尝试" + tryCount + "次");
             } else {
                 sysUser.setStatus("2");
                 sysUserService.updateById(sysUser);
+                return Result.error("用户名或密码错误, 用户已被锁定, 请联系系统管理员解锁");
             }
-            return Result.error("用户名或密码错误");
         } else {
             redisUtil.del(Constants.PREFIX_LOGIN_COUNT + userId);
         }
