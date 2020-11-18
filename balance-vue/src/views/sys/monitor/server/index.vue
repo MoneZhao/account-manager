@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
-    <el-row>
+    <el-row
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+    >
       <el-col :span="12">
         <div style="margin-right: 5px;">
           <el-card>
@@ -268,7 +271,7 @@
                   </tr>
                 </thead>
                 <tbody v-if="server.sysFiles">
-                  <tr v-for="sysFile in server.sysFiles">
+                  <tr v-for="sysFile in server.sysFiles" :key="sysFile.dirName">
                     <td>
                       <div class="cell">{{ sysFile.dirName }}</div>
                     </td>
@@ -310,6 +313,12 @@ export default {
   name: 'MonitorServer',
   data() {
     return {
+      loading: false,
+      option: {
+        text: '拼命加载中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+      },
       // 服务器信息
       server: []
     }
@@ -320,8 +329,10 @@ export default {
   methods: {
     /** 查询服务器信息 */
     getServerInfo() {
+      this.loading = true
       getAction('/sys/monitor/server/getServerInfo', {}).then(res => {
         this.server = res.data
+        this.loading = false
       })
     }
   }
