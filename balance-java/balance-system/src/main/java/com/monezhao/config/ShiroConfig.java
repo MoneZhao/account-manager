@@ -38,7 +38,6 @@ public class ShiroConfig {
         Map<String, Filter> filterMap = new HashMap<>(1);
         filterMap.put("jwt", new JwtFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
-        filterChainDefinitionMap.put("/doc.html", "jwt");
 
         // 配置不会被拦截的链接 顺序判断
         // 登录接口
@@ -67,6 +66,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**/*.gif", "anon");
         filterChainDefinitionMap.put("/druid/**", "anon");
         // swagger相关begin
+        //filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/doc.html", "anon");
         filterChainDefinitionMap.put("/csrf", "anon");
         filterChainDefinitionMap.put("/**/*swagger*/**", "anon");
         filterChainDefinitionMap.put("/webjars/**", "anon");
@@ -74,7 +75,7 @@ public class ShiroConfig {
         // swagger相关end
 
         // 性能监控
-//        filterChainDefinitionMap.put("/actuator/**", "anon");
+        filterChainDefinitionMap.put("/actuator/**", "anon");
 
         // 一般将/**放在最为下边
         filterChainDefinitionMap.put("/**", "jwt");
