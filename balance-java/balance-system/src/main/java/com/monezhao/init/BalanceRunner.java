@@ -23,7 +23,7 @@ import java.net.UnknownHostException;
 public class BalanceRunner implements ApplicationRunner {
 
     @Autowired
-    TomcatServletWebServerFactory tomcatServletWebServerFactory;
+    private TomcatServletWebServerFactory tomcatServletWebServerFactory;
     @Autowired
     private SysConfigService sysConfigService;
     @Autowired
