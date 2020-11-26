@@ -11,6 +11,18 @@
     <property name="CONSOLE_LOG_PATTERN_LOG"
               value="%date{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{50} %msg%n"/>
 
+    <property name="CONSOLE_LOG_PATTERN_IBATIS"
+              value="%blue(%msg%n)"/>
+
+    <property name="FILE_LOG_PATTERN_IBATIS"
+              value="%msg%n"/>
+
+    <appender name="IBATIS" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN_IBATIS}</pattern>
+        </encoder>
+    </appender>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${CONSOLE_LOG_PATTERN_CONSOLE}</pattern>
@@ -31,6 +43,18 @@
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>${CONSOLE_LOG_PATTERN_LOG}</pattern>
+        </layout>
+    </appender>
+
+    <appender name="FILE-IBATIS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_FILE_LOCATION}/@contextPath@-sql.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_FILE_LOCATION}/history/@contextPath@-sql.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+            <!-- Keep 10 day log -->
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${FILE_LOG_PATTERN_IBATIS}</pattern>
         </layout>
     </appender>
 
@@ -62,13 +86,29 @@
         <appender-ref ref="FILE"/>
     </appender>
 
+    <appender name="ASYNC-FILE-IBATIS" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>256</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="FILE-IBATIS"/>
+    </appender>
+
     <appender name="ASYNC-FILE-ERROR" class="ch.qos.logback.classic.AsyncAppender">
         <discardingThreshold>0</discardingThreshold>
         <queueSize>256</queueSize>
         <appender-ref ref="FILE-ERROR"/>
     </appender>
 
-    <root>
+    <logger name="com.monezhao.mapper" level="trace" additivity="false">
+        <appender-ref ref="IBATIS"/>
+        <appender-ref ref="ASYNC-FILE-IBATIS"/>
+    </logger>
+
+    <logger name="org.springframework.boot.autoconfigure" level="error"/>
+
+    <root level="info">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ASYNC-FILE"/>
         <appender-ref ref="ASYNC-FILE-ERROR"/>

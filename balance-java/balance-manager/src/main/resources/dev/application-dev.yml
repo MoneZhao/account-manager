@@ -61,14 +61,3 @@ spring:
         min-idle: 10
 debug: true
 swagger-enable: true #生产可关闭设置成false
-#打印mybatis-plussql，生产应关闭
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-logging:
-  level:
-    root: info
-    org:
-      springframework:
-        boot:
-          autoconfigure: error

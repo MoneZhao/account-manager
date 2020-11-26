@@ -66,6 +66,3 @@ swagger-enable: true #生产可关闭设置成false
 mybatis-plus:
   global-config:
     banner: false
-logging:
-  level:
-    root: error
