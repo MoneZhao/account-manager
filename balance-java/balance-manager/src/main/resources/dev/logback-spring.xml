@@ -25,9 +25,9 @@
         </filter>
         <File>${LOG_FILE_LOCATION}/@contextPath@.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_FILE_LOCATION}/@contextPath@.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+            <FileNamePattern>${LOG_FILE_LOCATION}/history/@contextPath@.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
             <!-- Keep 10 day log -->
-            <maxHistory>10</maxHistory>
+            <maxHistory>15</maxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>${CONSOLE_LOG_PATTERN_LOG}</pattern>
@@ -43,10 +43,10 @@
 
         <File>${LOG_FILE_LOCATION}/error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_FILE_LOCATION}/error.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+            <FileNamePattern>${LOG_FILE_LOCATION}/history/error.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
 
             <!-- Keep 10 day log -->
-            <maxHistory>10</maxHistory>
+            <maxHistory>15</maxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>${CONSOLE_LOG_PATTERN_LOG}</pattern>
