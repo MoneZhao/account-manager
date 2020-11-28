@@ -172,7 +172,7 @@ public class SysBalanceMainController extends BaseController {
         QueryWrapper<SysBalanceMain> queryWrapper = new QueryWrapper<>();
         String userId = ShiroUtils.getUserId();
         Date date = sysBalanceMain.getAccountDate();
-        queryWrapper.eq("delete_type", 0).eq("user_id", userId).eq("account_date", date);
+        queryWrapper.eq("user_id", userId).eq("account_date", date);
         sysBalanceMain = sysBalanceMainService.getOne(queryWrapper);
         if (Objects.isNull(sysBalanceMain)) {
             YearMonthDayStartAndEnd startAndEnd =

@@ -33,7 +33,6 @@ public class SysBalanceMainControllerTest {
         YearMonthDayStartAndEnd startAndEnd =
                 DateTimeUtil.dateToYearMonthDayStartAndEnd(DateUtil.strToDate("2020-05-12", "yyyy-MM-dd"));
         queryWrapper
-                .eq("delete_type", 0)
                 .eq("user_id", userId)
                 .between("account_date", startAndEnd.getFirstDayOfMonth(), startAndEnd.getLastDayOfMonth());
         sysBalanceMainService.list(queryWrapper).forEach(vo -> log.info(JacksonUtil.objToStr(vo)));

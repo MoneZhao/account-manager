@@ -84,7 +84,6 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     public boolean deleteMain(List<String> idsArr) {
         QueryWrapper<SysBalanceDetail> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .eq(SysBalanceDetail::getDeleteType, 0)
                 .in(SysBalanceDetail::getBalanceMainId, idsArr);
         List<String> ids = baseMapper.selectList(queryWrapper).stream()
                 .map(SysBalanceDetail::getBalanceDetailId)
