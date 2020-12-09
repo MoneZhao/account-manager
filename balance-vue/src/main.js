@@ -39,6 +39,9 @@ Vue.use(vueParticles)
 import vue2OrgTree from 'vue2-org-tree'
 Vue.use(vue2OrgTree)
 
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
+
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 

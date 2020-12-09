@@ -25,6 +25,7 @@
         <module>balance-balance</module>
         <module>balance-statement</module>
         <module>balance-module</module>
+        <module>balance-flowable</module>
     </modules>
     <dependencies>
     </dependencies>

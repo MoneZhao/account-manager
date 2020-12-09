@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.monezhao.mapper.FlowableFormMapper">
+
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.monezhao.bean.flowable.FlowableForm">
+        select
+        a.form_key as formKey,
+        a.form_name as formName,
+        a.create_by as createBy,
+        a.create_date as createDate,
+        a.create_time as createTime,
+        a.update_by as updateBy,
+        a.update_date as updateDate,
+        a.update_time as updateTime
+
+        from t_flowable_form a
+        where 1=1
+        <if test="entity.formKey != null and entity.formKey !=''">
+            <![CDATA[	AND a.form_key = #{entity.formKey}	]]>
+        </if>
+        <if test="entity.formName != null and entity.formName !=''">
+            <![CDATA[	AND a.form_name = #{entity.formName}	]]>
+        </if>
+        order by a.create_time desc
+    </select>
+</mapper>

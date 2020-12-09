@@ -27,6 +27,30 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/flowableFormEdit',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/',
+        name: 'flowableFormEdit',
+        component: () => import('@/views/flowable/form/edit'),
+        meta: { title: '修改表单' }
+      }
+    ]
+  },
+  {
+    path: '/flowableModelEdit',
+    component: Layout,
+    hidden: true,
+    children: [{
+      path: '/',
+      name: 'flowableModelEdit',
+      component: () => import('@/views/flowable/model/edit'),
+      meta: { title: '流程设计' }
+    }]
+  },
+  {
     path: '/404',
     component: () => import('@/views/exception/404'),
     hidden: true
@@ -42,6 +66,56 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       children: null,
       meta: { title: '首页', icon: 'home', affix: true }
+    }]
+  },
+  {
+    path: '/myFlowable',
+    component: Layout,
+    hidden: false,
+    name: 'MyFlowable',
+    meta: { 'title': '我的流程', 'icon': 'form', 'isCache': true, 'affix': false },
+    children: [{
+      path: 'myProcess',
+      redirect: '',
+      hidden: false,
+      name: 'FlowableMyProcess',
+      component: () => import('@/views/flowable/myProcess/index'),
+      meta: { 'title': '我的汇总', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+    }, {
+      path: 'myProcessQuery',
+      redirect: '',
+      hidden: true,
+      name: 'FlowableMyProcessQuery',
+      component: () => import('@/views/flowable/myProcess/query'),
+      meta: { 'title': '我的流程', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+    }, {
+      path: 'startMyProcess',
+      redirect: '',
+      hidden: false,
+      name: 'FlowableStartMyProcess',
+      component: () => import('@/views/flowable/startMyProcess/index'),
+      meta: { 'title': '发起流程', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+    }, {
+      path: 'taskTodo',
+      redirect: '',
+      hidden: false,
+      name: 'FlowableTaskTodo',
+      component: () => import('@/views/flowable/taskTodo/index'),
+      meta: { 'title': '我的待办', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+    }, {
+      path: 'taskRead',
+      redirect: '',
+      hidden: false,
+      name: 'FlowableTaskToRead',
+      component: () => import('@/views/flowable/taskToRead/index'),
+      meta: { 'title': '我的待阅', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+    }, {
+      path: 'taskDone',
+      redirect: '',
+      hidden: false,
+      name: 'FlowableTaskDone',
+      component: () => import('@/views/flowable/taskDone/index'),
+      meta: { 'title': '我的已办', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
     }]
   }
 ]

@@ -64,6 +64,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**/*.png", "anon");
         filterChainDefinitionMap.put("/**/*.ico", "anon");
         filterChainDefinitionMap.put("/**/*.gif", "anon");
+        filterChainDefinitionMap.put("/**/*.mp4", "anon");
+        filterChainDefinitionMap.put("/**/*.js.map", "anon");
         filterChainDefinitionMap.put("/druid/**", "anon");
         // swagger相关begin
         //filterChainDefinitionMap.put("/swagger-ui.html", "anon");
@@ -76,6 +78,8 @@ public class ShiroConfig {
 
         // 性能监控
         filterChainDefinitionMap.put("/actuator/**", "anon");
+        //flowable
+        filterChainDefinitionMap.put("/flowable/**/*mage*/**", "anon");
 
         // 一般将/**放在最为下边
         filterChainDefinitionMap.put("/**", "jwt");
