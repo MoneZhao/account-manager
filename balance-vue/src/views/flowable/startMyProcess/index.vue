@@ -122,7 +122,7 @@ export default {
       this.list()
     },
     btnImage(processDefinitionId) {
-      this.imagePath = `${process.env.VUE_APP_BASE_URL}` + '/flowable/processDefinition/image?processDefinitionId=' + processDefinitionId + '&access_token=' + getToken() + '&time=' + new Date()
+      this.imagePath = `${process.env.VUE_APP_BASE_API}` + '/flowable/processDefinition/image?processDefinitionId=' + processDefinitionId + '&access_token=' + getToken() + '&time=' + new Date()
       console.log(this.imagePath)
       this.dialogImageVisible = true
     },
