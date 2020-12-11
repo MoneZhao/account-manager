@@ -9,13 +9,16 @@ import com.monezhao.common.Result;
 import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.ObjectUtils;
 import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.config.CustomProcessDiagramGenerator;
 import com.monezhao.constant.FlowableConstant;
 import com.monezhao.service.ProcessDefinitionService;
 import com.monezhao.wapper.ProcDefListWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.common.engine.api.query.QueryProperty;
+import org.flowable.engine.ProcessEngineConfiguration;
 import org.flowable.engine.impl.ProcessDefinitionQueryProperty;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
@@ -37,6 +40,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +69,9 @@ public class ProcessDefinitionController extends BaseFlowableController {
 
     @Autowired
     private ProcessDefinitionService processDefinitionService;
+
+    @Autowired
+    private ProcessEngineConfiguration processEngineConfiguration;
 
     @GetMapping(value = "/list")
     @ResponseBody
@@ -150,11 +157,18 @@ public class ProcessDefinitionController extends BaseFlowableController {
     public ResponseEntity<byte[]> image(@RequestParam String processDefinitionId) {
         permissionService.validateReadPermissionOnProcessDefinition(ShiroUtils.getUserId(), processDefinitionId);
         ProcessDefinition processDefinition = processDefinitionService.getProcessDefinitionById(processDefinitionId);
-        InputStream imageStream = repositoryService.getProcessDiagram(processDefinition.getId());
-        if (imageStream == null) {
-            throw new FlowableException(messageFormat("Process definition image is not found with id {0}",
+        if (processDefinition == null || !processDefinition.hasGraphicalNotation()) {
+            throw new FlowableException(messageFormat("Process instance image is not found with id {0}",
                     processDefinitionId));
         }
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinition.getId());
+        List<String> list = new ArrayList<>();
+        CustomProcessDiagramGenerator diagramGenerator =
+                (CustomProcessDiagramGenerator) processEngineConfiguration.getProcessDiagramGenerator();
+        InputStream imageStream = diagramGenerator.generateCustomDiagram(bpmnModel, "png", list,
+                list, list, processEngineConfiguration.getActivityFontName(),
+                processEngineConfiguration.getLabelFontName(), processEngineConfiguration.getAnnotationFontName(),
+                processEngineConfiguration.getClassLoader(), 1.0, true);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.IMAGE_PNG);
         try {

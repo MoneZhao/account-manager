@@ -48,8 +48,7 @@ async:
       keep-alive-seconds: 60
 flowable:
   async-executor-activate: false
-  font-name: 微软雅黑
-flowableFontName: 微软雅黑
+#  font-name: '思源宋体 CN'
 system-config:
   # 新建用户或者重置用户密码默认密码
   default-password: 1
