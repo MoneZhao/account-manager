@@ -1,4 +1,4 @@
-package com.monezhao.cmd;
+package com.monezhao.common.cmd;
 
 import com.monezhao.bean.flowable.FlowableForm;
 import com.monezhao.common.util.SpringContextUtils;

@@ -1,4 +1,4 @@
-package com.monezhao.cmd;
+package com.monezhao.common.cmd;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
