@@ -29,7 +29,7 @@
         <if test="entity.accountDate != null">
             <![CDATA[	AND a.account_date = #{entity.accountDate}]]>
         </if>
-        <if test="entity.userId != null">
+        <if test="entity.userId != null and entity.userId !=''">
             <![CDATA[	AND a.user_id = #{entity.userId}]]>
         </if>
         order by a.account_date desc

@@ -179,19 +179,8 @@ public class SysUserController extends BaseController {
     @RequiresPermissions("sys:user:update")
     @PostMapping(value = "/resetPassword")
     @ApiOperation("用户重置密码")
-    @ApiOperationSupport(ignoreParameters = {
-            "userName",
-            "password",
-            "salt",
-            "sex",
-            "roleId",
-            "orgId",
-            "mobile",
-            "idCardNo",
-            "email",
-            "status",
-            "sortNo",
-            "remark",
+    @ApiOperationSupport(includeParameters = {
+            "userId"
     })
     public Result resetPassword(@RequestBody SysUser sysUser) {
         sysUserService.resetPassword(sysUser.getUserId());

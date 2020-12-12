@@ -158,12 +158,8 @@ public class SysBalanceMainController extends BaseController {
     @PostMapping(value = "/compare")
     @ApiOperation("账户余额对比")
     @SysLogAuto(value = "账户余额对比")
-    @ApiOperationSupport(ignoreParameters = {
-            "balanceMainId",
-            "account",
-            "userId",
-            "remark",
-            "deleteType",
+    @ApiOperationSupport(includeParameters = {
+            "accountDate"
     })
     public Result compare(@RequestBody SysBalanceMain sysBalanceMain) {
         if (sysBalanceMain.getAccountDate() == null) {
@@ -205,13 +201,6 @@ public class SysBalanceMainController extends BaseController {
     @RequiresPermissions("sys:balanceMain:export")
     @GetMapping(value = "/exportAll")
     @ApiOperation("导出全部账户余额")
-    @ApiOperationSupport(ignoreParameters = {
-            "balanceMainId",
-            "account",
-            "accountDate",
-            "remark",
-            "deleteType",
-    })
     public void exportAll(SysBalanceMain sysBalanceMain, HttpServletResponse response) {
         try {
             SysUser sysUser = ShiroUtils.getSysUser();
@@ -253,13 +242,6 @@ public class SysBalanceMainController extends BaseController {
     @RequiresPermissions("sys:balanceMain:export")
     @GetMapping(value = "/export")
     @ApiOperation("导出当前页面账户余额")
-    @ApiOperationSupport(ignoreParameters = {
-            "sysBalanceMain.balanceMainId",
-            "sysBalanceMain.account",
-            "sysBalanceMain.accountDate",
-            "sysBalanceMain.remark",
-            "sysBalanceMain.deleteType",
-    })
     public void export(SysBalanceMain sysBalanceMain, @RequestParam Integer current, @RequestParam Integer size,
                        HttpServletResponse response) {
         try {

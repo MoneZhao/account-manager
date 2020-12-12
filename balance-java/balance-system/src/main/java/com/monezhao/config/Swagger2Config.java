@@ -1,30 +1,29 @@
 package com.monezhao.config;
 
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import com.monezhao.common.Constants;
+import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.Parameter;
 import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,9 +34,12 @@ import java.util.List;
  */
 @Configuration
 @EnableSwagger2WebMvc
-@EnableKnife4j
 @ConditionalOnExpression("${swagger-enable: true}")
+@Import(BeanValidatorPluginsConfiguration.class)
 public class Swagger2Config implements WebMvcConfigurer {
+
+    @Resource
+    private OpenApiExtensionResolver openApiExtensionResolver;
 
     /**
      * 显示swagger-ui.html文档展示页，还必须注入swagger资源：
@@ -58,18 +60,21 @@ public class Swagger2Config implements WebMvcConfigurer {
      */
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
+        String groupName="default";
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).groupName(groupName).select()
                 // 此包路径下的类，才生成接口文档
                 .apis(RequestHandlerSelectors.basePackage("com.monezhao.controller"))
                 // 加了ApiOperation注解的类，才生成接口文档
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).paths(PathSelectors.any()).build()
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .paths(PathSelectors.any())
+                .build()
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts())
-//                .globalOperationParameters(setHeaderToken())
+                .extensions(openApiExtensionResolver.buildExtensions(groupName))
                 ;
     }
 
-    private List<ApiKey> securitySchemes() {
+    private List<SecurityScheme> securitySchemes() {
         return Arrays.asList(
                 new ApiKey("token", "token", "header"));
     }
@@ -89,14 +94,6 @@ public class Swagger2Config implements WebMvcConfigurer {
         authorizationScopes[0] = authorizationScope;
         return Arrays.asList(
                 new SecurityReference("token", authorizationScopes));
-    }
-
-    private List<Parameter> setHeaderToken() {
-        ParameterBuilder tokenPar = new ParameterBuilder();
-        List<Parameter> pars = new ArrayList<>();
-        tokenPar.name(Constants.X_ACCESS_TOKEN).description("token").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
-        pars.add(tokenPar.build());
-        return pars;
     }
 
     private ApiInfo apiInfo() {

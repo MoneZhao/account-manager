@@ -54,18 +54,19 @@ system-config:
   default-password: 1
   # 是否使用验证码, 0 使用 1不使用
   use-captcha: 1
-# Swagger的bug, 忽略报错
-logging:
-  level:
-    io.swagger.models.parameters.AbstractSerializableParameter: error
 knife4j:
   enable: true
   basic:
-    enable: true
+    enable: false
     username: admin
     password: 123456
   setting:
+    language: zh-CN
     enableVersion: false
+    enableFooter: false
+    enableFooterCustom: true
+    footerCustomContent: Copyright © MoneZhao(monezhao@163.com). All rights reserved.
     enableSwaggerModels: true
     swaggerModelName: 实体类列表
     enableFilterMultipartApis: true
+    enableOpenApi: false
