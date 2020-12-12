@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
 
 /**
  * @author monezhao@163.com
@@ -24,13 +23,13 @@ public class IpUtils {
     private static final int IP_MAX_LENGTH = 15;
 
     public static String getIpAddr(HttpServletRequest request) {
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            //打印所有头信息
-            String s = headerNames.nextElement();
-            String header = request.getHeader(s);
-            System.out.println(s + "::::" + header);
-        }
+//        Enumeration<String> headerNames = request.getHeaderNames();
+//        while (headerNames.hasMoreElements()) {
+//            //打印所有头信息
+//            String s = headerNames.nextElement();
+//            String header = request.getHeader(s);
+//            log.info(s + "::::" + header);
+//        }
         String ipAddress = request.getHeader("x-forwarded-for");
         if (ipAddress == null || ipAddress.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getHeader("Proxy-Client-IP");

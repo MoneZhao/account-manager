@@ -32,7 +32,6 @@ spring:
         # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
         connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
       primary: master #设置默认的数据源或者数据源组,默认值即为master
-      p6spy: true
       datasource:
         master:
           url: jdbc:mysql://localhost:3306/manager?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai

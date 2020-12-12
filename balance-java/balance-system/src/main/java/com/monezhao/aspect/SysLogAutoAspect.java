@@ -11,6 +11,7 @@ import com.monezhao.common.util.JacksonUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.service.SysLogService;
 import com.monezhao.service.SysUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Aspect
 @Component
+@Slf4j
 public class SysLogAutoAspect {
     /**
      * 1-用户登录
@@ -104,6 +106,7 @@ public class SysLogAutoAspect {
         }
 
         sysLog.setOperateResult(operateResult);
+        log.info("请求url: {}, 方法: {}, 耗时: {}毫秒", sysLog.getRequestUrl(), sysLog.getMethod(), sysLog.getCostTime());
         // 保存系统日志
         sysLogService.save(sysLog);
 
