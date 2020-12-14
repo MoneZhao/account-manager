@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="1">
+  <process id="leave" name="请假流程" isExecutable="true">
+    <documentation>请假流程</documentation>
+    <startEvent id="start" name="Start" flowable:formKey="leaveApply.form" />
+    <endEvent id="end" name="End" />
+    <userTask id="__initiator__" name="申请提交人" flowable:formKey="leaveApply.form">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler">true</modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="managerApprove" name="经理审批" flowable:candidateGroups="manager" />
+    <userTask id="bossApprove" name="老板审批" flowable:candidateGroups="boss" />
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="__initiator__" />
+    <sequenceFlow id="flow2" sourceRef="__initiator__" targetRef="managerApprove" />
+    <sequenceFlow id="flow3" sourceRef="managerApprove" targetRef="bossApprove" />
+    <sequenceFlow id="flow4" sourceRef="bossApprove" targetRef="end" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_leave">
+    <bpmndi:BPMNPlane id="BPMNPlane_leave" bpmnElement="leave">
+      <bpmndi:BPMNEdge id="BPMNEdge_flow4" bpmnElement="flow4">
+        <omgdi:waypoint x="545" y="117" />
+        <omgdi:waypoint x="590" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow3" bpmnElement="flow3">
+        <omgdi:waypoint x="395" y="117" />
+        <omgdi:waypoint x="440" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow2" bpmnElement="flow2">
+        <omgdi:waypoint x="245" y="117" />
+        <omgdi:waypoint x="290" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow1" bpmnElement="flow1">
+        <omgdi:waypoint x="85" y="117" />
+        <omgdi:waypoint x="140" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_start" bpmnElement="start">
+        <omgdc:Bounds x="50" y="100" width="35" height="35" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_end" bpmnElement="end">
+        <omgdc:Bounds x="590" y="100" width="35" height="35" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape___initiator__" bpmnElement="__initiator__">
+        <omgdc:Bounds x="140" y="90" width="105" height="55" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_managerApprove" bpmnElement="managerApprove">
+        <omgdc:Bounds x="290" y="90" width="105" height="55" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_bossApprove" bpmnElement="bossApprove">
+        <omgdc:Bounds x="440" y="90" width="105" height="55" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
