@@ -32,7 +32,11 @@ public class ControllerCostFilter implements Filter {
         long startTime = System.currentTimeMillis();
         filterChain.doFilter(servletRequest, servletResponse);
         long endTime = System.currentTimeMillis();
-        log.info("请求url: {}, 方法: {}, 耗时: {}毫秒", path, method, endTime - startTime);
+        long costTime = endTime - startTime;
+        log.info("请求url: {}, 方法: {}, 耗时: {}毫秒", path, method, costTime);
+        if (costTime > 5000) {
+            log.error("请求url: {} 耗时过长, 请检查方法", path);
+        }
     }
 
 }
