@@ -1,6 +1,6 @@
 package com.monezhao.controller;
 
-import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.common.util.JwtUtil;
 import com.monezhao.config.CustomProcessDiagramGenerator;
 import org.apache.commons.io.IOUtils;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
@@ -37,9 +37,9 @@ public class ProcessInstanceImageController extends BaseFlowableController {
     private ProcessEngineConfiguration processEngineConfiguration;
 
     @GetMapping(value = "/flowable/processInstanceImage")
-    public ResponseEntity<byte[]> image(@RequestParam String processInstanceId) {
+    public ResponseEntity<byte[]> image(@RequestParam String processInstanceId, @RequestParam("access_token") String accessToken) {
         HistoricProcessInstance processInstance =
-                permissionService.validateReadPermissionOnProcessInstance(ShiroUtils.getUserId(), processInstanceId);
+                permissionService.validateReadPermissionOnProcessInstance(JwtUtil.getUserId(accessToken), processInstanceId);
         ProcessDefinition pde = repositoryService.getProcessDefinition(processInstance.getProcessDefinitionId());
         if (pde == null || !pde.hasGraphicalNotation()) {
             throw new FlowableException(messageFormat("Process instance image is not found with id {0}",

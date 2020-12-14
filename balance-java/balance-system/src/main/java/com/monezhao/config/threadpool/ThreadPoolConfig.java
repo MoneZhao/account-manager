@@ -45,10 +45,8 @@ public class ThreadPoolConfig {
     @Value("${async.executor.thread.name-prefix}")
     private String namePrefix = "async-service-";
 
-    @Bean(name = "asyncServiceExecutor")
-    public ThreadPoolTaskExecutor asyncServiceExecutor() {
-        /// 若需要打印线程池工作情况使用，可能会影响性能
-        /// ThreadPoolTaskExecutor executor = new VisiableThreadPoolTaskExecutorConfig();
+    @Bean(name = "applicationTaskExecutor")
+    public ThreadPoolTaskExecutor applicationTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setMaxPoolSize(maxPoolSize);
         executor.setCorePoolSize(corePoolSize);

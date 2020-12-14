@@ -13,11 +13,11 @@ import java.util.concurrent.Future;
  * @Description: 异步任务管理器
  */
 public class AsyncManager {
-    private static AsyncManager me = new AsyncManager();
+    private static final AsyncManager ASYNC_MANAGER = new AsyncManager();
     /**
      * 异步操作任务调度线程池
      */
-    private ThreadPoolTaskExecutor asyncServiceExecutor = SpringContextUtils.getBean("asyncServiceExecutor");
+    private final ThreadPoolTaskExecutor applicationTaskExecutor = SpringContextUtils.getBean("applicationTaskExecutor");
 
     /**
      * 单例模式
@@ -26,26 +26,26 @@ public class AsyncManager {
     }
 
     public static AsyncManager me() {
-        return me;
+        return ASYNC_MANAGER;
     }
 
     public void execute(Runnable task) {
-        asyncServiceExecutor.execute(task);
+        applicationTaskExecutor.execute(task);
     }
 
     public Future<?> submit(Runnable task) {
-        return asyncServiceExecutor.submit(task);
+        return applicationTaskExecutor.submit(task);
     }
 
     public <T> Future<T> submit(Callable<T> task) {
-        return asyncServiceExecutor.submit(task);
+        return applicationTaskExecutor.submit(task);
     }
 
     public ListenableFuture<?> submitListenable(Runnable task) {
-        return asyncServiceExecutor.submitListenable(task);
+        return applicationTaskExecutor.submitListenable(task);
     }
 
     public <T> ListenableFuture<T> submitListenable(Callable<T> task) {
-        return asyncServiceExecutor.submitListenable(task);
+        return applicationTaskExecutor.submitListenable(task);
     }
 }
