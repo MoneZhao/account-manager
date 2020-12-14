@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for ACT_EVT_LOG
 -- ----------------------------
@@ -1465,3 +1466,5 @@ CREATE TABLE `FLW_RU_BATCH_PART` (
 -- ----------------------------
 BEGIN;
 COMMIT;
+
+SET FOREIGN_KEY_CHECKS = 1;
