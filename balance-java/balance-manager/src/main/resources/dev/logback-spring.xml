@@ -114,8 +114,6 @@
 
     <logger name="org.flowable" level="error"/>
 
-    <logger name="org.quartz" level="error"/>
-
     <logger name="liquibase" level="error"/>
 
     <logger name="springfox" level="error"/>

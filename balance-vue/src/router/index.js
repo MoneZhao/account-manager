@@ -73,49 +73,49 @@ export const constantRoutes = [
     component: Layout,
     hidden: false,
     name: 'MyFlowable',
-    meta: { 'title': '我的流程', 'icon': 'form', 'isCache': true, 'affix': false },
+    meta: { 'title': '我的流程', 'icon': 'form', 'affix': false },
     children: [{
       path: 'myProcess',
       redirect: '',
       hidden: false,
       name: 'FlowableMyProcess',
       component: () => import('@/views/flowable/myProcess/index'),
-      meta: { 'title': '我的汇总', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+      meta: { 'title': '我的汇总', 'icon': 'liuchengdingyi', 'affix': false }
     }, {
       path: 'myProcessQuery',
       redirect: '',
       hidden: true,
       name: 'FlowableMyProcessQuery',
       component: () => import('@/views/flowable/myProcess/query'),
-      meta: { 'title': '我的流程', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+      meta: { 'title': '我的流程', 'icon': 'liuchengdingyi', 'affix': false }
     }, {
       path: 'startMyProcess',
       redirect: '',
       hidden: false,
       name: 'FlowableStartMyProcess',
       component: () => import('@/views/flowable/startMyProcess/index'),
-      meta: { 'title': '发起流程', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+      meta: { 'title': '发起流程', 'icon': 'liuchengdingyi', 'affix': false }
     }, {
       path: 'taskTodo',
       redirect: '',
       hidden: false,
       name: 'FlowableTaskTodo',
       component: () => import('@/views/flowable/taskTodo/index'),
-      meta: { 'title': '我的待办', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+      meta: { 'title': '我的待办', 'icon': 'liuchengdingyi', 'affix': false }
     }, {
       path: 'taskRead',
       redirect: '',
       hidden: false,
       name: 'FlowableTaskToRead',
       component: () => import('@/views/flowable/taskToRead/index'),
-      meta: { 'title': '我的待阅', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+      meta: { 'title': '我的待阅', 'icon': 'liuchengdingyi', 'affix': false }
     }, {
       path: 'taskDone',
       redirect: '',
       hidden: false,
       name: 'FlowableTaskDone',
       component: () => import('@/views/flowable/taskDone/index'),
-      meta: { 'title': '我的已办', 'icon': 'liuchengdingyi', 'isCache': true, 'affix': false }
+      meta: { 'title': '我的已办', 'icon': 'liuchengdingyi', 'affix': false }
     }]
   }
 ]

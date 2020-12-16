@@ -100,7 +100,7 @@ export default {
         const { data } = res
         this.records = data.records
         this.total = data.total
-        if (data.total == 0) {
+        if (data.total === 0) {
           Message.info('查无可发起的流程')
         }
       })

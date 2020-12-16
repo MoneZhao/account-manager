@@ -145,7 +145,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="状态" prop="suspended">
-              <el-input v-model="temp.suspended?'挂起':'激活'" />
+              <el-input v-model="suspended" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -240,6 +240,7 @@ export default {
       },
       dialogProcessDefinitionIdentityLinkVisible: false,
       selectedProcessDefinitionId: '',
+      suspended: '',
       selectedProcessDefinitionName: ''
     }
   },
@@ -276,6 +277,7 @@ export default {
     },
     btnView(row) {
       this.temp = Object.assign({}, row)
+      this.suspended = this.temp.suspended ? '挂起' : '激活'
       this.dialogFormVisible = true
     },
     btnViewProcessInstanceList(row) {
@@ -285,7 +287,7 @@ export default {
       const ids = id ? [id] : this.selectedRecords.map(record => {
         return record.id
       })
-      if (ids.length == 0) {
+      if (ids.length === 0) {
         Message.error('请选择要删除的记录')
         return
       }

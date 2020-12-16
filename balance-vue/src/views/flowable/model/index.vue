@@ -349,7 +349,7 @@ export default {
       const ids = id ? [id] : this.selectedRecords.map(record => {
         return record.id
       })
-      if (ids.length == 0) {
+      if (ids.length === 0) {
         Message.error('请选择要删除的记录')
         return
       }
