@@ -60,7 +60,7 @@ public class Swagger2Config implements WebMvcConfigurer {
      */
     @Bean
     public Docket createRestApi() {
-        String groupName="default";
+        String groupName = "default";
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).groupName(groupName).select()
                 // 此包路径下的类，才生成接口文档
                 .apis(RequestHandlerSelectors.basePackage("com.monezhao.controller"))

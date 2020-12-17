@@ -69,11 +69,11 @@
                                     <directory>${project.build.directory}</directory>
                                     <include>${project.build.finalName}.jar</include>
                                 </resource>
-<!--                                <resource>-->
-<!--                                    <targetPath>/classes</targetPath>-->
-<!--                                    <directory>${project.build.directory}/classes</directory>-->
-<!--                                    <include>SourceHanSerifCN-Regular.ttf</include>-->
-<!--                                </resource>-->
+                                <!--                                <resource>-->
+                                <!--                                    <targetPath>/classes</targetPath>-->
+                                <!--                                    <directory>${project.build.directory}/classes</directory>-->
+                                <!--                                    <include>SourceHanSerifCN-Regular.ttf</include>-->
+                                <!--                                </resource>-->
                             </resources>
                         </configuration>
                     </plugin>
@@ -129,14 +129,44 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <!-- idea环境打开resources配置即可 end -->
     </build>
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${project.parent.artifactId}-codecreate</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${project.parent.artifactId}-flowable</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${project.parent.artifactId}-balance</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${project.parent.artifactId}-statement</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>${project.parent.artifactId}-system</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <!--MySql 驱动  -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.18</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
