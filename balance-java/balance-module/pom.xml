@@ -27,6 +27,7 @@
         <shiro.version>1.5.3</shiro.version>
         <jsoup.version>1.13.1</jsoup.version>
         <oshi.version>3.9.1</oshi.version>
+        <p6spy.version>3.9.1</p6spy.version>
         <quartz.version>2.3.2</quartz.version>
         <easyexcel.version>2.2.7</easyexcel.version>
         <knife4j.version>2.0.8</knife4j.version>
@@ -127,6 +128,13 @@
             <groupId>com.github.oshi</groupId>
             <artifactId>oshi-core</artifactId>
             <version>${oshi.version}</version>
+        </dependency>
+
+        <!-- p6spy打印SQL -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>${p6spy.version}</version>
         </dependency>
 
         <!-- 定时任务 -->

@@ -46,17 +46,17 @@
         </layout>
     </appender>
 
-<!--    <appender name="FILE-IBATIS" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-<!--        <File>${LOG_FILE_LOCATION}/@contextPath@-sql.log</File>-->
-<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-<!--            <FileNamePattern>${LOG_FILE_LOCATION}/history/@contextPath@-sql.%d{yyyy-MM-dd}.log.zip</FileNamePattern>-->
-<!--            &lt;!&ndash; Keep 10 day log &ndash;&gt;-->
-<!--            <maxHistory>15</maxHistory>-->
-<!--        </rollingPolicy>-->
-<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
-<!--            <pattern>${FILE_LOG_PATTERN_IBATIS}</pattern>-->
-<!--        </layout>-->
-<!--    </appender>-->
+    <!--    <appender name="FILE-IBATIS" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--        <File>${LOG_FILE_LOCATION}/@contextPath@-sql.log</File>-->
+    <!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+    <!--            <FileNamePattern>${LOG_FILE_LOCATION}/history/@contextPath@-sql.%d{yyyy-MM-dd}.log.zip</FileNamePattern>-->
+    <!--            &lt;!&ndash; Keep 10 day log &ndash;&gt;-->
+    <!--            <maxHistory>15</maxHistory>-->
+    <!--        </rollingPolicy>-->
+    <!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+    <!--            <pattern>${FILE_LOG_PATTERN_IBATIS}</pattern>-->
+    <!--        </layout>-->
+    <!--    </appender>-->
 
     <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -86,14 +86,14 @@
         <appender-ref ref="FILE"/>
     </appender>
 
-<!--    <appender name="ASYNC-FILE-IBATIS" class="ch.qos.logback.classic.AsyncAppender">-->
-<!--        &lt;!&ndash; 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 &ndash;&gt;-->
-<!--        <discardingThreshold>0</discardingThreshold>-->
-<!--        &lt;!&ndash; 更改默认的队列的深度,该值会影响性能.默认值为256 &ndash;&gt;-->
-<!--        <queueSize>256</queueSize>-->
-<!--        &lt;!&ndash; 添加附加的appender,最多只能添加一个 &ndash;&gt;-->
-<!--        <appender-ref ref="FILE-IBATIS"/>-->
-<!--    </appender>-->
+    <!--    <appender name="ASYNC-FILE-IBATIS" class="ch.qos.logback.classic.AsyncAppender">-->
+    <!--        &lt;!&ndash; 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 &ndash;&gt;-->
+    <!--        <discardingThreshold>0</discardingThreshold>-->
+    <!--        &lt;!&ndash; 更改默认的队列的深度,该值会影响性能.默认值为256 &ndash;&gt;-->
+    <!--        <queueSize>256</queueSize>-->
+    <!--        &lt;!&ndash; 添加附加的appender,最多只能添加一个 &ndash;&gt;-->
+    <!--        <appender-ref ref="FILE-IBATIS"/>-->
+    <!--    </appender>-->
 
     <appender name="ASYNC-FILE-ERROR" class="ch.qos.logback.classic.AsyncAppender">
         <discardingThreshold>0</discardingThreshold>
@@ -103,16 +103,12 @@
 
     <logger name="com.monezhao.mapper" level="trace" additivity="false">
         <appender-ref ref="IBATIS"/>
-<!--        <appender-ref ref="ASYNC-FILE-IBATIS"/>-->
+        <!--        <appender-ref ref="ASYNC-FILE-IBATIS"/>-->
     </logger>
 
     <logger name="org.springframework.boot.autoconfigure" level="error"/>
 
     <logger name="org.springframework.boot.liquibase" level="error"/>
-
-    <logger name="org.springframework" level="error"/>
-
-    <logger name="org.flowable" level="error"/>
 
     <logger name="liquibase" level="error"/>
 
