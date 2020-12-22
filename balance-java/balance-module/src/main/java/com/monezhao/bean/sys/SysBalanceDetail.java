@@ -18,6 +18,7 @@ import lombok.Setter;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * 【账户明细】实体类
@@ -48,7 +49,7 @@ public class SysBalanceDetail extends BaseEntity {
     @DecimalMax("999999999.99")
     @ExcelProperty("账户余额")
     @ApiModelProperty(value = "账户余额")
-    private double account = 0;
+    private BigDecimal account = BigDecimal.valueOf(0);
 
     /**
      * 账户类型

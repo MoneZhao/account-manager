@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,8 +46,8 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
         sysBalanceDetail.setUserId(sysBalanceMain.getUserId());
         super.save(sysBalanceDetail);
-        Double account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
-        sysBalanceMain.setAccount(account == null ? 0 : account);
+        BigDecimal account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
+        sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
         sysBalanceMainService.updateById(sysBalanceMain);
         return true;
     }
@@ -55,9 +56,9 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     @Transactional(rollbackFor = Exception.class)
     public boolean update(SysBalanceDetail sysBalanceDetail) {
         super.updateById(sysBalanceDetail);
-        Double account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
+        BigDecimal account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
-        sysBalanceMain.setAccount(account == null ? 0 : account);
+        sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
         sysBalanceMainService.updateById(sysBalanceMain);
         return true;
     }
@@ -72,9 +73,9 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         } else {
             super.removeById(idsArr[0]);
         }
-        Double account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
+        BigDecimal account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
-        sysBalanceMain.setAccount(account == null ? 0 : account);
+        sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
         sysBalanceMainService.updateById(sysBalanceMain);
         return true;
     }

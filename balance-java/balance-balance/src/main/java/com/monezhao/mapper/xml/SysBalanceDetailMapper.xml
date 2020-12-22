@@ -39,7 +39,7 @@
         order by a.create_time asc
     </select>
 
-    <select id="account" resultType="java.lang.Double">
+    <select id="account" resultType="java.math.BigDecimal">
         select sum(account) account from t_sys_balance_detail a where a.delete_type=0
         <if test="id != null and id !=''">
             <![CDATA[    AND a.balance_main_id = #{id}    ]]>

@@ -20,6 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -50,7 +51,7 @@ public class SysBalanceMain extends BaseEntity {
     @DecimalMax("999999999.99")
     @ExcelProperty("账户余额")
     @ApiModelProperty(value = "账户余额")
-    private double account = 0;
+    private BigDecimal account = BigDecimal.valueOf(0);
 
     /**
      * 记录时间

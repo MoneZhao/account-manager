@@ -6,6 +6,7 @@ import com.monezhao.bean.sys.SysBalanceDetail;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public interface SysBalanceDetailMapper extends BaseMapper<SysBalanceDetail> {
      * @param id
      * @return
      */
-    Double account(@Param("id") String id);
+    BigDecimal account(@Param("id") String id);
 
     /**
      * 导出当前页明细列表

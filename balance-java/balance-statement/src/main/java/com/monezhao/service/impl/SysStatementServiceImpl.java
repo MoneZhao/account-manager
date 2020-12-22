@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +26,6 @@ import java.util.Objects;
  */
 @Service
 public class SysStatementServiceImpl implements SysStatementService {
-
-    private static DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     @Autowired
     private SysBalanceMainService balanceMainService;
@@ -59,39 +56,35 @@ public class SysStatementServiceImpl implements SysStatementService {
         ;
         List<SysBalanceMain> balanceMains = balanceMainService.list(mainQueryWrapper);
 
-        Map<String, Double> record = new HashMap<>();
+        Map<String, BigDecimal> record = new HashMap<>();
         for (SysBalanceMain balanceMain : balanceMains) {
             String dateStr = DateUtil.dateToStr(balanceMain.getAccountDate(), format);
-            Double account = balanceMain.getAccount();
+            BigDecimal account = balanceMain.getAccount();
             record.put(dateStr, account);
         }
 
         Series series1 = new Series();
         series1.setName("账户余额");
         series1.setType("bar");
-        List<Double> data1 = new ArrayList<>();
+        List<BigDecimal> data1 = new ArrayList<>();
         Series series2 = new Series();
         series2.setName("账户余额增长");
         series2.setType("line");
-        List<Double> data2 = new ArrayList<>();
+        List<BigDecimal> data2 = new ArrayList<>();
 
         for (int i = 0; i < dates.size(); i++) {
             String date = dates.get(i);
-            Double current = record.getOrDefault(date, null);
-            if (current != null) {
-                data1.add(doubleScale(current));
-            } else {
-                data1.add(null);
-            }
+            BigDecimal current = record.getOrDefault(date, null);
+            data1.add(current);
 
             if (i == 0) {
                 data2.add(null);
             } else {
-                Double before = record.getOrDefault(dates.get(i - 1), null);
+                BigDecimal before = record.getOrDefault(dates.get(i - 1), null);
                 if (current == null || before == null) {
                     data2.add(null);
                 } else {
-                    data2.add(doubleScale(current - before));
+                    data2.add(current.subtract(before));
                 }
             }
         }
@@ -105,7 +98,4 @@ public class SysStatementServiceImpl implements SysStatementService {
         return resultCommand;
     }
 
-    private Double doubleScale(Double d) {
-        return new BigDecimal(d).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-    }
 }

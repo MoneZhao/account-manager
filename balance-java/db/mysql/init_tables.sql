@@ -48,7 +48,7 @@ COMMIT;
 DROP TABLE IF EXISTS `t_sys_balance_detail`;
 CREATE TABLE `t_sys_balance_detail` (
                                         `balance_detail_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
-                                        `account` double(12,2) NOT NULL COMMENT '账户余额',
+                                        `account` decimal(12,2) NOT NULL COMMENT '账户余额',
                                         `balance_type` varchar(4) COLLATE utf8mb4_general_ci NOT NULL COMMENT '账户类型',
                                         `balance_main_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '主表id',
                                         `user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '所属用户id',
@@ -75,7 +75,7 @@ COMMIT;
 DROP TABLE IF EXISTS `t_sys_balance_main`;
 CREATE TABLE `t_sys_balance_main` (
                                       `balance_main_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
-                                      `account` double(12,2) NOT NULL COMMENT '账户余额',
+                                      `account` decimal(12,2) NOT NULL COMMENT '账户余额',
                                       `account_date` date NOT NULL COMMENT '记录时间',
                                       `user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '所属用户',
                                       `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',

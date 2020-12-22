@@ -2,6 +2,7 @@ package com.monezhao.command;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -15,5 +16,5 @@ public class Series {
     //类型
     private String type;
     //数据列表
-    private List<Double> data;
+    private List<BigDecimal> data;
 }

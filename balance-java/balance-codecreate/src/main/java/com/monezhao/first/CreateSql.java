@@ -245,7 +245,7 @@ public class CreateSql {
                 }
             } else if ("浮点型".equals(tableObject.getDataType())) {
                 stringBufferMid
-                        .append("float(" + tableObject.getDataLength() + "," + tableObject.getDataPrecision() + ") ");
+                        .append("decimal(" + tableObject.getDataLength() + "," + tableObject.getDataPrecision() + ") ");
             } else if ("日期型".equals(tableObject.getDataType())) {
                 stringBufferMid.append("date ");
             } else if ("时间型".equals(tableObject.getDataType())) {
