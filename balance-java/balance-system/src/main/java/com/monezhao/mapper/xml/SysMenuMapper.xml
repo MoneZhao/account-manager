@@ -25,6 +25,6 @@
         from t_sys_menu a
                  left join t_sys_menu m on a.parent_menu_id = m.menu_id
         where 1 = 1
-        order by a.sort_no
+        order by a.is_leaf,a.sort_no
     </select>
 </mapper>
