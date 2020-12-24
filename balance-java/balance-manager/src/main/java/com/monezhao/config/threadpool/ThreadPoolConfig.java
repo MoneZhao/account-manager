@@ -23,27 +23,27 @@ public class ThreadPoolConfig {
      * 核心线程池大小
      */
     @Value("${async.executor.thread.core-pool-size}")
-    private int corePoolSize = 10;
+    private final int corePoolSize = 10;
     /**
      * 最大可创建的线程数
      */
     @Value("${async.executor.thread.max-pool-size}")
-    private int maxPoolSize = 20;
+    private final int maxPoolSize = 20;
     /**
      * 队列最大长度
      */
     @Value("${async.executor.thread.queue-capacity}")
-    private int queueCapacity = 2000;
+    private final int queueCapacity = 2000;
     /**
      * 线程池维护线程所允许的空闲时间
      */
     @Value("${async.executor.thread.keep-alive-seconds}")
-    private int keepAliveSeconds = 60;
+    private final int keepAliveSeconds = 60;
     /**
      * 线程名称
      */
     @Value("${async.executor.thread.name-prefix}")
-    private String namePrefix = "async-service-";
+    private final String namePrefix = "async-service-";
 
     @Bean(name = "applicationTaskExecutor")
     public ThreadPoolTaskExecutor applicationTaskExecutor() {
@@ -52,7 +52,7 @@ public class ThreadPoolConfig {
         executor.setCorePoolSize(corePoolSize);
         executor.setQueueCapacity(queueCapacity);
         executor.setKeepAliveSeconds(keepAliveSeconds);
-        executor.setThreadNamePrefix("async-service-");
+        executor.setThreadNamePrefix(namePrefix);
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
         return executor;
