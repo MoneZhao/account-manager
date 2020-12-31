@@ -116,7 +116,7 @@
       >
         <i class="el-icon-upload" />
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div slot="tip" class="el-upload__tip">请选择需要上传的文件</div>
+        <div slot="tip" class="el-upload__tip">上传数据同天同类型账户余额会被覆盖!</div>
       </el-upload>
     </el-dialog>
   </div>

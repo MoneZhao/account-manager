@@ -20,4 +20,11 @@ public interface SysBalanceMainService extends BaseService<SysBalanceMain> {
      */
     boolean doImport(List<SysBalanceMain> list);
 
+    /**
+     * 判断数据日期重复
+     * @param sysBalanceMain sysBalanceMain
+     * @return
+     */
+    boolean exist(SysBalanceMain sysBalanceMain);
+
 }

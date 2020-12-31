@@ -19,6 +19,7 @@
         a.account as account,
         a.balance_type as balanceType,
         ci.content as balanceName,
+        m.account_date as accountDate,
         a.balance_main_id as balanceMainId,
         a.user_id as userId,
         a.delete_type as deleteType,
@@ -26,6 +27,7 @@
 
         from t_sys_balance_detail a
         LEFT JOIN t_sys_code_info ci ON ci.code_type_id = 'balanceType' AND ci.value = a.balance_type
+        left join t_sys_balance_main m on m.balance_main_id = a.balance_main_id
         where a.delete_type=0
         <if test="entity.balanceType != null and entity.balanceType !=''">
             <![CDATA[    AND a.balance_type = #{entity.balanceType}    ]]>
@@ -36,7 +38,7 @@
         <if test="entity.userId != null and entity.userId !=''">
             <![CDATA[	AND a.user_id = #{entity.userId}]]>
         </if>
-        order by a.create_time asc
+        order by m.account_date,a.create_time asc
     </select>
 
     <select id="account" resultType="java.math.BigDecimal">
@@ -51,6 +53,7 @@
         a.account as account,
         a.balance_type as balanceType,
         ci.content as balanceName,
+        m.account_date as accountDate,
         a.balance_main_id as balanceMainId,
         a.user_id as userId,
         a.delete_type as deleteType,
@@ -58,6 +61,7 @@
 
         from t_sys_balance_detail a
         LEFT JOIN t_sys_code_info ci ON ci.code_type_id = 'balanceType' AND ci.value = a.balance_type
+        left join t_sys_balance_main m on m.balance_main_id = a.balance_main_id
         where a.delete_type=0
         <if test="userId != null and userId !=''">
             <![CDATA[    AND a.user_id = #{userId}    ]]>
@@ -67,6 +71,6 @@
                  open="(" separator="," close=")">
             #{item}
         </foreach>
-        order by a.create_time desc
+        order by m.account_date,a.create_time desc
     </select>
 </mapper>

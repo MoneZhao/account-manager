@@ -1,10 +1,6 @@
 package com.monezhao.controller;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelReader;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.read.metadata.ReadSheet;
-import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,7 +19,6 @@ import com.monezhao.common.util.DateTimeUtil;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.excel.UploadSysBalanceDetailListener;
-import com.monezhao.excel.UploadSysBalanceMainListener;
 import com.monezhao.service.SysBalanceDetailService;
 import com.monezhao.service.SysBalanceMainService;
 import io.swagger.annotations.Api;
@@ -112,8 +107,12 @@ public class SysBalanceMainController extends BaseController {
     public Result save(@Valid @RequestBody SysBalanceMain sysBalanceMain) {
         SysUser sysUser = ShiroUtils.getSysUser();
         sysBalanceMain.setUserId(sysUser.getUserId());
-        sysBalanceMainService.save(sysBalanceMain);
-        return Result.ok();
+        if (!sysBalanceMainService.exist(sysBalanceMain)) {
+            sysBalanceMainService.save(sysBalanceMain);
+            return Result.ok();
+        } else {
+            return Result.error("已存在当日数据");
+        }
     }
 
     /**
@@ -128,8 +127,12 @@ public class SysBalanceMainController extends BaseController {
     public Result update(@Valid @RequestBody SysBalanceMain sysBalanceMain) {
         SysUser sysUser = ShiroUtils.getSysUser();
         sysBalanceMain.setUserId(sysUser.getUserId());
-        sysBalanceMainService.updateById(sysBalanceMain);
-        return Result.ok();
+        if (!sysBalanceMainService.exist(sysBalanceMain)) {
+            sysBalanceMainService.updateById(sysBalanceMain);
+            return Result.ok();
+        } else {
+            return Result.error("已存在当日数据");
+        }
     }
 
     /**
@@ -193,41 +196,39 @@ public class SysBalanceMainController extends BaseController {
     }
 
     /**
-     * @param sysBalanceMain
-     * @return
      * @功能：导出全部账户余额
      */
     @SysLogAuto(value = "导出全部账户余额")
     @RequiresPermissions("sys:balanceMain:export")
     @GetMapping(value = "/exportAll")
     @ApiOperation("导出全部账户余额")
-    public void exportAll(SysBalanceMain sysBalanceMain, HttpServletResponse response) {
+    public void exportAll(HttpServletResponse response) {
         try {
             SysUser sysUser = ShiroUtils.getSysUser();
-            sysBalanceMain.setUserId(sysUser.getUserId());
+//            sysBalanceMain.setUserId(sysUser.getUserId());
             SysBalanceDetail sysBalanceDetail = new SysBalanceDetail();
             sysBalanceDetail.setUserId(sysUser.getUserId());
-            IPage<SysBalanceMain> page = sysBalanceMainService.list(null, sysBalanceMain);
+//            IPage<SysBalanceMain> page = sysBalanceMainService.list(null, sysBalanceMain);
             IPage<SysBalanceDetail> pageDetail = sysBalanceDetailService.list(null, sysBalanceDetail);
-            Collections.reverse(page.getRecords());
+//            Collections.reverse(page.getRecords());
             Collections.reverse(pageDetail.getRecords());
             response.setContentType("application/vnd.ms-excel");
             response.setCharacterEncoding("utf-8");
             response.setHeader("Content-disposition", "attachment;filename=SysBalanceMainExportAll.xlsx");
-//            EasyExcel.write(response.getOutputStream(), SysBalanceMain.class)
-//                    .registerWriteHandler(new CustomCellWriteHandler())
-//                    .sheet(0 ,"账户余额").doWrite(page.getRecords())
-//            ;
-            ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream())
-                    .registerWriteHandler(new CustomCellWriteHandler()).build();
-
-            WriteSheet writeSheet = EasyExcel.writerSheet(0, "账户余额").head(SysBalanceMain.class).build();
-            excelWriter.write(page.getRecords(), writeSheet);
-
-            writeSheet = EasyExcel.writerSheet(1, "账户明细").head(SysBalanceDetail.class).build();
-            excelWriter.write(pageDetail.getRecords(), writeSheet);
-
-            excelWriter.finish();
+            EasyExcel.write(response.getOutputStream(), SysBalanceDetail.class)
+                    .registerWriteHandler(new CustomCellWriteHandler())
+                    .sheet(0, "账户余额").doWrite(pageDetail.getRecords())
+            ;
+//            ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream())
+//                    .registerWriteHandler(new CustomCellWriteHandler()).build();
+//
+//            WriteSheet writeSheet = EasyExcel.writerSheet(0, "账户余额").head(SysBalanceMain.class).build();
+//            excelWriter.write(page.getRecords(), writeSheet);
+//
+//            writeSheet = EasyExcel.writerSheet(1, "账户明细").head(SysBalanceDetail.class).build();
+//            excelWriter.write(pageDetail.getRecords(), writeSheet);
+//
+//            excelWriter.finish();
         } catch (Exception e) {
             throw new SysException("下载文件失败：" + e.getMessage());
         }
@@ -251,24 +252,24 @@ public class SysBalanceMainController extends BaseController {
             List<String> mainIds = page.getRecords().parallelStream()
                     .map(SysBalanceMain::getBalanceMainId).collect(Collectors.toList());
             List<SysBalanceDetail> pageDetail = sysBalanceDetailService.list(mainIds, sysUser.getUserId());
-            Collections.reverse(page.getRecords());
+//            Collections.reverse(page.getRecords());
             Collections.reverse(pageDetail);
             response.setContentType("application/vnd.ms-excel");
             response.setCharacterEncoding("utf-8");
             response.setHeader("Content-disposition", "attachment;filename=SysBalanceMainExportCur.xlsx");
-//            EasyExcel.write(response.getOutputStream(), SysBalanceMain.class)
-//                    .registerWriteHandler(new CustomCellWriteHandler())
-//                    .sheet("SysBalanceMain").doWrite(page.getRecords());
-            ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream())
-                    .registerWriteHandler(new CustomCellWriteHandler()).build();
-
-            WriteSheet writeSheet = EasyExcel.writerSheet(0, "账户余额").head(SysBalanceMain.class).build();
-            excelWriter.write(page.getRecords(), writeSheet);
-
-            writeSheet = EasyExcel.writerSheet(1, "账户明细").head(SysBalanceDetail.class).build();
-            excelWriter.write(pageDetail, writeSheet);
-
-            excelWriter.finish();
+            EasyExcel.write(response.getOutputStream(), SysBalanceDetail.class)
+                    .registerWriteHandler(new CustomCellWriteHandler())
+                    .sheet(0, "账户余额").doWrite(pageDetail);
+//            ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream())
+//                    .registerWriteHandler(new CustomCellWriteHandler()).build();
+//
+//            WriteSheet writeSheet = EasyExcel.writerSheet(0, "账户余额").head(SysBalanceMain.class).build();
+//            excelWriter.write(page.getRecords(), writeSheet);
+//
+//            writeSheet = EasyExcel.writerSheet(1, "账户明细").head(SysBalanceDetail.class).build();
+//            excelWriter.write(pageDetail, writeSheet);
+//
+//            excelWriter.finish();
         } catch (Exception e) {
             throw new SysException("下载文件失败：" + e.getMessage());
         }
@@ -293,15 +294,15 @@ public class SysBalanceMainController extends BaseController {
             throw new IllegalArgumentException("上传文件为空");
         }
         MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
-//        EasyExcel.read(file.getInputStream(), SysBalanceMain.class,
-//                new UploadSysBalanceMainListener(sysBalanceDetailService)).sheet().doRead();
-        ExcelReader excelReader = EasyExcel.read(file.getInputStream()).build();
-        ReadSheet readSheet1 = EasyExcel.readSheet(0).head(SysBalanceMain.class).
-                registerReadListener(new UploadSysBalanceMainListener(sysBalanceMainService)).build();
-        ReadSheet readSheet2 = EasyExcel.readSheet(1).head(SysBalanceDetail.class).
-                registerReadListener(new UploadSysBalanceDetailListener(sysBalanceDetailService)).build();
-        excelReader.read(readSheet1, readSheet2);
-        excelReader.finish();
+        EasyExcel.read(file.getInputStream(), SysBalanceDetail.class,
+                new UploadSysBalanceDetailListener(sysBalanceDetailService)).sheet(0).doRead();
+//        ExcelReader excelReader = EasyExcel.read(file.getInputStream()).build();
+//        ReadSheet readSheet1 = EasyExcel.readSheet(0).head(SysBalanceMain.class).
+//                registerReadListener(new UploadSysBalanceMainListener(sysBalanceMainService)).build();
+//        ReadSheet readSheet2 = EasyExcel.readSheet(1).head(SysBalanceDetail.class).
+//                registerReadListener(new UploadSysBalanceDetailListener(sysBalanceDetailService)).build();
+//        excelReader.read(readSheet1, readSheet2);
+//        excelReader.finish();
         return Result.ok();
     }
 }

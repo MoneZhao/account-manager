@@ -8,17 +8,20 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 【账户明细】实体类
@@ -38,7 +41,7 @@ public class SysBalanceDetail extends BaseEntity {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
-    @ExcelProperty("主键id")
+    @ExcelIgnore
     @ApiModelProperty(value = "主键id")
     private String balanceDetailId;
 
@@ -56,15 +59,15 @@ public class SysBalanceDetail extends BaseEntity {
      */
     @NotNull
     @LengthForUtf8(max = 4)
-    @ExcelProperty("账户类型")
+    @ExcelIgnore
     @ApiModelProperty(value = "账户类型")
     private String balanceType;
 
     /**
-     * 账户名
+     * 账户类型名
      */
     @TableField(exist = false)
-    @ExcelProperty("账户名")
+    @ExcelProperty("账户类型名")
     @ApiModelProperty(hidden = true)
     private String balanceName;
 
@@ -73,7 +76,7 @@ public class SysBalanceDetail extends BaseEntity {
      */
     @NotNull
     @LengthForUtf8(max = 32)
-    @ExcelProperty("主表id")
+    @ExcelIgnore
     @ApiModelProperty(value = "主表id")
     private String balanceMainId;
 
@@ -81,7 +84,7 @@ public class SysBalanceDetail extends BaseEntity {
      * 所属用户id
      */
     @LengthForUtf8(max = 32)
-    @ExcelProperty("用户id")
+    @ExcelIgnore
     @ApiModelProperty(value = "所属用户id")
     private String userId;
 
@@ -99,5 +102,15 @@ public class SysBalanceDetail extends BaseEntity {
     @ExcelIgnore
     @ApiModelProperty(value = "是否删除")
     private Integer deleteType;
+
+    /**
+     * 记录时间
+     */
+    @TableField(exist = false)
+    @ApiModelProperty(hidden = true)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ExcelProperty("记录时间")
+    private Date accountDate;
 
 }

@@ -1,5 +1,6 @@
 package com.monezhao.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.bean.sys.SysBalanceMain;
@@ -38,5 +39,14 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
         );
         this.saveBatch(list);
         return true;
+    }
+
+    @Override
+    public boolean exist(SysBalanceMain sysBalanceMain) {
+        QueryWrapper<SysBalanceMain> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(SysBalanceMain::getAccountDate, sysBalanceMain.getAccountDate());
+        List<SysBalanceMain> list = this.list(queryWrapper);
+        return list != null && !list.isEmpty();
     }
 }
