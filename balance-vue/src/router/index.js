@@ -51,8 +51,18 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/403',
+    component: () => import('@/views/exception/403'),
+    hidden: true
+  },
+  {
     path: '/404',
     component: () => import('@/views/exception/404'),
+    hidden: true
+  },
+  {
+    path: '/500',
+    component: () => import('@/views/exception/500'),
     hidden: true
   },
   {
