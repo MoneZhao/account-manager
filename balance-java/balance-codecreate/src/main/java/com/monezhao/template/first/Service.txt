@@ -1,6 +1,5 @@
 package com.monezhao.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.monezhao.common.base.BaseService;
 import com.monezhao.bean.{_sys}.{_Sys}{_CodeType};
 

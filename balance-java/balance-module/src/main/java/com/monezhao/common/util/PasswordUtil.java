@@ -59,4 +59,22 @@ public class PasswordUtil {
         }
         return hexValue.toString();
     }
+
+    public static String md5Encode(byte[] byteArray) {
+        MessageDigest md5;
+        StringBuilder hexValue = new StringBuilder();
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+            byte[] md5Bytes = md5.digest(byteArray);
+            for (byte md5Byte : md5Bytes) {
+                int val = ((int) md5Byte) & 0xff;
+                if (val < 16) {
+                    hexValue.append("0");
+                }
+                hexValue.append(Integer.toHexString(val));
+            }
+        } catch (NoSuchAlgorithmException ignored) {
+        }
+        return hexValue.toString();
+    }
 }

@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 14/12/2020 11:09:30
+ Date: 07/01/2021 16:36:46
 */
 
 SET NAMES utf8mb4;
@@ -111,7 +111,7 @@ CREATE TABLE `t_sys_code_create` (
                                      `update_date` date DEFAULT NULL COMMENT '修改日期',
                                      `update_time` datetime DEFAULT NULL COMMENT '修改时间',
                                      PRIMARY KEY (`code_create_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='sys19_代码在线生成';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS19_代码在线生成';
 
 -- ----------------------------
 -- Records of t_sys_code_create
@@ -824,7 +824,7 @@ CREATE TABLE `t_sys_user_short_cut` (
                                         `update_date` date DEFAULT NULL COMMENT '修改日期',
                                         `update_time` datetime DEFAULT NULL COMMENT '修改时间',
                                         PRIMARY KEY (`user_short_cut_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户与快捷方式表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='shortcut_用户与快捷方式表';
 
 -- ----------------------------
 -- Records of t_sys_user_short_cut

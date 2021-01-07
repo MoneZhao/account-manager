@@ -24,5 +24,5 @@ public interface {_Sys}{_CodeType}Mapper extends BaseMapper<{_Sys}{_CodeType}> {
      * @param entity
      * @return
      */
-    public List<{_Sys}{_CodeType}> list(IPage<{_Sys}{_CodeType}> page, @Param("entity") {_Sys}{_CodeType} entity);
+    List<{_Sys}{_CodeType}> list(IPage<{_Sys}{_CodeType}> page, @Param("entity") {_Sys}{_CodeType} entity);
 }

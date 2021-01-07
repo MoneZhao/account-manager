@@ -43,7 +43,7 @@ public class CodeUtil {
     /**
      * 开发模块
      */
-    public static String module = "balance-manager";
+    public static String module = "balance-system";
     /**
      * 自动生成的建表语句的输出路径
      */
@@ -51,11 +51,11 @@ public class CodeUtil {
     /**
      * excel名
      */
-    public static String excelDesignPath = projectPath + "db" + File.separator + "数据库设计(sys_代码在线生成).xlsx";
+    public static String excelDesignPath = projectPath + "db" + File.separator + "数据库设计(sys_图片上传下载).xlsx";
     /**
      * 表
      */
-    public static String createTableName = "t_sys_code_create";
+    public static String createTableName = "t_sys_pic_up_down";
 
     /**
      * 返回驼峰命名法结果.

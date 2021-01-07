@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.bean.{_sys}.{_Sys}{_CodeType};
-import com.monezhao..mapper.{_Sys}{_CodeType}Mapper;
-import com.monezhao..service.{_Sys}{_CodeType}Service;
+import com.monezhao.mapper.{_Sys}{_CodeType}Mapper;
+import com.monezhao.service.{_Sys}{_CodeType}Service;
 
 import java.util.List;
 

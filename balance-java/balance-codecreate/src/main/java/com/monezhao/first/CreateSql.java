@@ -89,7 +89,7 @@ public class CreateSql {
             // 注释--结束
             stringBufferFoot.append("/**【" + tableName + "】结束**/" + "\r\n");
             // 打印插入菜单的语句
-            resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot);
+            resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot, list.get(0).getTableNameCn());
             // 每张表建表语句累加
             stringBufferAll.append(stringBufferHead).append(stringBufferMid).append("\r\n").append(stringBufferFoot)
                     .append("\r\n");
@@ -166,9 +166,11 @@ public class CreateSql {
     }
 
     private static void resolveMenuAndFuncSql(String aSysCodeType, String sysCodeType, String sys, String codeType,
-                                              StringBuffer stringBufferFoot) {
+                                              StringBuffer stringBufferFoot, String tableNameCn) {
+        tableNameCn = StringUtils.substringAfter(tableNameCn, "_");
+        tableNameCn = StringUtils.substringBeforeLast(tableNameCn, "表");
         if (CodeUtil.isPrintInsertMenuSql) {
-            stringBufferFoot.append("INSERT INTO t_sys_menu VALUES ('" + sysCodeType + "', 'XX功能', '" + sys
+            stringBufferFoot.append("INSERT INTO t_sys_menu VALUES ('" + sysCodeType + "', '" + tableNameCn +"', '" + sys
                     + "', 'list', '" + codeType + "', '" + sys + ":" + codeType + ":list', 'views/" + sys + "/"
                     + codeType + "/index', NULL, '0', '1', '" + aSysCodeType
                     + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
@@ -215,7 +217,7 @@ public class CreateSql {
             // 注释--结束
             stringBufferFoot.append("/**【" + tableName + "】结束**/" + "\r\n");
 
-            resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot);
+            resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot, list.get(0).getTableNameCn());
             // 每张表建表语句累加
             stringBufferAll.append(stringBufferHead).append(stringBufferMid).append(stringBufferFoot).append("\r\n");
         }
@@ -345,7 +347,7 @@ public class CreateSql {
             stringBufferFoot.append("\r\n");
             // stringBufferFoot.append("/**【" + tableName + "】结束**/" + "\r\n");// 注释--结束
 
-            resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot);
+            resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot, list.get(0).getTableNameCn());
 
             // 每张表建表语句累加
             stringBufferAll.append(stringBufferHead).append(stringBufferMid).append("\r\n").append(stringBufferFoot)
@@ -454,7 +456,7 @@ public class CreateSql {
             // 注释--结束
             stringBufferFoot.append("/**【" + tableName + "】结束**/" + "\r\n");
 
-            resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot);
+            resolveMenuAndFuncSql(aSysCodeType, sysCodeType, sys, codeType, stringBufferFoot, list.get(0).getTableNameCn());
             // 每张表建表语句累加
             stringBufferAll.append(stringBufferHead).append(stringBufferMid).append(stringBufferFoot).append("\r\n");
         }
