@@ -361,7 +361,7 @@ public class DateUtil {
             calendar.add(Calendar.MONTH, 1);
         }
         String endStr = format.format(end);
-        if (!Objects.equals(endStr, dateList.get(dateList.size() - 1))) {
+        if (!dateList.isEmpty() && !Objects.equals(endStr, dateList.get(dateList.size() - 1))) {
             dateList.add(endStr);
         }
         return dateList;
