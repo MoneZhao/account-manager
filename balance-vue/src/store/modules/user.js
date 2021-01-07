@@ -7,6 +7,7 @@ const state = {
   token: '',
   name: '',
   avatar: '',
+  defaultAvatar: require('@/assets/profile.png'),
   sysUser: {},
   sysRole: {},
   sysRoles: [],
@@ -73,7 +74,7 @@ const actions = {
           reject('该用户未配置角色，请联系管理员授权')
         }
         commit('SET_NAME', sysUser.userName)
-        commit('SET_AVATAR', avatar || require('@/assets/profile.png'))
+        commit('SET_AVATAR', avatar)
         commit('SET_USER', sysUser)
         commit('SET_ROLE', sysRole)
         commit('SET_ROLES', sysRoles)

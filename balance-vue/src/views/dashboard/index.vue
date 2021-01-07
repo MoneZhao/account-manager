@@ -5,7 +5,8 @@
         <el-card class="head-info-card box-card" shadow="hover">
           <el-row :span="12">
             <div class="head-info-avatar">
-              <img alt="头像" :src="avatar">
+              <img v-if="avatar" alt="头像" :src="avatar">
+              <img v-else alt="头像" :src="defaultAvatar">
             </div>
             <div class="head-info-count">
               <div class="head-info-welcome">
@@ -98,6 +99,7 @@ export default {
   computed: {
     ...mapGetters([
       'avatar',
+      'defaultAvatar',
       'name',
       'sysUser',
       'sysRole',

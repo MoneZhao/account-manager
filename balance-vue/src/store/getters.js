@@ -4,6 +4,7 @@ const getters = {
   size: state => state.app.size,
   token: state => state.user.token,
   avatar: state => state.user.avatar,
+  defaultAvatar: state => state.user.defaultAvatar,
   name: state => state.user.name,
   sysUser: state => state.user.sysUser,
   sysRole: state => state.user.sysRole,

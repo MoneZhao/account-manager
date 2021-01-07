@@ -19,11 +19,15 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img v-if="avatar" :src="avatar" class="user-avatar">
+          <img v-else :src="defaultAvatar" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <el-dropdown-item>
+            <span style="display:block;" @click="upload">更改头像</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
             <span style="display:block;" @click="updatePasswordHandle">修改密码</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
@@ -48,6 +52,20 @@
         </el-button>
       </div>
     </el-dialog>
+    <el-dialog title="上传图片" :visible.sync="dialogFormVisible" destroy-on-close append-to-body>
+      <el-upload
+        action
+        drag
+        class="avatar-uploader"
+        :show-file-list="false"
+        :http-request="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload"
+      >
+        <i class="el-icon-upload" />
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
+      </el-upload>
+    </el-dialog>
   </div>
 </template>
 
@@ -60,6 +78,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import UpdatePassword from '@/components/UpdatePassword'
 import ShortCut from '@/components/ShortCut'
+import { postAction } from '@/api/manage'
 
 export default {
   components: {
@@ -77,6 +96,7 @@ export default {
       timer: '', // 定义一个定时器的变量
       showShortCutModal: false,
       menuModalLoading: false,
+      dialogFormVisible: false,
       updatePasswordVisible: false
     }
   },
@@ -84,6 +104,7 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar',
+      'defaultAvatar',
       'device',
       'sysUser',
       'name'
@@ -98,6 +119,34 @@ export default {
     }
   },
   methods: {
+    upload() {
+      this.dialogFormVisible = true
+    },
+    async handleAvatarSuccess(res) {
+      const formData = new FormData()
+      formData.append('file', res.file)
+      const { msg, code } = await postAction('/sys/user/uploadPic', formData)
+      if (code == 200) {
+        this.$message.success('更换成功,请刷新页面')
+        this.dialogFormVisible = false
+        // location.reload()
+      } else {
+        this.$message.error('上传失败:' + msg)
+      }
+    },
+    // 限制上传时的文件格式大小
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('上传图片只能是 JPG 和 Png 格式!')
+        return false
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2MB!')
+        return false
+      }
+    },
     getTime() {
       this.nowDateTime = this.$moment().format('MM 月 DD 日, ddd, a hh:mm:ss')
       // this.nowDateTime = this.$moment().format('YYYY 年 MM 月 DD 日, ddd, a hh:mm:ss')

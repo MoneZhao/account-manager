@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 07/01/2021 16:36:46
+ Date: 08/01/2021 00:21:00
 */
 
 SET NAMES utf8mb4;
@@ -501,6 +501,7 @@ INSERT INTO `t_sys_menu` VALUES ('sysJobLog', '定时任务日志', 'job', 'list
 INSERT INTO `t_sys_menu` VALUES ('sysLog', '系统日志', 'sys', 'read-fill', 'log', 'sys:log:list', 'views/sys/log/index', NULL, '0', '1', 'SysLog', '0', '0', '1', 10900, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:43:00');
 INSERT INTO `t_sys_menu` VALUES ('sysMenu', '菜单管理', 'sys', 'menu', 'menu', 'sys:menu:list,sys:menu:getTreeData', 'views/sys/menu/index', NULL, '0', '1', 'SysMenu', '0', '0', '1', 10400, 'admin', NULL, NULL, 'admin', '2020-11-09', '2020-11-09 16:50:34');
 INSERT INTO `t_sys_menu` VALUES ('sysOrg', '机构管理', 'base', 'tree', 'org', 'sys:org:list,sys:org:getTreeData', 'views/sys/org/index', NULL, '0', '1', 'SysOrg', '0', '0', '1', 21000, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:35:48');
+INSERT INTO `t_sys_menu` VALUES ('sysPicUpDown', '图片上传下载', 'sys', 'list', 'picUpDown', 'sys:picUpDown:list', 'views/sys/picUpDown/index', NULL, '0', '1', 'SysPicUpDown', '1', '0', '1', 11100, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `t_sys_menu` VALUES ('sysPost', '岗位管理', 'base', 'tools', 'post', 'sys:post:list', 'views/sys/post/index', NULL, '0', '1', 'SysPost', '0', '0', '1', 22000, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:36:19');
 INSERT INTO `t_sys_menu` VALUES ('sysRole', '角色管理', 'sys', 'highlight-fill', 'role', 'sys:role:list', 'views/sys/role/index', NULL, '0', '1', 'SysRole', '0', '0', '1', 10700, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:41:45');
 INSERT INTO `t_sys_menu` VALUES ('sysUser', '用户管理', 'sys', 'user', 'user', 'sys:user:list,sys:role:listAll', 'views/sys/user/index', NULL, '0', '1', 'SysUser', '0', '0', '1', 10800, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:40:19');
@@ -539,6 +540,30 @@ INSERT INTO `t_sys_org` VALUES ('1200000000', '人力资源部', '1000000000', '
 INSERT INTO `t_sys_org` VALUES ('1300000000', '财务部', '1000000000', '财务', '1', '2', '1000000000,1300000000', '', '0', 'admin', '2020-10-30', '2020-10-30 14:37:50', 'admin', '2020-10-30', '2020-10-30 14:38:40');
 INSERT INTO `t_sys_org` VALUES ('1310000000', '财务一组', '1300000000', '财务一组', '1', '3', '1000000000,1300000000,1310000000', NULL, '1', 'admin', '2020-10-30', '2020-10-30 23:47:35', NULL, NULL, NULL);
 INSERT INTO `t_sys_org` VALUES ('1320000000', '财务二组', '1300000000', '财务二组', '1', '3', '1000000000,1300000000,1320000000', NULL, '1', 'admin', '2020-10-30', '2020-10-30 23:48:23', NULL, NULL, NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for t_sys_pic_up_down
+-- ----------------------------
+DROP TABLE IF EXISTS `t_sys_pic_up_down`;
+CREATE TABLE `t_sys_pic_up_down` (
+                                     `pic_up_down_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
+                                     `pic_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL COMMENT '图片名',
+                                     `pic` mediumblob NOT NULL COMMENT '图片',
+                                     `md5` varchar(200) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'md5',
+                                     `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                     `create_date` date DEFAULT NULL COMMENT '创建日期',
+                                     `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+                                     `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                     `update_date` date DEFAULT NULL COMMENT '修改日期',
+                                     `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+                                     PRIMARY KEY (`pic_up_down_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS20_图片上传下载表';
+
+-- ----------------------------
+-- Records of t_sys_pic_up_down
+-- ----------------------------
+BEGIN;
 COMMIT;
 
 -- ----------------------------
@@ -644,108 +669,109 @@ CREATE TABLE `t_sys_role_permission` (
 -- Records of t_sys_role_permission
 -- ----------------------------
 BEGIN;
+INSERT INTO `t_sys_role_permission` VALUES ('00a494e9e0771bb7ca3c2a5c6232e6a9', 'admin', '1', 'sys', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('012876c31d86bfd24fb94f1cb541f727', 'admin', '2', 'flowableModel-5', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('02c82174480218e57abf5516d4bd3f37', 'queryRole', '2', 'sysBalanceMain-3', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('038cb35192a1c8f28c45afcf1a8e5c55', 'admin', '2', 'sysFunc-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('051a9a195eb7787652254ecbf3fcd11f', 'admin', '1', 'sysJob', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('05d1b2bb3932a77b9ff35dceb7b50e73', 'admin', '2', 'sysBalanceMain-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('0d40999c331b58a4b7b18797aa7ce334', 'admin', '1', 'sys', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('0da82cdf7c8309a15b623c6bee769e75', 'admin', '2', 'sysBalanceMain-4', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('10709b0c3716b4acdf34986c0dbfcb3d', 'admin', '2', 'sysBalanceMain-5', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('131676ab001df16454ca6ae95392ac09', 'admin', '2', 'sysUser-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('149a1160a6998c52141f0ceca9ab8224', 'admin', '2', 'sysBalanceMain-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('1cede031c69616c90d96b4c559e4e041', 'admin', '2', 'flowableForm-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('1e7fd5c7ec0564415a482dbb2cba7bd2', 'admin', '1', 'sysLog', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('209b0bc5f9a804f94b524f2982392ee7', 'admin', '1', 'flowableModel', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('214d2b4ddd2b32b7a75ddcec05c0401e', 'admin', '2', 'sysJob-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('257a946072630fa364057de28eba6ac0', 'admin', '2', 'sysFunc-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('2b1bc1f336cec4be6f046babe0201a85', 'admin', '2', 'flowableModel-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('2c744fbcdaaa84b31df710d95d25166f', 'admin', '2', 'sysPost-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('3137313fb9f7226642bc201128e4144b', 'admin', '1', 'flowable', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('32cb065440fd2b0bb685000576318349', 'admin', '2', 'sysUser-4', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('330b43ac1b094672dc878d036359b766', 'admin', '2', 'sysMenu-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('3393e22f38f10048770b8a4ac75b2e92', 'admin', '2', 'sysOrg-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('347e07ce49900095058426e5702b7469', 'admin', '1', 'job', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('385315e5013b050cc88bd80f726e2dd4', 'admin', '1', 'sysConfig', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('3a51d3148dd1ee8533e0abbbb757a52f', 'admin', '1', 'flowableProcessDefinition', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('042b3baacadd2436343d4dde020224b4', 'admin', '2', 'sysCodeInfo-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('097864a6c76d4f6a62da01e4370a5d85', 'admin', '2', 'flowableProcessDefinition-5', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('09a24e4a879830925d035e861bb78e46', 'admin', '2', 'flowableProcessInstance-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('100011bf19190fc80711f58aefd6e58e', 'admin', '2', 'sysRole-5', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('143b288938e516b4674c1e4be363b96d', 'admin', '1', 'flowable', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('164703b3f30d9308fb2a9900282c78f3', 'admin', '2', 'sysRole-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('1749ce90a8db43b7c87cf17dd7e7d4f6', 'admin', '2', 'flowableModel-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('1760fe0fb2dcf0b892a0cb105bb6fdfc', 'admin', '1', 'flowableTask', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('1955439fdca44e3689b8a76b92352ef9', 'admin', '1', 'sysLog', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('1a26a87234ec03b762c02804f2d91aa9', 'admin', '2', 'sysBalanceMain-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('1ad8d8ddeb854447995ddc2d0b63ede0', 'admin', '2', 'sysCodeType-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('1bce451c3b87d5ab65d268796566e40e', 'admin', '2', 'sysJob-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('1e90dbd3631240ee0befc21346a34b98', 'admin', '1', 'sysUser', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('2067756e4e958cbd3b004a4892d419a7', 'admin', '1', 'monitor', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('21b38906b2b910f6c73016ba2d63deed', 'admin', '2', 'sysBalanceMain-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('23b57c1b42190d0b054e2b9364b62d95', 'admin', '1', 'base', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('2983d8d46ae5f871fbd3578251bd45e2', 'admin', '2', 'flowableModel-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('2c0a61b3ff5bb477163559e3161b8d02', 'admin', '1', 'sysFunc', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('2f3dfc36f54bb0cc07b48b1f394d4fde', 'admin', '2', 'sysFunc-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('30bc7f664d125902c96d66b0364cc828', 'admin', '1', 'flowableForm', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('3190bff6ed527c6c10c05d23c1974cff', 'admin', '2', 'sysUser-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('322497bfe5add2b677dc3eb49b67a41b', 'admin', '1', 'monitorSwagger', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('35e9086eadec182290941629471d74dd', 'admin', '2', 'sysPost-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('3c02b50785fdac275ef1f1f86b63c23f', 'admin', '2', 'sysUser-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('3cf5c56582cfadc1b710b6187bd90197', 'queryRole', '1', 'sysBalanceMain', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('45c09abe522aef10f5adc11a0115c8e4', 'admin', '2', 'sysCodeCreate-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('45cb9fe63e674bf6acfbf01cf856d9aa', 'admin', '2', 'sysCodeCreate-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('48fb540a4bc236ec624312908d424dd5', 'admin', '2', 'flowableProcessInstance-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('4958eab73058909ce4fa630e69eb185e', 'admin', '1', 'sysOrg', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('4a9d41108b9a13dc21f6888d0c22b731', 'admin', '1', 'monitor', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('4b50f081adec3156710bae258057e2a1', 'admin', '2', 'sysCodeInfo-4', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('4f1c6c986b8f8b6ea75e964dff2f3c6c', 'admin', '2', 'sysCodeType-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('4fea1ed977eccf2a67497398d144a907', 'admin', '1', 'flowableTask', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('5565beb45aea01b7b1bb0fcc00307ee3', 'admin', '2', 'flowableModel-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('56240efbfc573bfcda5dd6ce13bcf79c', 'admin', '2', 'flowableProcessDefinition-4', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('5666b7949b6f0e32ec289ac6b5ac47e8', 'admin', '2', 'flowableProcessInstance-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('59c95fddadf4f272a07479ae51223bba', 'admin', '1', 'flowableForm', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('5b27617dee62742231d00c4034ef8611', 'admin', '1', 'sysRole', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('5ca810976e2f207396e0ea6335df99d7', 'admin', '2', 'flowableForm-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('5dffadf7733d153a524ff4d731a29904', 'admin', '2', 'sysConfig-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('5f193945d2198b2d993872a7458cf53b', 'admin', '2', 'sysCodeType-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('44638cccca211b623bd3204ee7bb3e8c', 'admin', '2', 'sysCodeCreate-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('458a8332009f3ba8fb1e0f08a122a252', 'admin', '2', 'flowableProcessInstance-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('47bd5c7f64c399492a97edc3e4a79a8b', 'admin', '2', 'sysPost-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('4a47cb4538e9495aa5f43c196daea7df', 'admin', '1', 'sysPicUpDown', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('4bccb8d1793017029698d09c249e0090', 'admin', '2', 'flowableProcessDefinition-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('4c0c33ee533a8f6bfba806d3d14bdc4a', 'admin', '2', 'sysJob-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('53a99cd457b1f2bde6dc1f8159187771', 'admin', '2', 'sysOrg-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('582973045bd6df253e75b1359ba7e5c5', 'admin', '2', 'sysCodeInfo-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('583fd273fabb234d722b7c80cf8b772c', 'admin', '1', 'job', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('58bc765afbb6c111689cdeff6923b8ff', 'admin', '2', 'flowableProcessDefinition-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('58ffe15dcbaa3a26de5e3e330aa438c8', 'admin', '2', 'sysOrg-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('5bc79c964eb0c541c80c5e587a39e283', 'admin', '2', 'sysUser-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('5e00e4b179069a8b41ece666a95e95c3', 'admin', '2', 'sysOrg-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('5e878d5a3f504b3257df0a8d55426d58', 'admin', '1', 'balance', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('5f4743836eaa94701f6d3e7bf69b6b18', 'admin', '2', 'sysJob-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('618647a3fad9712cb43e0d8b4cf5d3ba', 'admin', '2', 'sysBalanceMain-5', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('61cba2f2cad9f52e6890b75e4c96830f', 'queryRole', '2', 'sysBalanceMain-2', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('61fb56f04f128f5481e037665f8cb4b5', 'admin', '2', 'flowableProcessDefinition-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('635a3893e8dbaf6009efcf1b528f9b61', 'admin', '2', 'sysRole-5', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('652660a2c54448d33cbae27572bb0408', 'admin', '2', 'flowableForm-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('6a161c3a6e282f7925b0138236ce7bc1', 'admin', '2', 'sysPost-4', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('6a1e43859868ce8353574a40da3fb636', 'admin', '1', 'sysCodeCreate', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('6d7421dd49869f4921cd814892477912', 'admin', '2', 'sysCodeInfo-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('6e830f4c47419e0491379b3d20248e61', 'admin', '1', 'sysBalanceMain', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('74424d430728df778a7f6c6fbec4fb94', 'admin', '2', 'sysCodeCreate-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('75504f8048bb1d06cb3266bd3f07dc60', 'admin', '1', 'monitorDruid', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('77d4ed26ed679b7be10ef4892385d41f', 'admin', '2', 'sysCodeInfo-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('783b24dc91adbeec9c9a5cb2614cbdc5', 'admin', '2', 'sysConfig-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('7c5d0f4ea1d4311f9edab9f3481764ac', 'admin', '1', 'sysPost', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('7e7e28d58966f4b926f092f269aeca3a', 'admin', '2', 'flowableProcessInstance-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('800e72c2a5927e542559ddc5e26479ad', 'admin', '1', 'sysUser', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('82da9874fc5f3b1bf94ed0f78880fcd3', 'admin', '2', 'sysCodeInfo-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('83149534143a0ba5c08f0df5548cfe7d', 'admin', '2', 'sysFunc-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('85c6c8c07a94aef8a7ada9e1ea7b08a9', 'admin', '2', 'sysRole-4', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('6244b36f34ef6e0173d8180fff79f035', 'admin', '1', 'flowableModel', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('632bc7c76fe9c0432ab9ce1d5260036c', 'admin', '1', 'sysJob', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('6363e14c9520490fb9fc0a77595c4230', 'admin', '2', 'sysMenu-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('65dd83ebcb0aefd4f7b83fcd84e7422d', 'admin', '2', 'sysJob-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('68908516b60776e5f68068f3753aa4f3', 'admin', '1', 'sysMenu', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('6cb921f0e2e3c216f4713c15bb8018ab', 'admin', '2', 'sysJob-5', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('6d06e623619bd41a3da9e12606a41535', 'admin', '1', 'sysCodeCreate', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('6ee6e1861bf021a0933b016d1f8f15b9', 'admin', '1', 'sysJobLog', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('7b73e497041f0810b71df8f9027fcc9b', 'admin', '2', 'flowableProcessDefinition-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('7dcca175ec561e31987f18c308a0a167', 'admin', '2', 'sysRole-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('7dd6fd44b7a924f786d3f5443b105f06', 'admin', '1', 'sysBalanceMain', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('7eea409167abc0e45ff11336cba83b46', 'admin', '1', 'flowableProcessDefinition', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('7f7d5b7c54ddee0133cc6259d52a979a', 'admin', '2', 'sysBalanceMain-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('80fa53e2a1c8ba691fe604aad4556055', 'admin', '2', 'sysUser-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('81e7e64d677e973271bb6aa77421bf18', 'admin', '2', 'sysMenu-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('823cd52d8f247d10b95d5050ea77de18', 'admin', '2', 'flowableForm-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('85572230604188b8dac5b4503e095480', 'admin', '2', 'flowableTask-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('8a890ad367c4682e93f3af66a1ca67f8', 'admin', '1', 'flowableProcessInstance', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('8ebe688d9285f4d482c2f214061a5370', 'queryRole', '1', 'statement', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('8f5ff490bdfe38409aaa7ce1da428864', 'admin', '2', 'sysMenu-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('8f9a9002c9816289726337181df3684d', 'admin', '2', 'flowableTask-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('90658e603c0530a5f36177d9aaa1ebae', 'queryRole', '2', 'sysBalanceMain-1', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('9a11ec61407d32638f5e2216c85da50e', 'admin', '1', 'monitorServer', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('a24fc9af7982139cf11539f96d675b38', 'admin', '1', 'statement', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('a6ced599bf8b6450596c6e63409ed0c3', 'admin', '2', 'sysMenu-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('a77fc0a7b856bd50429f18dd2937f3bb', 'admin', '2', 'sysJob-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('907aa711a8660591d51a25fc0adb996c', 'admin', '2', 'flowableProcessDefinition-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('914c10a89dcc0a910c8401fa6c25a049', 'admin', '2', 'sysFunc-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('9221d99ad9c9633135f6ce0a8fa46346', 'admin', '1', 'statement', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('9561cbba561f54477c6acb6e39393e52', 'admin', '1', 'monitorDruid', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('957c2b2df6c25053817eebe04918b468', 'admin', '2', 'sysCodeCreate-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('96f202ccb485ec6564a39918d867f062', 'admin', '2', 'sysCodeCreate-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('a60ffa7dfb12cc5ab7a4b5101a708d9f', 'admin', '1', 'sysCodeType', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('a70cbc2fdfcd23a5d71ff63303afec87', 'admin', '2', 'sysCodeCreate-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('a7af8aeb141849f9180f5cd965b92ad6', 'admin', '2', 'sysRole-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('a8c8888ae1a50cc8ad24f26574f251cb', 'admin', '1', 'sysOrg', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('aa66010847268e1ec328559ad5e766f5', 'queryRole', '2', 'sysBalanceMain-4', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('aabe332ecb6af08d29faed50a80a9242', 'admin', '2', 'sysOrg-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('ad3008a4fe754b52017e1c39377c2f1a', 'admin', '2', 'sysConfig-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('b26015136b84cb8b5c19152661214c29', 'admin', '1', 'sysFunc', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('b41d6767fe7cb29304be65a6cbf65293', 'admin', '2', 'flowableModel-6', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('b5b487a37559c939a3e14eaf2f77c29a', 'admin', '2', 'sysJob-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('b6d63dc90f5c3ad23808e1f0fe69fbec', 'admin', '2', 'sysRole-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c124a320de43b2cf6ee0ddca63bb6e62', 'admin', '1', 'sysMenu', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c1fe87ddde09d58ca8467b3b494b8a0c', 'admin', '1', 'statementTable', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c2f1ead795fce2f91215c4558a729bf5', 'admin', '1', 'balance', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c429f0a414b0b79520a9d33c64346d60', 'admin', '2', 'sysUser-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c4852643d29fc1e8cc0b7b4307ff117d', 'admin', '2', 'sysCodeCreate-4', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c6be8b2672a212a685d1fbaf47e32cb0', 'admin', '1', 'sysCodeType', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c7b6a0a0daf04b23ed42cf6eec745cb0', 'admin', '2', 'sysUser-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c7c1856f1e4775ccfdb99df2a114fd0b', 'admin', '2', 'sysPost-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c92c517b95afd76894e699ea98a349fb', 'admin', '2', 'flowableModel-5', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('c94d7d2028f0420c6ea066958d7dc5cd', 'admin', '1', 'base', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('cdd3dd6fb86ef8dae5431534df6a7665', 'admin', '2', 'sysPost-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('cf72eaa2d6549dbe762a4001a176a808', 'admin', '2', 'sysRole-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('cffdbb25ef786fb8fcec7a15eadb81de', 'admin', '1', 'monitorSwagger', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('d0c0e542ac1c6696bcb1ade6b24628b9', 'admin', '2', 'sysBalanceMain-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('d2de9c11d8fbf11ec30d0c1b64f2eda8', 'admin', '2', 'sysCodeType-1', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('d4c9b75bc2fb7589577eb42d10a5a493', 'admin', '2', 'flowableProcessDefinition-5', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('d6a9298ceb9a4754850f75fa1ed84f65', 'admin', '1', 'sysJobLog', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('d6ed2504d5da353f6784c2d4245953bc', 'admin', '2', 'flowableModel-4', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('d791725ec0e2d3e1bcc2356138e731dd', 'admin', '2', 'sysRole-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('aa791ef0ac207f14817d320e95624df3', 'admin', '2', 'flowableProcessInstance-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('be320819be9b276b8091ae42208d2230', 'admin', '2', 'flowableForm-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('bfe403c223def9e8f1916054d90e8a58', 'admin', '2', 'sysConfig-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('c13abee54eb129d495a2e194619c4ffa', 'admin', '2', 'flowableModel-6', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('cc9f913a6ad938925c771c15387dd4d4', 'admin', '2', 'flowableModel-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('d1a0f97e93ecdde9d501af207b6e737b', 'admin', '1', 'sysRole', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('d4d89e56ec432e79438c0650ccaeef7f', 'admin', '2', 'sysPost-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('d7400c48601d95a37da0f7833bbb6d04', 'admin', '2', 'sysRole-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('d88734c27a8c46b4554264b8e16b4ab6', 'queryRole', '2', 'sysBalanceMain-5', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('d8b010f27f21d11c9c01ec8ede0d4424', 'admin', '2', 'sysJob-4', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('dce064302cd54c689ee98617cbb559f6', 'admin', '2', 'flowableProcessDefinition-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('d9e17c4a9f10795bd06f290043fa6236', 'admin', '2', 'sysMenu-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('e19a801065933932d5e34c5d3b10d4ae', 'admin', '2', 'sysPost-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('e24a6ee73604bc2d834b20cff2522ee5', 'admin', '1', 'monitorServer', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('e3b1931bbcbd700c2dc1845c4f75e75b', 'admin', '2', 'sysCodeType-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('e4c1a614f8664fd07e1e73982ac710d7', 'admin', '2', 'sysCodeType-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('ead8b4924fa7a8060392f814aa614edd', 'admin', '2', 'sysFunc-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('ed338eb3f3e4d49c69a6ee0c80fac999', 'admin', '1', 'statementTable', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('ee08c138887fce43e942149ecae4af35', 'admin', '2', 'sysCodeInfo-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('ee66c16e6bdcf03b07b772c4053049b0', 'admin', '2', 'sysCodeInfo-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('efde5b936658721f5143d38ca96cd325', 'queryRole', '1', 'statementTable', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('f02ca12fb3ecdbf2a64a98e30022a610', 'admin', '2', 'sysJob-5', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('f12a3750ef10b5c768c60365926d9ebd', 'admin', '2', 'flowableProcessDefinition-3', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('f47775f64d7764caa54085eff8a22ad7', 'queryRole', '1', 'balance', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('f50101de641aca8f2c956d93bc609adf', 'admin', '1', 'flowableProcessInstance', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('f6854f86f43805391654e44af908d822', 'admin', '2', 'flowableModel-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('f8789de7151c4f2584f80b79ad4383de', 'admin', '2', 'sysOrg-2', 'admin', '2020-12-09', '2020-12-09 09:45:34', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('f629d6dd6c58ea425242dc727aad563c', 'admin', '2', 'flowableForm-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('f7cb5c956624a0b04866a03bb115d30f', 'admin', '1', 'sysConfig', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('f9e76b767ab1e615c3fc3230c5719eb9', 'admin', '2', 'flowableModel-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('fb0b890cfe7117748b2fbb33e90d0632', 'admin', '1', 'sysPost', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('fd004b0809fac404c301d77bacd15274', 'admin', '2', 'sysConfig-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('fd990a37a4880f592970ce0891ced6d2', 'admin', '2', 'sysConfig-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('fe4bba176ed08147dcb2a9cf97a7f109', 'admin', '2', 'sysBalanceMain-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -790,6 +816,7 @@ CREATE TABLE `t_sys_user` (
                               `email` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '邮箱',
                               `status` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户状态',
                               `sort_no` int(11) DEFAULT NULL COMMENT '排序号',
+                              `pic_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '头像id',
                               `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
                               `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                               `create_date` date DEFAULT NULL COMMENT '创建日期',
@@ -805,8 +832,8 @@ CREATE TABLE `t_sys_user` (
 -- Records of t_sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_sys_user` VALUES ('admin', 'admin', '4560a01246015a762ccb8c449fd7e9415858a98e99ccbc1f9e5dc1bf992560cc', 'RPOT6fZi', '1', 'admin', '1000000000', '18888888888', 'xxx', 'xxx@yyy.zz', '1', 1, '1', NULL, NULL, NULL, 'admin', '2020-06-08', '2020-06-08 06:52:30');
-INSERT INTO `t_sys_user` VALUES ('monezhao', 'monezhao', 'af083312ff190e98531786fb5912dadb12cdad917e6267f15fbadecd1d0ae81c', 'jhqF75Xr', '1', 'queryRole', '1000000000', 'x', 'x', 'x', '1', 2, '', 'admin', '2020-06-12', '2020-06-12 11:07:42', 'admin', '2020-11-18', '2020-11-18 17:21:13');
+INSERT INTO `t_sys_user` VALUES ('admin', 'admin', '4560a01246015a762ccb8c449fd7e9415858a98e99ccbc1f9e5dc1bf992560cc', 'RPOT6fZi', '1', 'admin', '1000000000', '18888888888', 'xxx', 'xxx@yyy.zz', '1', 1, '', '1', NULL, NULL, NULL, 'admin', '2021-01-08', '2021-01-08 00:16:13');
+INSERT INTO `t_sys_user` VALUES ('monezhao', 'monezhao', 'af083312ff190e98531786fb5912dadb12cdad917e6267f15fbadecd1d0ae81c', 'jhqF75Xr', '1', 'queryRole', '1000000000', 'x', 'x', 'x', '1', 2, '', '', 'admin', '2020-06-12', '2020-06-12 11:07:42', 'admin', '2020-11-18', '2020-11-18 17:21:13');
 COMMIT;
 
 -- ----------------------------

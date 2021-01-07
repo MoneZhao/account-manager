@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.annotation.SysLogAuto;
+import com.monezhao.bean.sys.SysPicUpDown;
 import com.monezhao.bean.sys.SysUser;
 import com.monezhao.bean.utilsVo.SessionObject;
 import com.monezhao.bean.utilsVo.SysPasswordForm;
@@ -22,6 +23,7 @@ import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.controller.command.SysUserIndex;
 import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.service.SysConfigService;
+import com.monezhao.service.SysPicUpDownService;
 import com.monezhao.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,10 +37,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.xml.bind.DatatypeConverter;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -60,6 +65,9 @@ public class SysUserController extends BaseController {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private SysPicUpDownService picUpDownService;
 
     /**
      * 自定义查询列表
@@ -154,6 +162,20 @@ public class SysUserController extends BaseController {
         sessionObject.setLoginTime(DateUtil.getNow());
         sessionObject.setIpAddr(IpUtils.getIpAddr(request));
         sessionObject.setToken((String) redisUtil.get(Constants.PREFIX_USER_TOKEN + sysUser.getUserId()));
+        if (sysUser.getPicId() != null) {
+            SysPicUpDown picUpDown = picUpDownService.getById(sysUser.getPicId());
+            if (picUpDown != null) {
+                if (picUpDown.getPicName().toLowerCase(Locale.ROOT).endsWith(".png")) {
+                    sessionObject.setAvatar(
+                            "data:image/png;base64," + DatatypeConverter.printBase64Binary(picUpDown.getPic())
+                    );
+                } else {
+                    sessionObject.setAvatar(
+                            "data:image/jpg;base64," + DatatypeConverter.printBase64Binary(picUpDown.getPic())
+                    );
+                }
+            }
+        }
         String expireTime = sysConfigService.getSysConfig("expireTime", String.valueOf(JwtUtil.EXPIRE_TIME));
         redisUtil.set(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId(), sessionObject, Long.parseLong(expireTime));
         return Result.ok(sessionObject);
@@ -167,6 +189,19 @@ public class SysUserController extends BaseController {
         if (!success) {
             return Result.error("原密码错误");
         }
+        return Result.ok();
+    }
+
+    @PostMapping(value = "/uploadPic")
+    @SysLogAuto(value = "用户更新头像")
+    @ApiOperation("用户更新头像")
+    public Result uploadPic(@RequestParam MultipartFile file) {
+        String id = picUpDownService.upload(file);
+        String userId = ShiroUtils.getUserId();
+        SysUser sysUser = new SysUser();
+        sysUser.setUserId(userId);
+        sysUser.setPicId(id);
+        sysUserService.updateById(sysUser);
         return Result.ok();
     }
 

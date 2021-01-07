@@ -126,6 +126,14 @@ public class SysUser extends BaseEntity {
     private Integer sortNo;
 
     /**
+     * 头像id
+     */
+    @LengthForUtf8(max = 32)
+    @ExcelProperty("头像id")
+    @ApiModelProperty(value = "头像id")
+    private String picId;
+
+    /**
      * 备注
      */
     @LengthForUtf8(max = 255)

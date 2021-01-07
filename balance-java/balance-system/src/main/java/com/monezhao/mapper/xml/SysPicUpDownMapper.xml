@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.monezhao.mapper.SysPicUpDownMapper">
+
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.monezhao.bean.sys.SysPicUpDown">
+        select
+            a.pic_up_down_id as picUpDownId,
+            a.pic_name as picName,
+            a.pic as pic,
+            a.md5 as md5
+        from t_sys_pic_up_down a
+        where 1=1
+        <if test="entity.picName != null and entity.picName !=''">
+            AND a.pic_name like concat('%',#{entity.picName},'%')
+        </if>
+        order by a.create_time
+    </select>
+</mapper>
