@@ -8,6 +8,12 @@
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
+      <div class="footer">
+        <div class="copyright">
+          Copyright © {{ year }}
+          <span>MoneZhao - monezhao@163.com</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -41,6 +47,9 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       }
+    },
+    year() {
+      return this.$moment().format('YYYY')
     }
   },
   methods: {
@@ -92,5 +101,18 @@ export default {
 
     .mobile .fixed-header {
         width: 100%;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      height: 36px;
+      width: 100%;
+      padding: 10px 16px;
+      text-align: center;
+      .copyright {
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 14px;
+      }
     }
 </style>

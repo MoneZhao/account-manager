@@ -25,26 +25,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .app-main {
-        /* 50= navbar  50  */
-        min-height: calc(100vh - 50px);
-        width: 100%;
-        position: relative;
-        overflow: hidden;
-    }
+.app-main {
+  /* 86 = navbar + footer = 50 + 36  */
+  min-height: calc(100vh - 86px);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
 
-    .fixed-header+.app-main {
-        padding-top: 50px;
-    }
+.fixed-header + .app-main {
+  padding-top: 50px;
+}
 
-    .hasTagsView {
-        .app-main {
-            /* 84 = navbar + tags-view = 50 + 34 */
-            min-height: calc(100vh - 84px);
-        }
+.hasTagsView {
+  .app-main {
+    /* 120 = navbar + tags-view + footer = 50 + 34 + 36 */
+    min-height: calc(100vh - 120px);
+  }
 
-        .fixed-header+.app-main {
-            padding-top: 84px;
-        }
-    }
+  .fixed-header + .app-main {
+    padding-top: 84px;
+  }
+}
 </style>
