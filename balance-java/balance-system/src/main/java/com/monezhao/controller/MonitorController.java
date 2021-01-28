@@ -3,6 +3,7 @@ package com.monezhao.controller;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.bean.utilsVo.RedisInfo;
 import com.monezhao.common.Result;
+import com.monezhao.common.base.BaseController;
 import com.monezhao.service.RedisService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +29,7 @@ import java.util.Map;
 @RequestMapping("/actuator")
 @Api(tags = "服务器监控")
 @ApiSupport(author = "monezhao@163.com")
-public class MonitorController {
+public class MonitorController extends BaseController {
 
     @Autowired
     private RedisService redisService;

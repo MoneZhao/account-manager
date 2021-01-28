@@ -8,6 +8,7 @@ import com.monezhao.bean.utilsVo.SessionObject;
 import com.monezhao.bean.utilsVo.SysLoginForm;
 import com.monezhao.common.Constants;
 import com.monezhao.common.Result;
+import com.monezhao.common.base.BaseController;
 import com.monezhao.common.exception.BaseException;
 import com.monezhao.common.exception.SysException;
 import com.monezhao.common.util.CommonUtil;
@@ -51,7 +52,7 @@ import java.util.Objects;
 @Slf4j
 @Api(tags = "后台用户登录")
 @ApiSupport(author = "monezhao@163.com")
-public class SysLoginController {
+public class SysLoginController extends BaseController {
 
     @Autowired
     private SysUserService sysUserService;

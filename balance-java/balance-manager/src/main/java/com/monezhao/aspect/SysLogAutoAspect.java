@@ -1,13 +1,12 @@
 package com.monezhao.aspect;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysLog;
 import com.monezhao.bean.sys.SysUser;
 import com.monezhao.bean.utilsVo.SysLoginForm;
 import com.monezhao.common.Result;
+import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.IpUtils;
-import com.monezhao.common.util.JacksonUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.service.SysLogService;
 import com.monezhao.service.SysUserService;
@@ -21,7 +20,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
 /**
  * @author monezhao@163.com
@@ -73,7 +72,7 @@ public class SysLogAutoAspect {
             }
         } else if (LOG_TYPE_2.equals(sysLogAuto.logType())) {
             sysUser = ShiroUtils.getSysUser();
-            sysLog.setRequestParam(paramsToJson(args));
+            sysLog.setRequestParam(CommonUtil.paramsToJson(args));
         }
         if (sysUser != null) {
             sysLog.setUserId(sysUser.getUserId());
@@ -95,10 +94,14 @@ public class SysLogAutoAspect {
         // 保存日志
         sysLog.setCostTime(time);
 
+        sysLog.setSuccess("0");
         String operateResult = "";
         if (result instanceof Result) {
             Result r = (Result) result;
             operateResult = r.getMsg();
+            if (Objects.equals(r.getCode(), Result.SC_OK)) {
+                sysLog.setSuccess("1");
+            }
         } else if (ex != null) {
             operateResult = ex.getMessage();
         }
@@ -112,35 +115,6 @@ public class SysLogAutoAspect {
         }
 
         return result;
-    }
-
-    /**
-     * 将参数转换成json格式字符串，多个参数以逗号隔开
-     *
-     * @param args
-     * @return
-     */
-    private String paramsToJson(Object[] args) {
-        if (args == null || args.length == 0) {
-            return "";
-        }
-        StringBuffer params = new StringBuffer();
-        for (int i = 0; i < args.length; i++) {
-            String param = null;
-            if (!(args[i] instanceof HttpServletRequest || args[i] instanceof HttpServletResponse)) {
-                // 序列化忽略null值，写入数据库长度可以缩短
-                param = JacksonUtil.objToStr(args[i], Include.NON_NULL);
-            }
-            if (param == null) {
-                param = "{}";
-            }
-            if (i == args.length - 1) {
-                params.append(param);
-            } else {
-                params.append(param).append(",");
-            }
-        }
-        return params.toString();
     }
 
 }

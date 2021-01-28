@@ -111,6 +111,12 @@ public class SysLog extends BaseEntity {
     private String operateResult;
 
     /**
+     * 操作结果是否成功 0否 1是
+     */
+    @ApiModelProperty(value = "操作结果是否成功")
+    private String success;
+
+    /**
      * 耗时
      */
     @ApiModelProperty(value = "耗时")

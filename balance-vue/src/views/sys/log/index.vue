@@ -2,7 +2,8 @@
   <div class="app-container">
     <div class="filter-container" style="float: right">
       <el-select v-model="listQuery.logType" placeholder="日志类型" class="filter-item"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value" /></el-select>
-      <el-input v-model="listQuery.userId" placeholder="操作用户" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+      <el-select v-model="listQuery.success" placeholder="操作是否成功" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
+      <el-input v-model="listQuery.userId" placeholder="用户登录名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
       <el-input v-model="listQuery.userName" placeholder="操作用户姓名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
       <el-input v-model="listQuery.ip" placeholder="IP地址" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
       <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
@@ -29,8 +30,9 @@
       <el-table-column type="selection" align="center" />
       <el-table-column label="日志类型" prop="logType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.logType,scope.row.logType)" /></template></el-table-column>            <el-table-column label="日志内容" prop="logContent" align="center"><template slot-scope="scope"><span>{{ scope.row.logContent }}</span></template></el-table-column>
       <el-table-column label="操作用户姓名" prop="userName" align="center"><template slot-scope="scope"><span>{{ scope.row.userName }}</span></template></el-table-column>
-      <el-table-column label="IP" prop="userName" align="center"><template slot-scope="scope"><span>{{ scope.row.ip }}</span></template></el-table-column>
+      <el-table-column label="IP" prop="ip" align="center"><template slot-scope="scope"><span>{{ scope.row.ip }}</span></template></el-table-column>
       <el-table-column label="耗时" prop="costTime" align="center"><template slot-scope="scope"><span>{{ scope.row.costTime }}</span></template></el-table-column>
+      <el-table-column label="操作是否成功" prop="success" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.success)" /></template></el-table-column>
       <el-table-column label="操作时间" prop="createTime" align="center"><template slot-scope="scope"><span>{{ scope.row.createTime }}</span></template></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
@@ -60,7 +62,7 @@
         <el-form-item label="UUID" prop="logId"><el-input v-model="temp.logId" :readonly="dialogStatus==='update'" /></el-form-item>
         <el-form-item label="日志类型" prop="logType"><el-select v-model="temp.logType" placeholder="日志类型"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
         <el-form-item label="日志内容" prop="logContent"><el-input v-model="temp.logContent" /></el-form-item>
-        <el-form-item label="操作用户" prop="userId"><el-input v-model="temp.userId" /></el-form-item>
+        <el-form-item label="用户登录名" prop="userId"><el-input v-model="temp.userId" /></el-form-item>
         <el-form-item label="操作用户姓名" prop="userName"><el-input v-model="temp.userName" /></el-form-item>
         <el-form-item label="IP地址" prop="ip"><el-input v-model="temp.ip" /></el-form-item>
         <el-form-item label="请求方法" prop="method"><el-input v-model="temp.method" /></el-form-item>
@@ -124,7 +126,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.getDicts('logType').then(({ data }) => { this.dicts = data })
+    this.getDicts('logType,yesOrNo').then(({ data }) => { this.dicts = data })
   },
   created() {
     this.list()

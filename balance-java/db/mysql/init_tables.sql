@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 80018
  Source Host           : localhost:3306
- Source Schema         : manager
+ Source Schema         : account_manager
 
  Target Server Type    : MySQL
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 08/01/2021 00:21:00
+ Date: 29/01/2021 10:27:43
 */
 
 SET NAMES utf8mb4;
@@ -22,16 +22,16 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_flowable_form`;
 CREATE TABLE `t_flowable_form` (
-                                   `form_key` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '表单key',
-                                   `form_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '表单名称',
-                                   `form_json` longtext COLLATE utf8mb4_general_ci COMMENT '表单内容json串',
-                                   `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                   `form_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表单key',
+                                   `form_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表单名称',
+                                   `form_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '表单内容json串',
+                                   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                    `create_date` date DEFAULT NULL COMMENT '创建日期',
                                    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                                   `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                    `update_date` date DEFAULT NULL COMMENT '修改日期',
                                    `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-                                   PRIMARY KEY (`form_key`)
+                                   PRIMARY KEY (`form_key`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='flowable_流程表单';
 
 -- ----------------------------
@@ -47,20 +47,20 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_balance_detail`;
 CREATE TABLE `t_sys_balance_detail` (
-                                        `balance_detail_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
+                                        `balance_detail_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
                                         `account` decimal(12,2) NOT NULL COMMENT '账户余额',
-                                        `balance_type` varchar(4) COLLATE utf8mb4_general_ci NOT NULL COMMENT '账户类型',
-                                        `balance_main_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '主表id',
-                                        `user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '所属用户id',
-                                        `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                                        `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                        `balance_type` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '账户类型',
+                                        `balance_main_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主表id',
+                                        `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '所属用户id',
+                                        `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                                        `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                         `create_date` date DEFAULT NULL COMMENT '创建日期',
                                         `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                                        `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                        `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                         `update_date` date DEFAULT NULL COMMENT '修改日期',
                                         `update_time` datetime DEFAULT NULL COMMENT '修改时间',
                                         `delete_type` int(1) DEFAULT NULL COMMENT '0 不删除 1 删除',
-                                        PRIMARY KEY (`balance_detail_id`)
+                                        PRIMARY KEY (`balance_detail_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS18_账户明细表';
 
 -- ----------------------------
@@ -74,19 +74,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_balance_main`;
 CREATE TABLE `t_sys_balance_main` (
-                                      `balance_main_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
+                                      `balance_main_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
                                       `account` decimal(12,2) NOT NULL COMMENT '账户余额',
                                       `account_date` date NOT NULL COMMENT '记录时间',
-                                      `user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '所属用户',
-                                      `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                                      `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                      `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '所属用户',
+                                      `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                                      `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                       `create_date` date DEFAULT NULL COMMENT '创建日期',
                                       `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                                      `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                      `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                       `update_date` date DEFAULT NULL COMMENT '修改日期',
                                       `update_time` datetime DEFAULT NULL COMMENT '修改时间',
                                       `delete_type` int(1) DEFAULT NULL COMMENT '0 不删除 1 删除',
-                                      PRIMARY KEY (`balance_main_id`)
+                                      PRIMARY KEY (`balance_main_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS17_账户余额主表';
 
 -- ----------------------------
@@ -124,21 +124,21 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_code_info`;
 CREATE TABLE `t_sys_code_info` (
-                                   `code_info_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码信息ID',
-                                   `code_type_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码类别ID',
-                                   `value` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '下拉框值',
-                                   `content` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '下拉框内容',
-                                   `parent_value` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '上级联动下拉框值',
+                                   `code_info_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码信息ID',
+                                   `code_type_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码类别ID',
+                                   `value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '下拉框值',
+                                   `content` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '下拉框内容',
+                                   `parent_value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '上级联动下拉框值',
                                    `sort_no` int(11) NOT NULL COMMENT '排序号',
-                                   `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                                   `is_ok` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否显示',
-                                   `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                                   `is_ok` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否显示',
+                                   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                    `create_date` date DEFAULT NULL COMMENT '创建日期',
                                    `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                                   `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                    `update_date` date DEFAULT NULL COMMENT '修改日期',
                                    `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                                   PRIMARY KEY (`code_info_id`)
+                                   PRIMARY KEY (`code_info_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS03_代码信息表';
 
 -- ----------------------------
@@ -195,17 +195,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_code_type`;
 CREATE TABLE `t_sys_code_type` (
-                                   `code_type_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码类别ID',
-                                   `code_type_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码类别名称',
+                                   `code_type_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码类别ID',
+                                   `code_type_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '代码类别名称',
                                    `sort_no` int(11) NOT NULL COMMENT '排序号',
-                                   `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                                   `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                                   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                    `create_date` date DEFAULT NULL COMMENT '创建日期',
                                    `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                                   `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                    `update_date` date DEFAULT NULL COMMENT '修改日期',
                                    `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                                   PRIMARY KEY (`code_type_id`)
+                                   PRIMARY KEY (`code_type_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS02_代码类别表';
 
 -- ----------------------------
@@ -233,18 +233,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_config`;
 CREATE TABLE `t_sys_config` (
-                                `config_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统参数ID',
-                                `config_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统参数名称',
-                                `config_value` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统参数值',
+                                `config_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统参数ID',
+                                `config_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统参数名称',
+                                `config_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统参数值',
                                 `sort_no` int(11) NOT NULL COMMENT '排序号',
-                                `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                                `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                                `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                 `create_date` date DEFAULT NULL COMMENT '创建日期',
                                 `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                                `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                 `update_date` date DEFAULT NULL COMMENT '修改日期',
                                 `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                                PRIMARY KEY (`config_id`)
+                                PRIMARY KEY (`config_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS01_系统参数表';
 
 -- ----------------------------
@@ -262,19 +262,19 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_func`;
 CREATE TABLE `t_sys_func` (
-                              `func_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '功能ID',
-                              `func_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '功能名称',
-                              `menu_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单ID',
-                              `func_permissions` varchar(255) COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '可访问路径',
-                              `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                              `func_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '功能ID',
+                              `func_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '功能名称',
+                              `menu_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单ID',
+                              `func_permissions` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '可访问路径',
+                              `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
                               `sort_no` int(11) DEFAULT NULL COMMENT '排序号',
-                              `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                              `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                               `create_date` date DEFAULT NULL COMMENT '创建日期',
                               `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                              `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                              `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                               `update_date` date DEFAULT NULL COMMENT '修改日期',
                               `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                              PRIMARY KEY (`func_id`)
+                              PRIMARY KEY (`func_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS05_功能表';
 
 -- ----------------------------
@@ -352,22 +352,22 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_job`;
 CREATE TABLE `t_sys_job` (
-                             `job_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务ID',
-                             `job_name` varchar(64) COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
-                             `job_group` varchar(64) COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
-                             `invoke_target` varchar(500) COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
-                             `cron_expression` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'cron执行表达式',
-                             `misfire_policy` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '计划执行错误策略',
-                             `concurrent` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否并发执行',
-                             `status` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否正常状态',
-                             `remark` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                             `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                             `job_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务ID',
+                             `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
+                             `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
+                             `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
+                             `cron_expression` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'cron执行表达式',
+                             `misfire_policy` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '计划执行错误策略',
+                             `concurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否并发执行',
+                             `status` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否正常状态',
+                             `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                             `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                              `create_date` date DEFAULT NULL COMMENT '创建日期',
                              `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                             `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                             `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                              `update_date` date DEFAULT NULL COMMENT '修改日期',
                              `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-                             PRIMARY KEY (`job_id`)
+                             PRIMARY KEY (`job_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS15_定时任务表';
 
 -- ----------------------------
@@ -385,22 +385,22 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_job_log`;
 CREATE TABLE `t_sys_job_log` (
-                                 `job_log_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '日志ID',
-                                 `job_name` varchar(64) COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
-                                 `job_group` varchar(64) COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
-                                 `invoke_target` varchar(500) COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
-                                 `job_message` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '日志信息',
-                                 `status` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否正常执行',
-                                 `exception_info` mediumtext COLLATE utf8mb4_general_ci COMMENT '异常信息',
+                                 `job_log_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '日志ID',
+                                 `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
+                                 `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务组名',
+                                 `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调用目标字符串',
+                                 `job_message` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '日志信息',
+                                 `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否正常执行',
+                                 `exception_info` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '异常信息',
                                  `start_time` datetime DEFAULT NULL COMMENT '开始时间',
                                  `stop_time` datetime DEFAULT NULL COMMENT '结束时间',
-                                 `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                 `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                  `create_date` date DEFAULT NULL COMMENT '创建日期',
                                  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                                 `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                 `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                  `update_date` date DEFAULT NULL COMMENT '修改日期',
                                  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-                                 PRIMARY KEY (`job_log_id`)
+                                 PRIMARY KEY (`job_log_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS16_定时任务执行日志表';
 
 -- ----------------------------
@@ -414,26 +414,27 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_log`;
 CREATE TABLE `t_sys_log` (
-                             `log_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'UUID',
-                             `log_type` varchar(2) COLLATE utf8mb4_general_ci NOT NULL COMMENT '日志类型',
-                             `log_content` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '日志内容',
-                             `operate_type` varchar(2) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '操作类型',
-                             `user_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '操作用户',
-                             `user_name` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '操作用户姓名',
-                             `ip` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'IP地址',
-                             `method` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求方法',
-                             `request_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求路径',
-                             `request_param` text COLLATE utf8mb4_general_ci COMMENT '请求参数',
-                             `request_type` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求类型',
-                             `operate_result` text COLLATE utf8mb4_general_ci COMMENT '操作结果',
+                             `log_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'UUID',
+                             `log_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '日志类型',
+                             `log_content` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '日志内容',
+                             `operate_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '操作类型',
+                             `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '操作用户',
+                             `user_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '操作用户姓名',
+                             `ip` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'IP地址',
+                             `method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求方法',
+                             `request_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求路径',
+                             `request_param` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '请求参数',
+                             `request_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求类型',
+                             `operate_result` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '操作结果',
+                             `success` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '操作结果是否成功 0否 1是',
                              `cost_time` bigint(20) DEFAULT NULL COMMENT '耗时',
-                             `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                             `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                              `create_date` date DEFAULT NULL COMMENT '创建日期',
                              `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                             `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                             `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                              `update_date` date DEFAULT NULL COMMENT '修改日期',
                              `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-                             PRIMARY KEY (`log_id`)
+                             PRIMARY KEY (`log_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS12_系统日志表';
 
 -- ----------------------------
@@ -447,28 +448,28 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_menu`;
 CREATE TABLE `t_sys_menu` (
-                              `menu_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单ID',
-                              `menu_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单名称',
-                              `parent_menu_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '上级菜单ID',
-                              `menu_icon` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图标',
-                              `menu_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '菜单URL',
-                              `menu_permissions` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '授权',
-                              `component` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '组件',
-                              `redirect` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '重定向URL',
-                              `hidden` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否隐藏',
-                              `is_route` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否路由',
-                              `route_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '路由名称',
-                              `is_cache` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'tagsView是否缓存 1-缓存 0-不缓存',
-                              `affix` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否常驻菜单1-是0-否',
-                              `is_leaf` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否叶子节点',
+                              `menu_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单ID',
+                              `menu_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单名称',
+                              `parent_menu_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '上级菜单ID',
+                              `menu_icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '图标',
+                              `menu_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '菜单URL',
+                              `menu_permissions` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '授权',
+                              `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '组件',
+                              `redirect` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '重定向URL',
+                              `hidden` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否隐藏',
+                              `is_route` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否路由',
+                              `route_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '路由名称',
+                              `is_cache` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'tagsView是否缓存 1-缓存 0-不缓存',
+                              `affix` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否常驻菜单1-是0-否',
+                              `is_leaf` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否叶子节点',
                               `sort_no` int(11) DEFAULT NULL COMMENT '排序号',
-                              `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                              `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                               `create_date` date DEFAULT NULL COMMENT '创建日期',
                               `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                              `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                              `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                               `update_date` date DEFAULT NULL COMMENT '修改日期',
                               `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                              PRIMARY KEY (`menu_id`)
+                              PRIMARY KEY (`menu_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS04_菜单表';
 
 -- ----------------------------
@@ -501,7 +502,7 @@ INSERT INTO `t_sys_menu` VALUES ('sysJobLog', '定时任务日志', 'job', 'list
 INSERT INTO `t_sys_menu` VALUES ('sysLog', '系统日志', 'sys', 'read-fill', 'log', 'sys:log:list', 'views/sys/log/index', NULL, '0', '1', 'SysLog', '0', '0', '1', 10900, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:43:00');
 INSERT INTO `t_sys_menu` VALUES ('sysMenu', '菜单管理', 'sys', 'menu', 'menu', 'sys:menu:list,sys:menu:getTreeData', 'views/sys/menu/index', NULL, '0', '1', 'SysMenu', '0', '0', '1', 10400, 'admin', NULL, NULL, 'admin', '2020-11-09', '2020-11-09 16:50:34');
 INSERT INTO `t_sys_menu` VALUES ('sysOrg', '机构管理', 'base', 'tree', 'org', 'sys:org:list,sys:org:getTreeData', 'views/sys/org/index', NULL, '0', '1', 'SysOrg', '0', '0', '1', 21000, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:35:48');
-INSERT INTO `t_sys_menu` VALUES ('sysPicUpDown', '图片上传下载', 'sys', 'list', 'picUpDown', 'sys:picUpDown:list', 'views/sys/picUpDown/index', NULL, '0', '1', 'SysPicUpDown', '1', '0', '1', 11100, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `t_sys_menu` VALUES ('sysPicUpDown', '图片上传下载', 'sys', 'list', 'picUpDown', 'sys:picUpDown:list', 'views/sys/picUpDown/index', NULL, '0', '1', 'SysPicUpDown', '1', '0', '1', 11100, NULL, NULL, NULL, 'admin', '2021-01-08', '2021-01-08 00:26:25');
 INSERT INTO `t_sys_menu` VALUES ('sysPost', '岗位管理', 'base', 'tools', 'post', 'sys:post:list', 'views/sys/post/index', NULL, '0', '1', 'SysPost', '0', '0', '1', 22000, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:36:19');
 INSERT INTO `t_sys_menu` VALUES ('sysRole', '角色管理', 'sys', 'highlight-fill', 'role', 'sys:role:list', 'views/sys/role/index', NULL, '0', '1', 'SysRole', '0', '0', '1', 10700, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:41:45');
 INSERT INTO `t_sys_menu` VALUES ('sysUser', '用户管理', 'sys', 'user', 'user', 'sys:user:list,sys:role:listAll', 'views/sys/user/index', NULL, '0', '1', 'SysUser', '0', '0', '1', 10800, 'admin', NULL, NULL, 'admin', '2020-06-14', '2020-06-14 10:40:19');
@@ -512,22 +513,22 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_org`;
 CREATE TABLE `t_sys_org` (
-                             `org_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '机构ID',
-                             `org_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '机构名称',
-                             `parent_org_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '上级机构ID',
-                             `short_name` varchar(120) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '机构简称',
-                             `org_type` varchar(4) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '机构类型',
-                             `org_level` varchar(2) COLLATE utf8mb4_general_ci NOT NULL COMMENT '机构级次',
-                             `org_level_code` varchar(200) COLLATE utf8mb4_general_ci NOT NULL COMMENT '组织机构路径',
-                             `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                             `is_leaf` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否叶子节点',
-                             `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                             `org_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '机构ID',
+                             `org_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '机构名称',
+                             `parent_org_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '上级机构ID',
+                             `short_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '机构简称',
+                             `org_type` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '机构类型',
+                             `org_level` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '机构级次',
+                             `org_level_code` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '组织机构路径',
+                             `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                             `is_leaf` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '是否叶子节点',
+                             `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                              `create_date` date DEFAULT NULL COMMENT '创建日期',
                              `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                             `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                             `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                              `update_date` date DEFAULT NULL COMMENT '修改日期',
                              `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                             PRIMARY KEY (`org_id`)
+                             PRIMARY KEY (`org_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS06_机构表';
 
 -- ----------------------------
@@ -547,17 +548,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_pic_up_down`;
 CREATE TABLE `t_sys_pic_up_down` (
-                                     `pic_up_down_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
-                                     `pic_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL COMMENT '图片名',
+                                     `pic_up_down_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
+                                     `pic_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '图片名',
                                      `pic` mediumblob NOT NULL COMMENT '图片',
-                                     `md5` varchar(200) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'md5',
-                                     `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                     `md5` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'md5',
+                                     `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                      `create_date` date DEFAULT NULL COMMENT '创建日期',
                                      `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                                     `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                     `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                      `update_date` date DEFAULT NULL COMMENT '修改日期',
                                      `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-                                     PRIMARY KEY (`pic_up_down_id`)
+                                     PRIMARY KEY (`pic_up_down_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS20_图片上传下载表';
 
 -- ----------------------------
@@ -571,18 +572,18 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_post`;
 CREATE TABLE `t_sys_post` (
-                              `post_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位ID',
-                              `post_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位名称',
-                              `post_status` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '状态',
+                              `post_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位ID',
+                              `post_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位名称',
+                              `post_status` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '状态',
                               `sort_no` int(11) DEFAULT NULL COMMENT '排序号',
-                              `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                              `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                              `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                              `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                               `create_date` date DEFAULT NULL COMMENT '创建日期',
                               `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                              `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                              `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                               `update_date` date DEFAULT NULL COMMENT '修改日期',
                               `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-                              PRIMARY KEY (`post_id`)
+                              PRIMARY KEY (`post_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS13_岗位表';
 
 -- ----------------------------
@@ -599,16 +600,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_post_user`;
 CREATE TABLE `t_sys_post_user` (
-                                   `post_user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'UUID',
-                                   `post_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位ID',
-                                   `user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
-                                   `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                   `post_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'UUID',
+                                   `post_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位ID',
+                                   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
+                                   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                    `create_date` date DEFAULT NULL COMMENT '创建日期',
                                    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                                   `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                    `update_date` date DEFAULT NULL COMMENT '修改日期',
                                    `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-                                   PRIMARY KEY (`post_user_id`)
+                                   PRIMARY KEY (`post_user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS14_岗位和用户关系表';
 
 -- ----------------------------
@@ -626,17 +627,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_role`;
 CREATE TABLE `t_sys_role` (
-                              `role_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色ID',
-                              `role_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
+                              `role_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色ID',
+                              `role_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
                               `sort_no` int(11) NOT NULL COMMENT '排序号',
-                              `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                              `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                              `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                              `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                               `create_date` date DEFAULT NULL COMMENT '创建日期',
                               `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                              `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                              `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                               `update_date` date DEFAULT NULL COMMENT '修改日期',
                               `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                              PRIMARY KEY (`role_id`)
+                              PRIMARY KEY (`role_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS07_角色表';
 
 -- ----------------------------
@@ -652,17 +653,17 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_role_permission`;
 CREATE TABLE `t_sys_role_permission` (
-                                         `role_permission_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作权限ID',
-                                         `role_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色ID',
-                                         `permission_type` varchar(1) COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限类型',
-                                         `menu_or_func_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单或功能ID',
-                                         `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                         `role_permission_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作权限ID',
+                                         `role_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色ID',
+                                         `permission_type` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限类型',
+                                         `menu_or_func_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单或功能ID',
+                                         `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                          `create_date` date DEFAULT NULL COMMENT '创建日期',
                                          `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                                         `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                         `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                          `update_date` date DEFAULT NULL COMMENT '修改日期',
                                          `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                                         PRIMARY KEY (`role_permission_id`)
+                                         PRIMARY KEY (`role_permission_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS08_操作权限表';
 
 -- ----------------------------
@@ -671,7 +672,6 @@ CREATE TABLE `t_sys_role_permission` (
 BEGIN;
 INSERT INTO `t_sys_role_permission` VALUES ('00a494e9e0771bb7ca3c2a5c6232e6a9', 'admin', '1', 'sys', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('012876c31d86bfd24fb94f1cb541f727', 'admin', '2', 'flowableModel-5', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('02c82174480218e57abf5516d4bd3f37', 'queryRole', '2', 'sysBalanceMain-3', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('042b3baacadd2436343d4dde020224b4', 'admin', '2', 'sysCodeInfo-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('097864a6c76d4f6a62da01e4370a5d85', 'admin', '2', 'flowableProcessDefinition-5', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('09a24e4a879830925d035e861bb78e46', 'admin', '2', 'flowableProcessInstance-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
@@ -680,6 +680,7 @@ INSERT INTO `t_sys_role_permission` VALUES ('143b288938e516b4674c1e4be363b96d', 
 INSERT INTO `t_sys_role_permission` VALUES ('164703b3f30d9308fb2a9900282c78f3', 'admin', '2', 'sysRole-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('1749ce90a8db43b7c87cf17dd7e7d4f6', 'admin', '2', 'flowableModel-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('1760fe0fb2dcf0b892a0cb105bb6fdfc', 'admin', '1', 'flowableTask', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('192e72bfe09fac7d80a8f411fc7bf446', 'queryRole', '2', 'sysBalanceMain-1', 'admin', '2021-01-21', '2021-01-21 15:58:05', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('1955439fdca44e3689b8a76b92352ef9', 'admin', '1', 'sysLog', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('1a26a87234ec03b762c02804f2d91aa9', 'admin', '2', 'sysBalanceMain-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('1ad8d8ddeb854447995ddc2d0b63ede0', 'admin', '2', 'sysCodeType-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
@@ -695,14 +696,16 @@ INSERT INTO `t_sys_role_permission` VALUES ('30bc7f664d125902c96d66b0364cc828', 
 INSERT INTO `t_sys_role_permission` VALUES ('3190bff6ed527c6c10c05d23c1974cff', 'admin', '2', 'sysUser-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('322497bfe5add2b677dc3eb49b67a41b', 'admin', '1', 'monitorSwagger', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('35e9086eadec182290941629471d74dd', 'admin', '2', 'sysPost-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('3a4601768b1c6af340167652d1173bda', 'queryRole', '1', 'sysBalanceMain', 'admin', '2021-01-21', '2021-01-21 15:58:05', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('3c02b50785fdac275ef1f1f86b63c23f', 'admin', '2', 'sysUser-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('3cf5c56582cfadc1b710b6187bd90197', 'queryRole', '1', 'sysBalanceMain', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('3e4b1cb4b6891d9ecf2d25215aad83c9', 'queryRole', '1', 'balance', 'admin', '2021-01-21', '2021-01-21 15:58:05', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('44638cccca211b623bd3204ee7bb3e8c', 'admin', '2', 'sysCodeCreate-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('458a8332009f3ba8fb1e0f08a122a252', 'admin', '2', 'flowableProcessInstance-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('47bd5c7f64c399492a97edc3e4a79a8b', 'admin', '2', 'sysPost-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('4a47cb4538e9495aa5f43c196daea7df', 'admin', '1', 'sysPicUpDown', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('4bccb8d1793017029698d09c249e0090', 'admin', '2', 'flowableProcessDefinition-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('4c0c33ee533a8f6bfba806d3d14bdc4a', 'admin', '2', 'sysJob-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('4f33c907e1ba3d32fb2d020d0a57074b', 'queryRole', '2', 'sysBalanceMain-2', 'admin', '2021-01-21', '2021-01-21 15:58:05', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('53a99cd457b1f2bde6dc1f8159187771', 'admin', '2', 'sysOrg-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('582973045bd6df253e75b1359ba7e5c5', 'admin', '2', 'sysCodeInfo-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('583fd273fabb234d722b7c80cf8b772c', 'admin', '1', 'job', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
@@ -713,15 +716,16 @@ INSERT INTO `t_sys_role_permission` VALUES ('5e00e4b179069a8b41ece666a95e95c3', 
 INSERT INTO `t_sys_role_permission` VALUES ('5e878d5a3f504b3257df0a8d55426d58', 'admin', '1', 'balance', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('5f4743836eaa94701f6d3e7bf69b6b18', 'admin', '2', 'sysJob-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('618647a3fad9712cb43e0d8b4cf5d3ba', 'admin', '2', 'sysBalanceMain-5', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('61cba2f2cad9f52e6890b75e4c96830f', 'queryRole', '2', 'sysBalanceMain-2', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('6244b36f34ef6e0173d8180fff79f035', 'admin', '1', 'flowableModel', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('632bc7c76fe9c0432ab9ce1d5260036c', 'admin', '1', 'sysJob', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('6363e14c9520490fb9fc0a77595c4230', 'admin', '2', 'sysMenu-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('658afd2400337f97a7614570beb0f20c', 'queryRole', '1', 'statement', 'admin', '2021-01-21', '2021-01-21 15:58:05', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('65dd83ebcb0aefd4f7b83fcd84e7422d', 'admin', '2', 'sysJob-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('68908516b60776e5f68068f3753aa4f3', 'admin', '1', 'sysMenu', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('6cb921f0e2e3c216f4713c15bb8018ab', 'admin', '2', 'sysJob-5', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('6d06e623619bd41a3da9e12606a41535', 'admin', '1', 'sysCodeCreate', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('6ee6e1861bf021a0933b016d1f8f15b9', 'admin', '1', 'sysJobLog', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('77f6a9df9a5ec9096187405a58c45ab7', 'queryRole', '2', 'sysBalanceMain-3', 'admin', '2021-01-21', '2021-01-21 15:58:05', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('7b73e497041f0810b71df8f9027fcc9b', 'admin', '2', 'flowableProcessDefinition-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('7dcca175ec561e31987f18c308a0a167', 'admin', '2', 'sysRole-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('7dd6fd44b7a924f786d3f5443b105f06', 'admin', '1', 'sysBalanceMain', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
@@ -732,8 +736,6 @@ INSERT INTO `t_sys_role_permission` VALUES ('81e7e64d677e973271bb6aa77421bf18', 
 INSERT INTO `t_sys_role_permission` VALUES ('823cd52d8f247d10b95d5050ea77de18', 'admin', '2', 'flowableForm-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('85572230604188b8dac5b4503e095480', 'admin', '2', 'flowableTask-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('8a890ad367c4682e93f3af66a1ca67f8', 'admin', '1', 'flowableProcessInstance', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('8ebe688d9285f4d482c2f214061a5370', 'queryRole', '1', 'statement', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('90658e603c0530a5f36177d9aaa1ebae', 'queryRole', '2', 'sysBalanceMain-1', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('907aa711a8660591d51a25fc0adb996c', 'admin', '2', 'flowableProcessDefinition-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('914c10a89dcc0a910c8401fa6c25a049', 'admin', '2', 'sysFunc-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('9221d99ad9c9633135f6ce0a8fa46346', 'admin', '1', 'statement', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
@@ -744,16 +746,15 @@ INSERT INTO `t_sys_role_permission` VALUES ('a60ffa7dfb12cc5ab7a4b5101a708d9f', 
 INSERT INTO `t_sys_role_permission` VALUES ('a70cbc2fdfcd23a5d71ff63303afec87', 'admin', '2', 'sysCodeCreate-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('a7af8aeb141849f9180f5cd965b92ad6', 'admin', '2', 'sysRole-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('a8c8888ae1a50cc8ad24f26574f251cb', 'admin', '1', 'sysOrg', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('aa66010847268e1ec328559ad5e766f5', 'queryRole', '2', 'sysBalanceMain-4', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('aa791ef0ac207f14817d320e95624df3', 'admin', '2', 'flowableProcessInstance-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('be320819be9b276b8091ae42208d2230', 'admin', '2', 'flowableForm-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('bfe403c223def9e8f1916054d90e8a58', 'admin', '2', 'sysConfig-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('c13abee54eb129d495a2e194619c4ffa', 'admin', '2', 'flowableModel-6', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
+INSERT INTO `t_sys_role_permission` VALUES ('cb74402b4ccdbc21e0f86690081df9d4', 'queryRole', '1', 'statementTable', 'admin', '2021-01-21', '2021-01-21 15:58:05', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('cc9f913a6ad938925c771c15387dd4d4', 'admin', '2', 'flowableModel-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('d1a0f97e93ecdde9d501af207b6e737b', 'admin', '1', 'sysRole', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('d4d89e56ec432e79438c0650ccaeef7f', 'admin', '2', 'sysPost-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('d7400c48601d95a37da0f7833bbb6d04', 'admin', '2', 'sysRole-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('d88734c27a8c46b4554264b8e16b4ab6', 'queryRole', '2', 'sysBalanceMain-5', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('d9e17c4a9f10795bd06f290043fa6236', 'admin', '2', 'sysMenu-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('e19a801065933932d5e34c5d3b10d4ae', 'admin', '2', 'sysPost-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('e24a6ee73604bc2d834b20cff2522ee5', 'admin', '1', 'monitorServer', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
@@ -763,8 +764,6 @@ INSERT INTO `t_sys_role_permission` VALUES ('ead8b4924fa7a8060392f814aa614edd', 
 INSERT INTO `t_sys_role_permission` VALUES ('ed338eb3f3e4d49c69a6ee0c80fac999', 'admin', '1', 'statementTable', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('ee08c138887fce43e942149ecae4af35', 'admin', '2', 'sysCodeInfo-2', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('ee66c16e6bdcf03b07b772c4053049b0', 'admin', '2', 'sysCodeInfo-1', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('efde5b936658721f5143d38ca96cd325', 'queryRole', '1', 'statementTable', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
-INSERT INTO `t_sys_role_permission` VALUES ('f47775f64d7764caa54085eff8a22ad7', 'queryRole', '1', 'balance', 'admin', '2020-10-23', '2020-10-23 23:25:10', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('f629d6dd6c58ea425242dc727aad563c', 'admin', '2', 'flowableForm-3', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('f7cb5c956624a0b04866a03bb115d30f', 'admin', '1', 'sysConfig', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
 INSERT INTO `t_sys_role_permission` VALUES ('f9e76b767ab1e615c3fc3230c5719eb9', 'admin', '2', 'flowableModel-4', 'admin', '2021-01-07', '2021-01-07 23:10:19', NULL, NULL, NULL);
@@ -779,16 +778,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_role_user`;
 CREATE TABLE `t_sys_role_user` (
-                                   `role_user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'UUID',
-                                   `role_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色ID',
-                                   `user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
-                                   `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                   `role_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'UUID',
+                                   `role_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色ID',
+                                   `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
+                                   `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                    `create_date` date DEFAULT NULL COMMENT '创建日期',
                                    `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                                   `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                   `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                    `update_date` date DEFAULT NULL COMMENT '修改日期',
                                    `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                                   PRIMARY KEY (`role_user_id`)
+                                   PRIMARY KEY (`role_user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS11_角色和用户关系表';
 
 -- ----------------------------
@@ -804,28 +803,28 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_user`;
 CREATE TABLE `t_sys_user` (
-                              `user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
-                              `user_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户姓名',
-                              `password` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
-                              `salt` varchar(8) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '密码盐',
-                              `sex` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '性别',
-                              `role_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '所属角色ID',
-                              `org_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '所属机构ID',
-                              `mobile` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '手机号码',
-                              `id_card_no` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '身份证号码',
-                              `email` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '邮箱',
-                              `status` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户状态',
+                              `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
+                              `user_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户姓名',
+                              `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
+                              `salt` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '密码盐',
+                              `sex` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '性别',
+                              `role_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '所属角色ID',
+                              `org_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '所属机构ID',
+                              `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '手机号码',
+                              `id_card_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '身份证号码',
+                              `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '邮箱',
+                              `status` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户状态',
                               `sort_no` int(11) DEFAULT NULL COMMENT '排序号',
-                              `pic_id` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '头像id',
-                              `remark` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
-                              `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                              `pic_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '头像id',
+                              `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+                              `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                               `create_date` date DEFAULT NULL COMMENT '创建日期',
                               `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-                              `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                              `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                               `update_date` date DEFAULT NULL COMMENT '修改日期',
                               `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-                              PRIMARY KEY (`user_id`),
-                              UNIQUE KEY `unique_user_name` (`user_name`)
+                              PRIMARY KEY (`user_id`) USING BTREE,
+                              UNIQUE KEY `unique_user_name` (`user_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='SYS10_用户表';
 
 -- ----------------------------
@@ -841,16 +840,16 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_user_short_cut`;
 CREATE TABLE `t_sys_user_short_cut` (
-                                        `user_short_cut_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作权限ID',
-                                        `user_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
-                                        `menu_id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单ID',
-                                        `create_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+                                        `user_short_cut_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作权限ID',
+                                        `user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
+                                        `menu_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单ID',
+                                        `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
                                         `create_date` date DEFAULT NULL COMMENT '创建日期',
                                         `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-                                        `update_by` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
+                                        `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '修改人',
                                         `update_date` date DEFAULT NULL COMMENT '修改日期',
                                         `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-                                        PRIMARY KEY (`user_short_cut_id`)
+                                        PRIMARY KEY (`user_short_cut_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='shortcut_用户与快捷方式表';
 
 -- ----------------------------

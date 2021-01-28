@@ -1,16 +1,13 @@
-# 测试库
-DROP DATABASE IF EXISTS manager;
-CREATE DATABASE manager
-    DEFAULT CHARSET utf8mb4
-    COLLATE utf8mb4_general_ci;
-CREATE USER 'test'@'%' IDENTIFIED WITH mysql_native_password BY 'test';
-GRANT ALL PRIVILEGES ON `manager`.* TO 'test'@'%' WITH GRANT OPTION;
-
-#生产库
 DROP DATABASE IF EXISTS account_manager;
 CREATE DATABASE account_manager
     DEFAULT CHARSET utf8mb4
     COLLATE utf8mb4_general_ci;
+
+# 测试
+CREATE USER 'test'@'%' IDENTIFIED WITH mysql_native_password BY 'test';
+GRANT ALL PRIVILEGES ON `account_manager`.* TO 'test'@'%' WITH GRANT OPTION;
+
+#生产
 CREATE USER 'monezhao'@'%' IDENTIFIED WITH mysql_native_password BY '112012';
 GRANT ALL PRIVILEGES ON `account_manager`.* TO 'monezhao'@'%' WITH GRANT OPTION;
 

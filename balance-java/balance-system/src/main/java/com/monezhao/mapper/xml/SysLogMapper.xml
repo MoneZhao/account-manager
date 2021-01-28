@@ -18,6 +18,7 @@
         a.request_param as requestParam,
         a.request_type as requestType,
         a.operate_result as operateResult,
+        a.success as success,
         a.cost_time as costTime,
         a.create_time as createTime
 
@@ -34,6 +35,9 @@
         </if>
         <if test="entity.ip != null and entity.ip !=''">
             <![CDATA[    AND a.ip = #{entity.ip}    ]]>
+        </if>
+        <if test="entity.success != null and entity.success !=''">
+            <![CDATA[    AND a.success = #{entity.success}    ]]>
         </if>
         order by a.create_time desc
     </select>

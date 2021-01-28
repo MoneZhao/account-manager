@@ -1,8 +1,6 @@
 package com.monezhao.common.xss;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -19,8 +17,8 @@ import java.io.IOException;
  * @Description: XssFilter
  */
 @Slf4j
-@Component
-@ConditionalOnExpression("'${spring.profiles.active}'.equals('dev')")
+//@Component
+//@ConditionalOnExpression("'${spring.profiles.active}'.equals('dev')")
 public class ControllerCostFilter implements Filter {
 
     @Override

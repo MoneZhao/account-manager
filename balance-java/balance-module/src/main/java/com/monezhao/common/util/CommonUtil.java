@@ -1,10 +1,13 @@
 package com.monezhao.common.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.monezhao.common.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.ObjectUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -295,5 +298,35 @@ public class CommonUtil {
             return template;
         }
         return StringFormatter.format(template, params);
+    }
+
+
+    /**
+     * 将参数转换成json格式字符串，多个参数以逗号隔开
+     *
+     * @param args
+     * @return
+     */
+    public static String paramsToJson(Object[] args) {
+        if (args == null || args.length == 0) {
+            return "";
+        }
+        StringBuffer params = new StringBuffer();
+        for (int i = 0; i < args.length; i++) {
+            String param = null;
+            if (!(args[i] instanceof HttpServletRequest || args[i] instanceof HttpServletResponse)) {
+                // 序列化忽略null值，写入数据库长度可以缩短
+                param = JacksonUtil.objToStr(args[i], JsonInclude.Include.NON_NULL);
+            }
+            if (param == null) {
+                param = "{}";
+            }
+            if (i == args.length - 1) {
+                params.append(param);
+            } else {
+                params.append(param).append(",");
+            }
+        }
+        return params.toString();
     }
 }
