@@ -11,10 +11,11 @@
             ref="leftTree"
             :data="showShortCutModalTree.treeData"
             :default-checked-keys="showShortCutModalTree.selectedTreeKeys"
+            :default-expanded-keys="showShortCutModalTree.defaultExpandKeys"
             node-key="id"
             class="filter-tree"
-            default-expand-all
             show-checkbox
+            check-on-click-node
             @check="checkShortCutTreeMenu"
           >
             <span slot-scope="{ node, data }">
@@ -71,6 +72,7 @@ export default {
       permissions: [],
       showShortCutModalTree: {
         treeData: [],
+        defaultExpandKeys: [],
         selectedMenuData: [],
         selectedTreeKeys: [],
         loading: false
@@ -90,7 +92,6 @@ export default {
     }
     getAction('/sys/user/getAuthMenuList', param).then(res => {
       const { data } = res
-      this.showShortCutModalTree.loading = false
       this.showShortCutModalTree.treeData = data.permissionTree
       this.permissions = data.permissions
       this.showShortCutModalTree.selectedTreeKeys = data.permissions
@@ -98,6 +99,10 @@ export default {
         this.showShortCutModalTree.treeData,
         data.permissions
       )
+      this.showShortCutModalTree.defaultExpandKeys = data.permissions
+      this.$nextTick(() => {
+        this.showShortCutModalTree.loading = false
+      })
     })
   },
   methods: {
@@ -134,14 +139,15 @@ export default {
     },
     editShortCut() {
       const { add, del } = this.diff(this.permissions, this.$refs.leftTree.getCheckedKeys(true))
+      if (add.length === 0 && del.length === 0) {
+        Message.warning('数据没有改动')
+        this.$emit('shortCutWarning')
+        return
+      }
       const param = {
         add,
         del,
         userId: this.userId
-      }
-      if (!add && !del) {
-        this.showShortCutModal = false
-        return
       }
       postAction('/sys/user/userShortCutSave', param).then(({ msg }) => {
         Message.success(msg)
@@ -149,9 +155,9 @@ export default {
           treeData: [],
           selectedMenuData: [],
           selectedTreeKeys: [],
-          loading: true
+          loading: false
         }
-        this.$emit('shotCutEnd')
+        this.$emit('shortCutEnd')
       })
     },
     diff(oldData, newData) {

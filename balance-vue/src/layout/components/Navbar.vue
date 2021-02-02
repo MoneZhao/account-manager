@@ -42,7 +42,7 @@
     <!-- 弹窗, 修改密码 -->
     <update-password v-if="updatePasswordVisible" ref="updatePassword" />
     <el-dialog title="配置快捷方式" :visible.sync="showShortCutModal" destroy-on-close append-to-body>
-      <short-cut v-if="showShortCutModal" ref="shortCut" :role-id="sysUser.roleId" :user-id="sysUser.userId" @shotCutEnd="shotCutEnd" />
+      <short-cut v-if="showShortCutModal" ref="shortCut" :role-id="sysUser.roleId" :user-id="sysUser.userId" @shortCutEnd="shortCutEnd" @shortCutWarning="shortCutWarning" />
       <div slot="footer" class="dialog-footer">
         <el-button icon="el-icon-close" @click="showShortCutModal = false">
           取消
@@ -171,7 +171,10 @@ export default {
       this.menuModalLoading = true
       this.$refs.shortCut.editShortCut()
     },
-    shotCutEnd() {
+    shortCutWarning() {
+      this.menuModalLoading = false
+    },
+    shortCutEnd() {
       this.menuModalLoading = false
       this.showShortCutModal = false
     }

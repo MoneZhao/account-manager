@@ -127,11 +127,11 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveRolePermissions(String roleId, String menuOrFuncIds, String permissionTypes) {
-        String[] menuOrFuncIdArray = null;
+        String[] menuOrFuncIdArray = new String[]{};
         if (CommonUtil.isNotEmptyStr(menuOrFuncIds)) {
             menuOrFuncIdArray = menuOrFuncIds.split(",");
         }
-        String[] permissionTypeArray = null;
+        String[] permissionTypeArray = new String[]{};
         if (CommonUtil.isNotEmptyStr(permissionTypes)) {
             permissionTypeArray = permissionTypes.split(",");
         }
