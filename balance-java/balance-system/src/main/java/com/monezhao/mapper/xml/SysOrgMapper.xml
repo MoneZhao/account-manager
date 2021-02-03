@@ -26,6 +26,6 @@
         <if test="entity.authFilterSql != null and entity.authFilterSql !=''">
             <![CDATA[	AND ${entity.authFilterSql}	]]>
         </if>
-        order by o.org_level_code
+        order by o.org_level
     </select>
 </mapper>

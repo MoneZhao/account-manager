@@ -9,4 +9,5 @@ package com.monezhao.bean.sys;
 public class SysConstants {
     public static final String USER_STATUS_1 = "1";
     public static final String IS_LEAF_0 = "0";
+    public static final String IS_LEAF_1 = "1";
 }

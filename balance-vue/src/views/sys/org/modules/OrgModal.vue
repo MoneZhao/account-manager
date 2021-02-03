@@ -17,19 +17,23 @@
           <el-form-item v-show="false" label="机构级次码" prop="orgLevelCode">
             <el-input v-model="temp.orgLevelCode" />
           </el-form-item>
-          <el-form-item v-show="false" label="上级机构ID" prop="parentOrgId">
-            <el-input v-model="temp.parentOrgId" />
-          </el-form-item>
-          <el-form-item v-show="false" label="上级机构" prop="parentOrgName">
-            <el-input v-model="temp.parentOrgName" />
-          </el-form-item>
           <el-row>
             <el-col :span="12">
               <el-form-item label="机构ID" prop="orgId">
                 <el-input v-model="temp.orgId" :disabled="handleType==='edit'" />
               </el-form-item>
             </el-col>
-            <el-col :span="12" />
+            <el-col :span="12">
+              <el-form-item label="上级机构" prop="parentOrgId">
+                <tree-select
+                  :options="treeData"
+                  :value="temp.parentOrgId"
+                  :disabled="temp.orgId==='1000000000'"
+                  @getNode="getNode($event)"
+                  @getValue="getValue($event)"
+                />
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
@@ -59,32 +63,6 @@
             <el-col :span="12" />
           </el-row>
           <el-row>
-            <el-col :span="12">
-              <el-form-item label="机构级别" prop="orgLevel" value-key="value">
-                <el-select v-model="temp.orgLevel" placeholder="机构级别" disabled>
-                  <el-option
-                    v-for="(item, index) in dicts.orgLevel"
-                    :key="index"
-                    :label="item.content"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="是否叶子" prop="isLeaf">
-                <el-select v-model="temp.isLeaf" placeholder="是否叶子" disabled>
-                  <el-option
-                    v-for="(item, index) in dicts.yesOrNo"
-                    :key="index"
-                    :label="item.content"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
             <el-col :span="24">
               <el-form-item label="备注">
                 <el-input
@@ -107,15 +85,31 @@
 </template>
 
 <script>
-import { putAction, postAction } from '@/api/manage'
+import { putAction, postAction, getAction } from '@/api/manage'
 import { Message } from 'element-ui'
+import TreeSelect from '@/components/TreeSelect'
 
 export default {
+  components: { TreeSelect },
   data() {
+    const validateParentOrg = (rule, value, callback) => {
+      if (this.temp.orgId === '1000000000') {
+        if (value) {
+          callback(new Error('顶层节点不能选择父节点'))
+        } else {
+          callback()
+        }
+      } else {
+        if (!value) {
+          callback(new Error('该项不能为空'))
+        } else {
+          callback()
+        }
+      }
+    }
     return {
       dialogVisible: false,
       handleType: 'add',
-
       temp: {
         orgId: undefined,
         orgName: '',
@@ -132,15 +126,17 @@ export default {
       dicts: [],
       rules: {
         orgId: [{ required: true, message: '该项不能为空', trigger: 'change' }],
+        parentOrgId: [{ validator: validateParentOrg, trigger: 'blur' }],
         orgName: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         orgType: [{ required: true, message: '该项不能为空', trigger: 'change' }]
-      }
+      },
+      treeData: [],
+      treeLoading: false
     }
   },
   methods: {
     add(row, dicts) {
       this.dicts = dicts
-      console.log(row)
       this.temp = {}
       this.temp.parentOrgName = row.label
       this.temp.parentOrgId = row.id
@@ -151,17 +147,46 @@ export default {
       })
 
       this.handleType = 'add'
-      this.dialogVisible = true
+      this.getTreeData()
     },
     edit(row, dicts) {
       this.temp = Object.assign({}, row.data)
       this.dicts = dicts
       this.handleType = 'edit'
-      this.dialogVisible = true
+      this.getTreeData()
     },
     handleClose() {
       this.dialogVisible = false
       this.$refs.dataForm.resetFields()
+    },
+    getTreeData() {
+      this.treeLoading = true
+      getAction('/sys/org/getTreeData', {}).then(res => {
+        const { data } = res
+        this.removeCurrentNode(data[0], this.temp.orgId)
+        console.log(data)
+        this.treeData = data
+        this.treeLoading = false
+        this.dialogVisible = true
+      })
+    },
+    removeCurrentNode(tree, currentKey) {
+      if (tree.children && tree.children.length > 0) {
+        for (let i = 0; i < tree.children.length; i++) {
+          if (tree.children[i].id == currentKey) {
+            tree.children.splice(i, 1)
+            return
+          } else {
+            this.removeCurrentNode(tree.children[i], currentKey)
+          }
+        }
+      }
+    },
+    getNode(value) {
+    },
+    getValue(value) {
+      console.log(value)
+      this.temp.parentOrgId = value
     },
     onSubmit() {
       this.$refs['dataForm'].validate((valid) => {
