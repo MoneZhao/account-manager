@@ -15,7 +15,7 @@
               value="%blue(%msg%n)"/>
 
     <property name="FILE_LOG_PATTERN_IBATIS"
-              value="%msg%n"/>
+              value="%date{yyyy-MM-dd HH:mm:ss} %msg%n"/>
 
     <appender name="IBATIS" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -134,6 +134,7 @@
     <logger name="springfox" level="error"/>
 
     <logger name="webLog" level="info" additivity="false">
+        <appender-ref ref="STDOUT"/>
         <appender-ref ref="ASYNC-FILE-WEBLOG"/>
     </logger>
 
