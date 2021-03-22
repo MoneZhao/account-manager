@@ -34,6 +34,13 @@
                 <profileActive>prod</profileActive>
             </properties>
         </profile>
+        <!-- online环境 -->
+        <profile>
+            <id>online</id>
+            <properties>
+                <profileActive>online</profileActive>
+            </properties>
+        </profile>
         <!-- docker环境 -->
         <profile>
             <id>docker</id>
@@ -69,11 +76,6 @@
                                     <directory>${project.build.directory}</directory>
                                     <include>${project.build.finalName}.jar</include>
                                 </resource>
-                                <!--                                <resource>-->
-                                <!--                                    <targetPath>/classes</targetPath>-->
-                                <!--                                    <directory>${project.build.directory}/classes</directory>-->
-                                <!--                                    <include>SourceHanSerifCN-Regular.ttf</include>-->
-                                <!--                                </resource>-->
                             </resources>
                         </configuration>
                     </plugin>
@@ -111,6 +113,7 @@
                 <excludes>
                     <exclude>dev/*</exclude>
                     <exclude>prod/*</exclude>
+                    <exclude>online/*</exclude>
                     <exclude>docker/*</exclude>
                     <exclude>idea/*</exclude>
                     <exclude>application.yml</exclude>
