@@ -167,8 +167,12 @@ public class CreateSql {
 
     private static void resolveMenuAndFuncSql(String aSysCodeType, String sysCodeType, String sys, String codeType,
                                               StringBuffer stringBufferFoot, String tableNameCn) {
-        tableNameCn = StringUtils.substringAfter(tableNameCn, "_");
-        tableNameCn = StringUtils.substringBeforeLast(tableNameCn, "表");
+        if (tableNameCn.contains("_")) {
+            tableNameCn = StringUtils.substringAfter(tableNameCn, "_");
+        }
+        if (tableNameCn.contains("表")) {
+            tableNameCn = StringUtils.substringBeforeLast(tableNameCn, "表");
+        }
         if (CodeUtil.isPrintInsertMenuSql) {
             stringBufferFoot.append("INSERT INTO t_sys_menu VALUES ('" + sysCodeType + "', '" + tableNameCn +"', '" + sys
                     + "', 'list', '" + codeType + "', '" + sys + ":" + codeType + ":list', 'views/" + sys + "/"

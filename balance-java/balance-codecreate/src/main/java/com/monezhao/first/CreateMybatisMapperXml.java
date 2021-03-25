@@ -69,9 +69,12 @@ public class CreateMybatisMapperXml {
             if (i == 0) {
                 tableNameCn = tableObject.getTableNameCn();
                 // 取出中文表名中的前缀,A01_系统参数表.
-                tableNameCn = StringUtils.substringAfter(tableNameCn, "_");
-                tableNameCn = StringUtils.substringBeforeLast(tableNameCn, "表");
-
+                if (tableNameCn.contains("_")) {
+                    tableNameCn = StringUtils.substringAfter(tableNameCn, "_");
+                }
+                if (tableNameCn.contains("表")) {
+                    tableNameCn = StringUtils.substringBeforeLast(tableNameCn, "表");
+                }
                 tableName = tableObject.getTableName();
             }
 
