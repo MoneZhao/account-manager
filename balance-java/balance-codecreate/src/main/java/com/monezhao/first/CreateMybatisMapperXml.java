@@ -87,6 +87,7 @@ public class CreateMybatisMapperXml {
         // 查询的字段
         String searchColumns = getSearchColumns(list);
         // where条件
+        String deleteConditions = getDeleteConditions(list);
         String whereConditions = getWhereConditions(list);
         String orderBy = getOrderBy();
 
@@ -117,6 +118,7 @@ public class CreateMybatisMapperXml {
             temp = StringUtils.replace(temp, "{tableNameCn}", tableNameCn);
             temp = StringUtils.replace(temp, "{tableName}", tableName);
             temp = StringUtils.replace(temp, "{searchColumns}", searchColumns);
+            temp = StringUtils.replace(temp, "{deleteConditions}", deleteConditions);
             temp = StringUtils.replace(temp, "{whereConditions}", whereConditions);
             temp = StringUtils.replace(temp, "{orderBy}", orderBy);
             temp = StringUtils.replace(temp, "{insertColumns}", insertColumns);
@@ -128,6 +130,23 @@ public class CreateMybatisMapperXml {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 得到查询list的where条件字符串--多表查询
+     *
+     * @param list
+     * @return
+     */
+    private static String getDeleteConditions(List<TableObject> list) {
+        String where = "1=1";
+        for (TableObject tableObject : list) {
+            if ("delete_type".equals(tableObject.getColumnNameEn())) {
+                where = "a.delete_type=0";
+                break;
+            }
+        }
+        return where;
     }
 
     /**
