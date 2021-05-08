@@ -1,5 +1,5 @@
 <template>
-<!--  上传下载文件样例-->
+  <!--  上传下载文件样例-->
   <div>
     <el-link @click="downloadFile(fileName)">{{ fileName }}</el-link>
     <el-button size="mini" type="primary" @click="uploadFile()">上传文件</el-button>
