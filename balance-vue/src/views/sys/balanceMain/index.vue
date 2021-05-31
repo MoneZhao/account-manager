@@ -132,21 +132,29 @@ export default {
   name: 'SysBalanceMain',
   components: { Pagination, SysBalanceDetail },
   data() {
+    const dayTime = 8.64e7 // 3600 * 1000 * 24
     return {
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() > Date.now()
+          return time.getTime() > Date.now() + dayTime
         },
         shortcuts: [{
+          text: '昨天',
+          onClick(picker) {
+            const date = new Date()
+            date.setTime(date.getTime() - dayTime)
+            picker.$emit('pick', date)
+          }
+        }, {
           text: '今天',
           onClick(picker) {
             picker.$emit('pick', new Date())
           }
         }, {
-          text: '昨天',
+          text: '明天',
           onClick(picker) {
             const date = new Date()
-            date.setTime(date.getTime() - 3600 * 1000 * 24)
+            date.setTime(date.getTime() + dayTime)
             picker.$emit('pick', date)
           }
         }]

@@ -36,7 +36,7 @@ export default {
       value: [],
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() > Date.now() - 8.64e6
+          return time.getTime() > Date.now() - 8.64e7
         },
         shortcuts: [{
           text: '今年至今',
