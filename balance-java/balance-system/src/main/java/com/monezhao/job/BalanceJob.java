@@ -1,5 +1,6 @@
 package com.monezhao.job;
 
+import com.monezhao.annotation.ShiroSecurityManagerChecker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,5 +29,10 @@ public class BalanceJob {
     @Transactional(rollbackFor = Exception.class)
     public void saveJob() {
         log.info("执行数据库操作相关方法");
+    }
+
+    @ShiroSecurityManagerChecker
+    public void process() {
+        log.info("需要用到Shiro功能的时候引入");
     }
 }
