@@ -72,8 +72,8 @@ public class SysPicUpDownController extends BaseController {
             response.setContentType("image/jpeg");
         }
         response.setCharacterEncoding("utf-8");
-        try(OutputStream outputStream = response.getOutputStream();
-            InputStream in = new ByteArrayInputStream(sysPicUpDown.getPic())){
+        try (OutputStream outputStream = response.getOutputStream();
+             InputStream in = new ByteArrayInputStream(sysPicUpDown.getPic())) {
             int len;
             byte[] buf = new byte[1024];
             while ((len = in.read(buf, 0, 1024)) != -1) {

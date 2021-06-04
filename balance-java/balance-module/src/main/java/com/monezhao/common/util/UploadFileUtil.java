@@ -8,10 +8,10 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
 /**
-* @author: monezhao@163.com
-* @Date: 2020/5/30 10:09
-* @Description:
-*/
+ * @author: monezhao@163.com
+ * @Date: 2020/5/30 10:09
+ * @Description:
+ */
 public class UploadFileUtil {
 
     private static final String FILE_SPACE = System.getProperty("user.dir") + File.separator + "balance"

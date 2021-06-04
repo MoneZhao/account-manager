@@ -174,7 +174,7 @@ public class CreateSql {
             tableNameCn = StringUtils.substringBeforeLast(tableNameCn, "表");
         }
         if (CodeUtil.isPrintInsertMenuSql) {
-            stringBufferFoot.append("INSERT INTO t_sys_menu VALUES ('" + sysCodeType + "', '" + tableNameCn +"', '" + sys
+            stringBufferFoot.append("INSERT INTO t_sys_menu VALUES ('" + sysCodeType + "', '" + tableNameCn + "', '" + sys
                     + "', 'list', '" + codeType + "', '" + sys + ":" + codeType + ":list', 'views/" + sys + "/"
                     + codeType + "/index', NULL, '0', '1', '" + aSysCodeType
                     + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");

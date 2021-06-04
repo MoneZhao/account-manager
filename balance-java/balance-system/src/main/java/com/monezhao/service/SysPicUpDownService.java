@@ -1,7 +1,7 @@
 package com.monezhao.service;
 
-import com.monezhao.common.base.BaseService;
 import com.monezhao.bean.sys.SysPicUpDown;
+import com.monezhao.common.base.BaseService;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

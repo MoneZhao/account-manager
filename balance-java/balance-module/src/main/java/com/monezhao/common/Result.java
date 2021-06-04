@@ -16,10 +16,8 @@ import java.io.Serializable;
 public class Result implements Serializable {
 
     private static final long serialVersionUID = 3571474161883509228L;
-
-    private static Integer SC_INTERNAL_SERVER_ERROR = 500;
     public static Integer SC_OK = 200;
-
+    private static Integer SC_INTERNAL_SERVER_ERROR = 500;
     @ApiModelProperty(value = "返回状态码；200:成功")
     private Integer code = 0;
     @ApiModelProperty(value = "返回信息")
