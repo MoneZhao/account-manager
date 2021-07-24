@@ -99,6 +99,10 @@ export default {
             data: data.x,
             axisPointer: {
               type: 'shadow'
+            },
+            axisLabel: {
+              interval: 0,
+              rotate: 40
             }
           },
           legend: {
