@@ -57,7 +57,7 @@ public class SysStatementServiceImpl implements SysStatementService {
         ;
         List<SysBalanceMain> balanceMains = balanceMainService.list(mainQueryWrapper);
 
-        Map<String, BigDecimal> record = new HashMap<>();
+        Map<String, BigDecimal> record = new HashMap<>(balanceMains.size());
         for (SysBalanceMain balanceMain : balanceMains) {
             String dateStr = DateUtil.dateToStr(balanceMain.getAccountDate(), format);
             BigDecimal account = balanceMain.getAccount();
