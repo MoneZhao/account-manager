@@ -27,6 +27,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="系统参数ID" prop="configId" align="center"><template slot-scope="scope"><span>{{ scope.row.configId }}</span></template></el-table-column>
       <el-table-column label="系统参数名称" prop="configName" align="center"><template slot-scope="scope"><span>{{ scope.row.configName }}</span></template></el-table-column>
       <el-table-column label="系统参数值" prop="configValue" align="center"><template slot-scope="scope"><span>{{ scope.row.configValue }}</span></template></el-table-column>

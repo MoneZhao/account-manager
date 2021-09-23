@@ -52,6 +52,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="下拉框内容" prop="content" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.content }}</span>

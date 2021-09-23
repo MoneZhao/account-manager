@@ -28,6 +28,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="日志类型" prop="logType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.logType,scope.row.logType)" /></template></el-table-column>            <el-table-column label="日志内容" prop="logContent" align="center"><template slot-scope="scope"><span>{{ scope.row.logContent }}</span></template></el-table-column>
       <el-table-column label="操作用户姓名" prop="userName" align="center"><template slot-scope="scope"><span>{{ scope.row.userName }}</span></template></el-table-column>
       <el-table-column label="IP" prop="ip" align="center"><template slot-scope="scope"><span>{{ scope.row.ip }}</span></template></el-table-column>

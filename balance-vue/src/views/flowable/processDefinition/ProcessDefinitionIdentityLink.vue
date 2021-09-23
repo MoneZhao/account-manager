@@ -13,6 +13,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="授权ID" prop="identityId" align="center">
         <template slot-scope="scope"><span>{{ scope.row.identityId }}</span></template>
       </el-table-column>

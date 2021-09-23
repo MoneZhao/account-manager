@@ -63,6 +63,7 @@
       style="width: 100%;"
       :cell-style="{padding:'3px'}"
     >
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="流程实例ID" prop="id" align="center" width="290px">
         <template slot-scope="scope"><span>{{ scope.row.id }}</span></template>
       </el-table-column>

@@ -53,6 +53,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="流程实例名称" prop="processInstanceName" align="center">
         <template slot-scope="scope"><span>{{ scope.row.processInstanceName }}</span></template>
       </el-table-column>

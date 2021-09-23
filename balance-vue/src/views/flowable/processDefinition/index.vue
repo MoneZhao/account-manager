@@ -48,6 +48,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="流程定义名称" prop="name" align="center">
         <template slot-scope="scope"><span>{{ scope.row.name }}</span></template>
       </el-table-column>

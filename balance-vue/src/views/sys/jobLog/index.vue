@@ -22,6 +22,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="任务名称" prop="jobName" align="center"><template slot-scope="scope"><span>{{ scope.row.jobName }}</span></template></el-table-column>
       <el-table-column label="任务组名" prop="jobGroup" align="center"><template slot-scope="scope"><span>{{ scope.row.jobGroup }}</span></template></el-table-column>
       <el-table-column label="调用目标字符串" prop="invokeTarget" align="center"><template slot-scope="scope"><span>{{ scope.row.invokeTarget }}</span></template></el-table-column>

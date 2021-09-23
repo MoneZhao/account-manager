@@ -31,6 +31,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="任务名称" prop="jobName" align="center"><template slot-scope="scope"><span>{{ scope.row.jobName }}</span></template></el-table-column>
       <el-table-column label="任务组名" prop="jobGroup" align="center"><template slot-scope="scope"><span>{{ scope.row.jobGroup }}</span></template></el-table-column>
       <el-table-column label="计划执行错误策略" prop="misfirePolicy" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.misfirePolicy,scope.row.misfirePolicy)" /></template></el-table-column>

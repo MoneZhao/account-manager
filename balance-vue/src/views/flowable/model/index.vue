@@ -63,6 +63,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="模型key" prop="key" align="center">
         <template slot-scope="scope"><span>{{ scope.row.key }}</span></template>
       </el-table-column>

@@ -26,6 +26,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="岗位id" prop="postId" align="center"><template slot-scope="scope"><span>{{ scope.row.postId }}</span></template></el-table-column>
       <el-table-column label="岗位名称" prop="postName" align="center"><template slot-scope="scope"><span>{{ scope.row.postName }}</span></template></el-table-column>
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
@@ -99,6 +100,7 @@
         @selection-change="selectionChangePostUser"
       >
         <el-table-column type="selection" align="center" />
+        <el-table-column type="index" label="#" align="center" width="50" />
         <el-table-column label="用户姓名" prop="userName" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.userName }}</span>

@@ -26,6 +26,7 @@
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
+      <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="账户余额" prop="account" align="center"><template slot-scope="scope"><span>{{ formatMoney(scope.row.account) }}</span></template></el-table-column>
       <el-table-column label="账户类型" prop="balanceType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.balanceType,scope.row.balanceType)" /></template></el-table-column>
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
