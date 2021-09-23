@@ -175,9 +175,11 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', loginParams).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            // this.$router.push({path: '/'})
-            this.loading = false
+            this.$store.dispatch('tagsView/delAllViews').then(() => {
+              this.$router.push({ path: this.redirect || '/' })
+              // this.$router.push({path: '/'})
+              this.loading = false
+            })
           }).catch(() => {
             this.loading = false
           })
