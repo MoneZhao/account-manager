@@ -52,16 +52,18 @@
           <div>
             <el-row v-for="item in treeData" :key="item.id">
               <el-col>
-                <vue2-org-tree
-                  name="vueOrgTree"
-                  :data="item"
-                  :horizontal="horizontal"
-                  :collapsable="collapsable"
-                  :label-class-name="labelClassName"
-                  :render-content="renderContent"
-                  @on-expand="onExpands"
-                  @on-node-click="onNodeClick"
-                />
+                <el-scrollbar style="width: 100%">
+                  <vue2-org-tree
+                    name="vueOrgTree"
+                    :data="item"
+                    :horizontal="horizontal"
+                    :collapsable="collapsable"
+                    :label-class-name="labelClassName"
+                    :render-content="renderContent"
+                    @on-expand="onExpands"
+                    @on-node-click="onNodeClick"
+                  />
+                </el-scrollbar>
               </el-col>
             </el-row>
           </div>
