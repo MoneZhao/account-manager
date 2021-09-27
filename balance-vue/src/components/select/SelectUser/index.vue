@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     title="选择用户"
-    :visible.sync="visibleInChild"
+    :visible="dialogVisible"
     :append-to-body="appendToBody"
     width="80%"
     :before-close="close"
@@ -30,6 +30,13 @@
           <div>
             <div class="filter-container" style="float: right">
               <el-input
+                v-model="listQuery.userId"
+                placeholder="用户ID"
+                style="width: 200px;"
+                class="filter-item"
+                @keyup.enter.native="btnQuery"
+              />
+              <el-input
                 v-model="listQuery.userName"
                 placeholder="用户姓名"
                 style="width: 200px;"
@@ -54,10 +61,24 @@
               @selection-change="selectionChange"
               @row-click="rowClick"
             >
-              <el-table-column v-if="multipleSelect" type="selection" align="center" />
+              <template>
+                <el-table-column v-if="multipleSelect" type="selection" align="center" />
+                <el-table-column v-else>
+                  <template slot-scope="scope">
+                    <el-radio v-model="currentRadio" :label="scope.row.userId">
+                      <span class="el-radio__label" />
+                    </el-radio>
+                  </template>
+                </el-table-column>
+              </template>
               <el-table-column label="用户姓名" prop="userName" align="center">
                 <template slot-scope="scope">
                   <span>{{ scope.row.userName }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="所属机构ID" prop="orgId" align="center">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.orgId }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="所属机构" prop="orgName" align="center">
@@ -76,11 +97,27 @@
               />
             </div>
           </div>
+          <div v-if="multipleSelect" class="selectedUsers">
+            <el-alert
+              :title="'当前已经选中' + tags.length + '个人员'"
+              type="success"
+            >
+              <el-tag
+                v-for="tag in tags"
+                :key="tag.userId"
+                style="margin: 5px;"
+                size="medium"
+              >
+                {{ tag.userName }}
+              </el-tag>
+            </el-alert>
+
+          </div>
         </el-col>
       </el-row>
     </div>
     <div slot="footer" class="dialog-footer">
-      <el-button icon="el-icon-close" @click="visibleInChild = false">取消</el-button>
+      <el-button icon="el-icon-close" @click="dialogVisible = false">取消</el-button>
       <el-button icon="el-icon-check" type="primary" @click="confirm">确定</el-button>
     </div>
   </el-dialog>
@@ -129,21 +166,15 @@ export default {
       listQuery: {
         current: 1,
         size: 10,
+        userId: undefined,
         userName: undefined,
         orgId: undefined
       },
       currOrgId: '',
+      tags: [],
+      currentRadio: null,
+      dialogVisible: false,
       highlight: true
-    }
-  },
-  computed: {
-    visibleInChild: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', val)
-      }
     }
   },
   watch: {
@@ -151,12 +182,25 @@ export default {
       this.$refs._selectOrgTree.filter(val)
     }
   },
-  created() {
-    this.btnReset()
-  },
   methods: {
+    show() {
+      this.dialogVisible = true
+      if (this.treeData.length === 0) {
+        this.getTreeData()
+      }
+      this.btnReset()
+    },
     close() {
-      this.visibleInChild = false
+      this.currOrgId = ''
+      this.listQuery = {
+        current: 1,
+        size: 10,
+        userId: undefined,
+        userName: undefined,
+        orgId: undefined
+      }
+      this.tags = []
+      this.dialogVisible = false
     },
     filterNode(value, data) {
       if (!value) return true
@@ -179,10 +223,12 @@ export default {
     },
     listSysUsers() {
       this.listQuery.orgId = this.currOrgId
+      this.loading = true
       getAction('/sys/user/listSelectUser', this.listQuery).then(res => {
         const { data } = res
         this.records = data.records
         this.total = data.total
+        this.loading = false
       })
     },
     btnQuery() {
@@ -194,16 +240,20 @@ export default {
       this.listQuery = {
         current: 1,
         size: 10,
+        userId: undefined,
         userName: undefined,
         orgId: undefined
       }
+      this.tags = []
       this.listSysUsers()
     },
     selectionChange(selectedRecords) {
+      this.tags = selectedRecords
       this.selectedRecords = selectedRecords
     },
     rowClick(row) {
       this.selectedRecord = row
+      this.currentRadio = row.userId
     },
     confirm() {
       if (this.multipleSelect) {
@@ -219,7 +269,7 @@ export default {
         }
         this.$emit('selectUserFinished', this.selectedRecord)
       }
-      this.visibleInChild = false
+      this.dialogVisible = false
     }
   }
 }

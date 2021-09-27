@@ -24,7 +24,6 @@
 
     <select-user
       ref="selectUser"
-      :visible.sync="selectUserVisible"
       :append-to-body="true"
       :multiple-select="selectUserMultipleSelect"
       @selectUserFinished="selectUserFinished"
@@ -123,7 +122,6 @@ export default {
       processInstanceFormData: undefined,
       startUserId: '',
       isInitiator: false,
-      selectUserVisible: false,
       selectUserMultipleSelect: false,
       selectUserType: '',
       message: '',
@@ -228,11 +226,8 @@ export default {
     },
     doSelectCcTo() {
       this.selectUserMultipleSelect = true
-      this.selectUserVisible = true
       this.selectUserType = 'selectCcTo'
-      if (this.$refs.selectUser.treeData.length == 0) {
-        this.$refs.selectUser.getTreeData()
-      }
+      this.$refs.selectUser.show()
     },
     handleCcToClose(tag) {
       this.ccToVos.splice(this.ccToVos.indexOf(tag), 1)
@@ -240,20 +235,14 @@ export default {
     doAssign() {
       this.checkMessage()
       this.selectUserMultipleSelect = false
-      this.selectUserVisible = true
       this.selectUserType = 'assign'
-      if (this.$refs.selectUser.treeData.length == 0) {
-        this.$refs.selectUser.getTreeData()
-      }
+      this.$refs.selectUser.show()
     },
     doDelegate() {
       this.checkMessage()
       this.selectUserMultipleSelect = false
-      this.selectUserVisible = true
       this.selectUserType = 'delegate'
-      if (this.$refs.selectUser.treeData.length == 0) {
-        this.$refs.selectUser.getTreeData()
-      }
+      this.$refs.selectUser.show()
     },
     selectUserFinished(selectData) {
       if (!selectData || selectData.length == 0) {
@@ -267,7 +256,6 @@ export default {
           message: this.message
         }).then(({ msg }) => {
           Message.success(msg)
-          this.selectUserVisible = false
           this.dialogExcuteTaskVisibleInChild = false
           this.$emit('executeTaskFinished')
         })
@@ -278,7 +266,6 @@ export default {
           message: this.message
         }).then(({ msg }) => {
           Message.success(msg)
-          this.selectUserVisible = false
           this.dialogExcuteTaskVisibleInChild = false
           this.$emit('executeTaskFinished')
         })

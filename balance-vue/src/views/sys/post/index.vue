@@ -124,7 +124,6 @@
     </el-dialog>
     <select-user
       ref="selectUser"
-      :visible.sync="selectUserVisible"
       :append-to-body="true"
       :multiple-select="true"
       @selectUserFinished="selectUserFinished"
@@ -173,8 +172,7 @@ export default {
         size: 10,
         postId: undefined,
         userName: undefined
-      },
-      selectUserVisible: false
+      }
     }
   },
   computed: {
@@ -310,10 +308,7 @@ export default {
       this.selectedRecordsPostUser = selectedRecords
     },
     btnPostUserAdd() {
-      this.selectUserVisible = true
-      if (this.$refs.selectUser.treeData.length === 0) {
-        this.$refs.selectUser.getTreeData()
-      }
+      this.$refs.selectUser.show()
     },
     selectUserFinished(selectData) {
       if (!selectData || selectData.length === 0) {
@@ -328,7 +323,6 @@ export default {
         userId: userId.toString()
       }).then(({ msg }) => {
         Message.success(msg)
-        this.selectUserVisible = false
         this.btnPostUserQuery()
       })
     },

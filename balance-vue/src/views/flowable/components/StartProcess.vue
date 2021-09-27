@@ -5,7 +5,6 @@
     </div>
     <select-user
       ref="selectUser"
-      :visible.sync="selectUserVisible"
       :append-to-body="true"
       :multiple-select="true"
       @selectUserFinished="selectUserFinished"
@@ -71,7 +70,6 @@ export default {
       variables: undefined,
       showBusinessKey: false,
       businessKey: undefined,
-      selectUserVisible: false,
       ccToVos: []
     }
   },
@@ -105,10 +103,7 @@ export default {
       // }
     },
     doSelectCcTo() {
-      this.selectUserVisible = true
-      if (this.$refs.selectUser.treeData.length == 0) {
-        this.$refs.selectUser.getTreeData()
-      }
+      this.$refs.selectUser.show()
     },
     selectUserFinished(selectData) {
       if (!selectData || selectData.length == 0) {
