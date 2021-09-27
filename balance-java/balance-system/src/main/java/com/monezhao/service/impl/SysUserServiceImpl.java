@@ -66,7 +66,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     private SysRoleUserServiceImpl sysRoleUserService;
 
     @Autowired
-    private SysOrgServiceImpl baseOrgService;
+    private SysOrgServiceImpl sysOrgService;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -157,7 +157,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         }
         sessionObject.setSysRole(sysRoleUser);
 
-        SysOrg baseOrg = this.baseOrgService.getById(sysUser.getOrgId());
+        SysOrg baseOrg = this.sysOrgService.getById(sysUser.getOrgId());
         sessionObject.setSysOrg(baseOrg);
 
         sessionObject = loadFuncIdsAndPermissions(sysUser, roleId, sessionObject);
@@ -510,6 +510,25 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             shortCuts.add(shortCut);
         }
         return shortCuts;
+    }
+
+    @Override
+    public IPage<SysUser> queryUserByOrg(IPage<SysUser> page, SysUser sysUser) {
+        List<SysOrg> baseOrgs = sysOrgService.list();
+        List<String> orgList = new ArrayList<>();
+        for (SysOrg sysOrg : baseOrgs) {
+            boolean contains = Arrays.asList(sysOrg.getOrgLevelCode().split(",")).contains(sysUser.getOrgId());
+            if (contains) {
+                orgList.add(sysOrg.getOrgId());
+            }
+        }
+        sysUser.setOrgList(orgList);
+        List<SysUser> records = baseMapper.queryUserByOrgList(page, sysUser);
+        if (page == null) {
+            page = new Page<>();
+            page.setTotal(records != null ? records.size() : 0L);
+        }
+        return page.setRecords(records);
     }
 
     private String pathFormat(SysMenu menu) {

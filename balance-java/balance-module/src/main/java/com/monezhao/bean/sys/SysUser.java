@@ -15,6 +15,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author monezhao@163.com
@@ -150,4 +151,12 @@ public class SysUser extends BaseEntity {
     @ExcelIgnore
     @ApiModelProperty(hidden = true)
     private String authFilterSql;
+
+    /**
+     * 机构主键集合
+     */
+    @TableField(exist = false)
+    @ExcelIgnore
+    @ApiModelProperty(hidden = true)
+    private List<String> orgList;
 }

@@ -104,4 +104,12 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return
      */
     List<String> listPermissionsByUserId(String userId);
+
+    /**
+     * 根据机构集合查询人员
+     *
+     * @author zym
+     * @date 2020/11/3 11:09
+     */
+    List<SysUser> queryUserByOrgList(IPage<SysUser> page, @Param("entity") SysUser sysUser);
 }

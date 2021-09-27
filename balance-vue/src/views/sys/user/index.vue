@@ -1,106 +1,145 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-button-group>
-        <el-button v-permission="'sys:user:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增
-        </el-button>
-        <el-button v-permission="'sys:user:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
-      </el-button-group>
-      <el-button-group>
-        <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出
-        </el-button>
-      </el-button-group>
-      <div style="float: right">
-        <el-input
-          v-model="listQuery.userId"
-          placeholder="登录账户名"
-          style="width: 200px;"
-          class="filter-item"
-          @keyup.enter.native="btnQuery"
-        />
-        <el-input
-          v-model="listQuery.userName"
-          placeholder="用户姓名"
-          style="width: 200px;"
-          class="filter-item"
-          @keyup.enter.native="btnQuery"
-        />
-        <el-dropdown
-          v-permission="'sys:user:list'"
-          split-button
-          type="primary"
-          class="filter-item"
-          @click="btnQuery"
-        >
-          <i class="el-icon-search el-icon--left" />查询
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-    </div>
-    <el-table
-      ref="multipleTable"
-      :data="records"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      :cell-style="{padding:'3px'}"
-      @selection-change="selectionChange"
-    >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
-      <el-table-column label="登录账户名" prop="userId" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.userId }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户姓名" prop="userName" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.userName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="当前角色" prop="roleId" align="center" :formatter="roleFormatter" />
-      <el-table-column label="所属机构" prop="orgName" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.orgName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户状态" prop="status" align="center">
-        <template slot-scope="scope">
-          <span v-html="formatDictText(dicts.userStatus,scope.row.status)" />
-        </template>
-      </el-table-column>
-      <el-table-column label="排序号" prop="sortNo" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.sortNo }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="{row}">
-          <el-dropdown>
-            <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
-              <el-dropdown-item v-permission="'sys:user:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">修改</el-dropdown-item>
-              <el-dropdown-item v-permission="'sys:user:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.userId)">删除</el-dropdown-item>
-              <el-dropdown-item v-permission="'sys:user:update'" icon="el-icon-delete" divided @click.native="btnResetPassword(row.userId)">重置密码</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-collection-tag" divided @click.native="btnShortCut(row)">快捷方式</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="pagination-position">
-      <pagination
-        v-show="total>0"
-        :total="total"
-        :current.sync="listQuery.current"
-        :size.sync="listQuery.size"
-        @pagination="list"
-      />
-    </div>
+    <el-row :gutter="10">
+      <el-col :span="5">
+        <el-card>
+          <div slot="header" class="clearfix">
+            <span>组织机构</span>
+          </div>
+          <el-input
+            v-model="filterText"
+            placeholder="输入关键字进行过滤"
+            style="margin-bottom: 10px;"
+            prefix-icon="el-icon-search"
+          />
+          <el-tree
+            ref="orgTree"
+            v-loading="treeLoading"
+            :data="treeData"
+            default-expand-all
+            node-key="id"
+            :props="defaultProps"
+            :expand-on-click-node="false"
+            :filter-node-method="filterNode"
+            current-node-key
+            :highlight-current="highlight"
+            @node-click="handleNodeClick"
+          >
+            <span slot-scope="{ node }" class="custom-tree-node">
+              <span>{{ node.label }}</span>
+            </span>
+          </el-tree>
+        </el-card>
+      </el-col>
+      <el-col :span="19">
+        <el-card>
+          <div slot="header" class="clearfix">
+            <span>{{ currentOrg }}</span>
+          </div>
+          <div class="filter-container">
+            <el-button-group>
+              <el-button v-permission="'sys:user:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增
+              </el-button>
+              <el-button v-permission="'sys:user:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
+            </el-button-group>
+            <el-button-group>
+              <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出
+              </el-button>
+            </el-button-group>
+            <div style="float: right">
+              <el-input
+                v-model="listQuery.userId"
+                placeholder="登录账户名"
+                style="width: 200px;"
+                class="filter-item"
+                @keyup.enter.native="btnQuery"
+              />
+              <el-input
+                v-model="listQuery.userName"
+                placeholder="用户姓名"
+                style="width: 200px;"
+                class="filter-item"
+                @keyup.enter.native="btnQuery"
+              />
+              <el-dropdown
+                v-permission="'sys:user:list'"
+                split-button
+                type="primary"
+                class="filter-item"
+                @click="btnQuery"
+              >
+                <i class="el-icon-search el-icon--left" />查询
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+          </div>
+          <el-table
+            ref="multipleTable"
+            :data="records"
+            border
+            fit
+            highlight-current-row
+            style="width: 100%;"
+            :cell-style="{padding:'3px'}"
+            @selection-change="selectionChange"
+          >
+            <el-table-column type="selection" align="center" />
+            <el-table-column type="index" label="#" align="center" width="50" />
+            <el-table-column label="登录账户名" prop="userId" align="center">
+              <template slot-scope="scope">
+                <span>{{ scope.row.userId }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="用户姓名" prop="userName" align="center">
+              <template slot-scope="scope">
+                <span>{{ scope.row.userName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="当前角色" prop="roleId" align="center" :formatter="roleFormatter" />
+            <el-table-column label="所属机构" prop="orgName" align="center">
+              <template slot-scope="scope">
+                <span>{{ scope.row.orgName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="用户状态" prop="status" align="center">
+              <template slot-scope="scope">
+                <span v-html="formatDictText(dicts.userStatus,scope.row.status)" />
+              </template>
+            </el-table-column>
+            <el-table-column label="排序号" prop="sortNo" align="center">
+              <template slot-scope="scope">
+                <span>{{ scope.row.sortNo }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="{row}">
+                <el-dropdown>
+                  <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
+                    <el-dropdown-item v-permission="'sys:user:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">修改</el-dropdown-item>
+                    <el-dropdown-item v-permission="'sys:user:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.userId)">删除</el-dropdown-item>
+                    <el-dropdown-item v-permission="'sys:user:update'" icon="el-icon-delete" divided @click.native="btnResetPassword(row.userId)">重置密码</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-collection-tag" divided @click.native="btnShortCut(row)">快捷方式</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="pagination-position">
+            <pagination
+              v-show="total>0"
+              :total="total"
+              :current.sync="listQuery.current"
+              :size.sync="listQuery.size"
+              @pagination="list"
+            />
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
 
     <el-dialog title="用户" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
@@ -243,10 +282,22 @@ export default {
         current: 1,
         size: 10,
         userId: undefined,
-        userName: undefined
+        userName: undefined,
+        orgId: undefined
       },
       dialogFormVisible: false,
       dialogStatus: '',
+      filterText: '',
+      treeLoading: false,
+      treeData: [],
+      defaultProps: {
+        children: 'children',
+        label: 'label',
+        isLeaf: 'isLeaf',
+        data: 'data'
+      },
+      currentOrg: '',
+      highlight: true,
       temp: {
         userId: undefined,
         userName: '',
@@ -287,14 +338,28 @@ export default {
     })
   },
   created() {
+    this.getTreeData()
     this.list()
   },
   methods: {
     list() {
-      getAction('/sys/user/list', this.listQuery).then(res => {
+      getAction('/sys/user/queryUserByOrg', this.listQuery).then(res => {
         const { data } = res
         this.records = data.records
         this.total = data.total
+      })
+    },
+    getTreeData() {
+      this.treeLoading = true
+      getAction('/sys/org/getTreeData', {}).then(res => {
+        const { data } = res
+        this.treeData = data
+        console.log(this.treeData[0].id)
+        this.$nextTick(() => {
+          this.$refs.orgTree.setCurrentKey(this.treeData[0].id)
+          this.currentOrg = this.treeData[0].label + '(全部) - 用户信息'
+        })
+        this.treeLoading = false
       })
     },
     btnExport() {
@@ -309,7 +374,8 @@ export default {
         current: 1,
         size: 10,
         userId: undefined,
-        userName: undefined
+        userName: undefined,
+        orgId: undefined
       }
       this.list()
     },
@@ -328,6 +394,21 @@ export default {
         sortNo: '',
         remark: ''
       }
+    },
+    handleNodeClick(node) {
+      this.highlight = node.id !== this.listQuery.orgId
+      if (!this.highlight) {
+        this.listQuery.orgId = undefined
+        this.currentOrg = '全部用户信息'
+      } else {
+        this.listQuery.orgId = node.id
+        this.currentOrg = node.label + ' - 用户信息'
+      }
+      this.list()
+    },
+    filterNode(value, data) {
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
     },
     btnView(row) {
       this.temp = Object.assign({}, row)

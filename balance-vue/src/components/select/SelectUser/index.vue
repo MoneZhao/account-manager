@@ -213,7 +213,7 @@ export default {
       })
     },
     handleNodeClick(node) {
-      this.highlight = !this.highlight
+      this.highlight = node.id !== this.currOrgId
       if (!this.highlight) {
         this.currOrgId = ''
       } else {

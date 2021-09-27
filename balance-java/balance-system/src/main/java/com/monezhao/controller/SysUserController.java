@@ -100,6 +100,18 @@ public class SysUserController extends BaseController {
         return Result.ok(pageList);
     }
 
+    /**
+     * 查询部门下的人员信息
+     * @author zym
+     * @date 2020/11/3 10:41
+     */
+    @GetMapping(value = "/queryUserByOrg")
+    @ApiOperation("查询部门下的人员信息")
+    public Result queryUserByOrg(SysUser sysUser, @RequestParam Integer current, @RequestParam Integer size) {
+        IPage<SysUser> pageList = sysUserService.queryUserByOrg(new Page<>(current, size), sysUser);
+        return Result.ok(pageList);
+    }
+
     @RequiresPermissions("sys:user:list")
     @GetMapping(value = "/queryById")
     @ApiOperation("用户查询")

@@ -160,4 +160,11 @@ public interface SysUserService extends BaseService<SysUser> {
      * @return
      */
     List<ShortCut> getMenuShortCut(String userId, String roleId);
+
+    /**
+     * 根据部门查询部门下的全部人员信息
+     * @author zym
+     * @date 2020/11/3 10:41
+     */
+    IPage<SysUser> queryUserByOrg(IPage<SysUser> page, SysUser sysUser);
 }

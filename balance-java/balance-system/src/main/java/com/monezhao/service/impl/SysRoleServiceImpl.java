@@ -168,7 +168,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     /**
      * 保存角色用户
      *
-     * @param sysRoleUser
+     * @param roleId
+     * @param userIds
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -190,7 +191,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
     /**
      * 删除角色用户
      *
-     * @param sysRoleUser
+     * @param roleId
+     * @param userIds
      */
     @Override
     @Transactional(rollbackFor = Exception.class)

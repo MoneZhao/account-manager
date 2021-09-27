@@ -159,4 +159,39 @@
         FROM t_sys_user_short_cut a
         WHERE a.user_id = #{userId}
     </select>
+    <select id="queryUserByOrgList" resultType="com.monezhao.bean.sys.SysUser">
+        select
+        a.user_id as userId,
+        a.user_name as userName,
+        a.sex as sex,
+        a.role_id as roleId,
+        a.org_id as orgId,
+        a.mobile as mobile,
+        a.id_card_no as idCardNo,
+        a.email as email,
+        a.status as status,
+        a.sort_no as sortNo,
+        a.remark as remark,
+        o.org_name as orgName
+
+        from t_sys_user a
+        join t_sys_org o ON o.org_id=a.org_id
+        where 1=1
+        <if test="entity.userId != null and entity.userId !=''">
+            <![CDATA[	AND a.user_id = #{entity.userId}	]]>
+        </if>
+        <if test="entity.userName != null and entity.userName !=''">
+            <![CDATA[	AND a.user_name = #{entity.userName}	]]>
+        </if>
+        <if test="entity.authFilterSql != null and entity.authFilterSql !=''">
+            <![CDATA[	AND ${entity.authFilterSql}	]]>
+        </if>
+        <if test="entity.orgList != null and entity.orgList.size > 0 ">
+            and a.org_id  in
+            <foreach collection="entity.orgList" item ="deptId" index="i" open="(" close=")" separator=",">
+                #{deptId}
+            </foreach>
+        </if>
+        order by a.sort_no desc
+    </select>
 </mapper>
