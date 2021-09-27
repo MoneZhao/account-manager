@@ -211,7 +211,7 @@ public class ModelController extends BaseFlowableController {
             throw new IllegalArgumentException("Request file must end with .bpmn20.xml,.bpmn|,.bar,.zip");
         }
 
-        this.managementService.executeCommand(new SaveModelEditorCmd(null, tenantId, new String(file.getBytes(),
+        managementService.executeCommand(new SaveModelEditorCmd(null, tenantId, new String(file.getBytes(),
                 StandardCharsets.UTF_8)));
 
         return Result.ok();

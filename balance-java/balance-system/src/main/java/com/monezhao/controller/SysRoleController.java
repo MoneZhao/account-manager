@@ -112,7 +112,7 @@ public class SysRoleController extends BaseController {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
         }
-        this.sysRoleService.delete(ids);
+        sysRoleService.delete(ids);
         return Result.ok();
     }
 
@@ -127,7 +127,7 @@ public class SysRoleController extends BaseController {
     @ApiOperation("角色权限查询")
     public Result getRolePermissions(String roleId) {
         SysUser sysUser = ShiroUtils.getSysUser();
-        Map<String, Object> data = this.sysRoleService.getRolePermissions(sysUser, roleId);
+        Map<String, Object> data = sysRoleService.getRolePermissions(sysUser, roleId);
         return Result.ok(data);
     }
 
@@ -142,7 +142,7 @@ public class SysRoleController extends BaseController {
     @PostMapping(value = "/saveRolePermissions")
     @ApiOperation("角色权限保存")
     public Result saveRolePermissions(@RequestBody SysRolePermission sysRolePermission) {
-        this.sysRoleService.saveRolePermissions(sysRolePermission.getRoleId(), sysRolePermission.getMenuOrFuncId(),
+        sysRoleService.saveRolePermissions(sysRolePermission.getRoleId(), sysRolePermission.getMenuOrFuncId(),
                 sysRolePermission.getPermissionType());
         return Result.ok();
     }
@@ -159,7 +159,7 @@ public class SysRoleController extends BaseController {
     @GetMapping(value = "/getRoleUser")
     @ApiOperation("角色用户查询")
     public Result getRoleUser(SysRoleUser sysRoleUser, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysUser> pageList = this.sysRoleService.getRoleUser(new Page<>(current, size), sysRoleUser);
+        IPage<SysUser> pageList = sysRoleService.getRoleUser(new Page<>(current, size), sysRoleUser);
         return Result.ok(pageList);
     }
 
@@ -174,7 +174,7 @@ public class SysRoleController extends BaseController {
     @PostMapping(value = "/saveRoleUsers")
     @ApiOperation("角色用户保存")
     public Result saveRoleUsers(@RequestBody SysRoleUser sysRoleUser) {
-        this.sysRoleService.saveRoleUsers(sysRoleUser.getRoleId(), sysRoleUser.getUserId());
+        sysRoleService.saveRoleUsers(sysRoleUser.getRoleId(), sysRoleUser.getUserId());
         return Result.ok();
     }
 
@@ -190,7 +190,7 @@ public class SysRoleController extends BaseController {
     @DeleteMapping(value = "/deleteRoleUsers")
     @ApiOperation("角色用户删除")
     public Result deleteRoleUsers(String roleId, String userIds) {
-        this.sysRoleService.deleteRoleUsers(roleId, userIds);
+        sysRoleService.deleteRoleUsers(roleId, userIds);
         return Result.ok();
     }
 

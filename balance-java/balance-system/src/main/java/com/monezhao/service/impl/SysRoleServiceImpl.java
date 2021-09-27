@@ -142,14 +142,14 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         // 【1】先删除此角色的已有操作权限
         Map<String, Object> columnMap = new HashMap<>(1);
         columnMap.put("ROLE_ID", roleId);
-        this.sysRolePermissionService.removeByMap(columnMap);
+        sysRolePermissionService.removeByMap(columnMap);
         // 【2】保存新的操作权限
         for (int i = 0; i < menuOrFuncIdArray.length; i++) {
             SysRolePermission sysRolePermission = new SysRolePermission();
             sysRolePermission.setRoleId(roleId);
             sysRolePermission.setPermissionType(permissionTypeArray[i]);
             sysRolePermission.setMenuOrFuncId(menuOrFuncIdArray[i]);
-            this.sysRolePermissionService.save(sysRolePermission);
+            sysRolePermissionService.save(sysRolePermission);
         }
     }
 
@@ -179,12 +179,12 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         QueryWrapper<SysRoleUser> queryWrapper = new QueryWrapper<>();
         QueryWrapperGenerator.addEasyQuery(queryWrapper, "roleId", FilterOperate.EQ, roleId);
         QueryWrapperGenerator.addEasyQuery(queryWrapper, "userId", FilterOperate.IN, userIdArray);
-        this.sysRoleUserService.remove(queryWrapper);
+        sysRoleUserService.remove(queryWrapper);
 
         // 【2】保存角色用户
         for (int i = 0; i < userIdArray.length; i++) {
             SysRoleUser sysRoleUser = new SysRoleUser(roleId, userIdArray[i]);
-            this.sysRoleUserService.save(sysRoleUser);
+            sysRoleUserService.save(sysRoleUser);
         }
     }
 
@@ -202,7 +202,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         QueryWrapper<SysRoleUser> queryWrapper = new QueryWrapper<>();
         QueryWrapperGenerator.addEasyQuery(queryWrapper, "roleId", FilterOperate.EQ, roleId);
         QueryWrapperGenerator.addEasyQuery(queryWrapper, "userId", FilterOperate.IN, userIdArray);
-        this.sysRoleUserService.remove(queryWrapper);
+        sysRoleUserService.remove(queryWrapper);
     }
 
     /**
@@ -226,7 +226,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRoleMapper, SysRole> 
         } else {
             this.removeById(idsArr[0]);
         }
-        this.sysRoleUserService.remove(new QueryWrapper<SysRoleUser>().in("role_id", idsArr));
-        this.sysRolePermissionService.remove(new QueryWrapper<SysRolePermission>().in("role_id", idsArr));
+        sysRoleUserService.remove(new QueryWrapper<SysRoleUser>().in("role_id", idsArr));
+        sysRolePermissionService.remove(new QueryWrapper<SysRolePermission>().in("role_id", idsArr));
     }
 }

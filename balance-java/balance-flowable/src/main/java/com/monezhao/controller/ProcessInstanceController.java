@@ -140,7 +140,7 @@ public class ProcessInstanceController extends BaseFlowableController {
     @GetMapping(value = "/listMyInvolvedSummary")
     public Result listMyInvolvedSummary(ProcessInstanceQueryVo processInstanceQueryVo) {
         processInstanceQueryVo.setUserId(ShiroUtils.getUserId());
-        return Result.ok(this.processInstanceService.listMyInvolvedSummary(processInstanceQueryVo));
+        return Result.ok(processInstanceService.listMyInvolvedSummary(processInstanceQueryVo));
     }
 
     @GetMapping(value = "/listMyInvolved")

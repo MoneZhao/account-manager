@@ -157,7 +157,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         }
         sessionObject.setSysRole(sysRoleUser);
 
-        SysOrg baseOrg = this.sysOrgService.getById(sysUser.getOrgId());
+        SysOrg baseOrg = sysOrgService.getById(sysUser.getOrgId());
         sessionObject.setSysOrg(baseOrg);
 
         sessionObject = loadFuncIdsAndPermissions(sysUser, roleId, sessionObject);
@@ -329,7 +329,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         SysUser sysUserDb = this.getById(sysUser.getUserId());
         if (!sysUserDb.getRoleId().equals(sysUser.getRoleId())) {
             SysRoleUser sysRoleUserDb = new SysRoleUser(sysUserDb.getRoleId(), sysUserDb.getUserId());
-            this.sysRoleUserService.removeById(sysRoleUserDb.getRoleUserId());
+            sysRoleUserService.removeById(sysRoleUserDb.getRoleUserId());
 
             SysRoleUser sysRoleUser = new SysRoleUser(sysUser.getRoleId(), sysUser.getUserId());
             sysRoleUserService.saveOrUpdate(sysRoleUser);

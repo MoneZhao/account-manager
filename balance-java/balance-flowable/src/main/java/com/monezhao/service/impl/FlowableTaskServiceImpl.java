@@ -132,7 +132,7 @@ public class FlowableTaskServiceImpl implements FlowableTaskService {
     public List<TaskResponse> getSubTasks(String taskId) {
         String userId = ShiroUtils.getUserId();
         HistoricTaskInstance parentTask = permissionService.validateReadPermissionOnTask(taskId, userId, true, true);
-        List<Task> subTasks = this.taskService.getSubTasks(taskId);
+        List<Task> subTasks = taskService.getSubTasks(taskId);
         List<TaskResponse> subTasksRepresentations = new ArrayList<>(subTasks.size());
         for (Task subTask : subTasks) {
             TaskResponse representation = new TaskResponse(subTask, parentTask);

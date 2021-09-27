@@ -103,7 +103,7 @@ public class SysPostController extends BaseController {
         if (ids == null || ids.trim().length() == 0) {
             return Result.error("ids can't be empty");
         }
-        this.sysPostService.delete(ids);
+        sysPostService.delete(ids);
         return Result.ok();
     }
 
@@ -119,7 +119,7 @@ public class SysPostController extends BaseController {
     @GetMapping(value = "/getPostUser")
     @ApiOperation("获取岗位用户")
     public Result getPostUser(SysPostUser sysPostUser, @RequestParam Integer current, @RequestParam Integer size) {
-        IPage<SysUser> pageList = this.sysPostService.getPostUser(new Page<>(current, size), sysPostUser);
+        IPage<SysUser> pageList = sysPostService.getPostUser(new Page<>(current, size), sysPostUser);
         return Result.ok(pageList);
     }
 
@@ -134,7 +134,7 @@ public class SysPostController extends BaseController {
     @PostMapping(value = "/savePostUsers")
     @ApiOperation("新增岗位用户")
     public Result savePostUsers(@RequestBody SysPostUser sysPostUser) {
-        this.sysPostService.savePostUsers(sysPostUser.getPostId(), sysPostUser.getUserId());
+        sysPostService.savePostUsers(sysPostUser.getPostId(), sysPostUser.getUserId());
         return Result.ok();
     }
 
@@ -150,7 +150,7 @@ public class SysPostController extends BaseController {
     @DeleteMapping(value = "/deletePostUsers")
     @ApiOperation("删除岗位用户")
     public Result deletePostUsers(String postId, String userIds) {
-        this.sysPostService.deletePostUsers(postId, userIds);
+        sysPostService.deletePostUsers(postId, userIds);
         return Result.ok();
     }
 }

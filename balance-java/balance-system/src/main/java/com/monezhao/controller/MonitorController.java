@@ -37,7 +37,7 @@ public class MonitorController extends BaseController {
     @GetMapping("/redis/info")
     @ApiOperation("redis信息")
     public Result getRedisInfo() throws Exception {
-        List<RedisInfo> infoList = this.redisService.getInfo();
+        List<RedisInfo> infoList = redisService.getInfo();
         return Result.ok(infoList);
     }
 

@@ -58,14 +58,14 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
         QueryWrapper<SysPostUser> queryWrapper = new QueryWrapper<>();
         QueryWrapperGenerator.addEasyQuery(queryWrapper, "postId", FilterOperate.EQ, postId);
         QueryWrapperGenerator.addEasyQuery(queryWrapper, "userId", FilterOperate.IN, userIdArray);
-        this.sysPostUserService.remove(queryWrapper);
+        sysPostUserService.remove(queryWrapper);
 
         // 【2】保存岗位用户
         for (int i = 0; i < userIdArray.length; i++) {
             SysPostUser sysPostUser = new SysPostUser();
             sysPostUser.setPostId(postId);
             sysPostUser.setUserId(userIdArray[i]);
-            this.sysPostUserService.save(sysPostUser);
+            sysPostUserService.save(sysPostUser);
         }
     }
 
@@ -82,7 +82,7 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
         QueryWrapper<SysPostUser> queryWrapper = new QueryWrapper<>();
         QueryWrapperGenerator.addEasyQuery(queryWrapper, "postId", FilterOperate.EQ, postId);
         QueryWrapperGenerator.addEasyQuery(queryWrapper, "userId", FilterOperate.IN, userIdArray);
-        this.sysPostUserService.remove(queryWrapper);
+        sysPostUserService.remove(queryWrapper);
     }
 
     /**
@@ -99,6 +99,6 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPostMapper, SysPost> 
         } else {
             this.removeById(idsArr[0]);
         }
-        this.sysPostUserService.remove(new QueryWrapper<SysPostUser>().in("post_id", idsArr));
+        sysPostUserService.remove(new QueryWrapper<SysPostUser>().in("post_id", idsArr));
     }
 }
