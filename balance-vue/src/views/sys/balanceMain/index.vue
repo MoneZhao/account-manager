@@ -43,7 +43,7 @@
           <el-divider direction="vertical" />
           <el-button v-permission="'sys:balanceMain:delete'" icon="el-icon-delete" @click.native="btnDelete(row.balanceMainId)">删除</el-button>
           <el-divider direction="vertical" />
-          <el-button icon="el-icon-more" @click.native="btnDetail(row.balanceMainId)">详情</el-button>
+          <el-button icon="el-icon-more" @click.native="btnDetail(row)">详情</el-button>
           <el-divider direction="vertical" />
           <el-button icon="el-icon-sort" @click.native="btnCompare(row)">对比</el-button>
         </template>
@@ -70,7 +70,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="账户详情" :visible="dialogDetailVisible" destroy-on-close width="80%" :before-close="detailClose">
+    <el-dialog :title="'账户详情 - ' + mainDate" :visible="dialogDetailVisible" destroy-on-close width="80%" :before-close="detailClose">
       <sys-balance-detail v-if="dialogDetailVisible" :balance-main-id="balanceMainId" />
     </el-dialog>
 
@@ -173,6 +173,7 @@ export default {
       dialogDetailVisible: false,
       dialogCompareVisible: false,
       balanceMainId: null,
+      mainDate: '',
       dialogStatus: '',
       temp: {
         accountDate: '',
@@ -322,8 +323,9 @@ export default {
         })
       })
     },
-    btnDetail(id) {
-      this.balanceMainId = id
+    btnDetail(row) {
+      this.balanceMainId = row.balanceMainId
+      this.mainDate = this.$moment(row.accountDate, 'YYYY-MM-DD').format('YYYY年MM月DD日')
       this.dialogDetailVisible = true
     },
     btnCompare(row) {
