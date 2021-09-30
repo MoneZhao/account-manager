@@ -9,6 +9,8 @@
         a.config_id as configId,
         a.config_name as configName,
         a.config_value as configValue,
+        a.can_update as canUpdate,
+        a.can_delete as canDelete,
         a.sort_no as sortNo,
         a.remark as remark
 

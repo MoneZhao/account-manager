@@ -51,6 +51,20 @@ public class SysConfig extends BaseEntity {
     private String configValue;
 
     /**
+     * 字段是否可以修改
+     */
+    @NotNull
+    @LengthForUtf8(max = 1)
+    private String canUpdate;
+
+    /**
+     * 字段是否可以删除
+     */
+    @NotNull
+    @LengthForUtf8(max = 1)
+    private String canDelete;
+
+    /**
      * 排序号
      */
     @NotNull

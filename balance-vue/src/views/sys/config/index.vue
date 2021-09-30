@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-button-group>
         <el-button v-permission="'sys:config:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增</el-button>
-        <el-button v-permission="'sys:config:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
+        <!--        <el-button v-permission="'sys:config:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>-->
       </el-button-group>
       <div style="float: right">
         <el-input v-model="listQuery.configId" placeholder="系统参数ID" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
@@ -26,7 +26,7 @@
       :cell-style="{padding:'3px'}"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
+      <!--      <el-table-column type="selection" align="center" />-->
       <el-table-column type="index" label="#" align="center" width="50" />
       <el-table-column label="系统参数ID" prop="configId" align="center"><template slot-scope="scope"><span>{{ scope.row.configId }}</span></template></el-table-column>
       <el-table-column label="系统参数名称" prop="configName" align="center"><template slot-scope="scope"><span>{{ scope.row.configName }}</span></template></el-table-column>
@@ -39,8 +39,8 @@
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
-              <el-dropdown-item v-permission="'sys:config:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">修改</el-dropdown-item>
-              <el-dropdown-item v-permission="'sys:config:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.configId)">删除</el-dropdown-item>
+              <el-dropdown-item v-if="row.canUpdate === '1'" v-permission="'sys:config:update'" icon="el-icon-edit" divided @click.native="btnUpdate(row)">修改</el-dropdown-item>
+              <el-dropdown-item v-if="row.canDelete === '1'" v-permission="'sys:config:delete'" icon="el-icon-delete" divided @click.native="btnDelete(row.configId)">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -61,6 +61,16 @@
         <el-form-item label="系统参数ID" prop="configId"><el-input v-model="temp.configId" :readonly="dialogStatus==='update'" /></el-form-item>
         <el-form-item label="系统参数名称" prop="configName"><el-input v-model="temp.configName" /></el-form-item>
         <el-form-item label="系统参数值" prop="configValue"><el-input v-model="temp.configValue" /></el-form-item>
+        <el-form-item v-show="dialogStatus === 'create'" label="可否修改" prop="canUpdate">
+          <el-select v-model="temp.canUpdate" placeholder="可否修改">
+            <el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item v-show="dialogStatus === 'create'" label="可否删除" prop="canDelete">
+          <el-select v-model="temp.canDelete" placeholder="可否删除">
+            <el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" />
+          </el-select>
+        </el-form-item>
         <el-form-item label="排序号" prop="sortNo"><el-input v-model="temp.sortNo" /></el-form-item>
         <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark" /></el-form-item>
       </el-form>
@@ -99,6 +109,8 @@ export default {
         configName: '',
         configValue: '',
         sortNo: '',
+        canUpdate: '1',
+        canDelete: '1',
         remark: ''
       },
       rules: {
@@ -110,7 +122,9 @@ export default {
     }
   },
   beforeCreate() {
-
+    this.getDicts('yesOrNo').then(({ data }) => {
+      this.dicts = data
+    })
   },
   created() {
     this.list()
@@ -141,6 +155,8 @@ export default {
         configId: undefined,
         configName: '',
         configValue: '',
+        canUpdate: '1',
+        canDelete: '1',
         sortNo: '',
         remark: ''
       }
