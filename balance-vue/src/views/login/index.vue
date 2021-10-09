@@ -86,20 +86,20 @@
           <el-col :span="12">
             <el-button
               size="medium"
-              type="primary"
-              style="width:60%;margin-left:20%"
-              @click.native.prevent="reset"
-            >重 置
-            </el-button>
-          </el-col>
-          <el-col :span="12">
-            <el-button
-              size="medium"
               :loading="loading"
               type="primary"
               style="width:60%;margin-left:20%"
               @click.native.prevent="handleLogin"
             >登录
+            </el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button
+              size="medium"
+              type="primary"
+              style="width:60%;margin-left:20%"
+              @click.native.prevent="reset"
+            >重 置
             </el-button>
           </el-col>
         </el-row>
