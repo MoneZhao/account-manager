@@ -8,15 +8,17 @@
       <div class="right-menu-item hover-effect">
         {{ nowDateTime }}
       </div>
+      <el-divider direction="vertical" />
       <div class="right-menu-item hover-effect">
         {{ name }}
       </div>
       <switch-roles class="right-menu-item hover-effect" />
+      <el-divider direction="vertical" />
       <template v-if="device!=='mobile'">
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
         <size-select id="size-select" class="right-menu-item hover-effect" />
+        <el-divider direction="vertical" />
       </template>
-
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img v-if="avatar" :src="avatar" class="user-avatar">
@@ -148,8 +150,8 @@ export default {
       }
     },
     getTime() {
-      this.nowDateTime = this.$moment().format('MM 月 DD 日, ddd, a hh:mm:ss')
-      // this.nowDateTime = this.$moment().format('YYYY 年 MM 月 DD 日, ddd, a hh:mm:ss')
+      // this.nowDateTime = this.$moment().format('MM 月 DD 日, ddd, a hh:mm:ss')
+      this.nowDateTime = this.$moment().format('YY年MM月DD日, ddd, a hh:mm:ss')
     },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
@@ -229,7 +231,7 @@ export default {
                     transition: background .3s;
 
                     &:hover {
-                        background: rgba(0, 0, 0, .025)
+                        background: rgba(0, 0, 0, .07)
                     }
                 }
             }
