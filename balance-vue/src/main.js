@@ -23,7 +23,7 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
-import { getDicts, formatDictText } from '@/utils/util'
+import { getDicts, formatDictText, formatMoney } from '@/utils/util'
 
 import permission from './directive/permission/permission'
 
@@ -60,6 +60,7 @@ Vue.prototype.$moment = moment
 Vue.config.productionTip = false
 Vue.prototype.getDicts = getDicts
 Vue.prototype.formatDictText = formatDictText
+Vue.prototype.formatMoney = formatMoney
 
 new Vue({
   el: '#app',

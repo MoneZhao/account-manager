@@ -120,17 +120,6 @@ export default {
     this.list()
   },
   methods: {
-    formatMoney(number, places, symbol = '￥', thousand = ',', decimal = '.') {
-      number = number || 0
-      places = !isNaN(places = Math.abs(places)) ? places : 2
-      const negative = number < 0 ? '-' : ''
-      const i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + ''
-      let j = i.length
-      j = j > 3 ? j % 3 : 0
-      return symbol + negative + (j ? i.substr(0, j) + thousand : '') +
-              i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousand) +
-              (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : '')
-    },
     list() {
       getAction('/sys/balanceDetail/list', this.listQuery).then(res => {
         const { data } = res
