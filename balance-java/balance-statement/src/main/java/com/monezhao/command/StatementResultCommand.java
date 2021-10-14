@@ -18,10 +18,10 @@ public class StatementResultCommand {
     private List<Series> y;
 
     //X轴标题
-    private String xtitle;
+    private String xTitle;
 
     //Y轴标题
-    private String ytitle;
+    private String yTitle;
 
     //图表标题
     private String title;

@@ -34,8 +34,8 @@ public class SysStatementServiceImpl implements SysStatementService {
     public StatementResultCommand query(StatementCommand command) {
         StatementResultCommand resultCommand = new StatementResultCommand();
         resultCommand.setTitle("账户余额曲线");
-        resultCommand.setYtitle("账户余额");
-        resultCommand.setXtitle("月份");
+        resultCommand.setYTitle("账户余额");
+        resultCommand.setXTitle("月份");
         String startStr = DateUtil.dateToStr(command.getStartMonth(), "yyyy");
         String endStr = DateUtil.dateToStr(command.getEndMonth(), "yyyy");
         String format;
@@ -71,6 +71,7 @@ public class SysStatementServiceImpl implements SysStatementService {
         Series series2 = new Series();
         series2.setName("账户余额增长");
         series2.setType("line");
+        series2.setSmooth(Boolean.TRUE);
         List<BigDecimal> data2 = new ArrayList<>();
 
         for (int i = 0; i < dates.size(); i++) {

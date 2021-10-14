@@ -15,6 +15,8 @@ public class Series {
     private String name;
     //类型
     private String type;
+    //折线是否平滑
+    private Boolean smooth;
     //数据列表
     private List<BigDecimal> data;
 }

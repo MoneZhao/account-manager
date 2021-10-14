@@ -95,7 +95,7 @@ export default {
             left: 'left'
           },
           xAxis: {
-            name: data.xtitle,
+            name: data.xTitle,
             data: data.x,
             axisPointer: {
               type: 'shadow'
@@ -109,12 +109,25 @@ export default {
             data: legend
           },
           yAxis: {
-            name: data.ytitle
+            type: 'value',
+            name: data.yTitle,
+            axisLabel: {
+              formatter: '￥{value}'
+            }
+          },
+          toolbox: {
+            feature: {
+              dataView: { show: true, readOnly: true },
+              saveAsImage: { show: true }
+            }
           },
           tooltip: {
             trigger: 'axis',
             axisPointer: {
-              type: 'shadow'
+              type: 'cross',
+              crossStyle: {
+                color: '#999'
+              }
             }
           },
           series: data.y
