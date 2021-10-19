@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
@@ -112,5 +113,10 @@ public class SysBalanceDetail extends BaseEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ExcelProperty("记录时间")
     private Date accountDate;
+
+    @Version
+    @ExcelIgnore
+    @ApiModelProperty(hidden = true)
+    private int version;
 
 }

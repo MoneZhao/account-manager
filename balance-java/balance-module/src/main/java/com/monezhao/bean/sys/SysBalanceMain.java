@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.monezhao.common.base.BaseEntity;
 import com.monezhao.common.validator.constraints.LengthForUtf8;
@@ -99,5 +100,10 @@ public class SysBalanceMain extends BaseEntity {
     @ExcelIgnore
     @ApiModelProperty(value = "是否删除")
     private Integer deleteType;
+
+    @Version
+    @ExcelIgnore
+    @ApiModelProperty(hidden = true)
+    private int version;
 
 }
