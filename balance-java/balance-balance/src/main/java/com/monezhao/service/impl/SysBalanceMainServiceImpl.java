@@ -7,6 +7,7 @@ import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.mapper.SysBalanceMainMapper;
 import com.monezhao.service.SysBalanceMainService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +47,10 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
         QueryWrapper<SysBalanceMain> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(SysBalanceMain::getAccountDate, sysBalanceMain.getAccountDate());
+        if (StringUtils.isNotEmpty(sysBalanceMain.getBalanceMainId())) {
+            queryWrapper.lambda()
+                    .ne(SysBalanceMain::getBalanceMainId, sysBalanceMain.getBalanceMainId());
+        }
         List<SysBalanceMain> list = this.list(queryWrapper);
         return list != null && !list.isEmpty();
     }

@@ -23,6 +23,7 @@
         a.balance_main_id as balanceMainId,
         a.user_id as userId,
         a.delete_type as deleteType,
+        a.version as version,
         a.remark as remark
 
         from t_sys_balance_detail a
@@ -57,6 +58,7 @@
         a.balance_main_id as balanceMainId,
         a.user_id as userId,
         a.delete_type as deleteType,
+        a.version as version,
         a.remark as remark
 
         from t_sys_balance_detail a

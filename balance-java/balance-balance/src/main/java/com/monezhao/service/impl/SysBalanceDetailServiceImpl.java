@@ -13,6 +13,7 @@ import com.monezhao.mapper.SysBalanceDetailMapper;
 import com.monezhao.service.SysBalanceDetailService;
 import com.monezhao.service.SysBalanceMainService;
 import com.monezhao.service.SysCodeInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +58,10 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         queryWrapper.lambda()
                 .eq(SysBalanceDetail::getBalanceMainId, sysBalanceDetail.getBalanceDetailId())
                 .eq(SysBalanceDetail::getBalanceType, sysBalanceDetail.getBalanceType());
+        if (StringUtils.isNotEmpty(sysBalanceDetail.getBalanceDetailId())) {
+            queryWrapper.lambda()
+                    .ne(SysBalanceDetail::getBalanceDetailId, sysBalanceDetail.getBalanceDetailId());
+        }
         List<SysBalanceDetail> list = this.list(queryWrapper);
         return list != null && !list.isEmpty();
     }
