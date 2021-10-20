@@ -20,8 +20,8 @@
         <if test="entity.codeTypeId != null and entity.codeTypeId !=''">
             <![CDATA[	AND a.code_type_id = #{entity.codeTypeId}	]]>
         </if>
-        <if test="entity.value != null and entity.value !=''">
-            <![CDATA[	AND a.value = #{entity.value}	]]>
+        <if test="entity.sortNo != null and entity.sortNo !=''">
+            <![CDATA[	AND a.sort_no = #{entity.sortNo}	]]>
         </if>
         <if test="entity.content != null and entity.content !=''">
             <![CDATA[	AND a.content = #{entity.content}	]]>

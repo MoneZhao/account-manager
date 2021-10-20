@@ -29,8 +29,8 @@
           @keyup.enter.native="btnCodeInfoQuery"
         />
         <el-input
-          v-model="listCodeInfoQuery.value"
-          placeholder="下拉框值"
+          v-model="listCodeInfoQuery.sortNo"
+          placeholder="排序号"
           style="width: 120px;"
           class="filter-item"
           @keyup.enter.native="btnCodeInfoQuery"
@@ -56,11 +56,6 @@
       <el-table-column label="下拉框内容" prop="content" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.content }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="下拉框值" prop="value" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.value }}</span>
         </template>
       </el-table-column>
       <el-table-column label="排序号" prop="sortNo" align="center">
@@ -122,9 +117,6 @@
         <el-form-item label="下拉框内容" prop="content">
           <el-input v-model="temp.content" style="width: 90%;" />
         </el-form-item>
-        <el-form-item label="下拉框值" prop="value">
-          <el-input v-model="temp.value" style="width: 90%;" />
-        </el-form-item>
         <el-form-item label="上级联动值" prop="parentValue">
           <el-input v-model="temp.parentValue" style="width: 90%;" />
         </el-form-item>
@@ -185,7 +177,7 @@ export default {
         current: 1,
         size: 10,
         codeTypeId: undefined,
-        value: undefined,
+        sortNo: undefined,
         content: undefined
       },
       currCodeTypeId: '',
@@ -201,7 +193,6 @@ export default {
         remark: ''
       },
       rules: {
-        value: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         content: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         isOk: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         sortNo: [{ required: true, message: '该项不能为空', trigger: 'change' }]
@@ -245,7 +236,7 @@ export default {
         current: 1,
         size: 10,
         codeTypeId: this.currCodeTypeId,
-        value: undefined,
+        sortNo: undefined,
         content: undefined
       }
       this.listCodeInfo()

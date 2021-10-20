@@ -45,7 +45,6 @@ public class SysCodeInfo extends BaseEntity {
     /**
      * 下拉框值
      */
-    @NotNull
     @LengthForUtf8(max = 100)
     @ApiModelProperty(value = "下拉框值")
     private String value;

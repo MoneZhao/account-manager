@@ -76,6 +76,7 @@ public class SysCodeInfoController extends BaseController {
             "codeInfoId",
     })
     public Result save(@Valid @RequestBody SysCodeInfo sysCodeInfo) {
+        sysCodeInfo.setValue(sysCodeInfo.getSortNo() + "");
         sysCodeInfoService.saveSysCodeInfo(sysCodeInfo);
         return Result.ok();
     }

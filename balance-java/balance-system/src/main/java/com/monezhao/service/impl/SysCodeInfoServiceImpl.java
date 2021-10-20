@@ -12,6 +12,7 @@ import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.mapper.SysCodeInfoMapper;
 import com.monezhao.service.SysCodeInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -138,6 +139,9 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveSysCodeInfo(SysCodeInfo sysCodeInfo) {
+        if (exist(sysCodeInfo)) {
+            throw new SysException("已存在此排序数据");
+        }
         this.save(sysCodeInfo);
         this.loadSysCodeInfoToRedis(sysCodeInfo.getCodeTypeId());
     }
@@ -150,8 +154,29 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateSysCodeInfo(SysCodeInfo sysCodeInfo) {
+        if (exist(sysCodeInfo)) {
+            throw new SysException("已存在此排序数据");
+        }
         this.updateById(sysCodeInfo);
         this.loadSysCodeInfoToRedis(sysCodeInfo.getCodeTypeId());
+    }
+
+    /**
+     * 是否存在冲突排序号
+     * @param info info
+     * @return boolean
+     */
+    public boolean exist(SysCodeInfo info) {
+        QueryWrapper<SysCodeInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(SysCodeInfo::getCodeTypeId, info.getCodeTypeId())
+                .eq(SysCodeInfo::getSortNo, info.getSortNo());
+        if (StringUtils.isNotEmpty(info.getCodeInfoId())) {
+            queryWrapper.lambda()
+                    .ne(SysCodeInfo::getCodeInfoId, info.getCodeInfoId());
+        }
+        List<SysCodeInfo> list = this.list(queryWrapper);
+        return list != null && !list.isEmpty();
     }
 
     /**
