@@ -33,9 +33,16 @@
             <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+
+        <el-input
+          v-model="searchContent"
+          placeholder="ID筛选"
+          style="width: 100px;float: right;margin-left: 10px"
+          class="filter-item"
+        />
       </div>
     </div>
-    <el-table ref="dicTypeTable" :data="records" highlight-current-row @row-click="chooseOne">
+    <el-table ref="dicTypeTable" :data="tables" highlight-current-row @row-click="chooseOne">
       <el-table-column width="40">
         <template slot-scope="scope">
           <el-radio v-model="currentRadio" :label="scope.row.codeTypeId">
@@ -172,6 +179,8 @@ export default {
 
       currentRadio: null,
 
+      searchContent: '',
+
       // 字典信息
       listCodeInfoQuery: {
         current: 1,
@@ -180,6 +189,19 @@ export default {
         value: undefined,
         content: undefined
       }
+    }
+  },
+  computed: {
+    tables() {
+      const searchContent = this.searchContent
+      if (searchContent) {
+        return this.records.filter(item => {
+          return Object.keys(item).some(key => {
+            return String(item[key]).toLowerCase().indexOf(searchContent) > -1
+          })
+        })
+      }
+      return this.records
     }
   },
   beforeCreate() {

@@ -14,13 +14,10 @@
         from t_sys_code_type a
         where 1=1
         <if test="entity.codeTypeId != null and entity.codeTypeId !=''">
-            <![CDATA[	AND a.code_type_id = #{entity.codeTypeId}	]]>
+            <![CDATA[	AND a.code_type_id like '%${entity.codeTypeId}%'	]]>
         </if>
         <if test="entity.codeTypeName != null and entity.codeTypeName !=''">
-            <![CDATA[	AND a.code_type_name = #{entity.codeTypeName}	]]>
-        </if>
-        <if test="entity.remark != null and entity.remark !=''">
-            <![CDATA[	AND a.remark = #{entity.remark}	]]>
+            <![CDATA[	AND a.code_type_name like '%${entity.codeTypeName}%'	]]>
         </if>
         order by a.sort_no
     </select>
