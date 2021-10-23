@@ -170,7 +170,7 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
         QueryWrapper<SysCodeInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(SysCodeInfo::getCodeTypeId, info.getCodeTypeId())
-                .eq(SysCodeInfo::getSortNo, info.getSortNo());
+                .eq(SysCodeInfo::getValue, info.getValue());
         if (StringUtils.isNotEmpty(info.getCodeInfoId())) {
             queryWrapper.lambda()
                     .ne(SysCodeInfo::getCodeInfoId, info.getCodeInfoId());

@@ -58,6 +58,11 @@
           <span>{{ scope.row.content }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="下拉框值" prop="value" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.value }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="排序号" prop="sortNo" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.sortNo }}</span>
@@ -117,11 +122,14 @@
         <el-form-item label="下拉框内容" prop="content">
           <el-input v-model="temp.content" style="width: 90%;" />
         </el-form-item>
+        <el-form-item label="下拉框值" prop="value">
+          <el-input v-model="temp.value" :readonly="dialogStatus==='update'" style="width: 90%;" />
+        </el-form-item>
         <el-form-item label="上级联动值" prop="parentValue">
           <el-input v-model="temp.parentValue" style="width: 90%;" />
         </el-form-item>
         <el-form-item label="排序号" prop="sortNo">
-          <el-input v-model="temp.sortNo" style="width: 90%;" />
+          <el-input v-model.number="temp.sortNo" style="width: 90%;" />
         </el-form-item>
         <el-form-item label="是否显示" prop="isOk">
           <el-select v-model="temp.isOk" placeholder="是否显示">
@@ -194,6 +202,7 @@ export default {
       },
       rules: {
         content: [{ required: true, message: '该项不能为空', trigger: 'change' }],
+        value: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         isOk: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         sortNo: [{ required: true, message: '该项不能为空', trigger: 'change' }]
       },
