@@ -120,8 +120,8 @@ public class SysCodeInfoController extends BaseController {
     public Result getSysCodeInfos(String codeTypeIds) {
         Map<String, List<SysCodeInfo>> sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromRedis(codeTypeIds);
         if (sysCodeInfosMap == null || sysCodeInfosMap.containsValue(null)) {
-            sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromDb(codeTypeIds);
             sysCodeInfoService.loadSysCodeInfoToRedis(codeTypeIds);
+            sysCodeInfosMap = sysCodeInfoService.getSysCodeInfosFromRedis(codeTypeIds);
         }
         return Result.ok(sysCodeInfosMap);
     }

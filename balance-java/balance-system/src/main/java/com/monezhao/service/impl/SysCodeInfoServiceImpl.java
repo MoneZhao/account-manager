@@ -122,7 +122,7 @@ public class SysCodeInfoServiceImpl extends BaseServiceImpl<SysCodeInfoMapper, S
         }
         Map<String, List<SysCodeInfo>> codeInfoMap = null;
         if (keys != null && keys.size() > 0) {
-            codeInfoMap = new HashMap<String, List<SysCodeInfo>>(16);
+            codeInfoMap = new HashMap<>(16);
             for (String key : keys) {
                 codeInfoMap.put(key.replace(Constants.PREFIX_SYS_CODE_TYPE, ""),
                         (List<SysCodeInfo>) redisUtil.get(key));
