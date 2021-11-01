@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="sample-diagram" targetNamespace="2" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn2:process id="toRead" name="待阅" isExecutable="true">
+    <bpmn2:documentation>审阅示例</bpmn2:documentation>
+    <bpmn2:startEvent id="start" name="Start" flowable:formKey="notice.form" />
+    <bpmn2:sequenceFlow id="Flow_0d29oi9" sourceRef="start" targetRef="__initiator__" />
+    <bpmn2:sequenceFlow id="Flow_0i7fsld" sourceRef="__initiator__" targetRef="Activity_0gmxbeq" />
+    <bpmn2:endEvent id="Event_1ss4ie1" />
+    <bpmn2:sequenceFlow id="Flow_14wqnxw" sourceRef="Activity_0gmxbeq" targetRef="Event_1ss4ie1" />
+    <bpmn2:userTask id="__initiator__" name="发起者" />
+    <bpmn2:userTask id="Activity_0gmxbeq" name="待阅任务" flowable:category="toRead" flowable:assignee="monezhao" />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_toRead">
+    <bpmndi:BPMNPlane id="BPMNPlane_toRead" bpmnElement="toRead">
+      <bpmndi:BPMNEdge id="BPMNEdge_Flow_14wqnxw" bpmnElement="Flow_14wqnxw">
+        <di:waypoint x="510" y="178" />
+        <di:waypoint x="572" y="178" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_Flow_0i7fsld" bpmnElement="Flow_0i7fsld">
+        <di:waypoint x="350" y="178" />
+        <di:waypoint x="410" y="178" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_Flow_0d29oi9" bpmnElement="Flow_0d29oi9">
+        <di:waypoint x="196" y="178" />
+        <di:waypoint x="250" y="178" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_start" bpmnElement="start">
+        <dc:Bounds x="160" y="160" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Event_1ss4ie1" bpmnElement="Event_1ss4ie1">
+        <dc:Bounds x="572" y="160" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape___initiator__" bpmnElement="__initiator__">
+        <dc:Bounds x="250" y="138" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Activity_0gmxbeq" bpmnElement="Activity_0gmxbeq">
+        <dc:Bounds x="410" y="138" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
