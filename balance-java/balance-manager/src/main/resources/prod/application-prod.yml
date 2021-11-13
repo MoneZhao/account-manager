@@ -37,13 +37,13 @@ spring:
       p6spy: false
       datasource:
         master:
-          url: jdbc:mysql://localhost:3306/account_manager?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://localhost:3306/account_manager?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
           username: monezhao
           password: 112012
           driver-class-name: com.mysql.cj.jdbc.Driver
           #druid: #以下参数针对每个库可以重新设置druid参数
         #slave: #多数据源可开启
-        #  url: jdbc:mysql://localhost:3306/account_manager_test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+        #  url: jdbc:mysql://localhost:3306/account_manager_test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
         #  username: root
         #  password: root
         #  driver-class-name: com.mysql.cj.jdbc.Driver
