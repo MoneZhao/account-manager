@@ -65,7 +65,7 @@ knife4j:
     enableVersion: false
     enableFooter: false
     enableFooterCustom: true
-    footerCustomContent: Copyright © MoneZhao(monezhao@163.com). All rights reserved.
+#    footerCustomContent: Copyright © MoneZhao(monezhao@163.com). All rights reserved.
     enableSwaggerModels: true
     swaggerModelName: 实体类列表
     enableFilterMultipartApis: true
