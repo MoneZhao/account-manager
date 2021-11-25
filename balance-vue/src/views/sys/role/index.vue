@@ -373,9 +373,15 @@ export default {
         Message.error('请选择要删除的记录')
         return
       }
-      deleteAction('/sys/role/delete', { ids: ids.toString() }).then(({ msg }) => {
-        Message.success(msg)
-        this.list()
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteAction('/sys/role/delete', { ids: ids.toString() }).then(({ msg }) => {
+          Message.success(msg)
+          this.list()
+        })
       })
     },
     selectionChange(selectedRecords) {
@@ -535,12 +541,18 @@ export default {
         Message.error('请选择要删除的记录')
         return
       }
-      deleteAction('/sys/role/deleteRoleUsers', {
-        roleId: this.currRoleId,
-        userIds: userId.toString()
-      }).then(({ msg }) => {
-        Message.success(msg)
-        this.btnRoleUserQuery()
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteAction('/sys/role/deleteRoleUsers', {
+          roleId: this.currRoleId,
+          userIds: userId.toString()
+        }).then(({ msg }) => {
+          Message.success(msg)
+          this.btnRoleUserQuery()
+        })
       })
     }
   }

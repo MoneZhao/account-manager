@@ -354,9 +354,15 @@ export default {
         Message.error('请选择要删除的记录')
         return
       }
-      deleteAction('/flowable/model/delete', { ids: ids.toString(), cascade }).then(({ msg }) => {
-        Message.success(msg)
-        this.list()
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteAction('/flowable/model/delete', { ids: ids.toString(), cascade }).then(({ msg }) => {
+          Message.success(msg)
+          this.list()
+        })
       })
     },
     btnDeploy(id) {

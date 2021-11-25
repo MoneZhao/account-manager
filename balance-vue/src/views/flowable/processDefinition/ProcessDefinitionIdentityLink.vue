@@ -204,13 +204,19 @@ export default {
       })
     },
     btnDelete(row) {
-      deleteAction('/flowable/processDefinitionIdentityLink/delete', {
-        processDefinitionId: this.processDefinitionId,
-        identityType: row.identityType,
-        identityId: row.identityId
-      }).then(({ msg }) => {
-        Message.success(msg)
-        this.list()
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteAction('/flowable/processDefinitionIdentityLink/delete', {
+          processDefinitionId: this.processDefinitionId,
+          identityType: row.identityType,
+          identityId: row.identityId
+        }).then(({ msg }) => {
+          Message.success(msg)
+          this.list()
+        })
       })
     },
     selectionChange(selectedRecords) {
