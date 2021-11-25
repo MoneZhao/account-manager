@@ -167,4 +167,11 @@ public interface SysUserService extends BaseService<SysUser> {
      * @date 2020/11/3 10:41
      */
     IPage<SysUser> queryUserByOrg(IPage<SysUser> page, SysUser sysUser);
+
+    /**
+     * 批量新增用户
+     *
+     * @param sysUsers
+     */
+    void saveBatchSysUser(List<SysUser> sysUsers);
 }

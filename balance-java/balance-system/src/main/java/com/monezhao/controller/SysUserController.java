@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.xml.bind.DatatypeConverter;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -134,6 +135,23 @@ public class SysUserController extends BaseController {
     })
     public Result save(@Valid @RequestBody SysUser sysUser) {
         sysUserService.saveSysUser(sysUser);
+        return Result.ok();
+    }
+
+    /**
+     * @param sysUsers
+     * @return
+     * @功能：新增
+     */
+    @SysLogAuto(value = "批量新增用户")
+    @RequiresPermissions("sys:user:save")
+    @PostMapping(value = "/saveBatch")
+    @ApiOperation("批量用户新增")
+    @ApiOperationSupport(ignoreParameters = {
+            "userId",
+    })
+    public Result saveBatch(@Valid @RequestBody List<SysUser> sysUsers) {
+        sysUserService.saveBatchSysUser(sysUsers);
         return Result.ok();
     }
 
@@ -234,13 +252,13 @@ public class SysUserController extends BaseController {
         return Result.ok();
     }
 
-    @SysLogAuto(value = "导出用户信息")
+    @SysLogAuto(value = "导出全部用户信息")
     @RequiresPermissions("sys:user:export")
     @GetMapping(value = "/export")
-    @ApiOperation("导出用户信息")
-    public void export(SysUser sysUser, HttpServletResponse response) {
+    @ApiOperation("导出全部用户信息")
+    public void export(HttpServletResponse response) {
         try {
-            IPage<SysUser> page = sysUserService.list(null, sysUser);
+            IPage<SysUser> page = sysUserService.list(null, new SysUser());
             response.setContentType("application/vnd.ms-excel");
             response.setCharacterEncoding("utf-8");
             response.setHeader("Content-disposition", "attachment;filename=SysUserExport.xlsx");

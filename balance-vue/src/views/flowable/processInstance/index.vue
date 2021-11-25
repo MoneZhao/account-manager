@@ -210,7 +210,7 @@
           <el-col :span="12">
 
             <el-form-item label="状态" prop="suspended">
-              <el-input v-if="temp.endTime==null" v-model="temp.suspended?'挂起':'激活'" />
+              <el-input v-if="temp.endTime==null" v-model="temp.suspended" :value="temp.suspended?'挂起':'激活'" />
               <el-input v-else value="结束" />
             </el-form-item>
           </el-col>

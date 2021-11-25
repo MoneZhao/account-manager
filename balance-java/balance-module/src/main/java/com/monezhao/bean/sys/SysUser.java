@@ -66,7 +66,7 @@ public class SysUser extends BaseEntity {
      * 性别
      */
     @LengthForUtf8(max = 1)
-    @ExcelProperty(value = "性别")
+    @ExcelProperty(value = "性别(1男 2女 3保密)")
     @ApiModelProperty(value = "性别")
     private String sex;
 
@@ -74,7 +74,7 @@ public class SysUser extends BaseEntity {
      * 所属角色ID
      */
     @LengthForUtf8(max = 32)
-    @ExcelProperty("角色ID")
+    @ExcelIgnore
     @ApiModelProperty(value = "所属角色ID")
     private String roleId;
 
@@ -114,7 +114,7 @@ public class SysUser extends BaseEntity {
      * 用户状态
      */
     @LengthForUtf8(max = 1)
-    @ExcelProperty("状态")
+    @ExcelIgnore
     @ApiModelProperty(value = "用户状态")
     private String status;
 
@@ -130,7 +130,7 @@ public class SysUser extends BaseEntity {
      * 头像id
      */
     @LengthForUtf8(max = 32)
-    @ExcelProperty("头像id")
+    @ExcelIgnore
     @ApiModelProperty(value = "头像id")
     private String picId;
 

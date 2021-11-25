@@ -319,6 +319,31 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     /**
+     * 批量新增用户
+     *
+     * @param sysUsers
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveBatchSysUser(List<SysUser> sysUsers) {
+        List<SysRoleUser> roleUsers = new ArrayList<>(sysUsers.size());
+        for (SysUser sysUser : sysUsers) {
+            String salt = PasswordUtil.randomGen(8);
+            // 默认密码
+            String defaultPassword = sysConfigService.getSysConfig("defaultPassword",
+                    defaultSystemConfig.getDefaultPassword());
+            String password = PasswordUtil.encrypt(PasswordUtil.md5Encode(defaultPassword), salt);
+            sysUser.setSalt(salt);
+            sysUser.setPassword(password);
+            SysRoleUser sysRoleUser = new SysRoleUser(sysUser.getRoleId(), sysUser.getUserId());
+            roleUsers.add(sysRoleUser);
+        }
+
+        sysRoleUserService.saveBatch(roleUsers);
+        this.saveBatch(sysUsers);
+    }
+
+    /**
      * 修改用户
      *
      * @param sysUser

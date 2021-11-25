@@ -43,7 +43,11 @@
               <el-button v-permission="'sys:user:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
             </el-button-group>
             <el-button-group>
-              <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出
+              <el-button v-permission="'sys:user:save'" icon="el-icon-upload" type="primary" class="filter-item" @click="uploadExcel">导入
+              </el-button>
+              <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出选中
+              </el-button>
+              <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExportAll">导出全部
               </el-button>
             </el-button-group>
             <div style="float: right">
@@ -258,6 +262,8 @@
       :multiple-select="false"
       @selectOrgFinished="selectOrgFinished"
     />
+
+    <import-excel-util ref="importExcelUtil" @ok="btnReset" />
   </div>
 </template>
 
@@ -267,10 +273,12 @@ import { getAction, putAction, postAction, deleteAction, downloadAction } from '
 import { Message, MessageBox } from 'element-ui'
 import SelectOrg from '@/components/select/SelectOrg'
 import ShortCut from '@/components/ShortCut'
+import { parseTime } from '@/utils'
+import ImportExcelUtil from '@/components/ImportExcelUtil'
 
 export default {
   name: 'SysUser',
-  components: { Pagination, SelectOrg, ShortCut },
+  components: { Pagination, SelectOrg, ShortCut, ImportExcelUtil },
   data() {
     return {
       dicts: [],
@@ -295,6 +303,22 @@ export default {
         label: 'label',
         isLeaf: 'isLeaf',
         data: 'data'
+      },
+      keyMap: {
+        '用户ID': 'userId',
+        '用户姓名': 'userName',
+        '性别(1男 2女 3保密)': 'sex',
+        '所属机构': 'orgId',
+        '手机号': 'mobile',
+        '身份证号': 'idCardNo',
+        'email': 'email',
+        '排序号': 'sortNo',
+        '备注': 'remark',
+        '机构名称': 'orgName'
+      },
+      defaultColumn: {
+        'status': 1,
+        'roleId': 'queryRole'
       },
       currentOrg: '',
       highlight: true,
@@ -363,7 +387,40 @@ export default {
       })
     },
     btnExport() {
-      downloadAction('/sys/user/export', 'get', this.listQuery, 'SysUserExport.xlsx')
+      const keyMap = Object.assign({}, this.keyMap)
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = Object.keys(keyMap)
+        const filterVal = Object.values(keyMap)
+        const list = this.selectedRecords
+        if (!list || list.length === 0) {
+          Message.error('请选择要导出的信息')
+          return
+        }
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: '用户信息'
+        })
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          // if (j === 'startTime' || j === 'endTime') {
+          //   return parseTime(v[j])
+          // } else {
+          //   return v[j]
+          // }
+          return v[j]
+        })
+      )
+    },
+    btnExportAll() {
+      downloadAction('/sys/user/export', 'get', {}, 'SysUserExport.xlsx')
+    },
+    uploadExcel() {
+      this.$refs.importExcelUtil.show(this.keyMap, '/sys/user/saveBatch', './用户信息.xlsx', this.defaultColumn)
     },
     btnQuery() {
       this.listQuery.current = 1

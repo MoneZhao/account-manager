@@ -102,7 +102,7 @@
         <if test="roleId != null and roleId !=''">
             <![CDATA[	AND rp.role_id=#{roleId}	]]>
         </if>
-        order by a.sort_no
+        order by a.sort_no asc
     </select>
 
     <select id="findTotalVisitCount" resultType="long">
@@ -192,6 +192,6 @@
                 #{deptId}
             </foreach>
         </if>
-        order by a.sort_no desc
+        order by a.sort_no asc
     </select>
 </mapper>
