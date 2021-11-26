@@ -49,6 +49,7 @@
       :data="recordsCodeInfo"
       highlight-current-row
       element-loading-text="拼命加载中"
+      @cell-dblclick="btnCodeInfoView"
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />

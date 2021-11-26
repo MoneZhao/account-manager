@@ -30,6 +30,7 @@
       highlight-current-row
       style="width: 100%;"
       :cell-style="{padding:'3px'}"
+      @cell-dblclick="btnDetail"
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" align="center" />
