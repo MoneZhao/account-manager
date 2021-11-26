@@ -4,7 +4,7 @@
       <el-card style="border-color: #f1f1f1;" shadow="hover">
         <span style="margin-left:22rem">查询范围：</span>
         <el-date-picker
-          v-model="value"
+          v-model="temp.value"
           :editable="false"
           type="monthrange"
           align="right"
@@ -33,7 +33,9 @@ export default {
   'name': 'StatementTable',
   data() {
     return {
-      value: [],
+      temp: {
+        value: []
+      },
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now() - 8.64e7
@@ -68,23 +70,20 @@ export default {
   mounted() {
     const end = new Date()
     const start = new Date(new Date().getFullYear(), 0)
-    this.value[0] = this.$moment(start).format('YYYY-MM')
-    this.value[1] = this.$moment(end).format('YYYY-MM')
+    this.$set(this.temp, 'value', [this.$moment(start).format('YYYY-MM'), this.$moment(end).format('YYYY-MM')])
     this.getChart()
   },
   methods: {
-    onChange(e) {
-      console.log(this.value)
-      this.query = {
-        startMonth: this.value[0],
-        endMonth: this.value[1]
+    onChange() {
+      console.log(this.temp.value)
+      if (this.temp.value && this.temp.value.length === 2) {
+        this.getChart()
       }
-      this.getChart()
     },
     getChart() {
       postAction(`/sys/statement/query`, {
-        startMonth: this.value[0],
-        endMonth: this.value[1]
+        startMonth: this.temp.value[0],
+        endMonth: this.temp.value[1]
       }).then((r) => {
         const data = r.data
         const chart = this.$echarts.init(document.getElementById('line_chart'))
