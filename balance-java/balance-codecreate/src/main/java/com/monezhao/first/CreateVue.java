@@ -26,6 +26,8 @@ public class CreateVue {
 
     private final static String DATE_TYPE = "日期型";
     private final static String DATETIME_TYPE = "时间型";
+    private final static String INT_TYPE = "整数型";
+    private final static String FLOAT_TYPE = "浮点型";
 
     /**
      * @param createTableName 需要创建的表名
@@ -201,12 +203,39 @@ public class CreateVue {
                 allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
                         + "\"><el-date-picker v-model=\"temp." + codeTypeId
                         + "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\"></el-date-picker></el-form-item>" + "\r\n";
+            } else if (FLOAT_TYPE.equals(tableObject.getDataType()) || INT_TYPE.equals(tableObject.getDataType())) {
+                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
+                        + "\"><el-input-number v-model=\"temp." + codeTypeId
+                        + "\" :max=\"" + getMax(tableObject.getDataLength(), tableObject.getDataPrecision()) + "\""
+                        + readOnlyStr + " /></el-form-item>" + "\r\n";
             } else {
                 allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
-                        + "\"><el-input v-model=\"temp." + codeTypeId + "\"" + readOnlyStr + "/></el-form-item>" + "\r\n";
+                        + "\"><el-input v-model=\"temp." + codeTypeId
+                        + "\" maxlength=\"" + tableObject.getDataLength() + "\" show-word-limit"
+                        + readOnlyStr + " /></el-form-item>" + "\r\n";
             }
         }
         return allColumnsDialog;
+    }
+
+    private static String getMax(String dataLength, String dataPrecision) {
+        int dataLenghInt = CommonUtil.isEmptyAfterTrim(dataLength) ? 0 : Integer.valueOf(dataLength);
+        int dataPrecisionInt = CommonUtil.isEmptyAfterTrim(dataPrecision) ? 0 : Integer.valueOf(dataPrecision);
+
+        StringBuilder result = new StringBuilder();
+        if (dataPrecisionInt > 0) {
+            dataLenghInt = dataLenghInt - dataPrecisionInt - 1;
+        }
+        for (int i = 0; i < dataLenghInt; i++) {
+            result.append("9");
+        }
+        if (dataPrecisionInt > 0) {
+            result.append(".");
+        }
+        for (int i = 0; i < dataPrecisionInt; i++) {
+            result.append("9");
+        }
+        return result.toString();
     }
 
     private static String resolveSearchColumnsList(String searchColumnsList, TableObject tableObject, String codeTypeId) {

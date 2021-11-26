@@ -62,7 +62,7 @@
           />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="temp.remark" style="width: 60%" />
+          <el-input v-model="temp.remark" style="width: 60%" maxlength="255" show-word-limit />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

@@ -62,7 +62,7 @@
     <el-dialog title="账户余额" :visible.sync="dialogFormVisible" destroy-on-close>
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="记录时间" prop="accountDate"><el-date-picker v-model="temp.accountDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" /></el-form-item>
-        <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark" /></el-form-item>
+        <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark" maxlength="255" show-word-limit /></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>
