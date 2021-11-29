@@ -86,14 +86,14 @@ export default {
       this.defaultColumn = defaultColumn
     },
     beforeUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
+      const isLt10M = file.size / 1024 / 1024 < 10
 
-      if (isLt1M) {
+      if (isLt10M) {
         return true
       }
 
       this.$message({
-        message: '请不要上传超过1M大小的文件.',
+        message: '请不要上传超过10M大小的文件.',
         type: 'warning'
       })
       return false

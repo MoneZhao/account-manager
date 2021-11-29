@@ -55,6 +55,14 @@ export default {
     upload() {
       const formData = new FormData()
       for (let i = 0; i < this.files.length; i++) {
+        const isLt10M = this.files[i].size / 1024 / 1024 >= 10
+        if (isLt10M) {
+          this.$message({
+            message: '请不要上传超过10M大小的文件.',
+            type: 'warning'
+          })
+          return false
+        }
         formData.append('files', this.files[i])
       }
       axios.post(this.url, formData, {

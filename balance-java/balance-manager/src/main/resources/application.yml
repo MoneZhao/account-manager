@@ -13,6 +13,9 @@ spring:
   resource:
     #自定义静态资源路径,处理方式见WebMvcConfig.java
     static-locations: classpath:/public/
+  servlet:
+    multipart:
+      max-file-size: 10MB
 #mybatis plus 设置
 mybatis-plus:
   mapper-locations: classpath*:com/monezhao/**/mapper/xml/*.xml
