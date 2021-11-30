@@ -38,7 +38,8 @@ export default {
       },
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() > Date.now() - 8.64e7
+          const now = new Date()
+          return time.getTime() > now.setMonth(now.getMonth() + 1)
         },
         shortcuts: [{
           text: '今年至今',
