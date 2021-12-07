@@ -179,6 +179,9 @@ export default {
     shortCutEnd() {
       this.menuModalLoading = false
       this.showShortCutModal = false
+      if (this.$route.path === '/dashboard') {
+        location.reload()
+      }
     }
   }
 }

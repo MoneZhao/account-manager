@@ -55,8 +55,10 @@ Vue.directive('permission', permission)
 
 import moment from 'moment'
 import 'moment/locale/zh-cn'
+import checkPermission from '@/utils/permission'
 moment.locale('zh-cn')
 Vue.prototype.$moment = moment
+Vue.prototype.checkPermission = checkPermission
 Vue.config.productionTip = false
 Vue.prototype.getDicts = getDicts
 Vue.prototype.formatDictText = formatDictText

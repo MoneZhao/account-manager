@@ -42,14 +42,21 @@
               </el-button>
               <el-button v-permission="'sys:user:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
             </el-button-group>
-            <el-button-group>
-              <el-button v-permission="'sys:user:save'" icon="el-icon-upload" type="primary" class="filter-item" @click="uploadExcel">导入
+            <import-excel-util
+              ref="importExcelUtil"
+              class="filter-item"
+              :export-list="selectedRecords"
+              :key-map="importExcelProps.keyMap"
+              :default-column="importExcelProps.defaultColumn"
+              :url-save="importExcelProps.urlSave"
+              :url-href="importExcelProps.urlHref"
+              :show-import="checkPermission('sys:user:save')"
+              :show-export="checkPermission('sys:user:export')"
+              @importOk="btnReset"
+            >
+              <el-button slot="suffix" v-permission="'sys:user:export'" icon="el-icon-download" type="primary" @click="btnExportAll">导出全部
               </el-button>
-              <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExport">导出选中
-              </el-button>
-              <el-button v-permission="'sys:user:export'" icon="el-icon-download" type="primary" class="filter-item" @click="btnExportAll">导出全部
-              </el-button>
-            </el-button-group>
+            </import-excel-util>
             <div style="float: right">
               <el-input
                 v-model="listQuery.userId"
@@ -264,7 +271,6 @@
       @selectOrgFinished="selectOrgFinished"
     />
 
-    <import-excel-util ref="importExcelUtil" @ok="btnReset" />
   </div>
 </template>
 
@@ -305,21 +311,25 @@ export default {
         isLeaf: 'isLeaf',
         data: 'data'
       },
-      keyMap: {
-        '用户ID': 'userId',
-        '用户姓名': 'userName',
-        '性别(1男 2女 3保密)': 'sex',
-        '所属机构': 'orgId',
-        '手机号': 'mobile',
-        '身份证号': 'idCardNo',
-        'email': 'email',
-        '排序号': 'sortNo',
-        '备注': 'remark',
-        '机构名称': 'orgName'
-      },
-      defaultColumn: {
-        'status': 1,
-        'roleId': 'queryRole'
+      importExcelProps: {
+        keyMap: {
+          '用户ID': 'userId',
+          '用户姓名': 'userName',
+          '性别(1男 2女 3保密)': 'sex',
+          '所属机构': 'orgId',
+          '手机号': 'mobile',
+          '身份证号': 'idCardNo',
+          'email': 'email',
+          '排序号': 'sortNo',
+          '备注': 'remark',
+          '机构名称': 'orgName'
+        },
+        defaultColumn: {
+          'status': 1,
+          'roleId': 'queryRole'
+        },
+        urlSave: '/sys/user/saveBatch',
+        urlHref: './用户信息.xlsx'
       },
       currentOrg: '',
       highlight: true,
@@ -565,8 +575,12 @@ export default {
     shortCutEnd() {
       this.menuModalLoading = false
       this.showShortCutModal = false
+      if (this.$route.path === '/dashboard') {
+        location.reload()
+      }
     },
     selectionChange(selectedRecords) {
+      console.log(selectedRecords)
       this.selectedRecords = selectedRecords
     },
     roleFormatter(row, column) {
