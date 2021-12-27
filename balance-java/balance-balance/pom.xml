@@ -14,7 +14,7 @@
     <description>账户功能</description>
 
     <build>
-        <finalName>balance-balance</finalName>
+        <finalName>${artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -31,11 +31,6 @@
             <artifactId>${project.parent.artifactId}-system</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

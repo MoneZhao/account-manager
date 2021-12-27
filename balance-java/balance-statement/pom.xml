@@ -14,7 +14,7 @@
     <description>报表功能</description>
 
     <build>
-        <finalName>balance-statement</finalName>
+        <finalName>${artifactId}</finalName>
     </build>
     <dependencies>
         <dependency>
@@ -22,11 +22,6 @@
             <artifactId>${project.parent.artifactId}-balance</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

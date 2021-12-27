@@ -14,7 +14,7 @@
     <description>代码自动生成</description>
 
     <build>
-        <finalName>balance-codecreate</finalName>
+        <finalName>${artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -31,11 +31,6 @@
             <artifactId>${project.parent.artifactId}-module</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

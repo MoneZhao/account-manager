@@ -17,7 +17,7 @@
     </properties>
 
     <build>
-        <finalName>balance-system</finalName>
+        <finalName>${artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -38,11 +38,6 @@
             <artifactId>${project.parent.artifactId}-module</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.axet</groupId>
