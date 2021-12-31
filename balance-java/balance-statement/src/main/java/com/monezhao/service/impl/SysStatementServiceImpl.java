@@ -52,7 +52,7 @@ public class SysStatementServiceImpl implements SysStatementService {
         mainQueryWrapper.lambda()
                 .eq(SysBalanceMain::getUserId, sysUser.getUserId())
                 .between(SysBalanceMain::getAccountDate, command.getStartMonth(),
-                        DateUtil.addMonth(command.getEndMonth(), 1))
+                        DateUtil.addSecond(DateUtil.addMonth(command.getEndMonth(), 1), -1))
                 .orderByAsc(SysBalanceMain::getAccountDate)
         ;
         List<SysBalanceMain> balanceMains = balanceMainService.list(mainQueryWrapper);
