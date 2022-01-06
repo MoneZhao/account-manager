@@ -196,9 +196,18 @@ public class CodeUtil {
                 throw new Exception("excel设计中,第" + (i + 1) + "行【是否查询】取值错误!");
             }
         }
-        tableObject.setCodeTypeId(CodeUtil.getStringRowCellValue(sheet.getRow(i), 10));
+        // 是否模糊查询
+        String doLike = CodeUtil.getStringRowCellValue(sheet.getRow(i), 10);
+        if (!CommonUtil.isEmptyStr(doLike)) {
+            if (CommonUtil.isExist(YES_NO_STRING, doLike, Constants.COMMA)) {
+                tableObject.setIsLike(YES.equals(doLike));
+            } else {
+                throw new Exception("excel设计中,第" + (i + 1) + "行【是否模糊】取值错误!");
+            }
+        }
+        tableObject.setCodeTypeId(CodeUtil.getStringRowCellValue(sheet.getRow(i), 11));
         // 详细说明
-        tableObject.setRemark(CodeUtil.getStringRowCellValue(sheet.getRow(i), 11));
+        tableObject.setRemark(CodeUtil.getStringRowCellValue(sheet.getRow(i), 12));
         return tableObject;
     }
 

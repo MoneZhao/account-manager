@@ -13,7 +13,7 @@
         from t_sys_pic_up_down a
         where 1=1
         <if test="entity.picName != null and entity.picName !=''">
-            AND a.pic_name like concat('%',#{entity.picName},'%')
+            <![CDATA[    AND a.pic_name like concat('%',#{entity.picName},'%')    ]]>
         </if>
         order by a.create_time
     </select>

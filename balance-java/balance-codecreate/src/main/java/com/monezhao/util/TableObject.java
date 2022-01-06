@@ -52,6 +52,10 @@ public class TableObject {
      */
     private boolean isSearch;
     /**
+     * 字段是否模糊查询
+     */
+    private boolean isLike;
+    /**
      * 下拉框ID
      */
     private String codeTypeId;
@@ -164,4 +168,11 @@ public class TableObject {
         this.remark = remark;
     }
 
+    public boolean getIsLike() {
+        return isLike;
+    }
+
+    public void setIsLike(boolean like) {
+        isLike = like;
+    }
 }
