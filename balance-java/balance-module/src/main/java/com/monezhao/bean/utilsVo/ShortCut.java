@@ -1,4 +1,4 @@
-package com.monezhao.controller.command;
+package com.monezhao.bean.utilsVo;
 
 import lombok.Getter;
 import lombok.Setter;

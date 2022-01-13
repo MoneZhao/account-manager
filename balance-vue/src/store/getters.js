@@ -12,6 +12,7 @@ const getters = {
   sysOrg: state => state.user.sysOrg,
   funcIds: state => state.user.funcIds,
   permissions: state => state.user.permissions,
+  menuList: state => state.user.menuList,
   routes: state => state.permission.routes,
   addRoutes: state => state.permission.addRoutes,
   visitedViews: state => state.tagsView.visitedViews,

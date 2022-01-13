@@ -1,5 +1,6 @@
 package com.monezhao.controller.command;
 
+import com.monezhao.bean.utilsVo.ShortCut;
 import lombok.Data;
 
 import java.util.List;

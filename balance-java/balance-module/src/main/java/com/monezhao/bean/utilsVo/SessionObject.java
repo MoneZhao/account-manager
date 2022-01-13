@@ -28,6 +28,7 @@ public class SessionObject implements Serializable {
     private List<Route> routes;
     private List<String> funcIds;
     private List<String> permissions;
+    private List<ShortCut> menuList;
     private Date loginTime;
     private String ipAddr;
 }

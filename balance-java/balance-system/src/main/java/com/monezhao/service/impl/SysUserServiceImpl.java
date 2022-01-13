@@ -24,7 +24,7 @@ import com.monezhao.common.util.PasswordUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.config.DefaultSystemConfig;
-import com.monezhao.controller.command.ShortCut;
+import com.monezhao.bean.utilsVo.ShortCut;
 import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.controller.command.VisitCount;
 import com.monezhao.mapper.SysUserMapper;

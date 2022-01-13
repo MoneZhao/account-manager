@@ -83,7 +83,6 @@ export default {
       todayIp: 0,
       todayVisitCount: 0,
       totalVisitCount: 0,
-      menuList: [],
       colorList: [
         'blue-btn',
         'red-btn',
@@ -103,7 +102,8 @@ export default {
       'name',
       'sysUser',
       'sysRole',
-      'sysOrg'
+      'sysOrg',
+      'menuList'
     ])
   },
   mounted() {
@@ -136,7 +136,6 @@ export default {
         this.todayIp = data.todayIp
         this.todayVisitCount = data.todayVisitCount
         this.totalVisitCount = data.totalVisitCount
-        this.menuList = data.menuList
         const sevenVisitCount = []
         const dateArr = []
         for (let i = 6; i >= 0; i--) {

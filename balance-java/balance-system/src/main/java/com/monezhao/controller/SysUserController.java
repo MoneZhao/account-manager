@@ -20,6 +20,7 @@ import com.monezhao.common.util.IpUtils;
 import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.bean.utilsVo.ShortCut;
 import com.monezhao.controller.command.SysUserIndex;
 import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.service.SysConfigService;
@@ -188,10 +189,13 @@ public class SysUserController extends BaseController {
     @ApiOperation("获取用户信息")
     public Result getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
         SysUser sysUser = sysUserService.getById(ShiroUtils.getUserId());
+        List<ShortCut> menuList = sysUserService.getMenuShortCut(sysUser.getUserId(),
+                roleId == null ? sysUser.getRoleId() : roleId);
         SessionObject sessionObject = sysUserService.saveGetUserInfo(sysUser, roleId);
         sessionObject.setLoginTime(DateUtil.getNow());
         sessionObject.setIpAddr(IpUtils.getIpAddr(request));
         sessionObject.setToken((String) redisUtil.get(Constants.PREFIX_USER_TOKEN + sysUser.getUserId()));
+        sessionObject.setMenuList(menuList);
         if (sysUser.getPicId() != null) {
             SysPicUpDown picUpDown = picUpDownService.getById(sysUser.getPicId());
             if (picUpDown != null) {
@@ -279,7 +283,6 @@ public class SysUserController extends BaseController {
         sysUserIndex.setTodayIp(sysUserService.findTodayIp());
         sysUserIndex.setLastSevenVisitCount(sysUserService.findLastSevenDaysVisitCount(null));
         sysUserIndex.setLastSevenUserVisitCount(sysUserService.findLastSevenDaysVisitCount(sysUser.getUserName()));
-        sysUserIndex.setMenuList(sysUserService.getMenuShortCut(sysUser.getUserId(), sysUser.getRoleId()));
         return Result.ok(sysUserIndex);
     }
 
