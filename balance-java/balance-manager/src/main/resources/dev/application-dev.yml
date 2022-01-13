@@ -36,8 +36,8 @@ spring:
       datasource:
         master:
           url: jdbc:mysql://localhost:3306/account_manager?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
-          username: test
-          password: test
+          username: root
+          password: root
           driver-class-name: com.mysql.cj.jdbc.Driver
           #druid: #以下参数针对每个库可以重新设置druid参数
         #slave: #多数据源可开启

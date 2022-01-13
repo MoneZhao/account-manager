@@ -38,7 +38,7 @@ docker load < balance.tar
 
 ```bash
 # mysql镜像需要命名为mysql
-docker run --restart=always -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=112012  -d mysql:8.0.18 --default-authentication-plugin=mysql_native_password
+docker run --restart=always -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root  -d mysql:8.0.18 --default-authentication-plugin=mysql_native_password --lower_case_table_names=1
 
 # redis
 docker run --restart=always -d --name redis -p 6379:6379 redis:5.0.9
