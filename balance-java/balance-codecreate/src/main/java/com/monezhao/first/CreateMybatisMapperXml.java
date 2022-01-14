@@ -171,7 +171,7 @@ public class CreateMybatisMapperXml {
                     // <![CDATA[ a.USER_ID = #{userId} AND ]]>
                     stringBuffer.append("        " + "<if test=\"entity." + columnNameEn + " != null and entity."
                             + columnNameEn + " !=''\">" + "\r\n");
-                    if (tableObject.getIsLike()) {
+                    if ("字符型".equals(tableObject.getDataType()) && tableObject.getIsLike()) {
                         stringBuffer.append("            " + "<![CDATA[    AND a." + tableObject.getColumnNameEn()
                                 + " like concat('%',#{entity." + columnNameEn + "},'%')    ]]>" + "\r\n");
                     } else {
