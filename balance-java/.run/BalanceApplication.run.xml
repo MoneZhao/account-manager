@@ -8,9 +8,8 @@
       </pattern>
     </extension>
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.monezhao.BalanceApplication" />
+    <option name="ENABLE_JMX_AGENT" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />
-    <option name="SHORTEN_COMMAND_LINE" value="NONE" />
-    <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
