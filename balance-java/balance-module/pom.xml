@@ -33,7 +33,7 @@
         <easyexcel.version>2.2.7</easyexcel.version>
         <knife4j.version>2.0.8</knife4j.version>
         <flowable.version>6.6.0</flowable.version>
-        <xerces.version>2.12.0</xerces.version>
+        <xerces.version>2.12.2</xerces.version>
     </properties>
 
     <dependencies>
