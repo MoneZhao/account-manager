@@ -159,6 +159,15 @@ public class CreateEntity {
                 stringBufferMid.append("    " + "@NotNull" + "\r\n");
             }
             stringBufferMid.append("    " + "@ApiModelProperty(value = \"" + tableObject.getColumnNameCn() + "\")" + "\r\n");
+            if ("deleteType".equals(tableObject.getColumnNameEn())) {
+                importHashMap.put("import com.baomidou.mybatisplus.annotation.FieldFill;\r\n",
+                        "import com.baomidou.mybatisplus.annotation.FieldFill;\r\n");
+                importHashMap.put("import com.baomidou.mybatisplus.annotation.TableField;\r\n",
+                        "import com.baomidou.mybatisplus.annotation.TableField;\r\n");
+                importHashMap.put("import com.baomidou.mybatisplus.annotation.TableLogic;\r\n",
+                        "import com.baomidou.mybatisplus.annotation.TableLogic;\r\n");
+                stringBufferMid.append("@TableLogic\r\n@TableField(fill = FieldFill.INSERT)\r\n");
+            }
             // 处理数据类型
             if ("字符型".equals(tableObject.getDataType())) {
                 processingDataTypeString(stringBufferMid, stringBufferFoot, tableObject, codeTypeIdFirstUpper,
