@@ -36,6 +36,8 @@
           <el-button icon="el-icon-edit" @click.native="btnUpdate(row)">修改</el-button>
           <el-divider direction="vertical" />
           <el-button icon="el-icon-delete" @click.native="btnDelete(row.balanceDetailId)">删除</el-button>
+          <el-divider direction="vertical" />
+          <el-button icon="el-icon-sort" @click.native="btnCompare(row)">对比</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,6 +73,40 @@
         <el-button icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createData():updateData()">确定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :title="'余额明细对比 - (' + compareTemp.balanceName + ')'" :visible.sync="dialogCompareVisible" label-position="right" destroy-on-close append-to-body>
+      <el-form ref="compareForm" :rules="compareRules" :model="compareTemp" label-width="auto">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="当前日期" prop="selectDate">
+              <el-date-picker v-model="compareTemp.selectDate" readonly value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="对比日期" prop="compareDate">
+              <el-date-picker v-model="compareTemp.compareDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" @change="dateChange" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="当前余额" prop="selectAccountFormat"><el-input v-model="compareTemp.selectAccountFormat" readonly /></el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="对比余额" prop="compareAccountFormat"><el-input v-model="compareTemp.compareAccountFormat" readonly /></el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="差值" prop="diff"><el-input v-model="compareTemp.diff" readonly /></el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button icon="el-icon-close" @click="dialogCompareVisible = false">取消</el-button>
+        <el-button icon="el-icon-check" type="primary" @click="compareData">对比</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -89,7 +125,30 @@ export default {
     }
   },
   data() {
+    const dayTime = this.$dayjs().add(1, 'day').valueOf()
+    const yearTime = this.$dayjs().subtract(1, 'year').valueOf()
+    const yearTime2 = this.$dayjs().subtract(2, 'year').valueOf()
     return {
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > dayTime
+        },
+        shortcuts: [{
+          text: '去年今天',
+          onClick(picker) {
+            const date = new Date()
+            date.setTime(yearTime)
+            picker.$emit('pick', date)
+          }
+        }, {
+          text: '前年今天',
+          onClick(picker) {
+            const date = new Date()
+            date.setTime(yearTime2)
+            picker.$emit('pick', date)
+          }
+        }]
+      },
       dicts: [],
       records: null,
       selectedRecords: [],
@@ -101,6 +160,21 @@ export default {
         balanceMainId: this.balanceMainId
       },
       dialogFormDetailVisible: false,
+      dialogCompareVisible: false,
+      compareTemp: {
+        balanceName: '',
+        balanceType: '',
+        selectDate: '',
+        selectAccount: '',
+        selectAccountFormat: '',
+        compareDate: '',
+        compareAccount: '',
+        compareAccountFormat: '',
+        diff: ''
+      },
+      compareRules: {
+        compareDate: [{ required: true, message: '该项不能为空', trigger: 'change' }]
+      },
       dialogStatus: '',
       temp: {
         account: '',
@@ -209,6 +283,40 @@ export default {
           type: 'info',
           message: '已取消删除'
         })
+      })
+    },
+    btnCompare(row) {
+      console.log(row)
+      this.dialogCompareVisible = true
+      this.compareTemp.selectDate = row.accountDate
+      this.compareTemp.balanceName = row.balanceName
+      this.compareTemp.balanceType = row.balanceType
+      this.compareTemp.selectAccount = row.account
+      this.compareTemp.selectAccountFormat = this.formatMoney(row.account)
+    },
+    dateChange() {
+      this.compareTemp.compareAccount = ''
+      this.compareTemp.compareAccountFormat = ''
+    },
+    compareData() {
+      const param = {
+        accountDate: this.compareTemp.compareDate,
+        balanceType: this.compareTemp.balanceType
+      }
+      this.$refs['compareForm'].validate((valid) => {
+        if (valid) {
+          postAction('/sys/balanceMain/compareDetail', param).then(res => {
+            const { data, msg } = res
+            if (data) {
+              Message.success(msg)
+              this.compareTemp.compareAccount = data.account
+              this.compareTemp.compareAccountFormat = this.formatMoney(data.account)
+              this.compareTemp.diff = this.formatMoney(this.compareTemp.selectAccount - this.compareTemp.compareAccount)
+            } else {
+              Message.info(msg)
+            }
+          })
+        }
       })
     },
     selectionChange(selectedRecords) {

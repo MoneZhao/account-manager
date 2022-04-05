@@ -171,15 +171,17 @@ public class SysBalanceMainController extends BaseController {
         QueryWrapper<SysBalanceMain> queryWrapper = new QueryWrapper<>();
         String userId = ShiroUtils.getUserId();
         Date date = sysBalanceMain.getAccountDate();
-        queryWrapper.eq("user_id", userId).eq("account_date", date);
+        queryWrapper.lambda()
+                .eq(SysBalanceMain::getUserId, userId)
+                .eq(SysBalanceMain::getAccountDate, date);
         sysBalanceMain = sysBalanceMainService.getOne(queryWrapper);
         if (Objects.isNull(sysBalanceMain)) {
             YearMonthDayStartAndEnd startAndEnd =
                     DateTimeUtil.dateToYearMonthDayStartAndEnd(date);
             queryWrapper = new QueryWrapper<>();
-            queryWrapper
-                    .eq("user_id", userId)
-                    .between("account_date", startAndEnd.getFirstDayOfMonth(), startAndEnd.getLastDayOfMonth());
+            queryWrapper.lambda()
+                    .eq(SysBalanceMain::getUserId, userId)
+                    .between(SysBalanceMain::getAccountDate, startAndEnd.getFirstDayOfMonth(), startAndEnd.getLastDayOfMonth());
             List<SysBalanceMain> list = sysBalanceMainService.list(queryWrapper);
             if (list.size() == 0) {
                 return Result.error("对比月份无记录");
@@ -192,6 +194,64 @@ public class SysBalanceMainController extends BaseController {
             }
         } else {
             return Result.ok("查询成功", sysBalanceMain);
+        }
+    }
+
+
+    /**
+     * @param sysBalanceDetail
+     * @return
+     * @功能：账户余额对比
+     */
+    @PostMapping(value = "/compareDetail")
+    @ApiOperation("余额明细对比")
+    @SysLogAuto(value = "余额明细对比")
+    @ApiOperationSupport(includeParameters = {
+            "accountDate",
+            "balanceType"
+    })
+    public Result compareDetail(@RequestBody SysBalanceDetail sysBalanceDetail) {
+        if (sysBalanceDetail.getAccountDate() == null) {
+            return Result.error("请输入对比日期");
+        }
+        if (sysBalanceDetail.getBalanceType() == null) {
+            return Result.error("请输入账户类型");
+        }
+        QueryWrapper<SysBalanceMain> queryWrapper = new QueryWrapper<>();
+        String userId = ShiroUtils.getUserId();
+        Date date = sysBalanceDetail.getAccountDate();
+        queryWrapper.lambda()
+                .eq(SysBalanceMain::getUserId, userId)
+                .eq(SysBalanceMain::getAccountDate, date);
+        SysBalanceMain sysBalanceMain = sysBalanceMainService.getOne(queryWrapper);
+        if (Objects.isNull(sysBalanceMain)) {
+            YearMonthDayStartAndEnd startAndEnd =
+                    DateTimeUtil.dateToYearMonthDayStartAndEnd(date);
+            queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda()
+                    .eq(SysBalanceMain::getUserId, userId)
+                    .between(SysBalanceMain::getAccountDate, startAndEnd.getFirstDayOfMonth(), startAndEnd.getLastDayOfMonth());
+            List<SysBalanceMain> list = sysBalanceMainService.list(queryWrapper);
+            if (list.size() == 0) {
+                return Result.error("对比月份无记录");
+            } else {
+                return Result.ok("当前日期无记录, 可选择以下日期" +
+                        list.stream()
+                                .map(vo -> DateUtil.dateToStr(vo.getAccountDate()))
+                                .collect(Collectors.joining(", ", "[", "]"))
+                );
+            }
+        } else {
+            QueryWrapper<SysBalanceDetail> detailQueryWrapper = new QueryWrapper<>();
+            detailQueryWrapper.lambda()
+                    .eq(SysBalanceDetail::getBalanceMainId, sysBalanceMain.getBalanceMainId())
+                    .eq(SysBalanceDetail::getBalanceType, sysBalanceDetail.getBalanceType());
+            SysBalanceDetail detail = sysBalanceDetailService.getOne(detailQueryWrapper);
+            if (detail == null) {
+                return Result.error("对比日期无类型记录");
+            } else {
+                return Result.ok("查询成功", detail);
+            }
         }
     }
 

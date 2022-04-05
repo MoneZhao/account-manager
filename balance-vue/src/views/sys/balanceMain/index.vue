@@ -71,7 +71,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="'账户详情 - ' + mainDate" :visible="dialogDetailVisible" destroy-on-close width="80%" :before-close="detailClose">
+    <el-dialog :title="'账户详情 - (' + mainDate + ')'" :visible="dialogDetailVisible" destroy-on-close width="80%" :before-close="detailClose">
       <sys-balance-detail v-if="dialogDetailVisible" :balance-main-id="balanceMainId" />
     </el-dialog>
 
@@ -134,29 +134,26 @@ export default {
   name: 'SysBalanceMain',
   components: { Pagination, SysBalanceDetail },
   data() {
-    const dayTime = 8.64e7 // 3600 * 1000 * 24
+    const dayTime = this.$dayjs().add(1, 'day').valueOf()
+    const yearTime = this.$dayjs().subtract(1, 'year').valueOf()
+    const yearTime2 = this.$dayjs().subtract(2, 'year').valueOf()
     return {
       pickerOptions: {
         disabledDate(time) {
-          return time.getTime() > Date.now() + dayTime
+          return time.getTime() > dayTime
         },
         shortcuts: [{
-          text: '昨天',
+          text: '去年今天',
           onClick(picker) {
             const date = new Date()
-            date.setTime(date.getTime() - dayTime)
+            date.setTime(yearTime)
             picker.$emit('pick', date)
           }
         }, {
-          text: '今天',
-          onClick(picker) {
-            picker.$emit('pick', new Date())
-          }
-        }, {
-          text: '明天',
+          text: '前年今天',
           onClick(picker) {
             const date = new Date()
-            date.setTime(date.getTime() + dayTime)
+            date.setTime(yearTime2)
             picker.$emit('pick', date)
           }
         }]

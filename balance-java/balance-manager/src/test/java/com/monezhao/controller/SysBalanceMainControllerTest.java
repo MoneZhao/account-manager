@@ -32,9 +32,9 @@ public class SysBalanceMainControllerTest {
         String userId = "admin";
         YearMonthDayStartAndEnd startAndEnd =
                 DateTimeUtil.dateToYearMonthDayStartAndEnd(DateUtil.strToDate("2020-05-12", "yyyy-MM-dd"));
-        queryWrapper
-                .eq("user_id", userId)
-                .between("account_date", startAndEnd.getFirstDayOfMonth(), startAndEnd.getLastDayOfMonth());
+        queryWrapper.lambda()
+                .eq(SysBalanceMain::getUserId, userId)
+                .between(SysBalanceMain::getAccountDate, startAndEnd.getFirstDayOfMonth(), startAndEnd.getLastDayOfMonth());
         sysBalanceMainService.list(queryWrapper).forEach(vo -> log.info(JacksonUtil.objToStr(vo)));
     }
 }

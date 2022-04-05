@@ -14,6 +14,7 @@ import com.monezhao.bean.utilsVo.ElTree;
 import com.monezhao.bean.utilsVo.Meta;
 import com.monezhao.bean.utilsVo.Route;
 import com.monezhao.bean.utilsVo.SessionObject;
+import com.monezhao.bean.utilsVo.ShortCut;
 import com.monezhao.bean.utilsVo.SysPasswordForm;
 import com.monezhao.bean.utilsVo.SysRolePermissionVO;
 import com.monezhao.common.Constants;
@@ -24,7 +25,6 @@ import com.monezhao.common.util.PasswordUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.config.DefaultSystemConfig;
-import com.monezhao.bean.utilsVo.ShortCut;
 import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.controller.command.VisitCount;
 import com.monezhao.mapper.SysUserMapper;
@@ -412,7 +412,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         String newPassword = PasswordUtil.encrypt(sysPasswordForm.getNewPassword(), salt);
         sysUser.setPassword(newPassword);
         sysUser.setSalt(salt);
-        return this.update(sysUser, new QueryWrapper<SysUser>().eq("user_id", userId).eq("password", oldPassword));
+        return this.update(sysUser, new QueryWrapper<SysUser>().lambda()
+                .eq(SysUser::getUserId, userId).eq(SysUser::getPassword, oldPassword));
     }
 
 
