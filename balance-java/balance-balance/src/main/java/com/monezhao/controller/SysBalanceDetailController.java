@@ -8,6 +8,7 @@ import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
+import com.monezhao.common.util.CommonUtil;
 import com.monezhao.service.SysBalanceDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 账户明细Controller
@@ -50,6 +52,20 @@ public class SysBalanceDetailController extends BaseController {
     @ApiOperation("账户明细列表")
     public Result list(SysBalanceDetail sysBalanceDetail, @RequestParam Integer current, @RequestParam Integer size) {
         IPage<SysBalanceDetail> pageList = sysBalanceDetailService.list(new Page<>(current, size), sysBalanceDetail);
+        return Result.ok(pageList);
+    }
+
+    /**
+     * 报表查询列表
+     *
+     * @param sysBalanceDetail
+     * @return
+     */
+    @GetMapping(value = "/listStatement")
+    @ApiOperation("账户明细列表")
+    public Result listStatement(SysBalanceDetail sysBalanceDetail) {
+        CommonUtil.isEmptyStr(sysBalanceDetail.getStatementDate(), "查询条件不能为空");
+        List<SysBalanceDetail> pageList = sysBalanceDetailService.listStatement(sysBalanceDetail);
         return Result.ok(pageList);
     }
 

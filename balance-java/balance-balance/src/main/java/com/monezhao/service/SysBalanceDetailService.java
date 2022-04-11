@@ -61,4 +61,12 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
      * @return
      */
     List<SysBalanceDetail> list(List<String> mainIds, String userId);
+
+    /**
+     * 报表查询列表
+     *
+     * @param sysBalanceDetail sysBalanceDetail
+     * @return listStatement
+     */
+    List<SysBalanceDetail> listStatement(SysBalanceDetail sysBalanceDetail);
 }

@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.bean.sys.SysCodeInfo;
+import com.monezhao.bean.sys.SysUser;
 import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.common.exception.SysException;
+import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.mapper.SysBalanceDetailMapper;
 import com.monezhao.service.SysBalanceDetailService;
@@ -227,4 +229,25 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         return baseMapper.listExport(mainIds, userId);
     }
 
+    @Override
+    public List<SysBalanceDetail> listStatement(SysBalanceDetail sysBalanceDetail) {
+        SysUser sysUser = ShiroUtils.getSysUser();
+        QueryWrapper<SysBalanceMain> mainQueryWrapper = new QueryWrapper<>();
+        String statementDate = sysBalanceDetail.getStatementDate();
+        Date start = DateUtil.strToDate(statementDate + "-01", DateUtil.DATE_FORMAT_DEFAULT);
+        mainQueryWrapper.lambda()
+                .eq(SysBalanceMain::getUserId, sysUser.getUserId())
+                .between(SysBalanceMain::getAccountDate, start,
+                        DateUtil.addDay(DateUtil.addMonth(start, 1), -1))
+                .orderByDesc(SysBalanceMain::getAccountDate)
+        ;
+        SysBalanceMain balanceMain = sysBalanceMainService.getOne(mainQueryWrapper, false);
+        if (balanceMain == null) {
+            return new ArrayList<>();
+        }
+
+        SysBalanceDetail query = new SysBalanceDetail();
+        query.setBalanceMainId(balanceMain.getBalanceMainId());
+        return baseMapper.list(null, query);
+    }
 }

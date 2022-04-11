@@ -22,15 +22,25 @@
         <div id="line_chart" style="height: 600px" />
       </el-card>
     </div>
+
+    <el-dialog :title="`${yearMonth.name} - 账户详情`" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
+      <RatioChart v-if="dialogVisible" :cdata="ratioData" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">关 闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { postAction } from '@/api/manage'
-import moment from 'moment'
+import { getAction, postAction } from '@/api/manage'
+import RatioChart from './ratioCharts'
 
 export default {
   'name': 'StatementTable',
+  components: {
+    RatioChart
+  },
   data() {
     return {
       temp: {
@@ -65,7 +75,18 @@ export default {
             picker.$emit('pick', [start, end])
           }
         }]
-      }
+      },
+      yearMonth: {
+        name: '',
+        vaue: ''
+      },
+      ratioData: {
+        legendData: [],
+        selectdData: [],
+        seriesData: []
+      },
+      dialogVisible: false,
+      chart: undefined
     }
   },
   mounted() {
@@ -75,11 +96,49 @@ export default {
     this.getChart()
   },
   methods: {
+    handleClose() {
+      this.dialogVisible = false
+    },
     onChange() {
       console.log(this.temp.value)
       if (this.temp.value && this.temp.value.length === 2) {
         this.getChart()
       }
+    },
+    formatYearMonth(month) {
+      if (!month.includes('年')) {
+        month = this.temp.value[0].split('-')[0] + '年' + month
+      }
+
+      this.yearMonth.name = month
+      month = month.substring(0, 7)
+      this.yearMonth.vaue = month.replace('年', '-')
+
+      this.getRatioData()
+      this.dialogVisible = true
+    },
+    async getRatioData() {
+      const obj = {
+        legendData: [],
+        seriesData: [],
+        selectdData: {}
+      }
+      const params = {
+        statementDate: this.yearMonth.vaue
+      }
+      const {
+        data
+      } = await getAction('sys/balanceDetail/listStatement', params)
+      data.map((item, index) => {
+        obj.legendData.push(item.balanceName)
+        const oneObj = {
+          name: item.balanceName,
+          value: item.account
+        }
+        obj.seriesData.push(oneObj)
+        obj.selectdData[item.equipmentName] = index < 20
+        this.ratioData = obj
+      })
     },
     getChart() {
       postAction(`/sys/statement/query`, {
@@ -87,8 +146,8 @@ export default {
         endMonth: this.temp.value[1]
       }).then((r) => {
         const data = r.data
-        const chart = this.$echarts.init(document.getElementById('line_chart'))
         const legend = data.y.map(e => e.name)
+        const chart = this.$echarts.init(document.getElementById('line_chart'))
         chart.setOption({
           title: {
             text: data.title,
@@ -131,6 +190,16 @@ export default {
             }
           },
           series: data.y
+        })
+        chart.getZr().on('click', params => {
+          const pointInPixel = [params.offsetX, params.offsetY]
+          if (chart.containPixel('grid', pointInPixel)) {
+            const xIndex = chart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
+            const handleIndex = Number(xIndex)
+            // 获得图表中点击的列
+            const month = chart.getOption().xAxis[0].data[handleIndex]
+            this.formatYearMonth(month)
+          }
         })
       }).catch((r) => {
         console.error(r)

@@ -114,6 +114,14 @@ public class SysBalanceDetail extends BaseEntity {
     @ExcelProperty("记录时间")
     private Date accountDate;
 
+    /**
+     * 报表查询时间
+     */
+    @TableField(exist = false)
+    @ApiModelProperty(hidden = true)
+    @ExcelProperty("报表查询时间")
+    private String statementDate;
+
     @Version
     @ExcelIgnore
     @ApiModelProperty(hidden = true)
