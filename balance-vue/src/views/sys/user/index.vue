@@ -50,13 +50,13 @@
               :default-column="importExcelProps.defaultColumn"
               :url-save="importExcelProps.urlSave"
               :url-href="importExcelProps.urlHref"
+              :url-export-all="importExcelProps.urlExportAll"
               :show-import="checkPermission('sys:user:save')"
               :show-export="checkPermission('sys:user:export')"
+              :show-export-all="checkPermission('sys:user:export')"
+              :export-file-name="importExcelProps.exportFileName"
               @importOk="btnReset"
-            >
-              <el-button slot="suffix" v-permission="'sys:user:export'" icon="el-icon-download" type="primary" @click="btnExportAll">导出全部
-              </el-button>
-            </import-excel-util>
+            />
             <div style="float: right">
               <el-input
                 v-model="listQuery.userId"
@@ -276,7 +276,7 @@
 
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { getAction, putAction, postAction, deleteAction, downloadAction } from '@/api/manage'
+import { getAction, putAction, postAction, deleteAction } from '@/api/manage'
 import { Message, MessageBox } from 'element-ui'
 import SelectOrg from '@/components/select/SelectOrg'
 import ShortCut from '@/components/ShortCut'
@@ -328,6 +328,8 @@ export default {
           'status': 1,
           'roleId': 'queryRole'
         },
+        urlExportAll: '/sys/user/export',
+        exportFileName: '用户信息',
         urlSave: '/sys/user/saveBatch',
         urlHref: './用户信息.xlsx'
       },
@@ -426,12 +428,6 @@ export default {
           return v[j]
         })
       )
-    },
-    btnExportAll() {
-      downloadAction('/sys/user/export', 'get', {}, 'SysUserExport.xlsx')
-    },
-    uploadExcel() {
-      this.$refs.importExcelUtil.show(this.keyMap, '/sys/user/saveBatch', './用户信息.xlsx', this.defaultColumn)
     },
     btnQuery() {
       this.listQuery.current = 1
