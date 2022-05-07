@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-button-group>
-      <slot name="prefix" />
       <el-button v-show="showImport" icon="el-icon-upload" type="primary" @click="uploadExcel">导入
       </el-button>
       <el-button v-show="showExport" icon="el-icon-download" @click="btnExport">导出选中

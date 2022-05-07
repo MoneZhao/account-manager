@@ -81,6 +81,9 @@ public class ShiroConfig {
         //flowable
         filterChainDefinitionMap.put("/flowable/**/*mage*/**", "anon");
 
+        //所有不需要验证的url
+        filterChainDefinitionMap.put("/noauth/**", "anon");
+
         // 一般将/**放在最为下边
         filterChainDefinitionMap.put("/**", "jwt");
 

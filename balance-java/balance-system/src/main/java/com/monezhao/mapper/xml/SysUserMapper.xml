@@ -102,7 +102,7 @@
         <if test="roleId != null and roleId !=''">
             <![CDATA[	AND rp.role_id=#{roleId}	]]>
         </if>
-        order by a.sort_no asc
+        order by a.is_leaf,a.sort_no
     </select>
 
     <select id="findTotalVisitCount" resultType="long">
