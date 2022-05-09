@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class CreateFirst {
     public static void main(String[] args) {
+        CodeUtil.databaseType = CreateSql.MYSQL;
         CodeUtil.module = "balance-system";
         CodeUtil.excelDesignPath = CodeUtil.projectPath + "db" + File.separator + "数据库设计(sys_图片上传下载).xlsx";
         List<String> createTableNames = Arrays.asList(
