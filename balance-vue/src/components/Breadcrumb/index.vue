@@ -35,7 +35,7 @@ export default {
       const first = matched[0]
       const firstLevel = { path: '/dashboard', name: 'dashboard', meta: { title: '首页' }}
       if (!this.isDashboard(first)) {
-        matched = [firstLevel].concat(matched)
+        matched = [firstLevel].concat(first)
       } else {
         matched = [firstLevel]
       }
