@@ -56,9 +56,11 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     }
 
     public boolean exist(SysBalanceDetail sysBalanceDetail) {
+        SysUser sysUser = ShiroUtils.getSysUser();
         QueryWrapper<SysBalanceDetail> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
-                .eq(SysBalanceDetail::getBalanceMainId, sysBalanceDetail.getBalanceDetailId())
+                .eq(SysBalanceDetail::getUserId, sysUser.getUserId())
+                .eq(SysBalanceDetail::getBalanceMainId, sysBalanceDetail.getBalanceMainId())
                 .eq(SysBalanceDetail::getBalanceType, sysBalanceDetail.getBalanceType());
         if (StringUtils.isNotEmpty(sysBalanceDetail.getBalanceDetailId())) {
             queryWrapper.lambda()
@@ -155,12 +157,13 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
             }
         }
         if (joiner.length() > 2) {
-            throw new SysException("账户类型不存在: " + joiner.toString());
+            throw new SysException("账户类型不存在: " + joiner);
         }
 
         Set<Date> dateSet = list.stream().map(SysBalanceDetail::getAccountDate).collect(Collectors.toSet());
         QueryWrapper<SysBalanceMain> mainQueryWrapper = new QueryWrapper<>();
         mainQueryWrapper.lambda()
+                .eq(SysBalanceMain::getUserId, userId)
                 .in(SysBalanceMain::getAccountDate, dateSet);
         List<SysBalanceMain> balanceMains = sysBalanceMainService.list(mainQueryWrapper);
 

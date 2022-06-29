@@ -42,7 +42,7 @@ public class SysBalanceMain extends BaseEntity {
      */
     @TableId(type = IdType.ASSIGN_UUID)
     @LengthForUtf8(max = 32)
-    @ExcelProperty("主键id")
+    @ExcelIgnore
     @ApiModelProperty(value = "主键id")
     private String balanceMainId;
 
@@ -68,7 +68,7 @@ public class SysBalanceMain extends BaseEntity {
      * 所属用户
      */
     @LengthForUtf8(max = 32)
-    @ExcelProperty("用户id")
+    @ExcelIgnore
     @ApiModelProperty(value = "所属用户")
     private String userId;
 
@@ -79,7 +79,7 @@ public class SysBalanceMain extends BaseEntity {
      * @ApiModelProperty(hidden = true)
      */
     @TableField(exist = false)
-    @ExcelProperty("用户名")
+    @ExcelIgnore
     @ApiModelProperty(hidden = true)
     private String userName;
 
