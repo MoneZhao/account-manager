@@ -75,4 +75,23 @@
         </foreach>
         order by m.account_date,a.create_time desc
     </select>
+    <select id="queryDetail" resultType="com.monezhao.bean.sys.SysBalanceDetail">
+        select
+        a.balance_detail_id as balanceDetailId,
+        a.account as account,
+        a.balance_type as balanceType,
+        m.account_date as accountDate,
+        a.balance_main_id as balanceMainId,
+        a.user_id as userId,
+        a.delete_type as deleteType,
+        a.remark as remark
+
+        from t_sys_balance_detail a
+        left join t_sys_balance_main m on m.balance_main_id = a.balance_main_id
+        where a.delete_type=0
+        AND a.user_id = #{userId}
+        AND a.balance_type = #{balanceType}
+        <![CDATA[   AND m.account_date >= #{startMonth} and m.account_date <= #{endMonth} ]]>
+        order by m.account_date asc
+    </select>
 </mapper>

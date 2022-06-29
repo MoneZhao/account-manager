@@ -11,8 +11,16 @@ public interface SysStatementService {
     /**
      * 查询账户报表
      *
-     * @param command
-     * @return
+     * @param command command
+     * @return StatementResultCommand
      */
     StatementResultCommand query(StatementCommand command);
+
+    /**
+     * 查询账户详情报表
+     *
+     * @param command command
+     * @return StatementResultCommand
+     */
+    StatementResultCommand queryDetail(StatementCommand command);
 }

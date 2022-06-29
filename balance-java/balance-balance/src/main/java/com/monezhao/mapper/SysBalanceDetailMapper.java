@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,4 +51,9 @@ public interface SysBalanceDetailMapper extends BaseMapper<SysBalanceDetail> {
      * @return
      */
     boolean deleteDetailIds(@Param("list") List<String> detailIds);
+
+    /**
+     * 报表查询列表
+     */
+    List<SysBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType);
 }

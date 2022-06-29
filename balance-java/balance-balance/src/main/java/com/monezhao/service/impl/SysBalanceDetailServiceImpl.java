@@ -250,4 +250,9 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         query.setBalanceMainId(balanceMain.getBalanceMainId());
         return baseMapper.list(null, query);
     }
+
+    @Override
+    public List<SysBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType) {
+        return baseMapper.queryDetail(userId, startMonth, endMonth, balanceType);
+    }
 }

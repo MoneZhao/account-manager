@@ -2,6 +2,8 @@
   <div class="app-container">
     <div class="filter-container">
       <el-card style="border-color: #f1f1f1;" shadow="hover">
+        <span style="margin-left:12rem">账户类型：</span>
+        <el-select v-model="temp.balanceType" placeholder="账户类型" class="filter-item" @change="onChange"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select>
         <span style="margin-left:12rem">查询范围：</span>
         <el-date-picker
           v-model="temp.value"
@@ -43,8 +45,10 @@ export default {
   },
   data() {
     return {
+      dicts: [],
       temp: {
-        value: []
+        value: [],
+        balanceType: ''
       },
       pickerOptions: {
         disabledDate(time) {
@@ -89,60 +93,29 @@ export default {
       chart: undefined
     }
   },
+  beforeCreate() {
+    this.getDicts('balanceType').then(({ data }) => { this.dicts = data })
+  },
   mounted() {
     const end = new Date()
     const start = new Date(new Date().getFullYear(), 0)
     this.$set(this.temp, 'value', [this.$moment(start).format('YYYY-MM'), this.$moment(end).format('YYYY-MM')])
-    this.getChart()
+    // this.getChart()
   },
   methods: {
     handleClose() {
       this.dialogVisible = false
     },
     onChange() {
-      if (this.temp.value && this.temp.value.length === 2) {
+      if (this.temp.value && this.temp.value.length === 2 && this.temp.balanceType) {
         this.getChart()
       }
     },
-    formatYearMonth(month) {
-      if (!month.includes('年')) {
-        month = this.temp.value[0].split('-')[0] + '年' + month
-      }
-
-      this.yearMonth.name = month
-      month = month.substring(0, 7)
-      this.yearMonth.vaue = month.replace('年', '-')
-
-      this.getRatioData()
-      this.dialogVisible = true
-    },
-    async getRatioData() {
-      const obj = {
-        legendData: [],
-        seriesData: [],
-        selectdData: {}
-      }
-      const params = {
-        statementDate: this.yearMonth.vaue
-      }
-      const {
-        data
-      } = await getAction('sys/balanceDetail/listStatement', params)
-      data.map((item, index) => {
-        obj.legendData.push(item.balanceName)
-        const oneObj = {
-          name: item.balanceName,
-          value: item.account
-        }
-        obj.seriesData.push(oneObj)
-        obj.selectdData[item.equipmentName] = index < 20
-        this.ratioData = obj
-      })
-    },
     getChart() {
-      postAction(`/sys/statement/query`, {
+      postAction(`/sys/statement/detail/query`, {
         startMonth: this.temp.value[0],
-        endMonth: this.temp.value[1]
+        endMonth: this.temp.value[1],
+        balanceType: this.temp.balanceType
       }).then((r) => {
         const data = r.data
         const legend = data.y.map(e => e.name)
@@ -189,16 +162,6 @@ export default {
             }
           },
           series: data.y
-        })
-        chart.getZr().on('click', params => {
-          const pointInPixel = [params.offsetX, params.offsetY]
-          if (chart.containPixel('grid', pointInPixel)) {
-            const xIndex = chart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
-            const handleIndex = Number(xIndex)
-            // 获得图表中点击的列
-            const month = chart.getOption().xAxis[0].data[handleIndex]
-            this.formatYearMonth(month)
-          }
         })
       })
     }

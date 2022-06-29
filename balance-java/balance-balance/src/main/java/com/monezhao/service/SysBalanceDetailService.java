@@ -3,6 +3,7 @@ package com.monezhao.service;
 import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.common.base.BaseService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,4 +70,16 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
      * @return listStatement
      */
     List<SysBalanceDetail> listStatement(SysBalanceDetail sysBalanceDetail);
+
+
+    /**
+     * 报表查询列表
+     *
+     * @param userId userId
+     * @param startMonth startMonth
+     * @param endMonth endMonth
+     * @param balanceType balanceType
+     * @return queryDetail
+     */
+    List<SysBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType);
 }

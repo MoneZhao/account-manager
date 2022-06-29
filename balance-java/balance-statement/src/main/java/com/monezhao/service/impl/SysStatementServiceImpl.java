@@ -1,6 +1,7 @@
 package com.monezhao.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.bean.sys.SysUser;
 import com.monezhao.command.Series;
@@ -8,6 +9,7 @@ import com.monezhao.command.StatementCommand;
 import com.monezhao.command.StatementResultCommand;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.service.SysBalanceDetailService;
 import com.monezhao.service.SysBalanceMainService;
 import com.monezhao.service.SysStatementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class SysStatementServiceImpl implements SysStatementService {
 
     @Autowired
     private SysBalanceMainService balanceMainService;
+
+    @Autowired
+    private SysBalanceDetailService balanceDetailService;
 
     @Override
     public StatementResultCommand query(StatementCommand command) {
@@ -64,6 +69,42 @@ public class SysStatementServiceImpl implements SysStatementService {
             record.put(dateStr, account);
         }
 
+        return getStatementResultCommand(resultCommand, dates, record);
+    }
+
+    @Override
+    public StatementResultCommand queryDetail(StatementCommand command) {
+        StatementResultCommand resultCommand = new StatementResultCommand();
+        resultCommand.setTitle("账户余额曲线");
+        resultCommand.setYTitle("账户余额");
+        resultCommand.setXTitle("月份");
+        String startStr = DateUtil.dateToStr(command.getStartMonth(), "yyyy");
+        String endStr = DateUtil.dateToStr(command.getEndMonth(), "yyyy");
+        String format;
+        if (Objects.equals(startStr, endStr)) {
+            format = "MM月";
+        } else {
+            format = "yyyy年MM月";
+        }
+        List<String> dates = DateUtil.findMonth(command.getStartMonth(), command.getEndMonth(), format);
+        resultCommand.setX(dates);
+
+        SysUser sysUser = ShiroUtils.getSysUser();
+        List<SysBalanceDetail> balanceDetails = balanceDetailService.queryDetail(sysUser.getUserId(), command.getStartMonth(),
+                DateUtil.addSecond(DateUtil.addMonth(command.getEndMonth(), 1), -1),
+                command.getBalanceType());
+
+        Map<String, BigDecimal> record = new HashMap<>(balanceDetails.size());
+        for (SysBalanceDetail balanceDetail : balanceDetails) {
+            String dateStr = DateUtil.dateToStr(balanceDetail.getAccountDate(), format);
+            BigDecimal account = balanceDetail.getAccount();
+            record.put(dateStr, account);
+        }
+
+        return getStatementResultCommand(resultCommand, dates, record);
+    }
+
+    private StatementResultCommand getStatementResultCommand(StatementResultCommand resultCommand, List<String> dates, Map<String, BigDecimal> record) {
         Series series1 = new Series();
         series1.setName("账户余额");
         series1.setType("bar");
