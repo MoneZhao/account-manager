@@ -77,7 +77,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
             httpServletResponse.setStatus(HttpStatus.OK.value());
             return false;
         }
-        log.info(httpServletRequest.getRequestURL().toString());
+        log.info("请求开始: " + httpServletRequest.getRequestURL().toString());
         return super.preHandle(request, response);
     }
 

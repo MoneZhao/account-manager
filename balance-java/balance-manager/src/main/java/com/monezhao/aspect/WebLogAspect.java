@@ -73,11 +73,11 @@ public class WebLogAspect {
         long time = System.currentTimeMillis() - startTime;
 
         if (sysUser == null) {
-            logger.info("{} {} {}, param: {}, cost: {}ms, result: {}",
+            logger.info("请求结束: {} {} {}, param: {}, cost: {}ms, result: {}",
                     IpUtils.getIpAddr(request), method, url, CommonUtil.paramsToJson(args), time, operateResult);
         } else {
-            logger.info("{} {} {}, param: {}, cost: {}ms, result: {}",
-                    sysUser.getUserName(), method, url, CommonUtil.paramsToJson(args), time, operateResult);
+            logger.info("请求结束: {} {} {}, param: {}, cost: {}ms, result: {}",
+                    sysUser.getUserId() + ":" + sysUser.getUserName(), method, url, CommonUtil.paramsToJson(args), time, operateResult);
         }
 
         if (ex != null) {
