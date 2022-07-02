@@ -27,9 +27,11 @@ public class RedisPrefixSerializer implements RedisSerializer<String> {
 
     private final Charset charset = StandardCharsets.UTF_8;
 
+    private static final String SEPARATE = ":";
+
     @Override
     public byte[] serialize(String s) throws SerializationException {
-        String key = contextPath.replaceAll("/", "") + "/" + active + "/" + s;
+        String key = contextPath.replaceAll("/", "") + SEPARATE + active + SEPARATE + s;
         return CommonUtil.isEmptyStr(s) ? null : key.getBytes(charset);
     }
 
@@ -39,7 +41,7 @@ public class RedisPrefixSerializer implements RedisSerializer<String> {
             return null;
         }
         String saveKey = new String(bytes, charset);
-        int index = saveKey.indexOf(contextPath.replaceAll("/", "") + "/" + active + "/");
+        int index = saveKey.indexOf(contextPath.replaceAll("/", "") + SEPARATE + active + SEPARATE);
         if (index == -1) {
             log.info("key缺少前缀");
         } else {
