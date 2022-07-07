@@ -5,7 +5,7 @@
         <el-button v-permission="'sys:picUpDown:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">
           批量删除
         </el-button>
-        <el-button icon="el-icon-upload" class="filter-item" @click="upload()">上传</el-button>
+        <el-button v-permission="'sys:picUpDown:save'" icon="el-icon-upload" class="filter-item" @click="upload()">上传</el-button>
       </el-button-group>
       <div style="float: right">
         <el-input

@@ -89,6 +89,7 @@ public class SysPicUpDownController extends BaseController {
      * @return
      * @功能：批量删除
      */
+    @RequiresPermissions("sys:picUpDown:delete")
     @DeleteMapping(value = "/delete")
     @ApiOperation("图片上传下载删除")
     @SysLogAuto(value = "图片上传下载删除")
@@ -110,6 +111,7 @@ public class SysPicUpDownController extends BaseController {
      * @return
      * @功能：图片上传
      */
+    @RequiresPermissions("sys:picUpDown:save")
     @PostMapping(value = "/uploadPic")
     @ApiOperation("图片上传")
     @SysLogAuto(value = "图片上传")
