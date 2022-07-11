@@ -34,7 +34,7 @@ export default {
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
       const first = matched[0]
       const firstLevel = { path: '/dashboard', name: 'dashboard', meta: { title: '首页' }}
-      if (!this.isDashboard(first)) {
+      if (first && !this.isDashboard(first)) {
         matched = [firstLevel].concat(first)
       } else {
         matched = [firstLevel]

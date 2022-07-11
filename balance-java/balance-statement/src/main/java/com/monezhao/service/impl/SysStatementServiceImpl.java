@@ -69,7 +69,7 @@ public class SysStatementServiceImpl implements SysStatementService {
             record.put(dateStr, account);
         }
 
-        return getStatementResultCommand(resultCommand, dates, record);
+        return getStatementResultCommand(resultCommand, dates, record, null);
     }
 
     @Override
@@ -101,10 +101,11 @@ public class SysStatementServiceImpl implements SysStatementService {
             record.put(dateStr, account);
         }
 
-        return getStatementResultCommand(resultCommand, dates, record);
+        return getStatementResultCommand(resultCommand, dates, record, BigDecimal.valueOf(0));
     }
 
-    private StatementResultCommand getStatementResultCommand(StatementResultCommand resultCommand, List<String> dates, Map<String, BigDecimal> record) {
+    private StatementResultCommand getStatementResultCommand(StatementResultCommand resultCommand, List<String> dates,
+                                                             Map<String, BigDecimal> record, BigDecimal defaultValue) {
         Series series1 = new Series();
         series1.setName("账户余额");
         series1.setType("bar");
@@ -117,13 +118,13 @@ public class SysStatementServiceImpl implements SysStatementService {
 
         for (int i = 0; i < dates.size(); i++) {
             String date = dates.get(i);
-            BigDecimal current = record.getOrDefault(date, null);
+            BigDecimal current = record.getOrDefault(date, defaultValue);
             data1.add(current);
 
             if (i == 0) {
                 data2.add(null);
             } else {
-                BigDecimal before = record.getOrDefault(dates.get(i - 1), null);
+                BigDecimal before = record.getOrDefault(dates.get(i - 1), defaultValue);
                 if (current == null || before == null) {
                     data2.add(null);
                 } else {
