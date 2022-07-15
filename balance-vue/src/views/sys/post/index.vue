@@ -26,13 +26,13 @@
       @cell-dblclick="btnView"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="selection" align="center" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="岗位id" prop="postId" align="center"><template slot-scope="scope"><span>{{ scope.row.postId }}</span></template></el-table-column>
       <el-table-column label="岗位名称" prop="postName" align="center"><template slot-scope="scope"><span>{{ scope.row.postName }}</span></template></el-table-column>
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
       <el-table-column label="排序号" prop="sortNo" align="center"><template slot-scope="scope"><span>{{ scope.row.sortNo }}</span></template></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
@@ -100,8 +100,8 @@
         :cell-style="{padding:'3px'}"
         @selection-change="selectionChangePostUser"
       >
-        <el-table-column type="selection" align="center" />
-        <el-table-column type="index" label="#" align="center" width="50" />
+        <el-table-column fixed type="selection" align="center" />
+        <el-table-column fixed type="index" label="#" align="center" width="50" />
         <el-table-column label="用户姓名" prop="userName" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.userName }}</span>

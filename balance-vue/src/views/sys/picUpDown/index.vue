@@ -33,8 +33,8 @@
       :cell-style="{padding:'3px'}"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="selection" align="center" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="图片名" prop="picName" align="center">
         <template slot-scope="scope"><span>{{ scope.row.picName }}</span></template>
       </el-table-column>
@@ -59,7 +59,7 @@
       <el-table-column label="MD5" prop="md5" align="center">
         <template slot-scope="scope"><span>{{ scope.row.md5 }}</span></template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-button
             v-permission="'sys:picUpDown:delete'"

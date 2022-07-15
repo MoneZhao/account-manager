@@ -27,8 +27,8 @@
       @cell-dblclick="btnView"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="selection" align="center" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="角色名称" prop="roleName" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.roleName }}</span>
@@ -44,7 +44,7 @@
           <span>{{ scope.row.remark }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
@@ -185,8 +185,8 @@
         :cell-style="{padding:'3px'}"
         @selection-change="selectionChangeRoleUser"
       >
-        <el-table-column type="selection" align="center" />
-        <el-table-column type="index" label="#" align="center" width="50" />
+        <el-table-column fixed type="selection" align="center" />
+        <el-table-column fixed type="index" label="#" align="center" width="50" />
         <el-table-column label="用户姓名" prop="userName" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.userName }}</span>

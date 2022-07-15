@@ -28,15 +28,15 @@
       @cell-dblclick="btnView"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="selection" align="center" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="日志类型" prop="logType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.logType,scope.row.logType)" /></template></el-table-column>            <el-table-column label="日志内容" prop="logContent" align="center"><template slot-scope="scope"><span>{{ scope.row.logContent }}</span></template></el-table-column>
       <el-table-column label="操作用户姓名" prop="userName" align="center"><template slot-scope="scope"><span>{{ scope.row.userName }}</span></template></el-table-column>
       <el-table-column label="IP" prop="ip" align="center"><template slot-scope="scope"><span>{{ scope.row.ip }}</span></template></el-table-column>
       <el-table-column label="耗时" prop="costTime" align="center"><template slot-scope="scope"><span>{{ scope.row.costTime }}</span></template></el-table-column>
       <el-table-column label="操作是否成功" prop="success" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.success)" /></template></el-table-column>
       <el-table-column label="操作时间" prop="createTime" align="center"><template slot-scope="scope"><span>{{ scope.row.createTime }}</span></template></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>

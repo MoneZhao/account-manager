@@ -22,15 +22,15 @@
       @cell-dblclick="btnView"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="selection" align="center" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="任务名称" prop="jobName" align="center"><template slot-scope="scope"><span>{{ scope.row.jobName }}</span></template></el-table-column>
       <el-table-column label="任务组名" prop="jobGroup" align="center"><template slot-scope="scope"><span>{{ scope.row.jobGroup }}</span></template></el-table-column>
       <el-table-column label="调用目标字符串" prop="invokeTarget" align="center"><template slot-scope="scope"><span>{{ scope.row.invokeTarget }}</span></template></el-table-column>
       <el-table-column label="是否正常执行" prop="status" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.status)" /></template></el-table-column>
       <el-table-column label="开始时间" prop="startTime" align="center"><template slot-scope="scope"><span>{{ scope.row.startTime }}</span></template></el-table-column>
       <el-table-column label="结束时间" prop="stopTime" align="center"><template slot-scope="scope"><span>{{ scope.row.stopTime }}</span></template></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>

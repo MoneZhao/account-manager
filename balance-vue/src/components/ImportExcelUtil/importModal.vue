@@ -23,7 +23,7 @@
         <div v-if="current===1">
           <el-table :data="listData" style="marginTop: 15px;">
             <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" />
-            <el-table-column label="操作" width="50">
+            <el-table-column fixed="right" label="操作" width="50">
               <template slot-scope="scope">
                 <!-- <a href="javascript:;" @click="removeItem(scope.$index)" style="">移除</a> -->
                 <el-tooltip class="item" effect="dark" content="移除" placement="top">

@@ -73,7 +73,7 @@
       style="width: 99%;"
       :cell-style="{padding:'3px'}"
     >
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="流程实例名称" prop="processInstanceName" align="center">
         <template slot-scope="scope"><span>{{ scope.row.processInstanceName }}</span></template>
       </el-table-column>
@@ -98,7 +98,7 @@
       <el-table-column label="执行人" prop="assignee" align="center">
         <template slot-scope="scope"><span>{{ scope.row.assignee }}</span></template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>

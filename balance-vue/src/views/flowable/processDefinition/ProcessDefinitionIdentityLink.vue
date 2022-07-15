@@ -13,8 +13,8 @@
       @cell-dblclick="btnView"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="selection" align="center" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="授权ID" prop="identityId" align="center">
         <template slot-scope="scope"><span>{{ scope.row.identityId }}</span></template>
       </el-table-column>
@@ -26,7 +26,7 @@
       <el-table-column label="授权名称" prop="identityName" align="center">
         <template slot-scope="scope"><span>{{ scope.row.identityName }}</span></template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
             <span class="el-dropdown-link">操作<i

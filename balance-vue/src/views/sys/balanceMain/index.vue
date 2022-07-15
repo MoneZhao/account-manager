@@ -121,6 +121,62 @@
         <div slot="tip" class="el-upload__tip">上传数据同天同类型账户余额会被覆盖!</div>
       </el-upload>
     </el-dialog>
+    <el-dialog title="账户复制" :visible.sync="dialogCopyVisible" label-position="right" destroy-on-close>
+      <el-form ref="copyForm" :rules="copyRules" :model="copyTemp" label-position="right" label-width="auto">
+        <el-card style="margin-bottom: 10px">
+          <h3>账户余额</h3>
+          <el-form-item label="记录时间" prop="accountDate"><el-date-picker v-model="copyTemp.accountDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" /></el-form-item>
+          <el-form-item label="备注" prop="remark"><el-input v-model="copyTemp.remark" maxlength="255" show-word-limit /></el-form-item>
+        </el-card>
+        <el-card>
+          <h3>账户详情</h3>
+          <el-table
+            ref="copyTable"
+            v-loading="copyLoading"
+            :data="copyTemp.details"
+            border
+            fit
+            highlight-current-row
+            style="width: 100%;"
+            :cell-style="{padding:'3px'}"
+          >
+            <el-table-column fixed type="index" label="#" align="center" width="50" />
+            <el-table-column label="账户类型" prop="balanceType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.balanceType,scope.row.balanceType)" /></template></el-table-column>
+            <el-table-column label="账户余额" prop="account" align="center"><template slot-scope="scope">
+              <span v-if="scope.row.isEditPropertyShow">
+                <el-input-number
+                  v-model="scope.row.account"
+                  controls-position="right"
+                  :min="0"
+                  :precision="2"
+                  :step="1"
+                />
+              </span>
+              <span v-else>{{ formatMoney(scope.row.account) }}</span>
+            </template></el-table-column>
+            <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope">
+              <span v-if="scope.row.isEditPropertyShow">
+                <el-input v-model="scope.row.remark" style="width: 100%" maxlength="255" show-word-limit />
+              </span>
+              <span v-else>{{ scope.row.remark }}</span>
+            </template></el-table-column>
+            <el-table-column fixed="right" label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button v-if="!scope.row.isEditPropertyShow" type="primary" size="small" @click="editProperty(scope.row,scope.$index)">编辑</el-button>
+                <div v-else>
+                  <el-button type="primary" plain size="small" @click="saveProperty(scope.row,scope.$index)">保存</el-button>
+                  <el-button size="small" @click="cancelProperty(scope.row,scope.$index)">取消</el-button>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button icon="el-icon-close" @click="dialogCopyVisible = false">取消</el-button>
+        <el-button icon="el-icon-check" :disabled="copyLoading" type="primary" @click="copyData">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 

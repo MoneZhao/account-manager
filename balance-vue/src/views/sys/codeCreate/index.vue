@@ -28,12 +28,12 @@
       @cell-dblclick="btnView"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="selection" align="center" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="表名" prop="codeCreateTablename" align="center"><template slot-scope="scope"><span>{{ scope.row.codeCreateTablename }}</span></template></el-table-column>
       <el-table-column label="模块名" prop="codeCreateModule" align="center"><template slot-scope="scope"><span>{{ scope.row.codeCreateModule }}</span></template></el-table-column>
       <el-table-column label="文件名" prop="codeCreateFilename" align="center"><template slot-scope="scope"><span>{{ scope.row.codeCreateFilename }}</span></template></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>

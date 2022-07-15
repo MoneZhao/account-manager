@@ -27,14 +27,14 @@
       @cell-dblclick="btnView"
       @selection-change="selectionChange"
     >
-      <!--      <el-table-column type="selection" align="center" />-->
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <!--      <el-table-column fixed type="selection" align="center" />-->
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="系统参数ID" prop="configId" align="center"><template slot-scope="scope"><span>{{ scope.row.configId }}</span></template></el-table-column>
       <el-table-column label="系统参数名称" prop="configName" align="center"><template slot-scope="scope"><span>{{ scope.row.configName }}</span></template></el-table-column>
       <el-table-column label="系统参数值" prop="configValue" align="center"><template slot-scope="scope"><span>{{ scope.row.configValue }}</span></template></el-table-column>
       <el-table-column label="排序号" prop="sortNo" align="center"><template slot-scope="scope"><span>{{ scope.row.sortNo }}</span></template></el-table-column>
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown>
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
