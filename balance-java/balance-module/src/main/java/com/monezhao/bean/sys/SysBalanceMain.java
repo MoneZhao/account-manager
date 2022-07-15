@@ -23,6 +23,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 【账户余额】实体类
@@ -106,4 +107,8 @@ public class SysBalanceMain extends BaseEntity {
     @ApiModelProperty(hidden = true)
     private int version;
 
+    @TableField(exist = false)
+    @ExcelIgnore
+    @ApiModelProperty(hidden = true)
+    private List<SysBalanceDetail> details;
 }

@@ -123,6 +123,29 @@ public class SysBalanceMainController extends BaseController {
     /**
      * @param sysBalanceMain
      * @return
+     * @功能：复制
+     */
+    @RequiresPermissions("sys:balanceMain:save")
+    @PostMapping(value = "/copy")
+    @SysLogAuto(value = "账户余额复制")
+    @ApiOperation("账户余额复制")
+    @ApiOperationSupport(ignoreParameters = {
+            "balanceMainId",
+    })
+    public Result copy(@Valid @RequestBody SysBalanceMain sysBalanceMain) {
+        SysUser sysUser = ShiroUtils.getSysUser();
+        sysBalanceMain.setUserId(sysUser.getUserId());
+        if (!sysBalanceMainService.exist(sysBalanceMain)) {
+            sysBalanceDetailService.copy(sysBalanceMain);
+            return Result.ok();
+        } else {
+            return Result.error("已存在当日数据");
+        }
+    }
+
+    /**
+     * @param sysBalanceMain
+     * @return
      * @功能：修改
      */
     @RequiresPermissions("sys:balanceMain:update")

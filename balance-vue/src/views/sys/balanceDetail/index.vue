@@ -26,18 +26,21 @@
       @cell-dblclick="btnUpdate"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="selection" align="center" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="账户余额" prop="account" align="center"><template slot-scope="scope"><span>{{ formatMoney(scope.row.account) }}</span></template></el-table-column>
       <el-table-column label="账户类型" prop="balanceType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.balanceType,scope.row.balanceType)" /></template></el-table-column>
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
-          <el-button icon="el-icon-edit" @click.native="btnUpdate(row)">修改</el-button>
-          <el-divider direction="vertical" />
-          <el-button icon="el-icon-delete" @click.native="btnDelete(row.balanceDetailId)">删除</el-button>
-          <el-divider direction="vertical" />
-          <el-button icon="el-icon-sort" @click.native="btnCompare(row)">对比</el-button>
+          <el-dropdown>
+            <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item icon="el-icon-edit" @click.native="btnUpdate(row)">修改</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-delete" @click.native="btnDelete(row.balanceDetailId)">删除</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-sort" @click.native="btnCompare(row)">对比</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>

@@ -1,6 +1,7 @@
 package com.monezhao.service;
 
 import com.monezhao.bean.sys.SysBalanceDetail;
+import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.common.base.BaseService;
 
 import java.util.Date;
@@ -82,4 +83,10 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
      * @return queryDetail
      */
     List<SysBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType);
+
+    /**
+     * 账户余额复制
+     * @param sysBalanceMain sysBalanceMain
+     */
+    boolean copy(SysBalanceMain sysBalanceMain);
 }

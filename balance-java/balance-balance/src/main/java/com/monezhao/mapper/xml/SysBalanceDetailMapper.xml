@@ -39,7 +39,7 @@
         <if test="entity.userId != null and entity.userId !=''">
             <![CDATA[	AND a.user_id = #{entity.userId}]]>
         </if>
-        order by m.account_date,a.create_time asc
+        order by m.account_date,ci.sort_no
     </select>
 
     <select id="account" resultType="java.math.BigDecimal">
@@ -73,7 +73,7 @@
                  open="(" separator="," close=")">
             #{item}
         </foreach>
-        order by m.account_date,a.create_time desc
+        order by m.account_date,ci.sort_no
     </select>
     <select id="queryDetail" resultType="com.monezhao.bean.sys.SysBalanceDetail">
         select
@@ -87,11 +87,12 @@
         a.remark as remark
 
         from t_sys_balance_detail a
+        LEFT JOIN t_sys_code_info ci ON ci.code_type_id = 'balanceType' AND ci.value = a.balance_type
         left join t_sys_balance_main m on m.balance_main_id = a.balance_main_id
         where a.delete_type=0
         AND a.user_id = #{userId}
         AND a.balance_type = #{balanceType}
         <![CDATA[   AND m.account_date >= #{startMonth} and m.account_date <= #{endMonth} ]]>
-        order by m.account_date asc
+        order by m.account_date,ci.sort_no
     </select>
 </mapper>

@@ -33,20 +33,23 @@
       @cell-dblclick="btnDetail"
       @selection-change="selectionChange"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column type="index" label="#" align="center" width="50" />
+      <el-table-column fixed type="selection" align="center" />
+      <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="记录时间" prop="accountDate" align="center"><template slot-scope="scope"><span>{{ formatDate(scope.row.accountDate) }}</span></template></el-table-column>
       <el-table-column label="账户余额" prop="account" align="center"><template slot-scope="scope"><span>{{ formatMoney(scope.row.account) }}</span></template></el-table-column>
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
-      <el-table-column label="操作" align="center" width="400px">
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
-          <el-button v-permission="'sys:balanceMain:update'" icon="el-icon-edit" @click.native="btnUpdate(row)">修改</el-button>
-          <el-divider direction="vertical" />
-          <el-button v-permission="'sys:balanceMain:delete'" icon="el-icon-delete" @click.native="btnDelete(row.balanceMainId)">删除</el-button>
-          <el-divider direction="vertical" />
-          <el-button icon="el-icon-more" @click.native="btnDetail(row)">详情</el-button>
-          <el-divider direction="vertical" />
-          <el-button icon="el-icon-sort" @click.native="btnCompare(row)">对比</el-button>
+          <el-dropdown>
+            <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-permission="'sys:balanceMain:update'" icon="el-icon-edit" @click.native="btnUpdate(row)">修改</el-dropdown-item>
+              <el-dropdown-item v-permission="'sys:balanceMain:delete'" icon="el-icon-delete" @click.native="btnDelete(row.balanceMainId)">删除</el-dropdown-item>
+              <el-dropdown-item v-permission="'sys:balanceMain:save'" icon="el-icon-link" @click.native="btnCopy(row)">复制</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-more" @click.native="btnDetail(row)">详情</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-sort" @click.native="btnCompare(row)">对比</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -248,11 +251,21 @@ export default {
       compareRules: {
         compareDate: [{ required: true, message: '该项不能为空', trigger: 'change' }]
       },
-      dialogImportVisible: false
+      dialogImportVisible: false,
+      dialogCopyVisible: false,
+      copyLoading: false,
+      haveEditPropertyShow: false,
+      copyRules: {
+        accountDate: [{ required: true, message: '该项不能为空', trigger: 'change' }]
+      },
+      copyTemp: {
+        accountDate: undefined,
+        remark: undefined,
+        details: []
+      }
     }
   },
   beforeCreate() {
-
   },
   created() {
     this.list()
@@ -330,6 +343,80 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    async btnCopy(row) {
+      const res = await this.getDicts('balanceType')
+      this.dicts = res.data
+      this.copyTemp.remark = row.remark
+      this.copyTemp.accountDate = undefined
+      this.dialogCopyVisible = true
+      this.copyLoading = true
+      const listQuery = {
+        current: 1,
+        size: 100,
+        balanceType: undefined,
+        balanceMainId: row.balanceMainId
+      }
+      const {
+        data
+      } = await getAction('/sys/balanceDetail/list', listQuery)
+      data.records.map(item => {
+        item.balanceMainId = undefined
+        item.balanceDetailId = undefined
+      })
+      this.copyTemp.details = data.records
+      this.$nextTick(() => {
+        this.$refs['copyForm'].clearValidate()
+        this.copyLoading = false
+      })
+    },
+    copyData() {
+      this.$refs['copyForm'].validate((valid) => {
+        if (valid) {
+          postAction('/sys/balanceMain/copy', this.copyTemp).then(({ msg }) => {
+            this.dialogCopyVisible = false
+            Message.success(msg)
+            this.list()
+          })
+        }
+      })
+    },
+    // 属性编辑
+    editProperty(row, index) {
+      if (this.haveEditPropertyShow) {
+        this.$message.warning('不能同时编辑多行')
+        return
+      }
+      this.haveEditPropertyShow = true
+      sessionStorage.setItem('oldAccount', row.account)
+      sessionStorage.setItem('oldRemark', row.remark)
+      // isEditPropertyShow为ture展示输入框
+      this.$set(this.copyTemp.details[index], 'isEditPropertyShow', true)
+    },
+    // 保存属性
+    saveProperty(row, index) {
+      this.haveEditPropertyShow = false
+      this.delProperty()
+      this.$set(this.copyTemp.details[index], 'isEditPropertyShow', false)
+    },
+    delProperty() {
+      sessionStorage.removeItem('oldAccount')
+      sessionStorage.removeItem('oldRemark')
+    },
+    // 取消属性编辑
+    cancelProperty(row, index) {
+      const oldAccount = sessionStorage.getItem('oldAccount')
+      const oldRemark = sessionStorage.getItem('oldRemark')
+      if (oldAccount) {
+        this.$set(this.copyTemp.details[index], 'account', oldAccount)
+        this.$set(this.copyTemp.details[index], 'remark', oldRemark)
+      } else {
+        this.$set(this.copyTemp.details[index], 'account', '0')
+        this.$set(this.copyTemp.details[index], 'remark', '')
+      }
+      this.haveEditPropertyShow = false
+      this.delProperty()
+      this.$set(this.copyTemp.details[index], 'isEditPropertyShow', false)
     },
     updateData() {
       this.$refs['dataForm'].validate((valid) => {

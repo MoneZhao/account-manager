@@ -258,4 +258,30 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     public List<SysBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType) {
         return baseMapper.queryDetail(userId, startMonth, endMonth, balanceType);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean copy(SysBalanceMain sysBalanceMain) {
+        sysBalanceMainService.save(sysBalanceMain);
+        String balanceMainId = sysBalanceMain.getBalanceMainId();
+        List<SysBalanceDetail> details = sysBalanceMain.getDetails();
+        if (details == null || details.size() == 0) {
+            return true;
+        }
+        List<SysBalanceDetail> savedList = new ArrayList<>(details.size());
+        for (SysBalanceDetail detail : details) {
+            SysBalanceDetail addDetail = new SysBalanceDetail();
+            addDetail.setAccount(detail.getAccount());
+            addDetail.setBalanceType(detail.getBalanceType());
+            addDetail.setBalanceMainId(balanceMainId);
+            addDetail.setUserId(sysBalanceMain.getUserId());
+            addDetail.setRemark(detail.getRemark());
+            savedList.add(addDetail);
+        }
+        this.saveBatch(savedList);
+        BigDecimal account = baseMapper.account(balanceMainId);
+        sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
+        sysBalanceMainService.updateById(sysBalanceMain);
+        return true;
+    }
 }
