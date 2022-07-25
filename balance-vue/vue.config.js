@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-const buildPath = './dist'
+const buildPath = '/Users/monezhao/Movies/balance/dist'
 // const buildPath = '../balance-java/balance-manager/src/main/resources/public'
 
 function resolve(dir) {
@@ -23,7 +23,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: './',
+  publicPath: '/balance/',
   outputDir: path.resolve(__dirname, `${buildPath}`),
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
