@@ -8,6 +8,7 @@ import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.common.exception.SysException;
 import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.RedisUtil;
+import com.monezhao.config.DefaultSystemConfig;
 import com.monezhao.mapper.SysConfigMapper;
 import com.monezhao.service.SysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigMapper, SysCo
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private DefaultSystemConfig defaultSystemConfig;
 
     @Override
     public IPage<SysConfig> list(IPage<SysConfig> page, SysConfig sysConfig) {
@@ -103,7 +108,22 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigMapper, SysCo
     }
 
     @Override
-    public String getSysConfig(String configId, String defaultValue) {
+    public String getSysConfig(String configId) {
+        String defaultValue = null;
+        Class objClass = defaultSystemConfig.getClass();
+        Field[] fields = objClass.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equals(configId)) {
+                field.setAccessible(true);
+                try {
+                    defaultValue = (String) field.get(defaultSystemConfig);
+                    break;
+                } catch (IllegalAccessException e) {
+                    break;
+                }
+            }
+        }
+
         if (StringUtils.isEmpty(configId)) {
             return defaultValue;
         }

@@ -19,11 +19,6 @@ import java.util.Date;
 @Slf4j
 public class JwtUtil {
     /**
-     * 过期时间，单位秒s
-     */
-    public static final long EXPIRE_TIME = 3456000;
-
-    /**
      * 校验token是否正确
      *
      * @param token  密钥

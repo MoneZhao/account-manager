@@ -128,7 +128,7 @@ public class AuthRealm extends AuthorizingRealm {
         String userTokenKey = Constants.PREFIX_USER_TOKEN + userId;
         // 校验token有效性，若验证通过，刷新token缓存时间
         if (token.equals(redisUtil.get(userTokenKey)) && JwtUtil.verify(token, userId, password)) {
-            String expireTime = sysConfigService.getSysConfig("expireTime", String.valueOf(JwtUtil.EXPIRE_TIME));
+            String expireTime = sysConfigService.getSysConfig("expireTime");
             long expireTimeL = Long.parseLong(expireTime);
             redisUtil.expire(userTokenKey, expireTimeL);
             redisUtil.expire(Constants.PREFIX_USER_SESSION_OBJECT + userId, expireTimeL);

@@ -16,7 +16,6 @@ import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.PasswordUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
-import com.monezhao.config.DefaultSystemConfig;
 import com.monezhao.service.SysConfigService;
 import com.monezhao.service.SysUserService;
 import io.swagger.annotations.Api;
@@ -64,9 +63,6 @@ public class SysLoginController extends BaseController {
     private Producer producer;
 
     @Autowired
-    private DefaultSystemConfig defaultSystemConfig;
-
-    @Autowired
     private SysConfigService sysConfigService;
 
     @GetMapping("captcha.jpg")
@@ -88,7 +84,7 @@ public class SysLoginController extends BaseController {
     @GetMapping("useCaptcha")
     @ApiOperation("是否使用图片验证码")
     public Result useCaptcha() {
-        String useCaptcha = sysConfigService.getSysConfig("useCaptcha", defaultSystemConfig.getUseCaptcha());
+        String useCaptcha = sysConfigService.getSysConfig("useCaptcha");
         return Result.ok(useCaptcha);
     }
 
@@ -100,7 +96,7 @@ public class SysLoginController extends BaseController {
         CommonUtil.isEmptyStr(sysLoginForm.getUserId(), "用户名不能为空");
         CommonUtil.isEmptyStr(sysLoginForm.getPassword(), "密码不能为空");
 
-        String useCaptcha = sysConfigService.getSysConfig("useCaptcha", defaultSystemConfig.getUseCaptcha());
+        String useCaptcha = sysConfigService.getSysConfig("useCaptcha");
         // 验证码校验
         if ("0".equals(useCaptcha)) {
             CommonUtil.isEmptyStr(sysLoginForm.getUuid(), "验证码uuid不能为空");
@@ -125,7 +121,7 @@ public class SysLoginController extends BaseController {
         String password = PasswordUtil.encrypt(sysLoginForm.getPassword(), sysUser.getSalt());
         if (!password.equals(sysUser.getPassword())) {
             Integer count = (Integer) redisUtil.get(Constants.PREFIX_LOGIN_COUNT + userId, 0);
-            Integer setCount = Integer.valueOf(sysConfigService.getSysConfig("loginCount", "5"));
+            Integer setCount = Integer.valueOf(sysConfigService.getSysConfig("loginCount"));
             if (count < setCount - 1) {
                 Integer tryCount = setCount - 1 - count;
                 redisUtil.set(Constants.PREFIX_LOGIN_COUNT + userId, count + 1);
@@ -140,7 +136,7 @@ public class SysLoginController extends BaseController {
         }
         // 生成token,不传入token过期时间，在使用JwtUtil.verify时不会校验过期时间
         String token = JwtUtil.sign(userId, password);
-        String expireTime = sysConfigService.getSysConfig("expireTime", String.valueOf(JwtUtil.EXPIRE_TIME));
+        String expireTime = sysConfigService.getSysConfig("expireTime");
         // 使用redis管理token过期时间
         redisUtil.set(Constants.PREFIX_USER_TOKEN + userId, token, Long.parseLong(expireTime));
         HashMap<String, String> obj = new HashMap<>(1);

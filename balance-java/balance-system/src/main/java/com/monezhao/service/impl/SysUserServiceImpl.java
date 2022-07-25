@@ -22,9 +22,7 @@ import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.common.exception.SysException;
 import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.PasswordUtil;
-import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
-import com.monezhao.config.DefaultSystemConfig;
 import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.controller.command.VisitCount;
 import com.monezhao.mapper.SysUserMapper;
@@ -57,9 +55,6 @@ import java.util.stream.Collectors;
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     @Autowired
-    private DefaultSystemConfig defaultSystemConfig;
-
-    @Autowired
     private SysRoleServiceImpl sysRoleService;
 
     @Autowired
@@ -67,9 +62,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     @Autowired
     private SysOrgServiceImpl sysOrgService;
-
-    @Autowired
-    private RedisUtil redisUtil;
 
     @Autowired
     private SysUserShortCutService sysUserShortCutService;
@@ -308,8 +300,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public boolean saveSysUser(SysUser sysUser) {
         String salt = PasswordUtil.randomGen(8);
         // 默认密码
-        String defaultPassword = sysConfigService.getSysConfig("defaultPassword",
-                defaultSystemConfig.getDefaultPassword());
+        String defaultPassword = sysConfigService.getSysConfig("defaultPassword");
         String password = PasswordUtil.encrypt(PasswordUtil.md5Encode(defaultPassword), salt);
         sysUser.setSalt(salt);
         sysUser.setPassword(password);
@@ -330,8 +321,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         for (SysUser sysUser : sysUsers) {
             String salt = PasswordUtil.randomGen(8);
             // 默认密码
-            String defaultPassword = sysConfigService.getSysConfig("defaultPassword",
-                    defaultSystemConfig.getDefaultPassword());
+            String defaultPassword = sysConfigService.getSysConfig("defaultPassword");
             String password = PasswordUtil.encrypt(PasswordUtil.md5Encode(defaultPassword), salt);
             sysUser.setSalt(salt);
             sysUser.setPassword(password);
@@ -426,8 +416,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
         }
         String salt = PasswordUtil.randomGen(8);
         // 默认密码
-        String defaultPassword = sysConfigService.getSysConfig("defaultPassword",
-                defaultSystemConfig.getDefaultPassword());
+        String defaultPassword = sysConfigService.getSysConfig("defaultPassword");
         String password = PasswordUtil.encrypt(PasswordUtil.md5Encode(defaultPassword), salt);
         sysUser.setSalt(salt);
         sysUser.setPassword(password);

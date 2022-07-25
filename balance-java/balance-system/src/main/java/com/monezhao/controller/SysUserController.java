@@ -9,6 +9,7 @@ import com.monezhao.annotation.SysLogAuto;
 import com.monezhao.bean.sys.SysPicUpDown;
 import com.monezhao.bean.sys.SysUser;
 import com.monezhao.bean.utilsVo.SessionObject;
+import com.monezhao.bean.utilsVo.ShortCut;
 import com.monezhao.bean.utilsVo.SysPasswordForm;
 import com.monezhao.common.Constants;
 import com.monezhao.common.Result;
@@ -17,10 +18,8 @@ import com.monezhao.common.exception.SysException;
 import com.monezhao.common.util.CustomCellWriteHandler;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.IpUtils;
-import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
-import com.monezhao.bean.utilsVo.ShortCut;
 import com.monezhao.controller.command.SysUserIndex;
 import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.service.SysConfigService;
@@ -210,7 +209,7 @@ public class SysUserController extends BaseController {
                 }
             }
         }
-        String expireTime = sysConfigService.getSysConfig("expireTime", String.valueOf(JwtUtil.EXPIRE_TIME));
+        String expireTime = sysConfigService.getSysConfig("expireTime");
         redisUtil.set(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId(), sessionObject, Long.parseLong(expireTime));
         return Result.ok(sessionObject);
     }

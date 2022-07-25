@@ -1,5 +1,6 @@
 package com.monezhao.init;
 
+import com.monezhao.config.DefaultSystemConfig;
 import com.monezhao.service.SysCodeInfoService;
 import com.monezhao.service.SysConfigService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,11 @@ public class BalanceRunner implements ApplicationRunner {
     @Autowired
     private SysCodeInfoService sysCodeInfoService;
 
+    @Autowired
+    private DefaultSystemConfig defaultSystemConfig;
+
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         sysConfigService.loadSysConfigToRedis(null);
         sysCodeInfoService.loadSysCodeInfoToRedis(null);
 
@@ -39,6 +43,7 @@ public class BalanceRunner implements ApplicationRunner {
             String host = InetAddress.getLocalHost().getHostAddress();
             int port = tomcatServletWebServerFactory.getPort();
             String contextPath = tomcatServletWebServerFactory.getContextPath();
+            log.info(defaultSystemConfig.toString());
             log.info("---------启动成功,访问: ");
             log.info("-----------Local: http://" + "127.0.0.1:" + port + contextPath + "/");
             log.info("-----------Network: http://" + host + ":" + port + contextPath + "/");

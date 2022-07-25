@@ -54,9 +54,13 @@ flowable:
 #  font-name: '思源宋体 CN'
 system-config:
   # 新建用户或者重置用户密码默认密码
-  default-password: 1
+  defaultPassword: 1
   # 是否使用验证码, 0 使用 1不使用
-  use-captcha: 1
+  useCaptcha: 1
+  # jwt过期时间 7d
+  expireTime: 604800
+  # 登录错误限制
+  loginCount: 5
 knife4j:
   enable: true
   basic:
