@@ -133,64 +133,6 @@
         </el-button>
       </div>
     </el-dialog>
-    <el-dialog title="个人信息" :visible.sync="personalInfoVisible" destroy-on-close append-to-body>
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="用户姓名" prop="userName">
-              <el-input v-model="temp.userName" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="性别" prop="sex">
-              <el-select v-model="temp.sex" placeholder="性别">
-                <el-option v-for="item in dicts.userSex" :key="item.value" :label="item.content" :value="item.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="手机号码" prop="mobile">
-              <el-input v-model="temp.mobile" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="身份证号" prop="idCardNo">
-              <el-input v-model="temp.idCardNo" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="邮箱地址" prop="email">
-              <el-input v-model="temp.email" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="备注">
-              <el-input
-                v-model="temp.remark"
-                :autosize="{ minRows: 2, maxRows: 4}"
-                type="textarea"
-                placeholder="请输入备注信息"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button icon="el-icon-close" @click="personalInfoVisible = false">
-          取消
-        </el-button>
-        <el-button :loading="personalInfoLoading" icon="el-icon-check" type="primary" @click="editPersonalInfo">
-          确定
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 

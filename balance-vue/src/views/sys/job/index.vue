@@ -40,7 +40,7 @@
       <el-table-column label="是否正常状态" prop="status" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.status)" /></template></el-table-column>
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
-          <el-dropdown>
+          <el-dropdown trigger="click">
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
