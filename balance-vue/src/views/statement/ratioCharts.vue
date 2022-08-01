@@ -1,5 +1,5 @@
 <template>
-  <Echart id="ratioChart" :options="options" height="320px" width="100%" />
+  <Echart id="ratioChart" :options="options" height="60vh" width="100%" style="max-height: 640px;" />
 </template>
 
 <script>
@@ -34,7 +34,7 @@ export default {
             top: 40,
             bottom: 10,
             data: newData.legendData,
-            selected: newData.selectdData
+            selected: newData.selectedData
           },
           series: [
             {

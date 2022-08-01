@@ -33,7 +33,7 @@
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
-          <el-dropdown>
+          <el-dropdown trigger="click">
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-edit" @click.native="btnUpdate(row)">修改</el-dropdown-item>
@@ -54,7 +54,7 @@
       />
     </div>
 
-    <el-dialog title="账户明细" :visible.sync="dialogFormDetailVisible" append-to-body>
+    <el-dialog title="账户明细" :visible.sync="dialogFormDetailVisible" width="550px" append-to-body>
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="账户类型" prop="balanceType"><el-select v-model="temp.balanceType" filterable placeholder="账户类型"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
         <el-form-item label="账户余额" prop="account">
@@ -64,11 +64,12 @@
             :min="0"
             :precision="2"
             :step="1"
+            style="width: 205px"
             @keyup.enter.native="dialogStatus==='create'?createData():updateData()"
           />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="temp.remark" style="width: 60%" maxlength="255" show-word-limit />
+          <el-input v-model="temp.remark" style="width: 80%" maxlength="255" show-word-limit />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -77,17 +78,17 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="'余额明细对比 - (' + compareTemp.balanceName + ')'" :visible.sync="dialogCompareVisible" label-position="right" destroy-on-close append-to-body>
+    <el-dialog :title="'余额明细对比 - (' + compareTemp.balanceName + ')'" :visible.sync="dialogCompareVisible" label-position="right" width="600px" destroy-on-close append-to-body>
       <el-form ref="compareForm" :rules="compareRules" :model="compareTemp" label-width="auto">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="当前日期" prop="selectDate">
-              <el-date-picker v-model="compareTemp.selectDate" readonly value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" />
+              <el-date-picker v-model="compareTemp.selectDate" readonly value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" style="width: 166px" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="对比日期" prop="compareDate">
-              <el-date-picker v-model="compareTemp.compareDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" @change="dateChange" />
+              <el-date-picker v-model="compareTemp.compareDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" style="width: 166px" @change="dateChange" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -101,7 +102,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="差值" prop="diff"><el-input v-model="compareTemp.diff" readonly /></el-form-item>
+            <el-form-item label="差值" prop="diff"><el-input v-model="diff" readonly /></el-form-item>
           </el-col>
         </el-row>
       </el-form>
@@ -172,8 +173,7 @@ export default {
         selectAccountFormat: '',
         compareDate: '',
         compareAccount: '',
-        compareAccountFormat: '',
-        diff: ''
+        compareAccountFormat: ''
       },
       compareRules: {
         compareDate: [{ required: true, message: '该项不能为空', trigger: 'change' }]
@@ -188,6 +188,15 @@ export default {
       rules: {
         account: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         balanceType: [{ required: true, message: '该项不能为空', trigger: 'change' }]
+      }
+    }
+  },
+  computed: {
+    diff() {
+      if (this.compareTemp.selectAccount && this.compareTemp.compareAccount) {
+        return this.formatMoney(this.compareTemp.selectAccount - this.compareTemp.compareAccount)
+      } else {
+        return ''
       }
     }
   },
@@ -314,7 +323,6 @@ export default {
               Message.success(msg)
               this.compareTemp.compareAccount = data.account
               this.compareTemp.compareAccountFormat = this.formatMoney(data.account)
-              this.compareTemp.diff = this.formatMoney(this.compareTemp.selectAccount - this.compareTemp.compareAccount)
             } else {
               Message.info(msg)
             }

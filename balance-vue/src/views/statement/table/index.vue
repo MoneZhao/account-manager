@@ -2,14 +2,14 @@
   <div class="app-container">
     <div class="filter-container">
       <el-card style="border-color: #f1f1f1;" shadow="hover">
-        <span style="margin-left:12rem">查询范围：</span>
+        <span style="margin-left:4rem">查询范围：</span>
         <el-date-picker
           v-model="temp.value"
           :editable="false"
           type="monthrange"
           align="right"
           unlink-panels
-          range-separator="至"
+          range-separator="-"
           start-placeholder="开始月份"
           end-placeholder="结束月份"
           format="yyyy 年 MM 月"
@@ -19,11 +19,11 @@
         />
       </el-card>
       <el-card style="border-color: #f1f1f1;" shadow="hover">
-        <div id="line_chart" style="height: 600px" />
+        <div id="line_chart" style="width: 95%;height: 55vh;margin: 0 .1rem" />
       </el-card>
     </div>
 
-    <el-dialog :title="`${yearMonth.name} - 账户详情`" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
+    <el-dialog :title="`${yearMonth.name} - 账户详情`" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
       <RatioChart v-if="dialogVisible" :cdata="ratioData" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">关 闭</el-button>
@@ -78,11 +78,11 @@ export default {
       },
       yearMonth: {
         name: '',
-        vaue: ''
+        value: ''
       },
       ratioData: {
         legendData: [],
-        selectdData: [],
+        selectedData: [],
         seriesData: []
       },
       dialogVisible: false,
@@ -111,7 +111,7 @@ export default {
 
       this.yearMonth.name = month
       month = month.substring(0, 7)
-      this.yearMonth.vaue = month.replace('年', '-')
+      this.yearMonth.value = month.replace('年', '-')
 
       this.getRatioData()
       this.dialogVisible = true
@@ -120,10 +120,10 @@ export default {
       const obj = {
         legendData: [],
         seriesData: [],
-        selectdData: {}
+        selectedData: {}
       }
       const params = {
-        statementDate: this.yearMonth.vaue
+        statementDate: this.yearMonth.value
       }
       const {
         data
@@ -135,7 +135,7 @@ export default {
           value: item.account
         }
         obj.seriesData.push(oneObj)
-        obj.selectdData[item.equipmentName] = index < 20
+        obj.selectedData[item.equipmentName] = index < 20
         this.ratioData = obj
       })
     },
@@ -146,8 +146,10 @@ export default {
       }).then((r) => {
         const data = r.data
         const legend = data.y.map(e => e.name)
-        const chart = this.$echarts.init(document.getElementById('line_chart'))
-        chart.setOption({
+        if (!this.chart) {
+          this.chart = this.$echarts.init(document.getElementById('line_chart'))
+        }
+        this.chart.setOption({
           title: {
             text: data.title,
             left: 'left'
@@ -190,14 +192,18 @@ export default {
           },
           series: data.y
         })
-        chart.getZr().on('click', params => {
+        window.addEventListener('resize', () => {
+          this.chart.resize()
+        })
+        this.chart.getZr().on('click', params => {
           const pointInPixel = [params.offsetX, params.offsetY]
-          if (chart.containPixel('grid', pointInPixel)) {
-            const xIndex = chart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
+          if (this.chart.containPixel('grid', pointInPixel)) {
+            const xIndex = this.chart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
             const handleIndex = Number(xIndex)
             // 获得图表中点击的列
-            const month = chart.getOption().xAxis[0].data[handleIndex]
+            const month = this.chart.getOption().xAxis[0].data[handleIndex]
             this.formatYearMonth(month)
+            this.chart._dom.childNodes[1].style.display = 'none'
           }
         })
       })

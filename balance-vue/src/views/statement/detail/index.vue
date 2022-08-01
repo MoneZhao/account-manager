@@ -2,30 +2,31 @@
   <div class="app-container">
     <div class="filter-container">
       <el-card style="border-color: #f1f1f1;" shadow="hover">
-        <span style="margin-left:12rem">账户类型：</span>
+        <span style="margin-left:4rem">账户类型：</span>
         <el-select v-model="temp.balanceType" placeholder="账户类型" class="filter-item" @change="onChange"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select>
-        <span style="margin-left:12rem">查询范围：</span>
+        <span style="margin-left:2rem">查询范围：</span>
         <el-date-picker
           v-model="temp.value"
           :editable="false"
           type="monthrange"
           align="right"
           unlink-panels
-          range-separator="至"
+          range-separator="-"
           start-placeholder="开始月份"
           end-placeholder="结束月份"
           format="yyyy 年 MM 月"
           value-format="yyyy-MM"
           :picker-options="pickerOptions"
+          style="width: 245px"
           @change="onChange"
         />
       </el-card>
       <el-card style="border-color: #f1f1f1;" shadow="hover">
-        <div id="line_chart" style="height: 600px" />
+        <div id="line_chart" style="width: 95%;height: 55vh;margin: 0 .1rem" />
       </el-card>
     </div>
 
-    <el-dialog :title="`${yearMonth.name} - 账户详情`" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
+    <el-dialog :title="`${yearMonth.name} - 账户详情`" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
       <RatioChart v-if="dialogVisible" :cdata="ratioData" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">关 闭</el-button>
@@ -119,8 +120,10 @@ export default {
       }).then((r) => {
         const data = r.data
         const legend = data.y.map(e => e.name)
-        const chart = this.$echarts.init(document.getElementById('line_chart'))
-        chart.setOption({
+        if (!this.chart) {
+          this.chart = this.$echarts.init(document.getElementById('line_chart'))
+        }
+        this.chart.setOption({
           title: {
             text: data.title,
             left: 'left'
@@ -162,6 +165,9 @@ export default {
             }
           },
           series: data.y
+        })
+        window.addEventListener('resize', () => {
+          this.chart.resize()
         })
       })
     }

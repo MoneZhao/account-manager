@@ -40,7 +40,7 @@
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
-          <el-dropdown>
+          <el-dropdown trigger="click">
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-permission="'sys:balanceMain:update'" icon="el-icon-edit" @click.native="btnUpdate(row)">修改</el-dropdown-item>
@@ -78,17 +78,17 @@
       <sys-balance-detail v-if="dialogDetailVisible" :balance-main-id="balanceMainId" />
     </el-dialog>
 
-    <el-dialog title="余额对比" :visible.sync="dialogCompareVisible" label-position="right" destroy-on-close>
+    <el-dialog title="余额对比" :visible.sync="dialogCompareVisible" label-position="right" width="600px" destroy-on-close>
       <el-form ref="compareForm" :rules="compareRules" :model="compareTemp" label-width="auto">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="当前日期" prop="selectDate">
-              <el-date-picker v-model="compareTemp.selectDate" readonly value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" />
+              <el-date-picker v-model="compareTemp.selectDate" readonly value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" style="width: 166px" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="对比日期" prop="compareDate">
-              <el-date-picker v-model="compareTemp.compareDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" @change="dateChange" />
+              <el-date-picker v-model="compareTemp.compareDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" style="width: 166px" @change="dateChange" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -102,7 +102,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="差值" prop="diff"><el-input v-model="compareTemp.diff" readonly /></el-form-item>
+            <el-form-item label="差值" prop="diff"><el-input v-model="diff" readonly /></el-form-item>
           </el-col>
         </el-row>
       </el-form>
@@ -124,12 +124,12 @@
         <div slot="tip" class="el-upload__tip">上传数据同天同类型账户余额会被覆盖!</div>
       </el-upload>
     </el-dialog>
-    <el-dialog title="账户复制" :visible.sync="dialogCopyVisible" label-position="right" destroy-on-close>
+    <el-dialog title="账户复制" :visible.sync="dialogCopyVisible" label-position="right" width="810px" destroy-on-close>
       <el-form ref="copyForm" :rules="copyRules" :model="copyTemp" label-position="right" label-width="auto">
         <el-card style="margin-bottom: 10px">
           <h3>账户余额</h3>
           <el-form-item label="记录时间" prop="accountDate"><el-date-picker v-model="copyTemp.accountDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" type="date" /></el-form-item>
-          <el-form-item label="备注" prop="remark"><el-input v-model="copyTemp.remark" maxlength="255" show-word-limit /></el-form-item>
+          <el-form-item label="备注" prop="remark"><el-input v-model="copyTemp.remark" style="width: 80%" maxlength="255" show-word-limit /></el-form-item>
         </el-card>
         <el-card>
           <h3>账户详情</h3>
@@ -144,8 +144,8 @@
             :cell-style="{padding:'3px'}"
           >
             <el-table-column fixed type="index" label="#" align="center" width="50" />
-            <el-table-column label="账户类型" prop="balanceType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.balanceType,scope.row.balanceType)" /></template></el-table-column>
-            <el-table-column label="账户余额" prop="account" align="center"><template slot-scope="scope">
+            <el-table-column label="账户类型" prop="balanceType" align="center" width="90"><template slot-scope="scope"><span v-html="formatDictText(dicts.balanceType,scope.row.balanceType)" /></template></el-table-column>
+            <el-table-column label="账户余额" prop="account" align="center" width="232"><template slot-scope="scope">
               <span v-if="scope.row.isEditPropertyShow">
                 <el-input-number
                   v-model="scope.row.account"
@@ -153,6 +153,7 @@
                   :min="0"
                   :precision="2"
                   :step="1"
+                  style="width: 205px"
                 />
               </span>
               <span v-else>{{ formatMoney(scope.row.account) }}</span>
@@ -163,7 +164,7 @@
               </span>
               <span v-else>{{ scope.row.remark }}</span>
             </template></el-table-column>
-            <el-table-column fixed="right" label="操作" align="center">
+            <el-table-column fixed="right" label="操作" align="center" width="153">
               <template slot-scope="scope">
                 <el-button v-if="!scope.row.isEditPropertyShow" type="primary" size="small" @click="editProperty(scope.row,scope.$index)">编辑</el-button>
                 <div v-else>
@@ -242,8 +243,7 @@ export default {
         selectAccountFormat: '',
         compareDate: '',
         compareAccount: '',
-        compareAccountFormat: '',
-        diff: ''
+        compareAccountFormat: ''
       },
       rules: {
         accountDate: [{ required: true, message: '该项不能为空', trigger: 'change' }]
@@ -262,6 +262,15 @@ export default {
         accountDate: undefined,
         remark: undefined,
         details: []
+      }
+    }
+  },
+  computed: {
+    diff() {
+      if (this.compareTemp.selectAccount && this.compareTemp.compareAccount) {
+        return this.formatMoney(this.compareTemp.selectAccount - this.compareTemp.compareAccount)
+      } else {
+        return ''
       }
     }
   },
@@ -351,6 +360,7 @@ export default {
       this.copyTemp.accountDate = undefined
       this.dialogCopyVisible = true
       this.copyLoading = true
+      this.haveEditPropertyShow = false
       const listQuery = {
         current: 1,
         size: 100,
@@ -473,7 +483,6 @@ export default {
               Message.success(msg)
               this.compareTemp.compareAccount = data.account
               this.compareTemp.compareAccountFormat = this.formatMoney(data.account)
-              this.compareTemp.diff = this.formatMoney(this.compareTemp.selectAccount - this.compareTemp.compareAccount)
             } else {
               Message.info(msg)
             }
