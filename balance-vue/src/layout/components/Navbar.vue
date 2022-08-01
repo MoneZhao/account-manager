@@ -27,6 +27,9 @@
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <el-dropdown-item>
+            <span style="display:block;" @click="personalInfo">个人信息</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
             <span style="display:block;" @click="upload">更改头像</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
@@ -44,7 +47,7 @@
     <!-- 弹窗, 修改密码 -->
     <update-password v-if="updatePasswordVisible" ref="updatePassword" />
     <el-dialog title="配置快捷方式" :visible.sync="showShortCutModal" destroy-on-close append-to-body>
-      <short-cut v-if="showShortCutModal" ref="shortCut" :role-id="sysUser.roleId" :user-id="sysUser.userId" @shortCutEnd="shortCutEnd" @shortCutWarning="shortCutWarning" />
+      <short-cut v-if="showShortCutModal" ref="shortCut" :role-id="sysRole.roleId" :user-id="sysUser.userId" @shortCutEnd="shortCutEnd" @shortCutWarning="shortCutWarning" />
       <div slot="footer" class="dialog-footer">
         <el-button icon="el-icon-close" @click="showShortCutModal = false">
           取消
@@ -68,6 +71,64 @@
         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
       </el-upload>
     </el-dialog>
+    <el-dialog title="个人信息" :visible.sync="personalInfoVisible" destroy-on-close append-to-body>
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="用户姓名" prop="userName">
+              <el-input v-model="temp.userName" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="性别" prop="sex">
+              <el-select v-model="temp.sex" placeholder="性别">
+                <el-option v-for="item in dicts.userSex" :key="item.value" :label="item.content" :value="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="手机号码" prop="mobile">
+              <el-input v-model="temp.mobile" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="身份证号" prop="idCardNo">
+              <el-input v-model="temp.idCardNo" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="邮箱地址" prop="email">
+              <el-input v-model="temp.email" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="备注">
+              <el-input
+                v-model="temp.remark"
+                :autosize="{ minRows: 2, maxRows: 4}"
+                type="textarea"
+                placeholder="请输入备注信息"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button icon="el-icon-close" @click="personalInfoVisible = false">
+          取消
+        </el-button>
+        <el-button :loading="personalInfoLoading" icon="el-icon-check" type="primary" @click="editPersonalInfo">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -80,7 +141,8 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import UpdatePassword from '@/components/UpdatePassword'
 import ShortCut from '@/components/ShortCut'
-import { postAction } from '@/api/manage'
+import { postAction, putAction } from '@/api/manage'
+import { Message } from 'element-ui'
 
 export default {
   components: {
@@ -94,12 +156,20 @@ export default {
   },
   data() {
     return {
+      dicts: [],
       nowDateTime: null, // 存放年月日变量
       timer: '', // 定义一个定时器的变量
       showShortCutModal: false,
       menuModalLoading: false,
       dialogFormVisible: false,
-      updatePasswordVisible: false
+      updatePasswordVisible: false,
+      temp: {},
+      personalInfoVisible: false,
+      personalInfoLoading: false,
+      rules: {
+        userName: [{ required: true, message: '该项不能为空', trigger: 'change' }],
+        sex: [{ required: true, message: '该项不能为空', trigger: 'change' }]
+      }
     }
   },
   computed: {
@@ -109,8 +179,14 @@ export default {
       'defaultAvatar',
       'device',
       'sysUser',
+      'sysRole',
       'name'
     ])
+  },
+  beforeCreate() {
+    this.getDicts('userSex').then(({ data }) => {
+      this.dicts = data
+    })
   },
   created() {
     this.timer = setInterval(this.getTime, 1000)
@@ -121,6 +197,35 @@ export default {
     }
   },
   methods: {
+    personalInfo() {
+      this.temp = Object.assign({}, this.sysUser)
+      this.personalInfoVisible = true
+    },
+    editPersonalInfo() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.editPersonalInfoStart()
+        }
+      })
+    },
+    async editPersonalInfoStart() {
+      this.personalInfoLoading = true
+      const param = {
+        userId: this.sysUser.userId,
+        userName: this.temp.userName,
+        sex: this.temp.sex,
+        mobile: this.temp.mobile,
+        idCardNo: this.temp.idCardNo,
+        email: this.temp.email
+      }
+      const { msg } = await putAction('/sys/user/editPersonalInfo', param).catch(e => {
+        this.personalInfoLoading = false
+      })
+      this.personalInfoLoading = false
+      Message.success(msg)
+      await this.$store.dispatch('user/getInfo', this.$store.getters.sysRole.roleId)
+      this.personalInfoVisible = false
+    },
     upload() {
       this.dialogFormVisible = true
     },
@@ -129,9 +234,9 @@ export default {
       formData.append('file', res.file)
       const { msg, code } = await postAction('/sys/user/uploadPic', formData)
       if (code == 200) {
-        this.$message.success('更换成功,请刷新页面')
+        this.$message.success('更换成功')
+        await this.$store.dispatch('user/getInfo', this.$store.getters.sysRole.roleId)
         this.dialogFormVisible = false
-        // location.reload()
       } else {
         this.$message.error('上传失败:' + msg)
       }
@@ -176,12 +281,10 @@ export default {
     shortCutWarning() {
       this.menuModalLoading = false
     },
-    shortCutEnd() {
+    async shortCutEnd() {
       this.menuModalLoading = false
       this.showShortCutModal = false
-      if (this.$route.path === '/dashboard') {
-        location.reload()
-      }
+      await this.$store.dispatch('user/getInfo', this.$store.getters.sysRole.roleId)
     }
   }
 }

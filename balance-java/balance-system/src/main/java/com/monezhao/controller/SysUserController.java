@@ -103,6 +103,7 @@ public class SysUserController extends BaseController {
 
     /**
      * 查询部门下的人员信息
+     *
      * @author zym
      * @date 2020/11/3 10:41
      */
@@ -166,6 +167,18 @@ public class SysUserController extends BaseController {
     @ApiOperation("用户修改")
     public Result update(@Valid @RequestBody SysUser sysUser) {
         sysUserService.updateSysUser(sysUser);
+        // 清空用户sessionObject缓存
+        redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId());
+        return Result.ok();
+    }
+
+    @SysLogAuto(value = "修改用户个人信息")
+    @PutMapping(value = "/editPersonalInfo")
+    @ApiOperation("修改用户个人信息")
+    public Result editPersonalInfo(@Valid @RequestBody SysUser sysUser) {
+        sysUserService.updateSysUser(sysUser);
+        // 清空用户sessionObject缓存
+        redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId());
         return Result.ok();
     }
 
@@ -180,6 +193,12 @@ public class SysUserController extends BaseController {
     @ApiOperation("用户删除")
     public Result delete(@RequestParam String ids) {
         sysUserService.delete(ids);
+        // 清空用户sessionObject缓存
+        String[] idsArr = ids.split(",");
+        for (String userId : idsArr) {
+            redisUtil.del(Constants.PREFIX_USER_TOKEN + userId);
+            redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + userId);
+        }
         return Result.ok();
     }
 
@@ -188,9 +207,18 @@ public class SysUserController extends BaseController {
     @ApiOperation("获取用户信息")
     public Result getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
         SysUser sysUser = sysUserService.getById(ShiroUtils.getUserId());
+
+        SessionObject sessionObject;
+        if (redisUtil.hasKey(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId())) {
+            sessionObject = (SessionObject) redisUtil.get(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId());
+            if (sessionObject != null && roleId != null && Objects.equals(sessionObject.getSysRole().getRoleId(), roleId)) {
+                return Result.ok(sessionObject);
+            }
+        }
+
         List<ShortCut> menuList = sysUserService.getMenuShortCut(sysUser.getUserId(),
                 roleId == null ? sysUser.getRoleId() : roleId);
-        SessionObject sessionObject = sysUserService.saveGetUserInfo(sysUser, roleId);
+        sessionObject = sysUserService.saveGetUserInfo(sysUser, roleId);
         sessionObject.setLoginTime(DateUtil.getNow());
         sessionObject.setIpAddr(IpUtils.getIpAddr(request));
         sessionObject.setToken((String) redisUtil.get(Constants.PREFIX_USER_TOKEN + sysUser.getUserId()));
@@ -235,6 +263,8 @@ public class SysUserController extends BaseController {
         sysUser.setUserId(userId);
         sysUser.setPicId(id);
         sysUserService.updateById(sysUser);
+        // 清空用户sessionObject缓存
+        redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + userId);
         return Result.ok();
     }
 
@@ -316,6 +346,8 @@ public class SysUserController extends BaseController {
             return Result.error("未指定用户");
         }
         sysUserService.userShortCutSave(userShortCut);
+        // 清空用户sessionObject缓存
+        redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + userShortCut.getUserId());
         return Result.ok();
     }
 }

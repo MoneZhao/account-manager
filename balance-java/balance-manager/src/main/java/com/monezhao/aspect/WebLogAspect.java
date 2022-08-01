@@ -57,6 +57,9 @@ public class WebLogAspect {
         Object result = null;
         Exception ex = null;
         String operateResult = "";
+        String arg = CommonUtil.paramsToJson(args);
+        String userName = sysUser == null ? IpUtils.getIpAddr(request) : sysUser.getUserId() + ":" + sysUser.getUserName();
+        logger.info("请求开始: {} {} {}, param: {}", userName, method, url, arg);
         try {
             // 执行方法
             result = proceedingJoinPoint.proceed();
@@ -72,13 +75,7 @@ public class WebLogAspect {
         // 执行时长(毫秒)
         long time = System.currentTimeMillis() - startTime;
 
-        if (sysUser == null) {
-            logger.info("请求结束: {} {} {}, param: {}, cost: {}ms, result: {}",
-                    IpUtils.getIpAddr(request), method, url, CommonUtil.paramsToJson(args), time, operateResult);
-        } else {
-            logger.info("请求结束: {} {} {}, param: {}, cost: {}ms, result: {}",
-                    sysUser.getUserId() + ":" + sysUser.getUserName(), method, url, CommonUtil.paramsToJson(args), time, operateResult);
-        }
+        logger.info("请求结束: {} {} {}, cost: {}ms, result: {}", userName, method, url, time, operateResult);
 
         if (ex != null) {
             throw ex;

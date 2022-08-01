@@ -127,7 +127,7 @@
             </el-table-column>
             <el-table-column fixed="right" label="操作" align="center">
               <template slot-scope="{row}">
-                <el-dropdown>
+                <el-dropdown trigger="click">
                   <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item icon="el-icon-view" @click.native="btnView(row)">查看</el-dropdown-item>
@@ -355,11 +355,8 @@ export default {
         sex: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         roleId: [{ required: true, message: '该项不能为空', trigger: 'change' }],
         orgId: [{ required: true, message: '该项不能为空', trigger: 'change' }],
-        mobile: [{ required: true, message: '该项不能为空', trigger: 'change' }],
-        idCardNo: [{ required: true, message: '该项不能为空', trigger: 'change' }],
-        email: [{ required: true, message: '该项不能为空', trigger: 'change' }],
-        status: [{ required: true, message: '该项不能为空', trigger: 'change' }],
-        sortNo: [{ required: true, message: '该项不能为空', trigger: 'change' }]
+        orgName: [{ required: true, message: '该项不能为空', trigger: 'change' }],
+        status: [{ required: true, message: '该项不能为空', trigger: 'change' }]
       },
       showShortCutModal: false,
       menuModalLoading: false,
@@ -391,7 +388,6 @@ export default {
       getAction('/sys/org/getTreeData', {}).then(res => {
         const { data } = res
         this.treeData = data
-        console.log(this.treeData[0].id)
         this.$nextTick(() => {
           this.$refs.orgTree.setCurrentKey(this.treeData[0].id)
           this.currentOrg = this.treeData[0].label + '(全部) - 用户信息'
@@ -571,9 +567,6 @@ export default {
     shortCutEnd() {
       this.menuModalLoading = false
       this.showShortCutModal = false
-      if (this.$route.path === '/dashboard') {
-        location.reload()
-      }
     },
     selectionChange(selectedRecords) {
       console.log(selectedRecords)

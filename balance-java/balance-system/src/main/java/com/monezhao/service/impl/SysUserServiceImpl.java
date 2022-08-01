@@ -115,7 +115,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     public SessionObject saveGetUserInfo(SysUser sysUser, String roleId) {
         SessionObject sessionObject = new SessionObject();
         sessionObject.setSysUser(sysUser);
-        List<SysRole> sysRoles = getRoleByUserId(sysUser.getUserId());
+        List<SysRole> sysRoles = this.getRoleByUserId(sysUser.getUserId());
         if (sysRoles == null || sysRoles.size() == 0) {
             if (!Constants.ADMIN.equals(sysUser.getUserId())) {
                 throw new SysException("用户未配置角色权限，请联系管理员授权!");
@@ -148,7 +148,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             }
         }
         sessionObject.setSysRole(sysRoleUser);
-
         SysOrg baseOrg = sysOrgService.getById(sysUser.getOrgId());
         sessionObject.setSysOrg(baseOrg);
 
@@ -158,10 +157,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
         // 切换角色获取用户信息，需要更新用户表角色ID
         if (CommonUtil.isNotEmptyStr(roleId) && !roleId.equals(sysUser.getRoleId())) {
+            sysUser.setRoleId(roleId);
+
             SysUser updateRoleIdUser = new SysUser();
             updateRoleIdUser.setUserId(sysUser.getUserId());
             updateRoleIdUser.setRoleId(roleId);
-            updateById(updateRoleIdUser);
+            this.updateById(updateRoleIdUser);
         }
         return sessionObject;
     }
@@ -341,20 +342,21 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateSysUser(SysUser sysUser) {
-        SysUser sysUserDb = this.getById(sysUser.getUserId());
-        if (!sysUserDb.getRoleId().equals(sysUser.getRoleId())) {
-            SysRoleUser sysRoleUserDb = new SysRoleUser(sysUserDb.getRoleId(), sysUserDb.getUserId());
-            sysRoleUserService.removeById(sysRoleUserDb.getRoleUserId());
+        if (sysUser.getRoleId() != null) {
+            SysUser sysUserDb = this.getById(sysUser.getUserId());
+            if (!Objects.equals(sysUserDb.getRoleId(), sysUser.getRoleId())) {
+                SysRoleUser sysRoleUserDb = new SysRoleUser(sysUserDb.getRoleId(), sysUserDb.getUserId());
+                sysRoleUserService.removeById(sysRoleUserDb.getRoleUserId());
 
-            SysRoleUser sysRoleUser = new SysRoleUser(sysUser.getRoleId(), sysUser.getUserId());
-            sysRoleUserService.saveOrUpdate(sysRoleUser);
+                SysRoleUser sysRoleUser = new SysRoleUser(sysUser.getRoleId(), sysUser.getUserId());
+                sysRoleUserService.saveOrUpdate(sysRoleUser);
+            }
         }
         // 密码设置为空，防止密码被恶意修改
         sysUser.setPassword(null);
         // 密码盐设置为空，防止密码被恶意修改
         sysUser.setSalt(null);
-        boolean result = this.updateById(sysUser);
-        return result;
+        return this.updateById(sysUser);
     }
 
     /**

@@ -65,6 +65,7 @@ public class SysUser extends BaseEntity {
     /**
      * 性别
      */
+    @NotNull
     @LengthForUtf8(max = 1)
     @ExcelProperty(value = "性别(1男 2女 3保密)")
     @ApiModelProperty(value = "性别")

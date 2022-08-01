@@ -79,7 +79,7 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.showShortCutModalTree = {
       treeData: [],
       selectedMenuData: [],
@@ -137,7 +137,7 @@ export default {
       }
       return ret
     },
-    editShortCut() {
+    async editShortCut() {
       const { add, del } = this.diff(this.permissions, this.$refs.leftTree.getCheckedKeys(true))
       if (add.length === 0 && del.length === 0) {
         Message.warning('数据没有改动')
@@ -149,16 +149,15 @@ export default {
         del,
         userId: this.userId
       }
-      postAction('/sys/user/userShortCutSave', param).then(({ msg }) => {
-        Message.success(msg)
-        this.showShortCutModalTree = {
-          treeData: [],
-          selectedMenuData: [],
-          selectedTreeKeys: [],
-          loading: false
-        }
-        this.$emit('shortCutEnd')
-      })
+      const { msg } = await postAction('/sys/user/userShortCutSave', param)
+      Message.success(msg)
+      this.showShortCutModalTree = {
+        treeData: [],
+        selectedMenuData: [],
+        selectedTreeKeys: [],
+        loading: false
+      }
+      this.$emit('shortCutEnd')
     },
     diff(oldData, newData) {
       const add = newData.filter(e => !oldData.find(c => c === e))
