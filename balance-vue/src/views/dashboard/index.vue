@@ -25,13 +25,13 @@
             <div>
               <el-row>
                 <el-col :span="8">
-                  <head-info title="今日IP" :content="todayIp" />
+                  <head-info title="今日登录IP" :content="todayIp" />
                 </el-col>
                 <el-col :span="8">
-                  <head-info title="今日访问" :content="todayVisitCount" />
+                  <head-info title="今日登录次数" :content="todayVisitCount" />
                 </el-col>
                 <el-col :span="8">
-                  <head-info title="总访问量" :content="totalVisitCount" />
+                  <head-info title="总登录次数" :content="totalVisitCount" />
                 </el-col>
               </el-row>
             </div>
