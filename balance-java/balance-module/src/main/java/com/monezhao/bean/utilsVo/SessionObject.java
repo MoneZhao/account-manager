@@ -19,8 +19,8 @@ public class SessionObject implements Serializable {
 
     public static final String BEAN_ID = "sessionObject";
     private static final long serialVersionUID = 938060802653285321L;
-    private String token;
-    private String avatar;
+    private Date loginTime;
+    private String ipAddr;
     private SysUser sysUser;
     private SysOrg sysOrg;
     private SysRole sysRole;
@@ -29,6 +29,6 @@ public class SessionObject implements Serializable {
     private List<String> funcIds;
     private List<String> permissions;
     private List<ShortCut> menuList;
-    private Date loginTime;
-    private String ipAddr;
+    private String token;
+    private String avatar;
 }

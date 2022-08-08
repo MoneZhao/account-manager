@@ -1,6 +1,5 @@
 package com.monezhao.controller.command;
 
-import com.monezhao.bean.utilsVo.ShortCut;
 import lombok.Data;
 
 import java.util.List;
@@ -21,6 +20,4 @@ public class SysUserIndex {
     private List<VisitCount> lastSevenVisitCount;
 
     private List<VisitCount> lastSevenUserVisitCount;
-
-    private List<ShortCut> menuList;
 }
