@@ -171,7 +171,7 @@ export default {
         const chart = this.$echarts.init(document.getElementById('dashboard_chart'))
         chart.setOption({
           title: {
-            text: '近七日系统访问记录',
+            text: '近七日系统登录记录',
             left: 'left'
           },
           xAxis: {
