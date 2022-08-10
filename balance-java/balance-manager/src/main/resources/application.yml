@@ -16,6 +16,9 @@ spring:
   servlet:
     multipart:
       max-file-size: 10MB
+  datasource:
+    druid:
+      aop-patterns: "com.monezhao.mapper.*"
 #mybatis plus 设置
 mybatis-plus:
   mapper-locations: classpath*:com/monezhao/**/mapper/xml/*.xml
