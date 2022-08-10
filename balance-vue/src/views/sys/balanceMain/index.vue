@@ -6,6 +6,9 @@
         <el-button v-permission="'sys:balanceMain:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
       <el-button-group>
+        <el-button icon="el-icon-refresh" type="warning" class="filter-item" @click="btnFixBatch()">更新账户余额</el-button>
+      </el-button-group>
+      <el-button-group>
         <el-button v-permission="'sys:balanceMain:import'" icon="el-icon-upload" type="primary" class="filter-item" @click="btnImport">导入</el-button>
         <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" class="filter-item" @click="btnExport">导出当前页
         </el-button>
@@ -44,6 +47,7 @@
             <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right" /></span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-permission="'sys:balanceMain:update'" icon="el-icon-edit" @click.native="btnUpdate(row)">修改</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-refresh" @click.native="btnFix(row)">更新</el-dropdown-item>
               <el-dropdown-item v-permission="'sys:balanceMain:delete'" icon="el-icon-delete" @click.native="btnDelete(row.balanceMainId)">删除</el-dropdown-item>
               <el-dropdown-item v-permission="'sys:balanceMain:save'" icon="el-icon-link" @click.native="btnCopy(row)">复制</el-dropdown-item>
               <el-dropdown-item icon="el-icon-more" @click.native="btnDetail(row)">详情</el-dropdown-item>
@@ -351,6 +355,30 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+      })
+    },
+    async btnFix(row) {
+      this.$confirm('在账户余额与账户明细不符合时更新账户余额, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        putAction('/sys/balanceMain/fix', { balanceMainId: row.balanceMainId }).then(({ msg }) => {
+          Message.success(msg)
+          this.list()
+        })
+      })
+    },
+    async btnFixBatch() {
+      this.$confirm('在更改计入总资产或者账户余额与账户明细不符合时更新全部账户余额, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        putAction('/sys/balanceMain/fixBatch').then(({ msg }) => {
+          Message.success(msg)
+          this.list()
+        })
       })
     },
     async btnCopy(row) {

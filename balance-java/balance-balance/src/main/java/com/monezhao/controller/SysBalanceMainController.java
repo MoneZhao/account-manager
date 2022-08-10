@@ -18,6 +18,7 @@ import com.monezhao.bean.utilsVo.YearMonthDayStartAndEnd;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.common.exception.SysException;
+import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.CustomCellWriteHandler;
 import com.monezhao.common.util.DateTimeUtil;
 import com.monezhao.common.util.DateUtil;
@@ -391,6 +392,23 @@ public class SysBalanceMainController extends BaseController {
                 registerReadListener(new UploadSysBalanceDetailListener(sysBalanceDetailService)).build();
         excelReader.read(readSheet1, readSheet2);
         excelReader.finish();
+        return Result.ok();
+    }
+
+    @PutMapping(value = "/fix")
+    @SysLogAuto(value = "更新账户余额")
+    @ApiOperation("更新账户余额")
+    public Result fix(@RequestBody SysBalanceMain sysBalanceMain) {
+        CommonUtil.isEmptyStr(sysBalanceMain.getBalanceMainId(), "主键不能为空");
+        sysBalanceDetailService.fix(sysBalanceMain.getBalanceMainId());
+        return Result.ok();
+    }
+
+    @PutMapping(value = "/fixBatch")
+    @SysLogAuto(value = "更新全部账户余额")
+    @ApiOperation("更新全部账户余额")
+    public Result fixBatch() {
+        sysBalanceDetailService.fixBatch();
         return Result.ok();
     }
 }

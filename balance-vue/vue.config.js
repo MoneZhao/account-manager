@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-const buildPath = '/Users/monezhao/Movies/balance/dist'
+const buildPath = '../../../../Movies/balance/dist'
 // const buildPath = '../balance-java/balance-manager/src/main/resources/public'
 
 function resolve(dir) {

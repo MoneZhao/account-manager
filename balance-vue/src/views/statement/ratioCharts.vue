@@ -25,7 +25,7 @@ export default {
         this.options = {
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : ￥{c} - ({d}%)'
+            formatter: '{a}<br/>{b} : ￥{c} ({d}%)'
           },
           legend: {
             type: 'scroll',
@@ -44,7 +44,11 @@ export default {
               center: ['40%', '55%'],
               data: newData.seriesData,
               label: {
-                formatter: '{b} : ￥{c}'
+                formatter: params => {
+                  console.log(params.data)
+                  const res = params.data.name + ' : ￥' + params.data.value
+                  return params.data.countType === '1' ? res : res + ' (不计入)'
+                }
               },
               emphasis: {
                 itemStyle: {

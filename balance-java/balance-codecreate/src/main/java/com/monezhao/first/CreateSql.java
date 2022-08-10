@@ -177,7 +177,7 @@ public class CreateSql {
             stringBufferFoot.append("INSERT INTO t_sys_menu VALUES ('" + sysCodeType + "', '" + tableNameCn + "', '" + sys
                     + "', 'list', '" + codeType + "', '" + sys + ":" + codeType + ":list', 'views/" + sys + "/"
                     + codeType + "/index', NULL, '0', '1', '" + aSysCodeType
-                    + "', '1', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
+                    + "', '0', '0', '1', '19100', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
             stringBufferFoot.append("INSERT INTO t_sys_func VALUES ('" + sysCodeType + "-1', '新增', '" + sysCodeType
                     + "', '" + sys + ":" + codeType + ":save', '', '1', NULL, NULL, NULL, NULL, NULL, NULL);\r\n");
             stringBufferFoot.append("INSERT INTO t_sys_func VALUES ('" + sysCodeType + "-2', '修改', '" + sysCodeType

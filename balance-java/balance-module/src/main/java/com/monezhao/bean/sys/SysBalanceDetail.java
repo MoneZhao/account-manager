@@ -122,6 +122,14 @@ public class SysBalanceDetail extends BaseEntity {
     @ExcelIgnore
     private String statementDate;
 
+    /**
+     * 是否计入总资产
+     */
+    @TableField(exist = false)
+    @ApiModelProperty(hidden = true)
+    @ExcelIgnore
+    private String countType = "1";
+
     @Version
     @ExcelIgnore
     @ApiModelProperty(hidden = true)

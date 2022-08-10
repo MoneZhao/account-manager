@@ -80,7 +80,7 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
         sysBalanceDetail.setUserId(sysBalanceMain.getUserId());
         super.save(sysBalanceDetail);
-        BigDecimal account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
+        BigDecimal account = baseMapper.account(sysBalanceDetail.getBalanceMainId(), sysBalanceMain.getUserId());
         sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
         sysBalanceMainService.updateById(sysBalanceMain);
         return true;
@@ -94,8 +94,8 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         }
 
         super.updateById(sysBalanceDetail);
-        BigDecimal account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
+        BigDecimal account = baseMapper.account(sysBalanceDetail.getBalanceMainId(), sysBalanceMain.getUserId());
         sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
         sysBalanceMainService.updateById(sysBalanceMain);
         return true;
@@ -111,8 +111,8 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         } else {
             super.removeById(idsArr[0]);
         }
-        BigDecimal account = baseMapper.account(sysBalanceDetail.getBalanceMainId());
         SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(sysBalanceDetail.getBalanceMainId());
+        BigDecimal account = baseMapper.account(sysBalanceDetail.getBalanceMainId(), sysBalanceMain.getUserId());
         sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
         sysBalanceMainService.updateById(sysBalanceMain);
         return true;
@@ -201,19 +201,16 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
                 this.saveBatch(adds);
                 this.updateBatchById(updates);
 
-                BigDecimal account = baseMapper.account(mainId);
                 SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(mainId);
+                BigDecimal account = baseMapper.account(mainId, sysBalanceMain.getUserId());
                 sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
                 sysBalanceMainService.updateById(sysBalanceMain);
             } else {
                 //不存在当前日期数据
-                BigDecimal account = v.stream()
-                        .map(SysBalanceDetail::getAccount)
-                        .reduce(new BigDecimal(0), BigDecimal::add);
                 SysBalanceMain main = new SysBalanceMain();
                 main.setAccountDate(k);
                 main.setUserId(userId);
-                main.setAccount(account);
+                main.setAccount(new BigDecimal(0));
                 sysBalanceMainService.save(main);
 
                 for (SysBalanceDetail detail : v) {
@@ -221,6 +218,10 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
                     detail.setUserId(userId);
                 }
                 this.saveBatch(v);
+
+                BigDecimal account = baseMapper.account(main.getBalanceMainId(), userId);
+                main.setAccount(account == null ? BigDecimal.valueOf(0) : account);
+                sysBalanceMainService.updateById(main);
             }
         }
 
@@ -279,9 +280,30 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
             savedList.add(addDetail);
         }
         this.saveBatch(savedList);
-        BigDecimal account = baseMapper.account(balanceMainId);
+        BigDecimal account = baseMapper.account(balanceMainId, sysBalanceMain.getUserId());
         sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
         sysBalanceMainService.updateById(sysBalanceMain);
         return true;
+    }
+
+    @Override
+    public void fix(String balanceMainId) {
+        BigDecimal account = baseMapper.account(balanceMainId, ShiroUtils.getUserId());
+        SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(balanceMainId);;
+        sysBalanceMain.setBalanceMainId(balanceMainId);
+        sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
+        sysBalanceMainService.updateById(sysBalanceMain);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void fixBatch() {
+        QueryWrapper<SysBalanceMain> queryWrapper = new QueryWrapper<>();
+        String userId = ShiroUtils.getUserId();
+        queryWrapper.lambda().eq(SysBalanceMain::getUserId, userId);
+        List<SysBalanceMain> list = sysBalanceMainService.list(queryWrapper);
+        for (SysBalanceMain sysBalanceMain : list) {
+            this.fix(sysBalanceMain.getBalanceMainId());
+        }
     }
 }

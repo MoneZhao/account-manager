@@ -33,7 +33,7 @@ public interface SysBalanceDetailMapper extends BaseMapper<SysBalanceDetail> {
      * @param id
      * @return
      */
-    BigDecimal account(@Param("id") String id);
+    BigDecimal account(@Param("id") String id, @Param("userId") String userId);
 
     /**
      * 导出当前页明细列表

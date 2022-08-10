@@ -22,11 +22,11 @@ import java.util.List;
 public class CreateFirst {
     public static void main(String[] args) {
         CodeUtil.databaseType = CreateSql.MYSQL;
-        CodeUtil.module = "balance-system";
-        CodeUtil.excelDesignPath = CodeUtil.projectPath + "db" + File.separator + "数据库设计(sys_图片上传下载).xlsx";
+        CodeUtil.module = "balance-balance";
+        CodeUtil.excelDesignPath = CodeUtil.projectPath + "db" + File.separator + "数据库设计(balance_计入总资产).xlsx";
         List<String> createTableNames = Arrays.asList(
                 //"t_sys_pic_up_down",
-                "t_sys_pic_up_down"
+                "t_sys_balance_count"
         );
         for (String createTableName : createTableNames) {
             CodeUtil.createTableName = createTableName;

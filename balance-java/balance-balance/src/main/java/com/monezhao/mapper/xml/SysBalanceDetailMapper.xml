@@ -20,6 +20,7 @@
         a.balance_type as balanceType,
         ci.content as balanceName,
         m.account_date as accountDate,
+        IFNULL(bc.count_type, "1") AS countType,
         a.balance_main_id as balanceMainId,
         a.user_id as userId,
         a.delete_type as deleteType,
@@ -29,6 +30,7 @@
         from t_sys_balance_detail a
         LEFT JOIN t_sys_code_info ci ON ci.code_type_id = 'balanceType' AND ci.value = a.balance_type
         left join t_sys_balance_main m on m.balance_main_id = a.balance_main_id
+        LEFT JOIN t_sys_balance_count bc on bc.user_id = m.user_id and ci.code_info_id = bc.code_info_id
         where a.delete_type=0
         <if test="entity.balanceType != null and entity.balanceType !=''">
             <![CDATA[    AND a.balance_type = #{entity.balanceType}    ]]>
@@ -37,16 +39,21 @@
             <![CDATA[    AND a.balance_main_id = #{entity.balanceMainId}    ]]>
         </if>
         <if test="entity.userId != null and entity.userId !=''">
-            <![CDATA[	AND a.user_id = #{entity.userId}]]>
+            <![CDATA[    AND a.user_id = #{entity.userId}]]>
         </if>
         order by m.account_date,ci.sort_no
     </select>
 
     <select id="account" resultType="java.math.BigDecimal">
-        select sum(account) account from t_sys_balance_detail a where a.delete_type=0
-        <if test="id != null and id !=''">
-            <![CDATA[    AND a.balance_main_id = #{id}    ]]>
-        </if>
+        select sum(account) account
+        from t_sys_balance_detail a
+        where a.delete_type = 0
+          AND a.balance_main_id = #{id}
+          AND a.balance_type NOT IN (SELECT c.`value`
+                                     FROM t_sys_balance_count b
+                                              LEFT JOIN t_sys_code_info c ON c.code_info_id = b.code_info_id
+                                     WHERE b.user_id = #{userId}
+                                       AND b.count_type = '0')
     </select>
     <select id="listExport" resultType="com.monezhao.bean.sys.SysBalanceDetail">
         select

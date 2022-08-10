@@ -89,4 +89,15 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
      * @param sysBalanceMain sysBalanceMain
      */
     boolean copy(SysBalanceMain sysBalanceMain);
+
+    /**
+     * 更新账户余额
+     * @param balanceMainId
+     */
+    void fix(String balanceMainId);
+
+    /**
+     * 更新全部账户余额
+     */
+    void fixBatch();
 }

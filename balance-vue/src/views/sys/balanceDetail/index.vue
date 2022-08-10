@@ -30,6 +30,14 @@
       <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="账户余额" prop="account" align="center"><template slot-scope="scope"><span>{{ formatMoney(scope.row.account) }}</span></template></el-table-column>
       <el-table-column label="账户类型" prop="balanceType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.balanceType,scope.row.balanceType)" /></template></el-table-column>
+      <el-table-column label="计入总资产" prop="countType" align="center" width="81"><template slot-scope="scope">
+        <el-badge
+          is-dot
+          class="dot-position"
+          :type="scope.row.countType === '1' ? 'success' : 'danger'"
+        />
+        <span v-html="formatDictText(dicts.yesOrNo,scope.row.countType)" />
+      </template></el-table-column>
       <el-table-column label="备注" prop="remark" align="center"><template slot-scope="scope"><span>{{ scope.row.remark }}</span></template></el-table-column>
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
@@ -201,7 +209,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.getDicts('balanceType').then(({ data }) => { this.dicts = data })
+    this.getDicts('balanceType,yesOrNo').then(({ data }) => { this.dicts = data })
   },
   created() {
     this.list()
@@ -336,3 +344,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.dot-position {
+  margin-top: 10px;
+  margin-right: 5px;
+}
+</style>

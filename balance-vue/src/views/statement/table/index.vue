@@ -23,7 +23,7 @@
       </el-card>
     </div>
 
-    <el-dialog :title="`${yearMonth.name} - 账户详情`" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
+    <el-dialog :title="title" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
       <RatioChart v-if="dialogVisible" :cdata="ratioData" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">关 闭</el-button>
@@ -80,6 +80,7 @@ export default {
         name: '',
         value: ''
       },
+      balanceMain: undefined,
       ratioData: {
         legendData: [],
         selectedData: [],
@@ -87,6 +88,11 @@ export default {
       },
       dialogVisible: false,
       chart: undefined
+    }
+  },
+  computed: {
+    title() {
+      return this.yearMonth.name + ' - 账户详情 - ￥' + this.balanceMain
     }
   },
   mounted() {
@@ -132,12 +138,13 @@ export default {
         obj.legendData.push(item.balanceName)
         const oneObj = {
           name: item.balanceName,
-          value: item.account
+          value: item.account,
+          countType: item.countType
         }
         obj.seriesData.push(oneObj)
         obj.selectedData[item.equipmentName] = index < 20
-        this.ratioData = obj
       })
+      this.ratioData = obj
     },
     getChart() {
       postAction(`/sys/statement/query`, {
@@ -202,6 +209,8 @@ export default {
             const handleIndex = Number(xIndex)
             // 获得图表中点击的列
             const month = this.chart.getOption().xAxis[0].data[handleIndex]
+            const value = this.chart.getOption().series[0].data[handleIndex]
+            this.balanceMain = value
             this.formatYearMonth(month)
             this.chart._dom.childNodes[1].style.display = 'none'
           }
