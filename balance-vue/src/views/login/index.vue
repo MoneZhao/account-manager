@@ -1,13 +1,13 @@
 <template>
   <div class="login-container">
     <vue-particles
-      color="#409EFF"
+      color="#faaaaa"
       :particle-opacity="0.7"
-      :particles-number="80"
+      :particles-number="20"
       shape-type="circle"
-      :particle-size="4"
+      :particle-size="5"
       lines-color="#409EFF"
-      :lines-width="1"
+      :lines-width="2"
       :line-linked="true"
       :line-opacity="0.4"
       :lines-distance="150"
@@ -83,25 +83,21 @@
         </el-form-item>
 
         <el-row style="width: 100%">
-          <el-col :span="12">
-            <el-button
-              size="medium"
-              :loading="loading"
-              type="primary"
-              style="width:60%;margin-left:20%"
-              @click.native.prevent="handleLogin"
-            >登录
-            </el-button>
-          </el-col>
-          <el-col :span="12">
-            <el-button
-              size="medium"
-              type="primary"
-              style="width:60%;margin-left:20%"
-              @click.native.prevent="reset"
-            >重 置
-            </el-button>
-          </el-col>
+          <el-button
+            size="medium"
+            type="info"
+            class="login-button"
+            @click.native.prevent="reset"
+          >重 置
+          </el-button>
+          <el-button
+            size="medium"
+            :loading="loading"
+            type="primary"
+            class="login-button"
+            @click.native.prevent="handleLogin"
+          >登录
+          </el-button>
         </el-row>
       </div>
     </el-form>
@@ -157,7 +153,6 @@ export default {
   created() {
     getAction('/sys/useCaptcha').then(res => {
       const { msg } = res
-      console.log(msg)
       if (msg === '0') {
         this.useCaptcha = true
         this.getCaptcha()
@@ -247,7 +242,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-    $bg: #2d3a4b;
+    $bg: rgba(223, 223, 223, 0.3);
     $dark: #191930;
     #particles-js{
       width: 100%;
@@ -279,6 +274,12 @@ export default {
               background: rgb(250, 250, 250);
               border: 1px solid rgb(230, 230, 230);
               box-shadow: 0 0 25px rgb(200, 200, 200);
+              margin-bottom: 15px;
+            }
+
+            .login-button {
+              float: right;
+              margin-left: 20px;
             }
         }
 
@@ -309,7 +310,7 @@ export default {
                 font-size: 26px;
                 color: $dark;
                 margin: 0px auto 40px auto;
-                text-align: center;
+                text-align: left;
                 font-weight: bold;
             }
         }

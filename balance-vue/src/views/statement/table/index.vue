@@ -155,6 +155,22 @@ export default {
         const legend = data.y.map(e => e.name)
         if (!this.chart) {
           this.chart = this.$echarts.init(document.getElementById('line_chart'))
+          window.addEventListener('resize', () => {
+            this.chart.resize()
+          })
+          this.chart.getZr().on('click', params => {
+            const pointInPixel = [params.offsetX, params.offsetY]
+            if (this.chart.containPixel('grid', pointInPixel)) {
+              const xIndex = this.chart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
+              const handleIndex = Number(xIndex)
+              // 获得图表中点击的列
+              const month = this.chart.getOption().xAxis[0].data[handleIndex]
+              const value = this.chart.getOption().series[0].data[handleIndex]
+              this.balanceMain = value
+              this.formatYearMonth(month)
+              this.chart._dom.childNodes[1].style.display = 'none'
+            }
+          })
         }
         this.chart.setOption({
           title: {
@@ -198,22 +214,6 @@ export default {
             }
           },
           series: data.y
-        })
-        window.addEventListener('resize', () => {
-          this.chart.resize()
-        })
-        this.chart.getZr().on('click', params => {
-          const pointInPixel = [params.offsetX, params.offsetY]
-          if (this.chart.containPixel('grid', pointInPixel)) {
-            const xIndex = this.chart.convertFromPixel({ seriesIndex: 0 }, [params.offsetX, params.offsetY])[0]
-            const handleIndex = Number(xIndex)
-            // 获得图表中点击的列
-            const month = this.chart.getOption().xAxis[0].data[handleIndex]
-            const value = this.chart.getOption().series[0].data[handleIndex]
-            this.balanceMain = value
-            this.formatYearMonth(month)
-            this.chart._dom.childNodes[1].style.display = 'none'
-          }
         })
       })
     }
