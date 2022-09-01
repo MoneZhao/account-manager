@@ -13,7 +13,7 @@ const name = defaultSettings.title // page title
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
 const port = 8888 // dev port
-
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -28,6 +28,7 @@ module.exports = {
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
+  transpileDependencies: ['element-ui'], // 指定某个库在打包的时候需要编译
   devServer: {
     host: 'localhost',
     port: port,
@@ -36,7 +37,6 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // after: require('./mock/mock-server.js')
     proxy: {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
@@ -98,6 +98,17 @@ module.exports = {
       .when(process.env.NODE_ENV === 'development',
         // config => config.devtool('cheap-source-map')
         config => config.devtool('source-map')
+      )
+
+    config
+      .when(process.env.NODE_ENV !== 'development',
+        // 对超过10kb的文件gzip压缩
+        config => config.plugin('compressionPlugin').use(
+          new CompressionWebpackPlugin({
+            test: /\.(js|css|html)$/, // 匹配文件名
+            threshold: 10240
+          })
+        )
       )
 
     config

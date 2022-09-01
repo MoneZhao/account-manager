@@ -118,8 +118,9 @@ export default {
     this.list()
   },
   mounted() {
-    this.$notify({
-      title: '提示',
+    this.$message({
+      center: true,
+      showClose: true,
       message: '修改完后需要在余额列表中更新账户余额'
     })
   },
