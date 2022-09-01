@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "axios": "^0.18.1",
-    "xlsx": "0.14.1",
+    "xlsx": "0.17.0",
     "file-saver": "2.0.1",
     "echarts": "^4.9.0",
     "el-table-editabled": "^1.0.22",
