@@ -157,7 +157,7 @@
     <select id="listPermissionsByUserId" resultType="java.lang.String">
         SELECT a.menu_id
         FROM t_sys_user_short_cut a
-        WHERE a.user_id = #{userId}
+        WHERE a.user_id = #{userId} and a.role_id = #{roleId}
     </select>
     <select id="queryUserByOrgList" resultType="com.monezhao.bean.sys.SysUser">
         select

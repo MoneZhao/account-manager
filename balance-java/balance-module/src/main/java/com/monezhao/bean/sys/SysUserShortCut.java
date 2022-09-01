@@ -39,6 +39,14 @@ public class SysUserShortCut extends BaseEntity {
     private String userId;
 
     /**
+     * 角色ID
+     */
+    @LengthForUtf8(max = 32)
+    @ExcelProperty("角色ID")
+    @NotNull
+    private String roleId;
+
+    /**
      * 菜单ID
      */
     @LengthForUtf8(max = 32)

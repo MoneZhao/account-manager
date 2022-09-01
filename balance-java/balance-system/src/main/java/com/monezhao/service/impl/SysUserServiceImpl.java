@@ -473,7 +473,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             }
         });
 
-        List<String> permissions = baseMapper.listPermissionsByUserId(userId);
+        List<String> permissions = baseMapper.listPermissionsByUserId(userId, roleId);
         Map<String, Object> result = new HashMap<>(2);
         result.put("permissionTree", permissionTree);
         result.put("permissions", permissions);
@@ -484,9 +484,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     @Transactional(rollbackFor = Exception.class)
     public boolean userShortCutSave(UserShortCut userShortCut) {
         String userId = userShortCut.getUserId();
+        String roleId = userShortCut.getRoleId();
         for (String menuId : userShortCut.getAdd()) {
             SysUserShortCut shortCut = new SysUserShortCut();
             shortCut.setUserId(userId);
+            shortCut.setRoleId(roleId);
             shortCut.setMenuId(menuId);
             sysUserShortCutService.save(shortCut);
         }
@@ -495,6 +497,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
             QueryWrapper<SysUserShortCut> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda()
                     .eq(SysUserShortCut::getUserId, userId)
+                    .eq(SysUserShortCut::getRoleId, roleId)
                     .in(SysUserShortCut::getMenuId, delIds);
             sysUserShortCutService.remove(queryWrapper);
         }
@@ -503,30 +506,25 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     @Override
     public List<ShortCut> getMenuShortCut(String userId, String roleId) {
-        List<String> list = baseMapper.listMenuByRoleId(roleId).parallelStream().filter(Objects::nonNull)
-                .map(SysMenu::getMenuId).collect(Collectors.toList());
-
-        List<String> menuIds = baseMapper.listPermissionsByUserId(userId);
-        List<ShortCut> shortCuts = new ArrayList<>();
-        for (String menuId : menuIds) {
-            if (!list.contains(menuId)) {
-                continue;
-            }
-            ShortCut shortCut = new ShortCut();
-            SysMenu menu = sysMenuService.getById(menuId);
-            shortCut.setName(menu.getMenuName());
-            shortCut.setIcon(menu.getMenuIcon());
-            List<String> urls = new ArrayList<>();
-            urls.add(pathFormat(menu));
-            while (!StringUtils.isEmpty(menu.getParentMenuId()) && !menu.getMenuUrl().startsWith(Constants.FORWARD_SLASH)) {
-                menu = sysMenuService.getById(menu.getParentMenuId());
-                urls.add(pathFormat(menu));
-            }
-            Collections.reverse(urls);
-            shortCut.setPath(Constants.FORWARD_SLASH + String.join(Constants.FORWARD_SLASH, urls));
-            shortCuts.add(shortCut);
-        }
-        return shortCuts;
+        List<String> menuIds = baseMapper.listPermissionsByUserId(userId, roleId);
+        return baseMapper.listMenuByRoleId(roleId).parallelStream()
+                .filter(Objects::nonNull)
+                .filter(e -> menuIds.contains(e.getMenuId()))
+                .map(menu -> {
+                    ShortCut shortCut = new ShortCut();
+                    shortCut.setName(menu.getMenuName());
+                    shortCut.setIcon(menu.getMenuIcon());
+                    List<String> urls = new ArrayList<>();
+                    urls.add(pathFormat(menu));
+                    while (!StringUtils.isEmpty(menu.getParentMenuId()) && !menu.getMenuUrl().startsWith(Constants.FORWARD_SLASH)) {
+                        menu = sysMenuService.getById(menu.getParentMenuId());
+                        urls.add(pathFormat(menu));
+                    }
+                    Collections.reverse(urls);
+                    shortCut.setPath(Constants.FORWARD_SLASH + String.join(Constants.FORWARD_SLASH, urls));
+                    return shortCut;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override

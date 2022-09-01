@@ -100,10 +100,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 查询用户快捷方式
      *
-     * @param userId
-     * @return
+     * @param userId userId
+     * @param roleId roleId
+     * @return menus
      */
-    List<String> listPermissionsByUserId(String userId);
+    List<String> listPermissionsByUserId(@Param("userId") String userId, @Param("roleId") String roleId);
 
     /**
      * 根据机构集合查询人员

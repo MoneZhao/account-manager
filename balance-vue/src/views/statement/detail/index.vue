@@ -122,6 +122,9 @@ export default {
         const legend = data.y.map(e => e.name)
         if (!this.chart) {
           this.chart = this.$echarts.init(document.getElementById('line_chart'))
+          window.addEventListener('resize', () => {
+            this.chart.resize()
+          })
         }
         this.chart.setOption({
           title: {
@@ -165,9 +168,6 @@ export default {
             }
           },
           series: data.y
-        })
-        window.addEventListener('resize', () => {
-          this.chart.resize()
         })
       })
     }

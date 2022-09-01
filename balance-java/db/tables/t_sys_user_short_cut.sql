@@ -4,6 +4,7 @@ CREATE TABLE t_sys_user_short_cut
 (
     user_short_cut_id varchar(32) NOT NULL COMMENT '操作权限ID',
     user_id varchar(32) NOT NULL COMMENT '用户ID',
+    role_id varchar(32) NOT NULL COMMENT '角色ID',
     menu_id varchar(32) NOT NULL COMMENT '菜单ID',
     create_by varchar(32) NULL COMMENT '创建人',
     create_date date NULL COMMENT '创建日期',

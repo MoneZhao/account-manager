@@ -15,6 +15,7 @@ import com.monezhao.common.Constants;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.common.exception.SysException;
+import com.monezhao.common.util.CommonUtil;
 import com.monezhao.common.util.CustomCellWriteHandler;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.IpUtils;
@@ -342,9 +343,8 @@ public class SysUserController extends BaseController {
     @SysLogAuto(value = "修改用户快捷方式")
     @ApiOperation("修改用户快捷方式")
     public Result userShortCutSave(@RequestBody UserShortCut userShortCut) {
-        if (userShortCut.getUserId() == null) {
-            return Result.error("未指定用户");
-        }
+        CommonUtil.isEmptyStr(userShortCut.getUserId(), "未指定用户");
+        CommonUtil.isEmptyStr(userShortCut.getRoleId(), "未指定角色");
         sysUserService.userShortCutSave(userShortCut);
         // 清空用户sessionObject缓存
         redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + userShortCut.getUserId());

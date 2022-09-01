@@ -39,11 +39,11 @@ public class BalanceRunner implements ApplicationRunner {
         sysCodeInfoService.loadSysCodeInfoToRedis(null);
 
         log.info("------【加载数据字典数据】---------");
+        log.info("------ " + defaultSystemConfig.toString());
         try {
             String host = InetAddress.getLocalHost().getHostAddress();
             int port = tomcatServletWebServerFactory.getPort();
             String contextPath = tomcatServletWebServerFactory.getContextPath();
-            log.info(defaultSystemConfig.toString());
             log.info("---------启动成功,访问: ");
             log.info("-----------Local: http://" + "127.0.0.1:" + port + contextPath + "/");
             log.info("-----------Network: http://" + host + ":" + port + contextPath + "/");

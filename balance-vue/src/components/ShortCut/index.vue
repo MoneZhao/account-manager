@@ -147,6 +147,7 @@ export default {
       const param = {
         add,
         del,
+        roleId: this.roleId,
         userId: this.userId
       }
       const { msg } = await postAction('/sys/user/userShortCutSave', param)
