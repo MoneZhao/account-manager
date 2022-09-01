@@ -1,11 +1,7 @@
 import Mock from 'mockjs'
 import { param2Obj } from '../src/utils'
 
-import mockData from './mock-data'
-
-const mocks = [
-  ...mockData
-]
+import mocks from './mock-data'
 
 // for front mock
 // please use it cautiously, it will redefine XMLHttpRequest,
