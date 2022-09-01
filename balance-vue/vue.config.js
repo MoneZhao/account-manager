@@ -14,6 +14,7 @@ const name = defaultSettings.title // page title
 // For example, Mac: sudo npm run
 const port = 8888 // dev port
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -59,6 +60,28 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
+    },
+    performance: {
+      hints: false
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          parallel: true,
+          terserOptions: {
+            compress: {
+              drop_console: true, // 移除所有console相关代码；
+              drop_debugger: true, // 移除自动断点功能；
+              pure_funcs: ['console.log', 'console.error']// 配置移除指定的指令，如console.log,alert等
+            },
+            format: {
+              comments: false
+            }
+          },
+          extractComments: false
+        })
+      ]
     }
   },
   chainWebpack(config) {
@@ -105,7 +128,7 @@ module.exports = {
         // 对超过10kb的文件gzip压缩
         config => config.plugin('compressionPlugin').use(
           new CompressionWebpackPlugin({
-            test: /\.(js|css|html)$/, // 匹配文件名
+            test: /\.(js|css|html|png|svg|woff2|eot|woff|ttf)$/, // 匹配文件名
             threshold: 10240
           })
         )
