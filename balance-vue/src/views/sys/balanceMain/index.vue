@@ -27,6 +27,7 @@
     </div>
     <el-table
       ref="multipleTable"
+      v-loading="mainLoading"
       :data="records"
       border
       fit
@@ -231,6 +232,7 @@ export default {
         size: 10,
         accountDate: undefined
       },
+      mainLoading: false,
       dialogFormVisible: false,
       dialogDetailVisible: false,
       dialogCompareVisible: false,
@@ -363,10 +365,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.mainLoading = true
         putAction('/sys/balanceMain/fix', { balanceMainId: row.balanceMainId }).then(({ msg }) => {
           Message.success(msg)
           this.list()
         })
+      }).finally(() => {
+        console.log('更新账户余额')
+        this.mainLoading = false
       })
     },
     async btnFixBatch() {
@@ -375,9 +381,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.mainLoading = true
         putAction('/sys/balanceMain/fixBatch').then(({ msg }) => {
           Message.success(msg)
           this.list()
+        }).finally(() => {
+          console.log('更新全部账户余额')
+          this.mainLoading = false
         })
       })
     },
