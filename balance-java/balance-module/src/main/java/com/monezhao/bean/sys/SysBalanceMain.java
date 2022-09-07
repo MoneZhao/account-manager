@@ -111,4 +111,24 @@ public class SysBalanceMain extends BaseEntity {
     @ExcelIgnore
     @ApiModelProperty(hidden = true)
     private List<SysBalanceDetail> details;
+
+    /**
+     * 开始时间
+     */
+    @TableField(exist = false)
+    @ExcelIgnore
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "开始时间")
+    private Date startDate;
+
+    /**
+     * 结束时间
+     */
+    @TableField(exist = false)
+    @ExcelIgnore
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "结束时间")
+    private Date endDate;
 }

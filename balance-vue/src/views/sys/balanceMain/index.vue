@@ -16,7 +16,20 @@
         </el-button>
       </el-button-group>
       <div style="float: right">
-        <el-date-picker v-model="listQuery.accountDate" value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" :picker-options="pickerOptions" placeholder="记录时间" type="date" style="width: 200px;" class="filter-item" />
+        <el-date-picker
+          v-model="rangeDate"
+          :editable="false"
+          type="monthrange"
+          align="right"
+          unlink-panels
+          range-separator="-"
+          start-placeholder="开始月份"
+          end-placeholder="结束月份"
+          format="yyyy 年 MM 月"
+          value-format="yyyy-MM"
+          :picker-options="pickerOptionsQuery"
+          style="width: 245px"
+        />
         <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
           <i class="el-icon-search el-icon--left" />查询
           <el-dropdown-menu slot="dropdown">
@@ -203,6 +216,36 @@ export default {
     const yearTime = this.$dayjs().subtract(1, 'year').valueOf()
     const yearTime2 = this.$dayjs().subtract(2, 'year').valueOf()
     return {
+      pickerOptionsQuery: {
+        disabledDate(time) {
+          const now = new Date()
+          return time.getTime() > now.setMonth(now.getMonth() + 1)
+        },
+        shortcuts: [{
+          text: '今年至今',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date(new Date().getFullYear(), 0)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近1年',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setMonth(start.getMonth() - 12)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近2年',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setMonth(start.getMonth() - 24)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      },
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > dayTime
@@ -229,9 +272,9 @@ export default {
       total: 0,
       listQuery: {
         current: 1,
-        size: 10,
-        accountDate: undefined
+        size: 10
       },
+      rangeDate: undefined,
       mainLoading: false,
       dialogFormVisible: false,
       dialogDetailVisible: false,
@@ -290,6 +333,14 @@ export default {
       return this.$moment(date, 'YYYY-MM-DD').format('YYYY 年 MM 月 DD 日')
     },
     list() {
+      if (this.rangeDate && this.rangeDate.length === 2) {
+        this.listQuery.startDate = this.rangeDate[0] + '-01'
+        this.listQuery.endDate = this.$moment(this.rangeDate[1] + '-01', 'YYYY-MM-DD').add(1, 'months').format('YYYY-MM-DD')
+      } else {
+        this.listQuery.startDate = undefined
+        this.listQuery.endDate = undefined
+      }
+      console.log(this.listQuery)
       getAction('/sys/balanceMain/list', this.listQuery).then(res => {
         const { data } = res
         this.records = data.records
@@ -316,14 +367,15 @@ export default {
     },
     btnQuery() {
       this.listQuery.current = 1
+      this.listQuery.size = 10
       this.list()
     },
     btnReset() {
       this.listQuery = {
         current: 1,
-        size: 10,
-        accountDate: undefined
+        size: 10
       }
+      this.rangeDate = undefined
       this.list()
     },
     resetTemp() {

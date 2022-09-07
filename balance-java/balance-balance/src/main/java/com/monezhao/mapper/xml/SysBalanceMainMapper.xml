@@ -30,6 +30,9 @@
         <if test="entity.accountDate != null">
             <![CDATA[	AND a.account_date = #{entity.accountDate}]]>
         </if>
+        <if test="entity.startDate != null and entity.endDate != null">
+            <![CDATA[	AND a.account_date >= #{entity.startDate} and a.account_date < #{entity.endDate} ]]>
+        </if>
         <if test="entity.userId != null and entity.userId !=''">
             <![CDATA[	AND a.user_id = #{entity.userId}]]>
         </if>
