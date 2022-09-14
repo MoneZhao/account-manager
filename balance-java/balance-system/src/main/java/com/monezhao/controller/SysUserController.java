@@ -269,6 +269,20 @@ public class SysUserController extends BaseController {
         return Result.ok();
     }
 
+
+    @PostMapping(value = "/updateUserPic")
+    @SysLogAuto(value = "用户更新头像")
+    @ApiOperation("用户更新头像")
+    public Result updateUserPic(@RequestBody SysUser sysUser) {
+        CommonUtil.isEmptyStr(sysUser.getPicId(), "头像id不能为空");
+        String userId = ShiroUtils.getUserId();
+        sysUser.setUserId(userId);
+        sysUserService.updateById(sysUser);
+        // 清空用户sessionObject缓存
+        redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + userId);
+        return Result.ok();
+    }
+
     /**
      * @param sysUser
      * @return

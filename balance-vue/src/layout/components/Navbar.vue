@@ -16,7 +16,7 @@
             <span style="display:block;" @click="personalInfo">个人信息</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="upload">更改头像</span>
+            <span style="display:block;" @click="upload">更换头像</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span style="display:block;" @click="updatePasswordHandle">修改密码</span>
@@ -61,19 +61,87 @@
         </el-button>
       </div>
     </el-dialog>
-    <el-dialog title="上传图片" :visible.sync="dialogFormVisible" destroy-on-close append-to-body>
-      <el-upload
-        action
-        drag
-        class="avatar-uploader"
-        :show-file-list="false"
-        :http-request="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload"
+    <el-dialog :visible.sync="dialogFormVisible" title="更换头像" destroy-on-close append-to-body>
+      <el-row>
+        <el-col :span="12">
+          <el-upload
+            action
+            drag
+            class="avatar-uploader"
+            :show-file-list="false"
+            :http-request="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <i class="el-icon-upload" />
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件, 且不超过2MB</div>
+          </el-upload>
+        </el-col>
+        <el-col v-if="dialogFormVisible" :span="12">
+          <el-button v-permission="'sys:picUpDown:list'" icon="el-icon-check" type="primary" @click="uploadPicVisible">
+            选择已上传头像
+          </el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
+    <el-dialog :visible.sync="dialogUploadPicVisible" title="已上传头像" destroy-on-close append-to-body>
+      <el-table
+        ref="multipleTable"
+        :data="records"
+        border
+        fit
+        highlight-current-row
+        style="width: 100%;"
+        :cell-style="{padding:'3px'}"
+        @row-click="chooseOne"
       >
-        <i class="el-icon-upload" />
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
-      </el-upload>
+        <el-table-column width="40">
+          <template slot-scope="scope">
+            <el-radio v-model="currentRadio" :label="scope.row.picUpDownId">
+              <span class="el-radio__label" />
+            </el-radio>
+          </template>
+        </el-table-column>
+        <el-table-column type="index" label="#" align="center" width="50" />
+        <el-table-column label="图片名" prop="picName" align="center">
+          <template slot-scope="scope"><span>{{ scope.row.picName }}</span></template>
+        </el-table-column>
+        <el-table-column label="图片" prop="pic" align="center">
+          <template slot-scope="scope">
+            <el-image
+              v-if="scope.row.picName.toLowerCase().indexOf('.png') >= 0"
+              lazy
+              alt="图片"
+              style="width: 50px; height: 50px"
+              :src="'data:image/png;base64,' + scope.row.pic"
+            />
+            <el-image
+              v-else
+              lazy
+              alt="图片"
+              style="width: 50px; height: 50px"
+              :src="'data:image/jpg;base64,' + scope.row.pic"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination-position">
+        <pagination
+          v-show="total>0"
+          :total="total"
+          :current.sync="listQuery.current"
+          :size.sync="listQuery.size"
+          @pagination="list"
+        />
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button icon="el-icon-close" @click="dialogUploadPicVisible = false">
+          取消
+        </el-button>
+        <el-button :loading="buttonUploadPicLoading" icon="el-icon-check" type="primary" @click="updateUserPic">
+          确定
+        </el-button>
+      </div>
     </el-dialog>
     <el-dialog title="个人信息" :visible.sync="personalInfoVisible" destroy-on-close append-to-body>
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
@@ -145,7 +213,8 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import UpdatePassword from '@/components/UpdatePassword'
 import ShortCut from '@/components/ShortCut'
-import { postAction, putAction } from '@/api/manage'
+import { getAction, postAction, putAction } from '@/api/manage'
+import Pagination from '@/components/Pagination'
 import { Message } from 'element-ui'
 
 export default {
@@ -156,6 +225,7 @@ export default {
     Screenfull,
     SizeSelect,
     UpdatePassword,
+    Pagination,
     ShortCut
   },
   data() {
@@ -166,6 +236,15 @@ export default {
       showShortCutModal: false,
       menuModalLoading: false,
       dialogFormVisible: false,
+      dialogUploadPicVisible: false,
+      buttonUploadPicLoading: false,
+      records: null,
+      currentRadio: null,
+      total: 0,
+      listQuery: {
+        current: 1,
+        size: 10
+      },
       updatePasswordVisible: false,
       temp: {},
       personalInfoVisible: false,
@@ -257,6 +336,37 @@ export default {
         this.$message.error('上传图片大小不能超过 2MB!')
         return false
       }
+    },
+    uploadPicVisible() {
+      this.list()
+      this.currentRadio = null
+      this.dialogUploadPicVisible = true
+    },
+    updateUserPic() {
+      if (!this.currentRadio) {
+        this.$message.error('未选中头像')
+        return
+      }
+      this.buttonUploadPicLoading = true
+      postAction('/sys/user/updateUserPic', { picId: this.currentRadio }).then(res => {
+        this.$message.success('更换成功')
+        this.$store.dispatch('user/getInfo', this.$store.getters.sysRole.roleId)
+        this.dialogFormVisible = false
+      }).finally(() => {
+        this.buttonUploadPicLoading = false
+        this.dialogUploadPicVisible = false
+      })
+    },
+    list() {
+      getAction('/sys/picUpDown/list', this.listQuery).then(res => {
+        const { data } = res
+        this.records = data.records
+        this.total = data.total
+      })
+    },
+    chooseOne(selectedRecords) {
+      this.currentRadio = selectedRecords.picUpDownId
+      console.log(selectedRecords)
     },
     getTime() {
       // this.nowDateTime = this.$moment().format('MM 月 DD 日, ddd, a hh:mm:ss')
