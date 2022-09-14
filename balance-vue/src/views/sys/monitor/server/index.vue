@@ -338,3 +338,10 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.is-leaf {
+  text-align: left;
+  font-size: large;
+}
+</style>
