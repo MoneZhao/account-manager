@@ -32,4 +32,9 @@ public interface SysBalanceMainMapper extends BaseMapper<SysBalanceMain> {
      * @return
      */
     boolean deleteMainIds(@Param("list") List<String> mainIds);
+
+    /**
+     * 查询用户删除列表
+     */
+    void restore(List<String> idsArr);
 }

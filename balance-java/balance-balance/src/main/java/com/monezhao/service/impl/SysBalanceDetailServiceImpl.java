@@ -306,4 +306,12 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
             this.fix(sysBalanceMain.getBalanceMainId());
         }
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean restoreMain(List<String> idsArr) {
+        baseMapper.restore(idsArr);
+        sysBalanceMainService.restore(idsArr);
+        return true;
+    }
 }

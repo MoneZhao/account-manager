@@ -2,6 +2,7 @@ package com.monezhao.service;
 
 import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.common.base.BaseService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,5 +28,10 @@ public interface SysBalanceMainService extends BaseService<SysBalanceMain> {
      * @return
      */
     boolean exist(SysBalanceMain sysBalanceMain);
+
+    /**
+     * 查询用户删除列表
+     */
+    void restore(@Param("list") List<String> idsArr);
 
 }

@@ -28,6 +28,9 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
         implements SysBalanceMainService {
     @Override
     public IPage<SysBalanceMain> list(IPage<SysBalanceMain> page, SysBalanceMain sysBalanceMain) {
+        if (sysBalanceMain.getDeleteType() == null) {
+            sysBalanceMain.setDeleteType(0);
+        }
         List<SysBalanceMain> records = baseMapper.list(page, sysBalanceMain);
         if (page == null) {
             page = new Page<>();
@@ -77,5 +80,10 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
         }
         List<SysBalanceMain> list = this.list(queryWrapper);
         return list != null && !list.isEmpty();
+    }
+
+    @Override
+    public void restore(List<String> idsArr) {
+        baseMapper.restore(idsArr);
     }
 }

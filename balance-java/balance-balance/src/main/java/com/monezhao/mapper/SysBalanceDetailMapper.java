@@ -56,4 +56,9 @@ public interface SysBalanceDetailMapper extends BaseMapper<SysBalanceDetail> {
      * 报表查询列表
      */
     List<SysBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType);
+
+    /**
+     * 查询用户删除列表
+     */
+    void restore(@Param("list") List<String> idsArr);
 }

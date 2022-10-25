@@ -90,6 +90,18 @@ public class SysBalanceMainController extends BaseController {
     }
 
     @RequiresPermissions("sys:balanceMain:list")
+    @GetMapping(value = "/listDelete")
+    @ApiOperation("账户余额列表")
+    @ApiOperationSupport(author = "monezhao@163.com")
+    public Result listDelete(SysBalanceMain sysBalanceMain, @RequestParam Integer current, @RequestParam Integer size) {
+        SysUser sysUser = ShiroUtils.getSysUser();
+        sysBalanceMain.setUserId(sysUser.getUserId());
+        sysBalanceMain.setDeleteType(1);
+        IPage<SysBalanceMain> pageList = sysBalanceMainService.list(new Page<>(current, size), sysBalanceMain);
+        return Result.ok(pageList);
+    }
+
+    @RequiresPermissions("sys:balanceMain:list")
     @GetMapping(value = "/queryById")
     @ApiOperation("账户余额查询")
     @ApiOperationSupport(author = "monezhao@163.com")
@@ -409,6 +421,19 @@ public class SysBalanceMainController extends BaseController {
     @ApiOperation("更新全部账户余额")
     public Result fixBatch() {
         sysBalanceDetailService.fixBatch();
+        return Result.ok();
+    }
+
+    @RequiresPermissions("sys:balanceMain:update")
+    @GetMapping(value = "/restore")
+    @SysLogAuto(value = "还原账户余额")
+    @ApiOperation("账户余额还原")
+    public Result restore(@RequestParam String ids) {
+        if (ids == null || ids.trim().length() == 0) {
+            return Result.error("ids can't be empty");
+        }
+        String[] idsArr = ids.split(",");
+        sysBalanceDetailService.restoreMain(Arrays.asList(idsArr));
         return Result.ok();
     }
 }

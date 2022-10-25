@@ -102,4 +102,12 @@
         <![CDATA[   AND m.account_date >= #{startMonth} and m.account_date <= #{endMonth} ]]>
         order by m.account_date,ci.sort_no
     </select>
+    <update id="restore">
+        update t_sys_balance_detail a set a.delete_type=0
+        where a.delete_type=1
+        AND a.balance_main_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 </mapper>

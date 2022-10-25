@@ -100,4 +100,12 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
      * 更新全部账户余额
      */
     void fixBatch();
+
+    /**
+     * 还原账户余额
+     *
+     * @param idsArr main ids
+     * @return boolean
+     */
+    boolean restoreMain(List<String> idsArr);
 }

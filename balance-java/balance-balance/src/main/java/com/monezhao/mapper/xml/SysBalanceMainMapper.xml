@@ -26,7 +26,10 @@
 
         from t_sys_balance_main a
         left join t_sys_user o ON o.user_id=a.user_id
-        where a.delete_type=0
+        where 1=1
+        <if test="entity.deleteType != null">
+            <![CDATA[	AND a.delete_type = #{entity.deleteType}]]>
+        </if>
         <if test="entity.accountDate != null">
             <![CDATA[	AND a.account_date = #{entity.accountDate}]]>
         </if>
@@ -38,4 +41,12 @@
         </if>
         order by a.account_date desc
     </select>
+    <update id="restore">
+        update t_sys_balance_main a set a.delete_type=0
+        where a.delete_type=1
+        AND a.balance_main_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 </mapper>
