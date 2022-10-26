@@ -1,3 +1,4 @@
+/* eslint-disable brace-style */
 'use strict'
 
 var assign = require('lodash/assign')

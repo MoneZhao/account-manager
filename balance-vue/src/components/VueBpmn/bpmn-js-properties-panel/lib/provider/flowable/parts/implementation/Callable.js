@@ -570,7 +570,7 @@ module.exports = function(element, bpmnFactory, options, translate) {
       var bo = getBusinessObject(element)
 
       var label = ''
-      var delegateVariableMapping = undefined
+      var delegateVariableMapping
       var type = getDelegateVariableMappingType(element)
 
       if (type === 'variableMappingClass') {

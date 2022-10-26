@@ -15,6 +15,9 @@
         <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" class="filter-item" @click="btnExportAll">导出全部
         </el-button>
       </el-button-group>
+      <el-button-group>
+        <el-button icon="el-icon-coffee" class="filter-item" @click="btnOpenTrash">回收站</el-button>
+      </el-button-group>
       <div style="float: right">
         <el-date-picker
           v-model="rangeDate"
@@ -94,6 +97,16 @@
 
     <el-dialog :title="'账户详情 - (' + mainDate + ')'" :visible="dialogDetailVisible" destroy-on-close width="80%" :before-close="detailClose">
       <sys-balance-detail v-if="dialogDetailVisible" :balance-main-id="balanceMainId" />
+      <div slot="footer" class="dialog-footer">
+        <el-button icon="el-icon-close" @click="detailClose">关闭</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="回收站" :visible.sync="dialogTrashVisible" width="80%" destroy-on-close :before-close="trashClose">
+      <trash ref="trashModal" />
+      <div slot="footer" class="dialog-footer">
+        <el-button icon="el-icon-close" @click="trashClose">关闭</el-button>
+      </div>
     </el-dialog>
 
     <el-dialog title="余额对比" :visible.sync="dialogCompareVisible" label-position="right" width="600px" destroy-on-close>
@@ -125,10 +138,11 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button icon="el-icon-close" @click="dialogCompareVisible = false">取消</el-button>
+        <el-button icon="el-icon-close" @click="dialogCompareVisible = false">关闭</el-button>
         <el-button icon="el-icon-check" type="primary" @click="compareData">对比</el-button>
       </div>
     </el-dialog>
+
     <el-dialog title="文件导入" :visible.sync="dialogImportVisible">
       <el-upload
         class="upload-demo"
@@ -142,6 +156,7 @@
         <div slot="tip" class="el-upload__tip">上传数据同天同类型账户余额会被覆盖!</div>
       </el-upload>
     </el-dialog>
+
     <el-dialog title="账户复制" :visible.sync="dialogCopyVisible" label-position="right" width="810px" destroy-on-close>
       <el-form ref="copyForm" :rules="copyRules" :model="copyTemp" label-position="right" label-width="auto">
         <el-card style="margin-bottom: 10px">
@@ -195,7 +210,7 @@
         </el-card>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button icon="el-icon-close" @click="dialogCopyVisible = false">取消</el-button>
+        <el-button icon="el-icon-close" @click="dialogCopyVisible = false">关闭</el-button>
         <el-button icon="el-icon-check" :disabled="copyLoading" type="primary" @click="copyData">确定</el-button>
       </div>
     </el-dialog>
@@ -207,10 +222,11 @@ import Pagination from '@/components/Pagination'
 import SysBalanceDetail from '@/views/sys/balanceDetail'
 import { getAction, putAction, postAction, deleteAction, downloadAction } from '@/api/manage'
 import { Message } from 'element-ui'
+import Trash from './modules/trash.vue'
 
 export default {
   name: 'SysBalanceMain',
-  components: { Pagination, SysBalanceDetail },
+  components: { Pagination, SysBalanceDetail, Trash },
   data() {
     const dayTime = this.$dayjs().add(1, 'day').valueOf()
     const yearTime = this.$dayjs().subtract(1, 'year').valueOf()
@@ -311,7 +327,8 @@ export default {
         accountDate: undefined,
         remark: undefined,
         details: []
-      }
+      },
+      dialogTrashVisible: false
     }
   },
   computed: {
@@ -364,6 +381,16 @@ export default {
     },
     btnExportAll() {
       downloadAction('/sys/balanceMain/exportAll', 'get', '', 'SysBalanceMainExportAll.xlsx')
+    },
+    btnOpenTrash() {
+      this.dialogTrashVisible = true
+      this.$nextTick(() => {
+        this.$refs.trashModal.btnQuery()
+      })
+    },
+    trashClose() {
+      this.dialogTrashVisible = false
+      this.list()
     },
     btnQuery() {
       this.listQuery.current = 1

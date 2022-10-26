@@ -9,7 +9,7 @@ var cmdHelper = require('../../../helper/CmdHelper')
 module.exports = function(group, element, translate, options) {
   var businessObject = getBusinessObject(element)
   var description = options && options.description
-  var disabled = undefined
+  var disabled
   if (is(element, 'bpmn:Process') || (is(element, 'bpmn:Participant') && businessObject.get('processRef'))) {
     disabled = function() {
       return false

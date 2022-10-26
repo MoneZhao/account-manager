@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-model -->
 <template>
   <el-dialog title="任务信息" :visible.sync="dialogTaskDetailVisibleInChild" width="75%">
     <el-form ref="dataForm" :model="taskDetailData" disabled label-position="right" label-width="110px">
@@ -270,4 +271,3 @@ export default {
   }
 }
 </script>
-
