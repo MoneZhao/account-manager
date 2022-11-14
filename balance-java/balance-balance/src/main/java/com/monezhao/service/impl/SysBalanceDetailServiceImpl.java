@@ -289,7 +289,7 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     @Override
     public void fix(String balanceMainId) {
         BigDecimal account = baseMapper.account(balanceMainId, ShiroUtils.getUserId());
-        SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(balanceMainId);;
+        SysBalanceMain sysBalanceMain = sysBalanceMainService.getById(balanceMainId);
         sysBalanceMain.setBalanceMainId(balanceMainId);
         sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
         sysBalanceMainService.updateById(sysBalanceMain);

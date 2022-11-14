@@ -15,6 +15,9 @@
         <if test="entity.picName != null and entity.picName !=''">
             <![CDATA[    AND a.pic_name like concat('%',#{entity.picName},'%')    ]]>
         </if>
+        <if test="entity.createBy != null and entity.createBy !=''">
+            <![CDATA[    AND a.create_by = #{entity.createBy}   ]]>
+        </if>
         order by a.create_time
     </select>
 </mapper>

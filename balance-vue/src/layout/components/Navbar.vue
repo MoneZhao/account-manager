@@ -358,6 +358,7 @@ export default {
       })
     },
     list() {
+      this.listQuery.createBy = this.$store.getters.sysUser.userId
       getAction('/sys/picUpDown/list', this.listQuery).then(res => {
         const { data } = res
         this.records = data.records
