@@ -26,7 +26,7 @@
         <commons-pool2.version>2.8.0</commons-pool2.version>
         <jwt.version>3.10.3</jwt.version>
         <shiro.version>1.5.3</shiro.version>
-        <jsoup.version>1.13.1</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <oshi.version>5.7.0</oshi.version>
         <p6spy.version>3.9.1</p6spy.version>
         <quartz.version>2.3.2</quartz.version>
