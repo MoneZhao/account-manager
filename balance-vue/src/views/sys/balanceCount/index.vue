@@ -65,7 +65,7 @@
     </div>
 
     <!-- <el-dialog title="计入总资产" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="账户类型id" prop="codeInfoId"><el-input v-model="temp.codeInfoId" maxlength="32" show-word-limit /></el-form-item>
         <el-form-item label="是否计入总资产" prop="countType"><el-select v-model="temp.countType" placeholder="是否计入总资产"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
         <el-form-item label="所属用户" prop="userId"><el-input v-model="temp.userId" maxlength="32" show-word-limit /></el-form-item>

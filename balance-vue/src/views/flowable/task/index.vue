@@ -127,6 +127,7 @@
       style="width: 100%;"
       :cell-style="{padding:'3px'}"
       @selection-change="selectionChange"
+      @cell-dblclick="btnViewTask"
     >
       <el-table-column fixed type="selection" align="center" />
       <el-table-column fixed type="index" label="#" align="center" width="50" />

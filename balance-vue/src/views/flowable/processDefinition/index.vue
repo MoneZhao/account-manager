@@ -107,7 +107,7 @@
     />
 
     <el-dialog title="流程定义" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" disabled label-position="right" label-width="110px">
+      <el-form ref="dataForm" :model="temp" label-position="right" label-width="110px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="流程定义ID" prop="id">

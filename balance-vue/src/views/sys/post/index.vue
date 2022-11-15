@@ -57,7 +57,7 @@
     </div>
 
     <el-dialog title="岗位" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="岗位名称" prop="postName"><el-input v-model="temp.postName" /></el-form-item>
         <el-form-item label="排序号" prop="sortNo"><el-input v-model="temp.sortNo" /></el-form-item>
         <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark" /></el-form-item>

@@ -154,7 +154,7 @@
     </el-row>
 
     <el-dialog title="用户" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-row>
           <el-col :span="12">
             <el-form-item label="登录账户名" prop="userId">

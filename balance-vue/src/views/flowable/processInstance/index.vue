@@ -62,6 +62,7 @@
       highlight-current-row
       style="width: 100%;"
       :cell-style="{padding:'3px'}"
+      @cell-dblclick="btnViewProcessInstance"
     >
       <el-table-column fixed type="index" label="#" align="center" width="50" />
       <el-table-column label="流程实例ID" prop="id" align="center" width="290px">
@@ -115,7 +116,6 @@
       <el-form
         ref="dataForm"
         :model="temp"
-        disabled
         label-position="right"
         label-width="110px"
       >

@@ -60,7 +60,7 @@
     </div>
 
     <el-dialog title="系统日志" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="UUID" prop="logId"><el-input v-model="temp.logId" :readonly="dialogStatus==='update'" /></el-form-item>
         <el-form-item label="日志类型" prop="logType"><el-select v-model="temp.logType" placeholder="日志类型"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
         <el-form-item label="日志内容" prop="logContent"><el-input v-model="temp.logContent" /></el-form-item>

@@ -52,7 +52,7 @@
     </div>
 
     <el-dialog title="定时任务执行日志" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+      <el-form ref="dataForm" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="任务名称" prop="jobName"><el-input v-model="temp.jobName" /></el-form-item>
         <el-form-item label="任务组名" prop="jobGroup"><el-input v-model="temp.jobGroup" /></el-form-item>
         <el-form-item label="调用目标字符串" prop="invokeTarget"><el-input v-model="temp.invokeTarget" /></el-form-item>

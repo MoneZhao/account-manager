@@ -80,7 +80,7 @@
     </el-row>
 
     <el-dialog title="功能" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="功能名称" prop="funcName">
           <el-input v-model="temp.funcName" />
         </el-form-item>

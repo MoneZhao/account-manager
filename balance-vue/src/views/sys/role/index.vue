@@ -84,7 +84,7 @@
     </div>
 
     <el-dialog title="角色" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="temp.roleName" />
         </el-form-item>

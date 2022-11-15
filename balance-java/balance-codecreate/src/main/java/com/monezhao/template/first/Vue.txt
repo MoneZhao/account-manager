@@ -48,7 +48,7 @@
         </div>
 
         <el-dialog title="{tableNameCn}" :visible.sync="dialogFormVisible">
-            <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
 {_allColumnsDialog}
             </el-form>
             <div slot="footer" class="dialog-footer">

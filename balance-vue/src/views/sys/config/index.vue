@@ -58,7 +58,7 @@
     </div>
 
     <el-dialog title="系统参数" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <el-form-item label="系统参数ID" prop="configId"><el-input v-model="temp.configId" :readonly="dialogStatus==='update'" /></el-form-item>
         <el-form-item label="系统参数名称" prop="configName"><el-input v-model="temp.configName" /></el-form-item>
         <el-form-item label="系统参数值" prop="configValue"><el-input v-model="temp.configValue" /></el-form-item>

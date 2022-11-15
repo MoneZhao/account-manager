@@ -58,7 +58,7 @@
     </div>
 
     <el-dialog title="代码在线生成" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="80px">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="80px">
         <el-form-item label="表名" prop="codeCreateTablename"><el-input v-model="temp.codeCreateTablename" style="width: 95%;" /></el-form-item>
         <el-form-item label="模块名" prop="codeCreateModule"><el-input v-model="temp.codeCreateModule" style="width: 95%;" /></el-form-item>
         <el-form-item label="文件名" prop="codeCreateFilename">

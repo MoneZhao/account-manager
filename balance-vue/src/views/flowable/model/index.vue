@@ -141,7 +141,6 @@
         ref="dataForm"
         :rules="rules"
         :model="temp"
-        :disabled="dialogStatus==='view'"
         label-position="right"
         label-width="110px"
       >

@@ -64,7 +64,7 @@
     </div>
 
     <el-dialog title="定时任务" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
         <!--<el-form-item label="任务ID" prop="jobId"><el-input v-model="temp.jobId" :readonly="dialogStatus==='update'"/></el-form-item>-->
         <el-row>
           <el-col :span="12">
