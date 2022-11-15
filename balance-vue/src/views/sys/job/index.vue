@@ -66,31 +66,62 @@
     <el-dialog title="定时任务" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" :disabled="dialogStatus==='view'" label-position="right" label-width="auto">
         <!--<el-form-item label="任务ID" prop="jobId"><el-input v-model="temp.jobId" :readonly="dialogStatus==='update'"/></el-form-item>-->
-        <el-form-item label="任务名称" prop="jobName"><el-input v-model="temp.jobName" /></el-form-item>
-        <el-form-item label="任务组名" prop="jobGroup"><el-input v-model="temp.jobGroup" /></el-form-item>
-        <el-form-item label="调用目标字符串" prop="invokeTarget"><el-input v-model="temp.invokeTarget" /></el-form-item>
-        <el-form-item label="cron执行表达式" prop="cronExpression"><el-input v-model="temp.cronExpression" /></el-form-item>
-        <el-form-item label="计划执行错误策略" prop="misfirePolicy"><el-select v-model="temp.misfirePolicy" placeholder="计划执行错误策略"><el-option v-for="(item, index) in dicts.misfirePolicy" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
-        <el-form-item label="是否并发执行" prop="concurrent"><el-select v-model="temp.concurrent" placeholder="是否并发执行"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
-        <!--<el-form-item label="是否正常状态" prop="status"><el-select v-model="temp.status" placeholder="是否正常状态"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value"></el-option></el-select></el-form-item>-->
-        <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark" /></el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="任务名称" prop="jobName"><el-input v-model="temp.jobName" /></el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="任务组名" prop="jobGroup"><el-input v-model="temp.jobGroup" /></el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="调用目标字符串" prop="invokeTarget"><el-input v-model="temp.invokeTarget" /></el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="cron执行表达式" prop="cronExpression">
+              <el-input v-model="temp.cronExpression">
+                <el-button slot="append" icon="el-icon-search" @click="open" />
+              </el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="计划执行错误策略" prop="misfirePolicy"><el-select v-model="temp.misfirePolicy" placeholder="计划执行错误策略"><el-option v-for="(item, index) in dicts.misfirePolicy" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否并发执行" prop="concurrent"><el-select v-model="temp.concurrent" placeholder="是否并发执行"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="是否正常状态" prop="status"><el-select v-model="temp.status" placeholder="是否正常状态"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="备注" prop="remark"><el-input v-model="temp.remark" /></el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>
         <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createData():updateData()">确定</el-button>
       </div>
     </el-dialog>
+
+    <CronUi ref="CronUi" @cronResult="resultValue" />
   </div>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination'
+import CronUi from '@/components/cron/cron-ui'
 import { getAction, putAction, postAction, deleteAction } from '@/api/manage'
 import { Message } from 'element-ui'
 
 export default {
   name: 'SysJob',
-  components: { Pagination },
+  components: { Pagination, CronUi },
   data() {
     return {
       dicts: [],
@@ -246,6 +277,12 @@ export default {
         Message.success(msg)
         this.list()
       })
+    },
+    open() {
+      this.$refs['CronUi'].dialogVisible = true
+    },
+    resultValue(data) {
+      this.$set(this.temp, 'cronExpression', data)
     },
     btnRun(jobId) {
       putAction('/sys/job/run', { jobId }).then(({ msg }) => {
