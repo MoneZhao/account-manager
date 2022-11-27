@@ -49,7 +49,9 @@
 
         <el-dialog title="{tableNameCn}" :visible.sync="dialogFormVisible">
             <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
+              <el-row>
 {_allColumnsDialog}
+              </el-row>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>

@@ -191,28 +191,28 @@ public class CreateVue {
             return "";
         }
         if (StringUtils.isNotEmpty(tableObject.getCodeTypeId())) {
-            allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
+            allColumnsDialog += "                <el-col :span=\"12\"><el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
                     + "\"><el-select v-model=\"temp." + codeTypeId + "\" placeholder=\"" + tableObject.getColumnNameCn()
                     + "\"><el-option v-for=\"(item, index) in dicts." + tableObject.getCodeTypeId()
-                    + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select></el-form-item>" + "\r\n";
+                    + "\" :key=\"index\" :label=\"item.content\" :value=\"item.value\"></el-option></el-select></el-form-item></el-col>" + "\r\n";
         } else {
             if (DATE_TYPE.equals(tableObject.getDataType())) {
-                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
-                        + "\"><el-date-picker v-model=\"temp." + codeTypeId + "\" type=\"date\"></el-date-picker></el-form-item>" + "\r\n";
+                allColumnsDialog += "                <el-col :span=\"12\"><el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
+                        + "\"><el-date-picker v-model=\"temp." + codeTypeId + "\" type=\"date\"></el-date-picker></el-form-item></el-col>" + "\r\n";
             } else if (DATETIME_TYPE.equals(tableObject.getDataType())) {
-                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
+                allColumnsDialog += "                <el-col :span=\"12\"><el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
                         + "\"><el-date-picker v-model=\"temp." + codeTypeId
-                        + "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\"></el-date-picker></el-form-item>" + "\r\n";
+                        + "\" type=\"datetime\" value-format=\"yyyy-MM-dd HH:mm:ss\"></el-date-picker></el-form-item></el-col>" + "\r\n";
             } else if (FLOAT_TYPE.equals(tableObject.getDataType()) || INT_TYPE.equals(tableObject.getDataType())) {
-                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
+                allColumnsDialog += "                <el-col :span=\"12\"><el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
                         + "\"><el-input-number v-model=\"temp." + codeTypeId
                         + "\" :max=\"" + getMax(tableObject.getDataLength(), tableObject.getDataPrecision()) + "\""
-                        + readOnlyStr + " /></el-form-item>" + "\r\n";
+                        + readOnlyStr + " /></el-form-item></el-col>" + "\r\n";
             } else {
-                allColumnsDialog += "                <el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
+                allColumnsDialog += "                <el-col :span=\"12\"><el-form-item label=\"" + tableObject.getColumnNameCn() + "\" prop=\"" + codeTypeId
                         + "\"><el-input v-model=\"temp." + codeTypeId
                         + "\" maxlength=\"" + tableObject.getDataLength() + "\" show-word-limit"
-                        + readOnlyStr + " /></el-form-item>" + "\r\n";
+                        + readOnlyStr + " /></el-form-item></el-col>" + "\r\n";
             }
         }
         return allColumnsDialog;
