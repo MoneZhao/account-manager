@@ -39,6 +39,44 @@
         <if test="entity.userId != null and entity.userId !=''">
             <![CDATA[	AND a.user_id = #{entity.userId}]]>
         </if>
+        <if test='entity.multiData != null and entity.multiData =="0"'>
+            <![CDATA[	AND date_format( a.account_date, '%Y-%m' ) NOT IN (
+                SELECT
+                    c.account_date
+                FROM
+                    (
+                    SELECT
+                        b.account_date,
+                        COUNT( b.account_date ) count
+                    FROM
+                        ( SELECT date_format( a.account_date, '%Y-%m' ) account_date FROM `t_sys_balance_main` a ORDER BY a.account_date ) b
+                    GROUP BY
+                        b.account_date
+                    HAVING
+                        count >= 2
+                    ) c
+                )
+            ]]>
+        </if>
+        <if test='entity.multiData != null and entity.multiData =="1"'>
+            <![CDATA[	AND date_format( a.account_date, '%Y-%m' ) IN (
+                SELECT
+                    c.account_date
+                FROM
+                    (
+                    SELECT
+                        b.account_date,
+                        COUNT( b.account_date ) count
+                    FROM
+                        ( SELECT date_format( a.account_date, '%Y-%m' ) account_date FROM `t_sys_balance_main` a ORDER BY a.account_date ) b
+                    GROUP BY
+                        b.account_date
+                    HAVING
+                        count >= 2
+                    ) c
+                )
+            ]]>
+        </if>
         order by a.account_date desc
     </select>
     <update id="restore">

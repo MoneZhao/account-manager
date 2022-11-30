@@ -113,7 +113,7 @@ public class SysStatementServiceImpl implements SysStatementService {
         Series series2 = new Series();
         series2.setName("账户余额增长");
         series2.setType("line");
-        series2.setSmooth(Boolean.TRUE);
+        series2.setSmooth(false);
         List<BigDecimal> data2 = new ArrayList<>();
 
         for (int i = 0; i < dates.size(); i++) {

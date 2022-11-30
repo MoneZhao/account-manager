@@ -19,6 +19,7 @@
         <el-button icon="el-icon-coffee" class="filter-item" @click="btnOpenTrash">回收站</el-button>
       </el-button-group>
       <div style="float: right">
+        <el-select v-model="listQuery.multiData" placeholder="当月是否多条数据" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
         <el-date-picker
           v-model="rangeDate"
           :editable="false"
@@ -288,7 +289,8 @@ export default {
       total: 0,
       listQuery: {
         current: 1,
-        size: 10
+        size: 10,
+        multiData: undefined
       },
       rangeDate: undefined,
       mainLoading: false,
@@ -341,6 +343,7 @@ export default {
     }
   },
   beforeCreate() {
+    this.getDicts('yesOrNo').then(({ data }) => { this.dicts = data })
   },
   created() {
     this.list()
@@ -377,10 +380,10 @@ export default {
       })
     },
     btnExport() {
-      downloadAction('/sys/balanceMain/export', 'get', this.listQuery, 'SysBalanceMainExportCur.xlsx')
+      downloadAction('/sys/balanceMain/export', 'get', this.listQuery, '账户余额第' + this.listQuery.current + '页.xlsx')
     },
     btnExportAll() {
-      downloadAction('/sys/balanceMain/exportAll', 'get', '', 'SysBalanceMainExportAll.xlsx')
+      downloadAction('/sys/balanceMain/exportAll', 'get', '', '账户余额全部.xlsx')
     },
     btnOpenTrash() {
       this.dialogTrashVisible = true
@@ -400,7 +403,8 @@ export default {
     btnReset() {
       this.listQuery = {
         current: 1,
-        size: 10
+        size: 10,
+        multiData: undefined
       }
       this.rangeDate = undefined
       this.list()
@@ -478,7 +482,7 @@ export default {
       this.dialogCopyVisible = true
       this.copyLoading = true
       this.haveEditPropertyShow = false
-      const listQuery = {
+      const param = {
         current: 1,
         size: 100,
         balanceType: undefined,
@@ -486,7 +490,7 @@ export default {
       }
       const {
         data
-      } = await getAction('/sys/balanceDetail/list', listQuery)
+      } = await getAction('/sys/balanceDetail/list', param)
       data.records.map(item => {
         item.balanceMainId = undefined
         item.balanceDetailId = undefined

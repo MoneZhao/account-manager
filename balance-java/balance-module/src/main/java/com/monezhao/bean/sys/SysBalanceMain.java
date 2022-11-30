@@ -131,4 +131,12 @@ public class SysBalanceMain extends BaseEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "结束时间")
     private Date endDate;
+
+    /**
+     * 当月是否多条数据
+     */
+    @TableField(exist = false)
+    @ExcelIgnore
+    @ApiModelProperty(value = "结束时间")
+    private String multiData;
 }
