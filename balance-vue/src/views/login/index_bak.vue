@@ -17,91 +17,91 @@
       :click-effect="true"
       click-mode="push"
     />
-    <el-row>
-      <el-col :xs="24" :sm="4" :md="12" :lg="16" :xl="16">
-        <div style="color: transparent">占位符</div>
-      </el-col>
-      <el-col :xs="24" :sm="20" :md="12" :lg="8" :xl="8">
-        <el-form
-          ref="loginForm"
-          size="medium"
-          :model="loginForm"
-          :rules="loginRules"
-          class="login-form"
-          auto-complete="on"
-          label-position="left"
-        >
-          <div class="login-border">
-            <div class="title">Hello!</div>
-            <div class="title-tips">欢迎使用账户管理系统</div>
+    <el-form
+      ref="loginForm"
+      size="medium"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
 
-            <el-form-item style="margin-top: 20px" prop="userId">
-              <span class="svg-container">
-                <svg-icon icon-class="user" />
-              </span>
-              <el-input
-                ref="userId"
-                v-model="loginForm.userId"
-                size="medium"
-                placeholder="用户名"
-                name="userId"
-                type="text"
-                tabindex="1"
-                auto-complete="on"
-              />
-            </el-form-item>
+      <div class="login-border">
+        <div class="title-container">
+          <h3 class="title">系统登录</h3>
+        </div>
 
-            <el-form-item prop="password">
-              <span class="svg-container">
-                <svg-icon icon-class="password" />
-              </span>
-              <el-input
-                ref="password"
-                v-model="loginForm.password"
-                size="medium"
-                type="password"
-                placeholder="密码"
-                name="password"
-                tabindex="2"
-                auto-complete="on"
-                show-password
-                @keyup.enter.native="handleLogin"
-              />
-            </el-form-item>
+        <el-form-item prop="userId">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="userId"
+            v-model="loginForm.userId"
+            size="medium"
+            placeholder="用户名"
+            name="userId"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-            <el-form-item v-if="useCaptcha">
-              <span class="svg-container">
-                <svg-icon icon-class="code" />
-              </span>
-              <el-input
-                v-model="loginForm.captcha"
-                size="medium"
-                placeholder="验证码"
-                style="width: 200px"
-                @keyup.enter.native="handleLogin"
-              />
-              <span class="show-captcha">
-                <img :src="captchaPath" alt="点击刷新图片" @click="getCaptcha">
-              </span>
-            </el-form-item>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            ref="password"
+            v-model="loginForm.password"
+            size="medium"
+            type="password"
+            placeholder="密码"
+            name="password"
+            tabindex="2"
+            auto-complete="on"
+            show-password
+            @keyup.enter.native="handleLogin"
+          />
+        </el-form-item>
 
-            <el-button
-              :loading="loading"
-              type="primary"
-              class="login-button"
-              @click.native.prevent="handleLogin"
-            >登录
-            </el-button>
-            <el-button
-              type="text"
-              class="reset-button"
-              @click.native.prevent="reset"
-            >重 置
-            </el-button>
-          </div>
-        </el-form>
-      </el-col>
-    </el-row></div>
+        <el-form-item v-if="useCaptcha">
+          <span class="svg-container">
+            <svg-icon icon-class="code" />
+          </span>
+          <el-input
+            v-model="loginForm.captcha"
+            size="medium"
+            placeholder="验证码"
+            style="width: 200px"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-captcha">
+            <img :src="captchaPath" alt="点击刷新图片" @click="getCaptcha">
+          </span>
+        </el-form-item>
+
+        <el-row style="width: 100%">
+          <el-button
+            size="medium"
+            type="info"
+            class="login-button"
+            @click.native.prevent="reset"
+          >重 置
+          </el-button>
+          <el-button
+            size="medium"
+            :loading="loading"
+            type="primary"
+            class="login-button"
+            @click.native.prevent="handleLogin"
+          >登录
+          </el-button>
+        </el-row>
+      </div>
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -250,29 +250,17 @@ export default {
       position: absolute;
     }
     .login-container {
-        height: 100vh;
-        background: url('~@/assets/login_images/background.jpg') center center fixed no-repeat;
-        background-size: cover;
-
-        .title {
-          font-size: 54px;
-          font-weight: 500;
-          color: rgba(14, 18, 26, 1);
-        }
-
-        .title-tips {
-          margin-top: 20px;
-          font-size: 26px;
-          font-weight: 400;
-          color: rgba(14, 18, 26, 1);
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
+        min-height: 100%;
+        width: 100%;
+        background-color: $bg;
+        overflow: hidden;
 
         .login-form {
             position: relative;
+            width: 520px;
             max-width: 100%;
-            margin: calc((100vh - 425px) / 2) 10% 10%;
+            padding: 13% 35px 0;
+            margin: 0 auto;
             overflow: hidden;
 
             .login-border {
@@ -283,32 +271,15 @@ export default {
               // margin: 180px auto;
               // width: 350px;
               padding: 35px 35px 35px 35px;
-              background: #fbfffe;
-              // border: 1px solid rgb(230, 230, 230);
-              // box-shadow: 0 0 25px rgb(200, 200, 200);
-              // margin-bottom: 15px;
+              background: rgb(250, 250, 250);
+              border: 1px solid rgb(230, 230, 230);
+              box-shadow: 0 0 25px rgb(200, 200, 200);
+              margin-bottom: 15px;
             }
 
             .login-button {
-              display: inherit;
-              width: 170px;
-              height: 45px;
-              margin-top: 5px;
-              font-size: 20px;
-              border: 0;
-              &:hover {
-                opacity: 0.9;
-              }
-            }
-
-            .reset-button {
-                margin-top: 10px;
-                font-size: 12px;
-                color: gray;
-                // border: 0;
-                &:hover {
-                  opacity: 0.9;
-                }
+              float: right;
+              margin-left: 20px;
             }
         }
 
