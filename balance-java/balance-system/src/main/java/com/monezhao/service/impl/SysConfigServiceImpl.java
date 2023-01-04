@@ -14,7 +14,6 @@ import com.monezhao.service.SysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -109,31 +108,21 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigMapper, SysCo
 
     @Override
     public String getSysConfig(String configId) {
-        String defaultValue = null;
-        Class objClass = defaultSystemConfig.getClass();
-        Field[] fields = objClass.getDeclaredFields();
-        for (Field field : fields) {
-            if (field.getName().equals(configId)) {
-                field.setAccessible(true);
-                try {
-                    defaultValue = (String) field.get(defaultSystemConfig);
-                    break;
-                } catch (IllegalAccessException e) {
-                    break;
-                }
-            }
-        }
-
-        if (StringUtils.isEmpty(configId)) {
-            return defaultValue;
-        }
         String sysConfigValue = (String) redisUtil.get(Constants.PREFIX_SYS_CONFIG + configId);
-        if (sysConfigValue == null) {
+        if (CommonUtil.isEmptyAfterTrim(sysConfigValue)) {
             SysConfig config = this.getById(configId);
             if (config != null) {
                 sysConfigValue = config.getConfigValue();
                 redisUtil.set(Constants.PREFIX_SYS_CONFIG + configId, sysConfigValue);
             } else {
+                String defaultValue = "";
+                Class<?> objClass = DefaultSystemConfig.class;
+                try {
+                    Field field = objClass.getDeclaredField(configId);
+                    field.setAccessible(true);
+                    defaultValue = (String) field.get(defaultSystemConfig);
+                } catch (IllegalAccessException | NoSuchFieldException ignored) {
+                }
                 return defaultValue;
             }
         }
