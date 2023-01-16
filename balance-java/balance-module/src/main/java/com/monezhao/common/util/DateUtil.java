@@ -356,7 +356,7 @@ public class DateUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(start);
         List<String> dateList = new ArrayList<>();
-        while (end.after(calendar.getTime())) {
+        while (!end.before(calendar.getTime())) {
             dateList.add(format.format(calendar.getTime()));
             calendar.add(Calendar.MONTH, 1);
         }

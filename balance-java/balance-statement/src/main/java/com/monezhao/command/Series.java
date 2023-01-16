@@ -19,4 +19,6 @@ public class Series {
     private Boolean smooth;
     //数据列表
     private List<BigDecimal> data;
+    //最大宽度
+    private Integer barMaxWidth = 100;
 }

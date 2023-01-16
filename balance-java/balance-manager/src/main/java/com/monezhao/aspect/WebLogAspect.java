@@ -50,7 +50,11 @@ public class WebLogAspect {
         // 获取request并设置IP地址
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest();
+        String contextPath = request.getContextPath();
         String url = request.getRequestURI();
+        if (url.startsWith(contextPath)) {
+            url = url.substring(contextPath.length());
+        }
         String method = request.getMethod();
         SysUser sysUser = ShiroUtils.getSysUser();
         long startTime = System.currentTimeMillis();

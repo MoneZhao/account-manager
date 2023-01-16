@@ -129,6 +129,8 @@
 
     <logger name="org.springframework.boot.liquibase" level="error"/>
 
+    <logger name="org.springframework.core.log" level="info"/>
+
     <logger name="liquibase" level="error"/>
 
     <logger name="springfox" level="error"/>

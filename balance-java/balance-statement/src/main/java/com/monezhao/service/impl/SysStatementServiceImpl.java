@@ -106,6 +106,12 @@ public class SysStatementServiceImpl implements SysStatementService {
 
     private StatementResultCommand getStatementResultCommand(StatementResultCommand resultCommand, List<String> dates,
                                                              Map<String, BigDecimal> record, BigDecimal defaultValue) {
+        if (dates.isEmpty()) {
+            return resultCommand;
+        }
+        if (record.isEmpty()) {
+            return resultCommand;
+        }
         Series series1 = new Series();
         series1.setName("账户余额");
         series1.setType("bar");
