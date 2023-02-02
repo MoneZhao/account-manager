@@ -4,6 +4,7 @@ import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.common.base.BaseService;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,5 +34,11 @@ public interface SysBalanceMainService extends BaseService<SysBalanceMain> {
      * 查询用户删除列表
      */
     void restore(@Param("list") List<String> idsArr);
+
+    /**
+     * 查询账户所有记录时间点
+     * @return List<Date>
+     */
+    List<Date> rangDate();
 
 }

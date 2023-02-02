@@ -123,6 +123,14 @@ public class SysBalanceDetail extends BaseEntity {
     private String statementDate;
 
     /**
+     * 报表查询年月类别: 0 月, 1 年
+     */
+    @TableField(exist = false)
+    @ApiModelProperty("报表查询年月类别")
+    @ExcelIgnore
+    private String queryType;
+
+    /**
      * 是否计入总资产
      */
     @TableField(exist = false)

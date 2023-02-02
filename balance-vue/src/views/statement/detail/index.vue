@@ -8,6 +8,7 @@
         <el-date-picker
           v-model="temp.value"
           :editable="false"
+          :clearable="false"
           type="monthrange"
           align="right"
           unlink-panels
@@ -132,7 +133,12 @@ export default {
             left: 'left'
           },
           xAxis: {
-            name: data.xTitle,
+            name: data.xtitle,
+            nameTextStyle: {// 名称样式
+              fontSize: 14,
+              color: '#333333',
+              fontWeight: 'bold'
+            },
             data: data.x,
             axisPointer: {
               type: 'shadow'
@@ -147,7 +153,12 @@ export default {
           },
           yAxis: {
             type: 'value',
-            name: data.yTitle,
+            name: data.ytitle,
+            nameTextStyle: {// 名称样式
+              fontSize: 14,
+              color: '#333333',
+              fontWeight: 'bold'
+            },
             axisLabel: {
               formatter: '￥{value}'
             }

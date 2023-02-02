@@ -44,4 +44,10 @@ public class StatementCommand {
     @ApiModelProperty(value = "账户类型")
     private String balanceType;
 
+    @NotNull(message = "查询类别不能为空", groups = {
+            ValidGroup.MainGroup.class,
+    })
+    @ApiModelProperty(value = "查询年月类别: 0 月, 1 年")
+    private String queryType;
+
 }

@@ -6,6 +6,7 @@ import com.monezhao.bean.sys.SysBalanceMain;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,4 +38,6 @@ public interface SysBalanceMainMapper extends BaseMapper<SysBalanceMain> {
      * 查询用户删除列表
      */
     void restore(List<String> idsArr);
+
+    List<Date> listAllDate(@Param("id") String id);
 }

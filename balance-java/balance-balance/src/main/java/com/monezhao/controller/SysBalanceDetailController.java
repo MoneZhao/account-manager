@@ -65,6 +65,7 @@ public class SysBalanceDetailController extends BaseController {
     @ApiOperation("账户明细列表")
     public Result listStatement(SysBalanceDetail sysBalanceDetail) {
         CommonUtil.isEmptyStr(sysBalanceDetail.getStatementDate(), "查询条件不能为空");
+        CommonUtil.isEmptyStr(sysBalanceDetail.getQueryType(), "查询条件不能为空");
         List<SysBalanceDetail> pageList = sysBalanceDetailService.listStatement(sysBalanceDetail);
         return Result.ok(pageList);
     }

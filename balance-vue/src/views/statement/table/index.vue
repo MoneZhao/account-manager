@@ -2,10 +2,15 @@
   <div class="app-container">
     <div class="filter-container">
       <el-card style="border-color: #f1f1f1;" shadow="hover">
-        <span style="margin-left:4rem">查询范围：</span>
+        <span style="margin-left:4rem">查询类别：</span>
+        <el-select v-model="queryType" style="width: 80px;" @change="getChart">
+          <el-option v-for="item in queryTypes" :key="item.typeId" :label="item.typeName" :value="item.typeId" />
+        </el-select>
+        <span style="margin-left:1rem">查询范围：</span>
         <el-date-picker
           v-model="temp.value"
           :editable="false"
+          :clearable="false"
           type="monthrange"
           align="right"
           unlink-panels
@@ -14,6 +19,7 @@
           end-placeholder="结束月份"
           format="yyyy 年 MM 月"
           value-format="yyyy-MM"
+          :disabled="queryType != 0"
           :picker-options="pickerOptions"
           @change="onChange"
         />
@@ -43,6 +49,16 @@ export default {
   },
   data() {
     return {
+      queryType: '0',
+      queryTypes: [
+        {
+          typeId: '0',
+          typeName: '月'
+        }, {
+          typeId: '1',
+          typeName: '年'
+        }
+      ],
       temp: {
         value: []
       },
@@ -129,7 +145,8 @@ export default {
         selectedData: {}
       }
       const params = {
-        statementDate: this.yearMonth.value
+        statementDate: this.yearMonth.value,
+        queryType: this.queryType
       }
       const {
         data
@@ -147,10 +164,12 @@ export default {
       this.ratioData = obj
     },
     getChart() {
-      postAction(`/sys/statement/query`, {
+      const param = {
+        queryType: this.queryType,
         startMonth: this.temp.value[0],
         endMonth: this.temp.value[1]
-      }).then((r) => {
+      }
+      postAction(`/sys/statement/query`, param).then((r) => {
         const data = r.data
         const legend = data.y.map(e => e.name)
         if (!this.chart) {
@@ -178,7 +197,12 @@ export default {
             left: 'left'
           },
           xAxis: {
-            name: data.xTitle,
+            name: data.xtitle,
+            nameTextStyle: {// 名称样式
+              fontSize: 14,
+              color: '#333333',
+              fontWeight: 'bold'
+            },
             data: data.x,
             axisPointer: {
               type: 'shadow'
@@ -193,7 +217,12 @@ export default {
           },
           yAxis: {
             type: 'value',
-            name: data.yTitle,
+            name: data.ytitle,
+            nameTextStyle: {// 名称样式
+              fontSize: 14,
+              color: '#333333',
+              fontWeight: 'bold'
+            },
             axisLabel: {
               formatter: '￥{value}'
             }

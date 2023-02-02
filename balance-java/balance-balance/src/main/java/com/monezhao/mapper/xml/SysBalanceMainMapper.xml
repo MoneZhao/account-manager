@@ -87,4 +87,10 @@
             #{item}
         </foreach>
     </update>
+    <select id="listAllDate" resultType="java.util.Date">
+        SELECT a.account_date
+            FROM t_sys_balance_main a
+        WHERE a.user_id = #{id}
+        ORDER BY a.account_date DESC
+    </select>
 </mapper>

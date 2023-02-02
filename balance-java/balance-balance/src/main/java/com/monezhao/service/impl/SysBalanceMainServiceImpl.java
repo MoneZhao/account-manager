@@ -86,4 +86,9 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
     public void restore(List<String> idsArr) {
         baseMapper.restore(idsArr);
     }
+
+    @Override
+    public List<Date> rangDate() {
+        return baseMapper.listAllDate(ShiroUtils.getUserId());
+    }
 }

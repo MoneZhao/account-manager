@@ -238,13 +238,23 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
         SysUser sysUser = ShiroUtils.getSysUser();
         QueryWrapper<SysBalanceMain> mainQueryWrapper = new QueryWrapper<>();
         String statementDate = sysBalanceDetail.getStatementDate();
-        Date start = DateUtil.strToDate(statementDate + "-01", DateUtil.DATE_FORMAT_DEFAULT);
-        mainQueryWrapper.lambda()
-                .eq(SysBalanceMain::getUserId, sysUser.getUserId())
-                .between(SysBalanceMain::getAccountDate, start,
-                        DateUtil.addDay(DateUtil.addMonth(start, 1), -1))
-                .orderByDesc(SysBalanceMain::getAccountDate)
-        ;
+        if ("0".equals(sysBalanceDetail.getQueryType())) {
+            Date start = DateUtil.strToDate(statementDate + "-01", DateUtil.DATE_FORMAT_DEFAULT);
+            mainQueryWrapper.lambda()
+                    .eq(SysBalanceMain::getUserId, sysUser.getUserId())
+                    .between(SysBalanceMain::getAccountDate, start,
+                            DateUtil.addDay(DateUtil.addMonth(start, 1), -1))
+                    .orderByDesc(SysBalanceMain::getAccountDate)
+            ;
+        } else {
+            Date end = DateUtil.strToDate(statementDate + "12-31", DateUtil.DATE_FORMAT_DEFAULT);
+            mainQueryWrapper.lambda()
+                    .eq(SysBalanceMain::getUserId, sysUser.getUserId())
+                    .between(SysBalanceMain::getAccountDate,
+                            DateUtil.addYear(DateUtil.addDay(end, 1), -1), end)
+                    .orderByDesc(SysBalanceMain::getAccountDate)
+            ;
+        }
         SysBalanceMain balanceMain = sysBalanceMainService.getOne(mainQueryWrapper, false);
         if (balanceMain == null) {
             return new ArrayList<>();

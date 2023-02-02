@@ -17,10 +17,12 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author monezhao@163.com
@@ -40,33 +42,68 @@ public class SysStatementServiceImpl implements SysStatementService {
         StatementResultCommand resultCommand = new StatementResultCommand();
         resultCommand.setTitle("账户余额曲线");
         resultCommand.setYTitle("账户余额");
-        resultCommand.setXTitle("月份");
-        String startStr = DateUtil.dateToStr(command.getStartMonth(), "yyyy");
-        String endStr = DateUtil.dateToStr(command.getEndMonth(), "yyyy");
-        String format;
-        if (Objects.equals(startStr, endStr)) {
-            format = "MM月";
+        resultCommand.setXTitle("日期");
+        List<String> dates;
+        Map<String, BigDecimal> record;
+        if ("0".equals(command.getQueryType())) {
+            //按月统计
+            String startStr = DateUtil.dateToStr(command.getStartMonth(), "yyyy");
+            String endStr = DateUtil.dateToStr(command.getEndMonth(), "yyyy");
+            String format;
+            if (Objects.equals(startStr, endStr)) {
+                format = "MM月";
+            } else {
+                format = "yyyy年MM月";
+            }
+            dates = DateUtil.findMonth(command.getStartMonth(), command.getEndMonth(), format);
+            resultCommand.setX(dates);
+
+            QueryWrapper<SysBalanceMain> mainQueryWrapper = new QueryWrapper<>();
+            mainQueryWrapper.lambda()
+                    .eq(SysBalanceMain::getUserId, ShiroUtils.getUserId())
+                    .between(SysBalanceMain::getAccountDate, command.getStartMonth(),
+                            DateUtil.addSecond(DateUtil.addMonth(command.getEndMonth(), 1), -1))
+                    .orderByAsc(SysBalanceMain::getAccountDate)
+            ;
+            List<SysBalanceMain> balanceMains = balanceMainService.list(mainQueryWrapper);
+
+            record = new HashMap<>(balanceMains.size());
+            for (SysBalanceMain balanceMain : balanceMains) {
+                String dateStr = DateUtil.dateToStr(balanceMain.getAccountDate(), format);
+                BigDecimal account = balanceMain.getAccount();
+                record.put(dateStr, account);
+            }
         } else {
-            format = "yyyy年MM月";
-        }
-        List<String> dates = DateUtil.findMonth(command.getStartMonth(), command.getEndMonth(), format);
-        resultCommand.setX(dates);
+            //按年统计
+            List<Date> rangDate = balanceMainService.rangDate();
+            Map<String, List<Date>> dateMap = rangDate.stream()
+                    .collect(Collectors.groupingBy(e -> DateUtil.dateToStr(e, "yyyy年")));
+            dates = new ArrayList<>(dateMap.size());
+            List<String> yearDates = new ArrayList<>(dateMap.size());
+            for (Map.Entry<String, List<Date>> entry : dateMap.entrySet()) {
+                String a = entry.getKey();
+                List<Date> b = entry.getValue();
+                dates.add(a);
+                yearDates.add(DateUtil.dateToStr(b.get(0)));
+            }
 
-        SysUser sysUser = ShiroUtils.getSysUser();
-        QueryWrapper<SysBalanceMain> mainQueryWrapper = new QueryWrapper<>();
-        mainQueryWrapper.lambda()
-                .eq(SysBalanceMain::getUserId, sysUser.getUserId())
-                .between(SysBalanceMain::getAccountDate, command.getStartMonth(),
-                        DateUtil.addSecond(DateUtil.addMonth(command.getEndMonth(), 1), -1))
-                .orderByAsc(SysBalanceMain::getAccountDate)
-        ;
-        List<SysBalanceMain> balanceMains = balanceMainService.list(mainQueryWrapper);
+            dates = dates.stream().sorted().collect(Collectors.toList());
+            resultCommand.setX(dates);
 
-        Map<String, BigDecimal> record = new HashMap<>(balanceMains.size());
-        for (SysBalanceMain balanceMain : balanceMains) {
-            String dateStr = DateUtil.dateToStr(balanceMain.getAccountDate(), format);
-            BigDecimal account = balanceMain.getAccount();
-            record.put(dateStr, account);
+            QueryWrapper<SysBalanceMain> mainQueryWrapper = new QueryWrapper<>();
+            mainQueryWrapper.lambda()
+                    .eq(SysBalanceMain::getUserId, ShiroUtils.getUserId())
+                    .in(SysBalanceMain::getAccountDate, yearDates)
+                    .orderByAsc(SysBalanceMain::getAccountDate)
+            ;
+            List<SysBalanceMain> balanceMains = balanceMainService.list(mainQueryWrapper);
+
+            record = new HashMap<>(balanceMains.size());
+            for (SysBalanceMain balanceMain : balanceMains) {
+                String dateStr = DateUtil.dateToStr(balanceMain.getAccountDate(), "yyyy年");
+                BigDecimal account = balanceMain.getAccount();
+                record.put(dateStr, account);
+            }
         }
 
         return getStatementResultCommand(resultCommand, dates, record, null);
@@ -77,7 +114,7 @@ public class SysStatementServiceImpl implements SysStatementService {
         StatementResultCommand resultCommand = new StatementResultCommand();
         resultCommand.setTitle("账户余额曲线");
         resultCommand.setYTitle("账户余额");
-        resultCommand.setXTitle("月份");
+        resultCommand.setXTitle("日期");
         String startStr = DateUtil.dateToStr(command.getStartMonth(), "yyyy");
         String endStr = DateUtil.dateToStr(command.getEndMonth(), "yyyy");
         String format;
