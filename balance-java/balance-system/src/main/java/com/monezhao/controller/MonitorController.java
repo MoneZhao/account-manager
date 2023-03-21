@@ -4,6 +4,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.bean.utilsVo.RedisInfo;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
+import com.monezhao.common.util.IpUtils;
 import com.monezhao.service.RedisService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.util.ArrayList;
@@ -80,5 +82,13 @@ public class MonitorController extends BaseController {
             log.error("查询失败：", e);
             return Result.error("查询失败");
         }
+    }
+
+    @GetMapping("/getRequestIp")
+    @ApiOperation("获取请求IP")
+    public Result getRequestIp(HttpServletRequest request) {
+        String ipAddr = IpUtils.getIpAddr(request);
+        log.info("ipAddr: " + ipAddr);
+        return Result.ok(ipAddr);
     }
 }

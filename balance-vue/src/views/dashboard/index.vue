@@ -13,10 +13,11 @@
                 {{ welcomeMessage }}
               </div>
               <div class="head-info-desc">
-                <p>
-                  {{ sysOrg ? sysOrg.orgName : "暂无部门" }} |
-                  {{ sysRole ? sysRole.roleName : "暂无角色" }}
-                </p>
+                <el-row :span="24">
+                  <el-col :span="8">部门: {{ sysOrg ? sysOrg.orgName : "暂无部门" }}</el-col>
+                  <el-col :span="6">角色: {{ sysRole ? sysRole.roleName : "暂无角色" }}</el-col>
+                  <el-col :span="10">本机IP: {{ ipAddr }}</el-col>
+                </el-row>
               </div>
             </div>
           </el-row>
@@ -73,13 +74,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import HeadInfo from '@/components/HeadInfo'
-import { postAction } from '@/api/manage'
+import { getAction, postAction } from '@/api/manage'
 
 export default {
   name: 'Dashboard',
   components: { HeadInfo },
   data() {
     return {
+      ipAddr: '',
       todayIp: 0,
       todayVisitCount: 0,
       totalVisitCount: 0,
@@ -106,6 +108,9 @@ export default {
       'menuList'
     ])
   },
+  created() {
+    this.ipAddr = this.getIpAddr()
+  },
   mounted() {
     this.welcomeMessage = this.welcome()
     this.getChart()
@@ -117,7 +122,7 @@ export default {
       const time = hour < 6 ? '早上好' : (hour <= 11 ? '上午好' : (hour <= 13 ? '中午好' : (hour <= 18 ? '下午好' : '晚上好')))
       const welcomeArr = [
         '喝杯咖啡休息下吧☕',
-        '要不要和朋友打局LOL',
+        '要不要和朋友约个饭',
         '几天没见又更好看了呢😍',
         '今天又写了几个Bug🐞呢',
         '今天在群里吹水了吗',
@@ -129,6 +134,11 @@ export default {
       ]
       const index = Math.floor((Math.random() * welcomeArr.length))
       return `${time}，${this.name}，${welcomeArr[index]}`
+    },
+    getIpAddr() {
+      getAction('/actuator/getRequestIp').then((r) => {
+        this.ipAddr = r.msg
+      })
     },
     getChart() {
       postAction(`/sys/user/index`, this.sysUser).then((r) => {
@@ -221,7 +231,7 @@ export default {
     .head-info-card {
       padding: 0.5rem;
       border-color: #f1f1f1;
-      min-height: 260px;
+      min-height: 280px;
       .head-info-avatar {
         display: inline-block;
         float: left;
@@ -234,21 +244,14 @@ export default {
       .head-info-count {
         display: inline-block;
         float: left;
+        width: 80%;
         .head-info-welcome {
           font-size: 1.05rem;
-          margin-bottom: 0.1rem;
+          margin-bottom: 1rem;
         }
         .head-info-desc {
-          color: rgba(0, 0, 0, 0.45);
-          font-size: 0.8rem;
-          padding: 0.2rem 0;
-          p {
-            margin-bottom: 0;
-          }
-        }
-        .head-info-time {
-          color: rgba(0, 0, 0, 0.45);
-          font-size: 0.8rem;
+          color: #555555;
+          font-size: 0.95rem;
           padding: 0.2rem 0;
         }
       }

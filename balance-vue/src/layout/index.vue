@@ -111,7 +111,7 @@ export default {
       padding: 10px 16px;
       text-align: center;
       .copyright {
-        color: rgba(0, 0, 0, 0.45);
+        color: #555555;
         font-size: 14px;
       }
     }

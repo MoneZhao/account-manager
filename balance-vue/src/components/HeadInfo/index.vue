@@ -42,7 +42,7 @@ export default {
     }
 
     span {
-      color: rgba(0, 0, 0, .45);
+      color: #555555;
       display: inline-block;
       font-size: .95rem;
       line-height: 32px;
