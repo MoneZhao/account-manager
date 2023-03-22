@@ -38,6 +38,8 @@ export default {
 
         if (isMobile) {
           store.dispatch('app/closeSideBar', { withoutAnimation: true })
+        } else {
+          store.dispatch('app/openSideBar', { withoutAnimation: true })
         }
       }
     }
