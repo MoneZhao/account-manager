@@ -106,7 +106,7 @@ public class SysStatementServiceImpl implements SysStatementService {
             }
         }
 
-        return getStatementResultCommand(resultCommand, dates, record, null);
+        return getStatementResultCommand(resultCommand, dates, record);
     }
 
     @Override
@@ -138,11 +138,11 @@ public class SysStatementServiceImpl implements SysStatementService {
             record.put(dateStr, account);
         }
 
-        return getStatementResultCommand(resultCommand, dates, record, BigDecimal.valueOf(0));
+        return getStatementResultCommand(resultCommand, dates, record);
     }
 
     private StatementResultCommand getStatementResultCommand(StatementResultCommand resultCommand, List<String> dates,
-                                                             Map<String, BigDecimal> record, BigDecimal defaultValue) {
+                                                             Map<String, BigDecimal> record) {
         if (dates.isEmpty()) {
             return resultCommand;
         }
@@ -161,15 +161,17 @@ public class SysStatementServiceImpl implements SysStatementService {
 
         for (int i = 0; i < dates.size(); i++) {
             String date = dates.get(i);
-            BigDecimal current = record.getOrDefault(date, defaultValue);
+            BigDecimal current = record.getOrDefault(date, null);
             data1.add(current);
 
             if (i == 0) {
                 data2.add(null);
             } else {
-                BigDecimal before = record.getOrDefault(dates.get(i - 1), defaultValue);
-                if (current == null || before == null) {
+                BigDecimal before = record.getOrDefault(dates.get(i - 1), null);
+                if (current == null) {
                     data2.add(null);
+                } else if (before == null){
+                    data2.add(current);
                 } else {
                     data2.add(current.subtract(before));
                 }
