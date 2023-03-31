@@ -17,6 +17,7 @@
         <dependency.scope.framework>compile</dependency.scope.framework>
         <dependency.scope.thirdparty>compile</dependency.scope.thirdparty>
         <dependency.version.framework>7.0.3</dependency.version.framework>
+        <lombok.version>1.18.16</lombok.version>
     </properties>
     <modules>
         <module>balance-manager</module>
@@ -28,5 +29,11 @@
         <module>balance-flowable</module>
     </modules>
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 </project>
