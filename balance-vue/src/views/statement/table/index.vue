@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-card style="border-color: #f1f1f1;" shadow="hover">
+      <el-card style="border-color: #f1f1f1;margin-bottom: 5px" shadow="hover">
         <span style="margin-left:4rem">查询类别：</span>
         <el-select v-model="queryType" style="width: 80px;" @change="getChart">
           <el-option v-for="item in queryTypes" :key="item.typeId" :label="item.typeName" :value="item.typeId" />

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-card style="border-color: #f1f1f1;" shadow="hover">
+      <el-card style="border-color: #f1f1f1;margin-bottom: 5px" shadow="hover">
         <span style="margin-left:4rem">账户类型：</span>
         <el-select v-model="temp.balanceType" placeholder="账户类型" class="filter-item" @change="onChange"><el-option v-for="(item, index) in dicts.balanceType" :key="index" :label="item.content" :value="item.value" /></el-select>
         <span style="margin-left:2rem">查询范围：</span>

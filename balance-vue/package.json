@@ -20,7 +20,7 @@
     "file-saver": "2.0.1",
     "echarts": "^4.9.0",
     "el-table-editabled": "^1.0.22",
-    "element-ui": "^2.13.2",
+    "element-ui": "^2.15.10",
     "form-making": "^1.2.9",
     "bpmn-js": "^7.2.1",
     "bpmn-js-properties-panel": "^0.34.0",
