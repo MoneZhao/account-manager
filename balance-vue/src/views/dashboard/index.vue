@@ -185,9 +185,21 @@ export default {
             left: 'left'
           },
           xAxis: {
+            name: '日期',
+            nameTextStyle: {// 名称样式
+              fontSize: 14,
+              color: '#333333',
+              fontWeight: 'bold'
+            },
             data: dateArr
           },
           yAxis: {
+            name: '访问数量',
+            nameTextStyle: {// 名称样式
+              fontSize: 14,
+              color: '#333333',
+              fontWeight: 'bold'
+            },
             minInterval: 1
           },
           legend: {
@@ -258,7 +270,7 @@ export default {
     }
   }
   .count-info {
-    padding: 10px;
+    padding: 0px 10px;
     .visit-count-wrapper {
       .visit-count {
         border-color: #f1f1f1;
