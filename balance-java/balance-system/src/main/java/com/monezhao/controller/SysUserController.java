@@ -327,6 +327,7 @@ public class SysUserController extends BaseController {
         sysUserIndex.setTodayIp(sysUserService.findTodayIp());
         sysUserIndex.setLastSevenVisitCount(sysUserService.findLastSevenDaysVisitCount(null));
         sysUserIndex.setLastSevenUserVisitCount(sysUserService.findLastSevenDaysVisitCount(sysUser.getUserName()));
+        sysUserIndex.setLastSevenVisitIp(sysUserService.findLastSevenVisitIp());
         return Result.ok(sysUserIndex);
     }
 

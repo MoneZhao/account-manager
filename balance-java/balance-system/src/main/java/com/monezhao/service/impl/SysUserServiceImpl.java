@@ -431,6 +431,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @Override
+    public List<String> findLastSevenVisitIp() {
+        return baseMapper.findLastSevenVisitIp();
+    }
+
+    @Override
     public long findTodayVisitCount() {
         return baseMapper.findTodayVisitCount();
     }

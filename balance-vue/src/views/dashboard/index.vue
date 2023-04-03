@@ -63,9 +63,24 @@
       </el-col>
     </el-row>
     <el-row :gutter="8" class="count-info">
-      <el-col :span="24" class="visit-count-wrapper">
+      <el-col :span="18" class="visit-count-wrapper">
         <el-card class="visit-count box-card" shadow="hover">
           <div id="dashboard_chart" style="height: 400px" />
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover">
+          <el-descriptions title="近七日访问IP" class="ipItem" :column="1" border>
+            <el-descriptions-item
+              v-for="(item,index) in ipList"
+              :key="item"
+              :label="index + 1"
+              :label-style="{'text-align':'center','font-size': '16px'}"
+              :content-style="{'text-align':'center','font-size': '16px'}"
+            >
+              {{ item }}
+            </el-descriptions-item>
+          </el-descriptions>
         </el-card>
       </el-col>
     </el-row>
@@ -94,7 +109,8 @@ export default {
         'tiffany-btn',
         'yellow-btn'
       ],
-      welcomeMessage: ''
+      welcomeMessage: '',
+      ipList: []
     }
   },
   computed: {
@@ -146,6 +162,7 @@ export default {
         this.todayIp = data.todayIp
         this.todayVisitCount = data.todayVisitCount
         this.totalVisitCount = data.totalVisitCount
+        this.ipList = data.lastSevenVisitIp
         const sevenVisitCount = []
         const dateArr = []
         for (let i = 6; i >= 0; i--) {
@@ -285,5 +302,9 @@ export default {
   text-align: center;
   font-size: 16px;
   margin: 5px;
+}
+.ipItem {
+  margin-bottom: 18px;
+  height: 382px;
 }
 </style>

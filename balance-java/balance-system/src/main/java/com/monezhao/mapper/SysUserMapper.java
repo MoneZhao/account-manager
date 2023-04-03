@@ -82,6 +82,13 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     long findTodayIp();
 
     /**
+     * 近7日访问ip
+     *
+     * @return
+     */
+    List<String> findLastSevenVisitIp();
+
+    /**
      * 近7日访问量
      *
      * @param username 用户名
