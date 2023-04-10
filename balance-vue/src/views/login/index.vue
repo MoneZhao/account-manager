@@ -198,8 +198,8 @@ export default {
     /* 修复input 背景不协调 和光标变色 */
     /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-    $bg: #283443;
-    $dark: #191930;
+    $bg: #f0f4f3;
+    $dark: #2b2b2e;
     $cursor: #2b2b2e;
 
     @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
