@@ -3,39 +3,51 @@
     <el-row :gutter="8" class="head-info">
       <el-col :span="12">
         <el-card class="head-info-card box-card" shadow="hover">
-          <el-row :span="12">
-            <div class="head-info-avatar">
-              <img v-if="avatar" alt="头像" :src="avatar">
-              <img v-else alt="头像" :src="defaultAvatar">
-            </div>
-            <div class="head-info-count">
-              <div class="head-info-welcome">
-                {{ welcomeMessage }}
+          <el-row :span="12" :gutter="2">
+            <el-col :xl="3" :lg="4" :sm="6" :xs="14">
+              <div class="head-info-avatar">
+                <img v-if="avatar" alt="头像" :src="avatar">
+                <img v-else alt="头像" :src="defaultAvatar">
               </div>
-              <div class="head-info-desc">
-                <el-row :span="24">
-                  <el-col :span="8">部门: {{ sysOrg ? sysOrg.orgName : "暂无部门" }}</el-col>
-                  <el-col :span="6">角色: {{ sysRole ? sysRole.roleName : "暂无角色" }}</el-col>
-                  <el-col :span="10">本机IP: {{ ipAddr }}</el-col>
+            </el-col>
+            <el-col :xl="17" :lg="18" :sm="16" :xs="8">
+              <div class="head-info-count">
+                <el-row>
+                  <div class="head-info-welcome">
+                    {{ welcomeMessage }}
+                  </div>
+                </el-row>
+                <el-divider />
+                <el-row>
+                  <div class="head-info-todo">
+                    {{ todoMessage }}
+                  </div>
                 </el-row>
               </div>
-            </div>
+            </el-col>
           </el-row>
           <el-divider />
           <el-row :span="12">
-            <div>
-              <el-row>
-                <el-col :span="8">
-                  <head-info title="今日登录IP" :content="todayIp" />
-                </el-col>
-                <el-col :span="8">
-                  <head-info title="今日登录次数" :content="todayVisitCount" />
-                </el-col>
-                <el-col :span="8">
-                  <head-info title="总登录次数" :content="totalVisitCount" />
-                </el-col>
-              </el-row>
-            </div>
+            <el-descriptions title="" style="" :column="2" border>
+              <el-descriptions-item label="部门" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
+                {{ sysOrg ? sysOrg.orgName : "暂无部门" }}
+              </el-descriptions-item>
+              <el-descriptions-item label="今日登录IP" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
+                {{ todayIp ? todayIp : "0" }}
+              </el-descriptions-item>
+              <el-descriptions-item label="角色" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
+                {{ sysRole ? sysRole.roleName : "暂无角色" }}
+              </el-descriptions-item>
+              <el-descriptions-item label="今日登录次数" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
+                {{ todayVisitCount ? todayVisitCount : "0" }}
+              </el-descriptions-item>
+              <el-descriptions-item label="本机IP" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
+                {{ ipAddr ? ipAddr : "火星" }}
+              </el-descriptions-item>
+              <el-descriptions-item label="总登录次数" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
+                {{ totalVisitCount ? totalVisitCount : "0" }}
+              </el-descriptions-item>
+            </el-descriptions>
           </el-row>
         </el-card>
       </el-col>
@@ -75,8 +87,8 @@
               v-for="(item,index) in ipList"
               :key="item"
               :label="index + 1"
-              :label-style="{'text-align':'center','font-size': '16px'}"
-              :content-style="{'text-align':'center','font-size': '16px'}"
+              :label-style="{'text-align':'center'}"
+              :content-style="{'text-align':'center'}"
             >
               {{ item }}
             </el-descriptions-item>
@@ -88,12 +100,10 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import HeadInfo from '@/components/HeadInfo'
 import { getAction, postAction } from '@/api/manage'
 
 export default {
   name: 'Dashboard',
-  components: { HeadInfo },
   data() {
     return {
       ipAddr: '',
@@ -110,6 +120,7 @@ export default {
         'yellow-btn'
       ],
       welcomeMessage: '',
+      todoMessage: '',
       ipList: []
     }
   },
@@ -129,6 +140,7 @@ export default {
   },
   mounted() {
     this.welcomeMessage = this.welcome()
+    this.todoMessage = this.todo()
     this.getChart()
   },
   methods: {
@@ -136,6 +148,9 @@ export default {
       const date = new Date()
       const hour = date.getHours()
       const time = hour < 6 ? '早上好' : (hour <= 11 ? '上午好' : (hour <= 13 ? '中午好' : (hour <= 18 ? '下午好' : '晚上好')))
+      return `${time}，${this.name}`
+    },
+    todo() {
       const welcomeArr = [
         '喝杯咖啡休息下吧☕',
         '要不要和朋友约个饭',
@@ -149,7 +164,7 @@ export default {
         '周末要不要去看电影？'
       ]
       const index = Math.floor((Math.random() * welcomeArr.length))
-      return `${time}，${this.name}，${welcomeArr[index]}`
+      return welcomeArr[index]
     },
     getIpAddr() {
       getAction('/actuator/getRequestIp').then((r) => {
@@ -260,11 +275,12 @@ export default {
     .head-info-card {
       padding: 0.5rem;
       border-color: #f1f1f1;
-      min-height: 280px;
+      min-height: 283px;
       .head-info-avatar {
         display: inline-block;
         float: left;
         margin-right: 1rem;
+        min-width: 85px;
         img {
           width: 5rem;
           border-radius: 2px;
@@ -273,15 +289,11 @@ export default {
       .head-info-count {
         display: inline-block;
         float: left;
-        width: 80%;
         .head-info-welcome {
           font-size: 1.05rem;
-          margin-bottom: 1rem;
         }
-        .head-info-desc {
-          color: #555555;
+        .head-info-todo {
           font-size: 0.95rem;
-          padding: 0.2rem 0;
         }
       }
     }
