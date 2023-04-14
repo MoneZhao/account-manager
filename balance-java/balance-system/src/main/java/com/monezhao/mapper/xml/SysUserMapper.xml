@@ -137,7 +137,7 @@
         from
         t_sys_log
         where log_type='1' and
-        <![CDATA[ date_sub(curdate(), interval 6 day) <= date(create_date) ]]>
+        <![CDATA[ date_sub(curdate(), interval 7 day) <= date(create_date) ]]>
         ) as l where 1 = 1
         <if test="username != null and username != ''">
             and l.user_name = #{username}
@@ -201,7 +201,7 @@
               WHERE a.log_type = 1
                 and a.ip != '127.0.0.1'
                 and
-            <![CDATA[ date_sub(curdate(), interval 6 day) <= date(a.create_date) ]]> ORDER BY a.create_time DESC
-              LIMIT 0,10) b
+            <![CDATA[ date_sub(curdate(), interval 7 day) <= date(a.create_date) ]]> ORDER BY a.create_time DESC) b
+        LIMIT 0,10
     </select>
 </mapper>
