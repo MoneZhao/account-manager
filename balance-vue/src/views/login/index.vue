@@ -107,6 +107,7 @@
 <script>
 import { md5, getUUID } from '@/utils'
 import { getAction } from '@/api/manage'
+import { setExpireTime } from '@/utils/auth'
 
 export default {
   name: 'Login',
@@ -152,8 +153,9 @@ export default {
   },
   created() {
     getAction('/sys/useCaptcha').then(res => {
-      const { msg } = res
-      if (msg === '0') {
+      const { data } = res
+      setExpireTime(data.expireTime)
+      if (data.useCaptcha === '0') {
         this.useCaptcha = true
         this.getCaptcha()
       }

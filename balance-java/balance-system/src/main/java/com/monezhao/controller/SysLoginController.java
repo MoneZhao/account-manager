@@ -16,6 +16,7 @@ import com.monezhao.common.util.JwtUtil;
 import com.monezhao.common.util.PasswordUtil;
 import com.monezhao.common.util.RedisUtil;
 import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.controller.command.LoginCommand;
 import com.monezhao.service.SysConfigService;
 import com.monezhao.service.SysUserService;
 import io.swagger.annotations.Api;
@@ -84,8 +85,12 @@ public class SysLoginController extends BaseController {
     @GetMapping("useCaptcha")
     @ApiOperation("是否使用图片验证码")
     public Result useCaptcha() {
+        LoginCommand loginCommand = new LoginCommand();
         String useCaptcha = sysConfigService.getSysConfig("useCaptcha");
-        return Result.ok(useCaptcha);
+        loginCommand.setUseCaptcha(useCaptcha);
+        String expireTime = sysConfigService.getSysConfig("expireTime");
+        loginCommand.setExpireTime(expireTime);
+        return Result.ok(loginCommand);
     }
 
     @SysLogAuto(value = "用户登录", logType = "1")
