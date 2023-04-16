@@ -1,4 +1,3 @@
-/* eslint-disable */
 require('script-loader!file-saver');
 import JSZip from 'jszip'
 

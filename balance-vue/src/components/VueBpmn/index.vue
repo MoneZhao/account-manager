@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <el-container class="fm2-container">
     <el-main class="fm2-main">

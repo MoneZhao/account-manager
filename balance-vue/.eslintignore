@@ -1,0 +1,4 @@
+# eslint 忽略的文件夹 或某个单独文件
+# 路径是相对于 .eslintignore 的位置或当前工作目录
+src/components/VueBpmn/*
+src/vendor/*
