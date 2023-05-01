@@ -69,32 +69,34 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     /**
      * 今日访问量
-     *
-     * @return
+     * @param now now
+     * @return long
      */
-    long findTodayVisitCount();
+    long findTodayVisitCount(String now);
 
     /**
      * 今日IP
-     *
-     * @return
+     * @param now now
+     * @return long
      */
-    long findTodayIp();
+    long findTodayIp(String now);
 
     /**
      * 近7日访问ip
      *
-     * @return
+     * @param now now
+     * @return long
      */
-    List<String> findLastSevenVisitIp();
+    List<String> findLastSevenVisitIp(String now);
 
     /**
      * 近7日访问量
      *
      * @param username 用户名
-     * @return
+     * @param now now
+     * @return long
      */
-    List<VisitCount> findLastSevenDaysVisitCount(String username);
+    List<VisitCount> findLastSevenDaysVisitCount(String username, String now);
 
     /**
      * 查询角色授权菜单

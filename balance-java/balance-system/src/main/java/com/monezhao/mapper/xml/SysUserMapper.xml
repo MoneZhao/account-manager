@@ -115,14 +115,14 @@
         select count(1)
         from t_sys_log
         where log_type = '1'
-          and datediff(create_date, now()) = 0
+          and datediff(create_date, #{now}) = 0
     </select>
 
     <select id="findTodayIp" resultType="long">
         select count(distinct (ip))
         from t_sys_log
         where log_type = '1'
-          and datediff(create_date, now()) = 0
+          and datediff(create_date, #{now}) = 0
     </select>
 
     <select id="findLastSevenDaysVisitCount" resultType="com.monezhao.controller.command.VisitCount"
@@ -137,7 +137,7 @@
         from
         t_sys_log
         where log_type='1' and
-        <![CDATA[ date_sub(curdate(), interval 7 day) <= date(create_date) ]]>
+        <![CDATA[ datediff(#{now}, create_date) <=7 ]]>
         ) as l where 1 = 1
         <if test="username != null and username != ''">
             and l.user_name = #{username}
@@ -196,12 +196,12 @@
     </select>
     <select id="findLastSevenVisitIp" resultType="java.lang.String">
         SELECT DISTINCT b.ip
-        FROM (SELECT *
+        FROM (SELECT DISTINCT a.ip, a.create_time
               FROM `t_sys_log` a
               WHERE a.log_type = 1
                 and a.ip != '127.0.0.1'
                 and
-            <![CDATA[ date_sub(curdate(), interval 7 day) <= date(a.create_date) ]]> ORDER BY a.create_time DESC) b
+        <![CDATA[ datediff(#{now}, create_date) <= 7 ]]>  ORDER BY a.create_time DESC) b
         LIMIT 0,10
     </select>
 </mapper>

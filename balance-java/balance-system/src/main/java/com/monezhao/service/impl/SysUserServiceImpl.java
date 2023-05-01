@@ -21,6 +21,7 @@ import com.monezhao.common.Constants;
 import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.common.exception.SysException;
 import com.monezhao.common.util.CommonUtil;
+import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.PasswordUtil;
 import com.monezhao.common.util.ShiroUtils;
 import com.monezhao.controller.command.UserShortCut;
@@ -36,14 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -432,22 +426,22 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
 
     @Override
     public List<String> findLastSevenVisitIp() {
-        return baseMapper.findLastSevenVisitIp();
+        return baseMapper.findLastSevenVisitIp(DateUtil.dateToStr(new Date()));
     }
 
     @Override
     public long findTodayVisitCount() {
-        return baseMapper.findTodayVisitCount();
+        return baseMapper.findTodayVisitCount(DateUtil.dateToStr(new Date()));
     }
 
     @Override
     public long findTodayIp() {
-        return baseMapper.findTodayIp();
+        return baseMapper.findTodayIp(DateUtil.dateToStr(new Date()));
     }
 
     @Override
     public List<VisitCount> findLastSevenDaysVisitCount(String username) {
-        return baseMapper.findLastSevenDaysVisitCount(username);
+        return baseMapper.findLastSevenDaysVisitCount(username, DateUtil.dateToStr(new Date()));
     }
 
     @Override
