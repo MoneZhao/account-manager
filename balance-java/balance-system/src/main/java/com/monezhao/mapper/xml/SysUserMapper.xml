@@ -157,7 +157,8 @@
     <select id="listPermissionsByUserId" resultType="java.lang.String">
         SELECT a.menu_id
         FROM t_sys_user_short_cut a
-        WHERE a.user_id = #{userId} and a.role_id = #{roleId}
+        WHERE a.user_id = #{userId}
+          and a.role_id = #{roleId}
     </select>
     <select id="queryUserByOrgList" resultType="com.monezhao.bean.sys.SysUser">
         select
@@ -187,8 +188,8 @@
             <![CDATA[	AND ${entity.authFilterSql}	]]>
         </if>
         <if test="entity.orgList != null and entity.orgList.size > 0 ">
-            and a.org_id  in
-            <foreach collection="entity.orgList" item ="deptId" index="i" open="(" close=")" separator=",">
+            and a.org_id in
+            <foreach collection="entity.orgList" item="deptId" index="i" open="(" close=")" separator=",">
                 #{deptId}
             </foreach>
         </if>
@@ -201,7 +202,7 @@
               WHERE a.log_type = 1
                 and a.ip != '127.0.0.1'
                 and
-        <![CDATA[ datediff(#{now}, create_date) <= 7 ]]>  ORDER BY a.create_time DESC) b
-        LIMIT 0,10
+        <![CDATA[ datediff(#{now}
+                  , create_date) <= 7 ]]>  ORDER BY a.create_time DESC) b LIMIT 0,10
     </select>
 </mapper>

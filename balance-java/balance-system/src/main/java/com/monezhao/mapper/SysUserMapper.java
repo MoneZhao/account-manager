@@ -69,6 +69,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     /**
      * 今日访问量
+     *
      * @param now now
      * @return long
      */
@@ -76,6 +77,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     /**
      * 今日IP
+     *
      * @param now now
      * @return long
      */
@@ -93,7 +95,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * 近7日访问量
      *
      * @param username 用户名
-     * @param now now
+     * @param now      now
      * @return long
      */
     List<VisitCount> findLastSevenDaysVisitCount(String username, String now);

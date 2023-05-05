@@ -6,10 +6,10 @@
     <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
     <select id="list" resultType="com.monezhao.bean.sys.SysPicUpDown">
         select
-            a.pic_up_down_id as picUpDownId,
-            a.pic_name as picName,
-            a.pic as pic,
-            a.md5 as md5
+        a.pic_up_down_id as picUpDownId,
+        a.pic_name as picName,
+        a.pic as pic,
+        a.md5 as md5
         from t_sys_pic_up_down a
         where 1=1
         <if test="entity.picName != null and entity.picName !=''">
