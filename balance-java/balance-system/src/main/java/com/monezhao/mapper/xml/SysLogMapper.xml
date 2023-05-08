@@ -20,25 +20,28 @@
         a.operate_result as operateResult,
         a.success as success,
         a.cost_time as costTime,
+        a.create_by as createBy,
+        a.create_date as createDate,
         a.create_time as createTime
 
         from t_sys_log a
-        where 1=1
-        <if test="entity.logType != null and entity.logType !=''">
-            <![CDATA[    AND a.log_type = #{entity.logType}    ]]>
-        </if>
-        <if test="entity.userId != null and entity.userId !=''">
-            <![CDATA[    AND a.user_id = #{entity.userId}    ]]>
-        </if>
-        <if test="entity.userName != null and entity.userName !=''">
-            <![CDATA[    AND a.user_name = #{entity.userName}    ]]>
-        </if>
-        <if test="entity.ip != null and entity.ip !=''">
-            <![CDATA[    AND a.ip = #{entity.ip}    ]]>
-        </if>
-        <if test="entity.success != null and entity.success !=''">
-            <![CDATA[    AND a.success = #{entity.success}    ]]>
-        </if>
+        <where>
+            <if test="entity.logType != null and entity.logType !=''">
+                <![CDATA[    AND a.log_type = #{entity.logType}    ]]>
+            </if>
+            <if test="entity.userId != null and entity.userId !=''">
+                <![CDATA[    AND a.user_id = #{entity.userId}    ]]>
+            </if>
+            <if test="entity.userName != null and entity.userName !=''">
+                <![CDATA[    AND a.user_name = #{entity.userName}    ]]>
+            </if>
+            <if test="entity.ip != null and entity.ip !=''">
+                <![CDATA[    AND a.ip = #{entity.ip}    ]]>
+            </if>
+            <if test="entity.success != null and entity.success !=''">
+                <![CDATA[    AND a.success = #{entity.success}    ]]>
+            </if>
+        </where>
         order by a.create_time desc
     </select>
 </mapper>

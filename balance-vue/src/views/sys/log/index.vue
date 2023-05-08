@@ -1,24 +1,32 @@
 <template>
   <div class="app-container">
-    <div class="filter-container" style="float: right">
-      <el-select v-model="listQuery.logType" placeholder="日志类型" class="filter-item"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value" /></el-select>
-      <el-select v-model="listQuery.success" placeholder="操作是否成功" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
-      <el-input v-model="listQuery.userId" placeholder="用户登录名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-      <el-input v-model="listQuery.userName" placeholder="操作用户姓名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-      <el-input v-model="listQuery.ip" placeholder="IP地址" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-      <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
-        <i class="el-icon-search el-icon--left" />查询
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+    <div class="filter-container">
       <el-button-group>
         <el-button v-permission="'sys:log:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增</el-button>
         <el-button v-permission="'sys:log:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
+      <el-button-group>
+        <el-button v-permission="'sys:log:import'" icon="el-icon-upload" type="primary" class="filter-item" @click="btnImport">导入</el-button>
+        <el-button v-permission="'sys:log:export'" icon="el-icon-download" class="filter-item" :loading="exportLoading" @click="btnExport">导出
+        </el-button>
+      </el-button-group>
+      <div style="float: right">
+        <el-select v-model="listQuery.logType" placeholder="日志类型" class="filter-item"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value" /></el-select>
+        <el-select v-model="listQuery.success" placeholder="操作是否成功" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
+        <el-input v-model="listQuery.userId" placeholder="用户登录名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+        <el-input v-model="listQuery.userName" placeholder="操作用户姓名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+        <!-- <el-input v-model="listQuery.ip" placeholder="IP地址" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" /> -->
+        <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
+          <i class="el-icon-search el-icon--left" />查询
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-zoom-out" @click.native="btnReset">重置</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
     <el-table
       ref="multipleTable"
+      v-loading="listLoading"
       :data="records"
       border
       fit
@@ -80,12 +88,26 @@
         <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createData():updateData()">确定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="文件导入" :visible.sync="dialogImportVisible">
+      <el-upload
+        class="upload-demo"
+        drag
+        action
+        :show-file-list="false"
+        :http-request="doImport"
+      >
+        <i class="el-icon-upload" />
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div slot="tip" class="el-upload__tip">上传数据会被覆盖!</div>
+      </el-upload>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination'
-import { getAction, putAction, postAction, deleteAction } from '@/api/manage'
+import { getAction, putAction, postAction, deleteAction, downloadAction } from '@/api/manage'
 import { Message } from 'element-ui'
 
 export default {
@@ -124,7 +146,10 @@ export default {
       },
       rules: {
         logId: [{ required: true, message: '该项不能为空', trigger: 'change' }]
-      }
+      },
+      dialogImportVisible: false,
+      listLoading: false,
+      exportLoading: false
     }
   },
   beforeCreate() {
@@ -135,10 +160,12 @@ export default {
   },
   methods: {
     list() {
+      this.listLoading = true
       getAction('/sys/log/list', this.listQuery).then(res => {
         const { data } = res
         this.records = data.records
         this.total = data.total
+        this.listLoading = false
       })
     },
     btnQuery() {
@@ -240,6 +267,25 @@ export default {
     },
     selectionChange(selectedRecords) {
       this.selectedRecords = selectedRecords
+    },
+    btnExport() {
+      this.exportLoading = true
+      downloadAction('/sys/log/export', 'get', '', '日志.xlsx').then(() => {
+        this.exportLoading = false
+        Message.success('导出成功')
+      })
+    },
+    btnImport() {
+      this.dialogImportVisible = true
+    },
+    doImport(fileObj) {
+      const formData = new FormData()
+      formData.set('file', fileObj.file)
+      postAction('/sys/log/import', formData).then(({ msg }) => {
+        this.dialogImportVisible = false
+        Message.success(msg)
+        this.list()
+      })
     }
   }
 }
