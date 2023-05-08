@@ -38,7 +38,8 @@ export function downloadAction(url, method, parameter, filename) {
     url: url,
     method: method,
     params: parameter,
-    responseType: 'blob'
+    responseType: 'blob',
+    timeout: 20000
   }).then(response => {
     const type = response.type || ''
     if (type.includes('application/json')) {

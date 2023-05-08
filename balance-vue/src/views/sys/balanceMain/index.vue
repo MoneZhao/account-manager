@@ -10,9 +10,9 @@
       </el-button-group>
       <el-button-group>
         <el-button v-permission="'sys:balanceMain:import'" icon="el-icon-upload" type="primary" class="filter-item" @click="btnImport">导入</el-button>
-        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" class="filter-item" @click="btnExport">导出当前页
+        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" class="filter-item" :loading="exportLoading" @click="btnExport">导出当前页
         </el-button>
-        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" class="filter-item" @click="btnExportAll">导出全部
+        <el-button v-permission="'sys:balanceMain:export'" icon="el-icon-download" class="filter-item" :loading="exportAllLoading" @click="btnExportAll">导出全部
         </el-button>
       </el-button-group>
       <el-button-group>
@@ -330,7 +330,9 @@ export default {
         remark: undefined,
         details: []
       },
-      dialogTrashVisible: false
+      dialogTrashVisible: false,
+      exportLoading: false,
+      exportAllLoading: false
     }
   },
   computed: {
@@ -361,10 +363,12 @@ export default {
         this.listQuery.endDate = undefined
       }
       console.log(this.listQuery)
+      this.mainLoading = true
       getAction('/sys/balanceMain/list', this.listQuery).then(res => {
         const { data } = res
         this.records = data.records
         this.total = data.total
+        this.mainLoading = false
       })
     },
     btnImport() {
@@ -380,10 +384,16 @@ export default {
       })
     },
     btnExport() {
-      downloadAction('/sys/balanceMain/export', 'get', this.listQuery, '账户余额第' + this.listQuery.current + '页.xlsx')
+      this.exportLoading = true
+      downloadAction('/sys/balanceMain/export', 'get', this.listQuery, '账户余额第' + this.listQuery.current + '页.xlsx').then(() => {
+        this.exportLoading = false
+      })
     },
     btnExportAll() {
-      downloadAction('/sys/balanceMain/exportAll', 'get', '', '账户余额全部.xlsx')
+      this.exportAllLoading = true
+      downloadAction('/sys/balanceMain/exportAll', 'get', '', '账户余额全部.xlsx').then(() => {
+        this.exportAllLoading = false
+      })
     },
     btnOpenTrash() {
       this.dialogTrashVisible = true

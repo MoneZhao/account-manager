@@ -1,9 +1,7 @@
 package com.monezhao.controller;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -23,8 +21,6 @@ import com.monezhao.common.util.CustomCellWriteHandler;
 import com.monezhao.common.util.DateTimeUtil;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.ShiroUtils;
-import com.monezhao.excel.UploadSysBalanceDetailListener;
-import com.monezhao.excel.UploadSysBalanceMainListener;
 import com.monezhao.service.SysBalanceDetailService;
 import com.monezhao.service.SysBalanceMainService;
 import io.swagger.annotations.Api;
@@ -395,15 +391,7 @@ public class SysBalanceMainController extends BaseController {
             throw new IllegalArgumentException("上传文件为空");
         }
         MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
-        //EasyExcel.read(file.getInputStream(), SysBalanceDetail.class,
-        //        new UploadSysBalanceDetailListener(sysBalanceDetailService)).sheet(0).doRead();
-        ExcelReader excelReader = EasyExcel.read(file.getInputStream()).build();
-        ReadSheet readSheet1 = EasyExcel.readSheet(0).head(SysBalanceMain.class).
-                registerReadListener(new UploadSysBalanceMainListener(sysBalanceMainService)).build();
-        ReadSheet readSheet2 = EasyExcel.readSheet(1).head(SysBalanceDetail.class).
-                registerReadListener(new UploadSysBalanceDetailListener(sysBalanceDetailService)).build();
-        excelReader.read(readSheet1, readSheet2);
-        excelReader.finish();
+        sysBalanceDetailService.importManager(file);
         return Result.ok();
     }
 

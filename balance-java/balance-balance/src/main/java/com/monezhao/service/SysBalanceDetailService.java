@@ -3,7 +3,9 @@ package com.monezhao.service;
 import com.monezhao.bean.sys.SysBalanceDetail;
 import com.monezhao.bean.sys.SysBalanceMain;
 import com.monezhao.common.base.BaseService;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +48,14 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
      * @return
      */
     boolean deleteMain(List<String> idsArr);
+
+    /**
+     * 导入账户
+     *
+     * @param file file
+     * @throws IOException exception
+     */
+    void importManager(MultipartFile file) throws IOException;
 
     /**
      * 导入账户明细

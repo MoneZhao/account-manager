@@ -1,5 +1,8 @@
 package com.monezhao.service.impl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.read.metadata.ReadSheet;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,15 +14,22 @@ import com.monezhao.common.base.BaseServiceImpl;
 import com.monezhao.common.exception.SysException;
 import com.monezhao.common.util.DateUtil;
 import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.excel.UploadSysBalanceDetailListener;
+import com.monezhao.excel.UploadSysBalanceMainListener;
 import com.monezhao.mapper.SysBalanceDetailMapper;
 import com.monezhao.service.SysBalanceDetailService;
 import com.monezhao.service.SysBalanceMainService;
 import com.monezhao.service.SysCodeInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +54,12 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
 
     @Autowired
     private SysCodeInfoService sysCodeInfoService;
+
+    @Autowired
+    private DataSourceTransactionManager dataSourceTransactionManager;
+
+    @Autowired
+    private TransactionDefinition transactionDefinition;
 
     @Override
     public IPage<SysBalanceDetail> list(IPage<SysBalanceDetail> page, SysBalanceDetail sysBalanceDetail) {
@@ -141,7 +157,24 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Async
+    public void importManager(MultipartFile file) throws IOException {
+        //EasyExcel.read(file.getInputStream(), SysBalanceDetail.class,
+        //        new UploadSysBalanceDetailListener(sysBalanceDetailService)).sheet(0).doRead();
+        ExcelReader excelReader = EasyExcel.read(file.getInputStream()).build();
+        ReadSheet readSheet1 = EasyExcel.readSheet(0).head(SysBalanceMain.class).
+                registerReadListener(
+                        new UploadSysBalanceMainListener(sysBalanceMainService, dataSourceTransactionManager, transactionDefinition)
+                ).build();
+        ReadSheet readSheet2 = EasyExcel.readSheet(1).head(SysBalanceDetail.class).
+                registerReadListener(
+                        new UploadSysBalanceDetailListener(this, dataSourceTransactionManager, transactionDefinition)
+                ).build();
+        excelReader.read(readSheet1, readSheet2);
+        excelReader.finish();
+    }
+
+    @Override
     public boolean doImport(List<SysBalanceDetail> list) {
         String userId = ShiroUtils.getSysUser().getUserId();
         Map<String, List<SysCodeInfo>> stringListMap = sysCodeInfoService.getSysCodeInfosFromDb("balanceType")

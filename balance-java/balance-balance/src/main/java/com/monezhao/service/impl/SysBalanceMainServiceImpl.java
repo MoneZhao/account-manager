@@ -11,7 +11,6 @@ import com.monezhao.mapper.SysBalanceMainMapper;
 import com.monezhao.service.SysBalanceMainService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -45,7 +44,6 @@ public class SysBalanceMainServiceImpl extends BaseServiceImpl<SysBalanceMainMap
      * @return boolean
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean doImport(List<SysBalanceMain> list) {
         SysUser sysUser = ShiroUtils.getSysUser();
         List<Date> dates = list.stream().map(SysBalanceMain::getAccountDate).collect(Collectors.toList());
