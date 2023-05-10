@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'balance_token'
+const TokenKey = process.env.VUE_APP_PROJECT_NAME + '_token'
 
 export function getToken() {
   return Cookies.get(TokenKey)

@@ -24,7 +24,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/balance/',
+  publicPath: '/' + process.env.VUE_APP_PROJECT_NAME + '/',
   outputDir: path.resolve(__dirname, `${buildPath}`),
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
@@ -43,7 +43,7 @@ module.exports = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       // target: `http://localhost:${port}/mock`,
       [process.env.VUE_APP_BASE_API]: {
-        target: process.env.VUE_APP_BASE_URL,
+        target: process.env.VUE_APP_BASE_URL + process.env.VUE_APP_PROJECT_NAME,
         ws: false, // proxy websockets
         changeOrigin: true,
         pathRewrite: {
