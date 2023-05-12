@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { MessageBox, Message, Loading } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import { getToken, updateToken } from '@/utils/auth'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -50,8 +50,12 @@ service.interceptors.response.use(
       return Promise.reject(res.msg || 'error')
     } else {
       // 打印后台返回数据，用于mock数据
-      // let uri = response.config.url.replace(response.config.baseURL,'')
-      // let log = '{url:"' + uri + '",type:"' + response.config.method + '",response: config => {return '+ JSON.stringify(res) +'}},'
+      // const uri = response.config.url.replace(response.config.baseURL, '')
+      // const log = '{url:"' + uri + '",type:"' + response.config.method + '",response: config => {return ' + JSON.stringify(res) + '}},'
+      // console.log(log)
+      if (response.config.method === 'post') {
+        updateToken()
+      }
       return res
     }
   },
