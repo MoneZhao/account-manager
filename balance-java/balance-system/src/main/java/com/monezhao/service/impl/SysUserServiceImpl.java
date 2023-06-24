@@ -440,8 +440,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> 
     }
 
     @Override
-    public List<VisitCount> findLastSevenDaysVisitCount(String username) {
-        return baseMapper.findLastSevenDaysVisitCount(username, DateUtil.dateToStr(new Date()));
+    public List<VisitCount> findLastSevenDaysVisitCount(String userId) {
+        return baseMapper.findLastSevenDaysVisitCount(userId, DateUtil.dateToStr(new Date()));
     }
 
     @Override

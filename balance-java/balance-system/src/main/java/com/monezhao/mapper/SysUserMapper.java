@@ -94,11 +94,11 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 近7日访问量
      *
-     * @param username 用户名
+     * @param userId 用户ID
      * @param now      now
      * @return long
      */
-    List<VisitCount> findLastSevenDaysVisitCount(String username, String now);
+    List<VisitCount> findLastSevenDaysVisitCount(String userId, String now);
 
     /**
      * 查询角色授权菜单

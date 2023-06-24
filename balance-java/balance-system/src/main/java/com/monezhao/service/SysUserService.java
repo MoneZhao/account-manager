@@ -137,10 +137,10 @@ public interface SysUserService extends BaseService<SysUser> {
     /**
      * 近7日访问量
      *
-     * @param username 用户名
+     * @param userId 用户ID
      * @return
      */
-    List<VisitCount> findLastSevenDaysVisitCount(String username);
+    List<VisitCount> findLastSevenDaysVisitCount(String userId);
 
     /**
      * 查询用户已授权快捷方式
