@@ -78,6 +78,28 @@ public class BalanceJob {
             sysLog.setCreateTime(loginTime);
             logs.add(sysLog);
         }
+
+        ips = RandomIpUtil.getRandomIp();
+        for (String ipStr : ips) {
+            Date loginTime = DateUtil.addMiunte(now, i++);
+            SysLog sysLog = new SysLog();
+            sysLog.setLogType("1");
+            sysLog.setLogContent("用户登录");
+            sysLog.setUserId("admin");
+            sysLog.setUserName("admin");
+            sysLog.setIp(ipStr);
+            sysLog.setMethod("com.monezhao.controller.SysLoginController.login()");
+            sysLog.setRequestUrl("/balance/sys/login");
+            sysLog.setRequestType("POST");
+            sysLog.setOperateResult("操作成功");
+            sysLog.setSuccess("1");
+            sysLog.setCostTime(60L + new Random().nextInt(20));
+            sysLog.setCreateBy("admin");
+            sysLog.setCreateDate(loginTime);
+            sysLog.setCreateTime(loginTime);
+            logs.add(sysLog);
+        }
+
         sysLogService.saveBatch(logs);
     }
 
