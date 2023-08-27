@@ -1,6 +1,4 @@
 spring:
-  main:
-    banner-mode: off
   #排除 原生Druid的快速配置类
   autoconfigure:
     exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
@@ -64,6 +62,3 @@ spring:
         min-idle: 10
 debug: false
 swagger-enable: true #生产可关闭设置成false
-mybatis-plus:
-  global-config:
-    banner: false

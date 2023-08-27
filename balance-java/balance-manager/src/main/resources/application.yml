@@ -19,6 +19,8 @@ spring:
   datasource:
     druid:
       aop-patterns: "com.monezhao.mapper.*"
+  main:
+    banner-mode: off
 #mybatis plus 设置
 mybatis-plus:
   mapper-locations: classpath*:com/monezhao/**/mapper/xml/*.xml
@@ -29,6 +31,7 @@ mybatis-plus:
       logic-delete-field: flag
       logic-delete-value: 1
       logic-not-delete-value: 0
+    banner: false
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
