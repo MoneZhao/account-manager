@@ -67,6 +67,8 @@ system-config:
   expireTime: 604800
   # 登录错误限制
   loginCount: 5
+  # 多处登录, 0 可以 1不可以
+  multipleLogin: 0
 knife4j:
   enable: true
   basic:

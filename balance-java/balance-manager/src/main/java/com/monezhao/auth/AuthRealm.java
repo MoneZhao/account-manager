@@ -1,5 +1,7 @@
 package com.monezhao.auth;
 
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentParser;
 import com.monezhao.bean.sys.SysConstants;
 import com.monezhao.bean.sys.SysUser;
 import com.monezhao.bean.utilsVo.SessionObject;
@@ -22,7 +24,10 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -89,17 +94,36 @@ public class AuthRealm extends AuthorizingRealm {
             throw new AuthenticationException("token不能为空!");
         }
         // 解密获得userId，用于和数据库进行对比
-        String userId = JwtUtil.getUserId(token);
-        if (userId == null) {
+        String redisUserId = JwtUtil.getUserId(token);
+        if (redisUserId == null) {
             throw new AuthenticationException("token已失效，请重新登录!");
         }
+
+        if ("0".equals(sysConfigService.getSysConfig("multipleLogin"))) {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                    .getRequest();
+            UserAgent ua = UserAgentParser.parse(request.getHeader("User-Agent"));
+            String platform = ua.getPlatform().getName();
+            String browser = ua.getBrowser().getName();
+            if (!redisUserId.contains(":") || !redisUserId.contains(platform + ":" + browser)) {
+                throw new AuthenticationException("token已失效，请重新登录!");
+            }
+        }
+
+        if ("1".equals(sysConfigService.getSysConfig("multipleLogin")) && redisUserId.contains(":")) {
+            throw new AuthenticationException("token已失效，请重新登录!");
+        }
+
         // 查询用户信息
-        SysUser sysUser = sysUserService.getById(userId);
+        SysUser sysUser = sysUserService.getById(
+                redisUserId.contains(":") ? redisUserId.substring(0, redisUserId.indexOf(":")) : redisUserId
+        );
+
         if (sysUser == null) {
             throw new AuthenticationException("用户不存在!");
         }
         // 校验token是否超时失效 & 或者账号密码是否错误
-        if (!verifyTokenWithRedis(token, userId, sysUser.getPassword())) {
+        if (!verifyTokenWithRedis(token, redisUserId, sysUser.getPassword())) {
             throw new AuthenticationException("token已失效，请重新登录!");
         }
         // 判断用户状态
@@ -107,7 +131,7 @@ public class AuthRealm extends AuthorizingRealm {
             throw new AuthenticationException("账号已被锁定,请联系管理员!");
         }
 
-        SessionObject sessionObject = (SessionObject) redisUtil.get(Constants.PREFIX_USER_SESSION_OBJECT + userId);
+        SessionObject sessionObject = (SessionObject) redisUtil.get(Constants.PREFIX_USER_SESSION_OBJECT + redisUserId);
         if (sessionObject == null) {
             sessionObject = new SessionObject();
             sessionObject.setSysUser(sysUser);

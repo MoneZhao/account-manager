@@ -1,5 +1,7 @@
 package com.monezhao.controller;
 
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentParser;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.google.code.kaptcha.Producer;
 import com.monezhao.annotation.SysLogAuto;
@@ -11,11 +13,7 @@ import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.common.exception.BaseException;
 import com.monezhao.common.exception.SysException;
-import com.monezhao.common.util.CommonUtil;
-import com.monezhao.common.util.JwtUtil;
-import com.monezhao.common.util.PasswordUtil;
-import com.monezhao.common.util.RedisUtil;
-import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.common.util.*;
 import com.monezhao.service.SysConfigService;
 import com.monezhao.service.SysUserService;
 import io.swagger.annotations.Api;
@@ -26,14 +24,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.http.entity.ContentType;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -118,13 +115,27 @@ public class SysLoginController extends BaseController {
             throw new BaseException("该用户已被锁定, 请联系系统管理员解锁");
         }
 
+         //多处登录, 0 可以 1不可以
+        String multipleLogin = sysConfigService.getSysConfig("multipleLogin");
+        String redisUserId;
+        if ("0".equals(multipleLogin)) {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                    .getRequest();
+            UserAgent ua = UserAgentParser.parse(request.getHeader("User-Agent"));
+            String platform = ua.getPlatform().getName();
+            String browser = ua.getBrowser().getName();
+            redisUserId = userId + ":" + platform + ":" + browser;
+        } else {
+            redisUserId = userId;
+        }
+
         String password = PasswordUtil.encrypt(sysLoginForm.getPassword(), sysUser.getSalt());
         if (!password.equals(sysUser.getPassword())) {
-            Integer count = (Integer) redisUtil.get(Constants.PREFIX_LOGIN_COUNT + userId, 0);
+            Integer count = (Integer) redisUtil.get(Constants.PREFIX_LOGIN_COUNT + redisUserId, 0);
             Integer setCount = Integer.valueOf(sysConfigService.getSysConfig("loginCount"));
             if (count < setCount - 1) {
                 Integer tryCount = setCount - 1 - count;
-                redisUtil.set(Constants.PREFIX_LOGIN_COUNT + userId, count + 1);
+                redisUtil.set(Constants.PREFIX_LOGIN_COUNT + redisUserId, count + 1);
                 return Result.error("用户名或密码错误, 还可以尝试" + tryCount + "次");
             } else {
                 sysUser.setStatus("2");
@@ -132,13 +143,13 @@ public class SysLoginController extends BaseController {
                 return Result.error("用户名或密码错误, 用户已被锁定, 请联系系统管理员解锁");
             }
         } else {
-            redisUtil.del(Constants.PREFIX_LOGIN_COUNT + userId);
+            redisUtil.del(Constants.PREFIX_LOGIN_COUNT + redisUserId);
         }
         // 生成token,不传入token过期时间，在使用JwtUtil.verify时不会校验过期时间
-        String token = JwtUtil.sign(userId, password);
+        String token = JwtUtil.sign(redisUserId, password);
         String expireTime = sysConfigService.getSysConfig("expireTime");
         // 使用redis管理token过期时间
-        redisUtil.set(Constants.PREFIX_USER_TOKEN + userId, token, Long.parseLong(expireTime));
+        redisUtil.set(Constants.PREFIX_USER_TOKEN + redisUserId, token, Long.parseLong(expireTime));
         HashMap<String, String> obj = new HashMap<>(1);
         obj.put("token", token);
         return Result.ok(obj);
@@ -162,10 +173,11 @@ public class SysLoginController extends BaseController {
         SysUser sysUser = sessionObject.getSysUser();
         log.info("用户名:" + sysUser.getUserName() + ",注销成功！ ");
         subject.logout();
+        String redisUserId = JwtUtil.getUserId(sessionObject.getToken());
         // 清空用户Token缓存
-        redisUtil.del(Constants.PREFIX_USER_TOKEN + sysUser.getUserId());
+        redisUtil.del(Constants.PREFIX_USER_TOKEN + redisUserId);
         // 清空用户sessionObject缓存
-        redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId());
+        redisUtil.del(Constants.PREFIX_USER_SESSION_OBJECT + redisUserId);
         return Result.ok("注销成功！");
     }
 }

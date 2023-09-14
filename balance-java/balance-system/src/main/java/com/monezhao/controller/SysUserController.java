@@ -1,5 +1,7 @@
 package com.monezhao.controller;
 
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentParser;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -15,12 +17,7 @@ import com.monezhao.common.Constants;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.common.exception.SysException;
-import com.monezhao.common.util.CommonUtil;
-import com.monezhao.common.util.CustomCellWriteHandler;
-import com.monezhao.common.util.DateUtil;
-import com.monezhao.common.util.IpUtils;
-import com.monezhao.common.util.RedisUtil;
-import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.common.util.*;
 import com.monezhao.controller.command.SysUserIndex;
 import com.monezhao.controller.command.UserShortCut;
 import com.monezhao.service.SysConfigService;
@@ -30,14 +27,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -209,9 +199,20 @@ public class SysUserController extends BaseController {
     public Result getUserInfo(@RequestParam(required = false) String roleId, HttpServletRequest request) {
         SysUser sysUser = sysUserService.getById(ShiroUtils.getUserId());
 
+        String multipleLogin = sysConfigService.getSysConfig("multipleLogin");
+        String redisUserId;
+        if ("0".equals(multipleLogin)) {
+            UserAgent ua = UserAgentParser.parse(request.getHeader("User-Agent"));
+            String platform = ua.getPlatform().getName();
+            String browser = ua.getBrowser().getName();
+            redisUserId = sysUser.getUserId() + ":" + platform + ":" + browser;
+        } else {
+            redisUserId = sysUser.getUserId();
+        }
+
         SessionObject sessionObject;
-        if (redisUtil.hasKey(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId())) {
-            sessionObject = (SessionObject) redisUtil.get(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId());
+        if (redisUtil.hasKey(Constants.PREFIX_USER_SESSION_OBJECT + redisUserId)) {
+            sessionObject = (SessionObject) redisUtil.get(Constants.PREFIX_USER_SESSION_OBJECT + redisUserId);
             if (sessionObject != null && roleId != null && Objects.equals(sessionObject.getSysRole().getRoleId(), roleId)) {
                 return Result.ok(sessionObject);
             }
@@ -222,7 +223,7 @@ public class SysUserController extends BaseController {
         sessionObject = sysUserService.saveGetUserInfo(sysUser, roleId);
         sessionObject.setLoginTime(DateUtil.getNow());
         sessionObject.setIpAddr(IpUtils.getIpAddr(request));
-        sessionObject.setToken((String) redisUtil.get(Constants.PREFIX_USER_TOKEN + sysUser.getUserId()));
+        sessionObject.setToken((String) redisUtil.get(Constants.PREFIX_USER_TOKEN + redisUserId));
         sessionObject.setMenuList(menuList);
         if (sysUser.getPicId() != null) {
             SysPicUpDown picUpDown = picUpDownService.getById(sysUser.getPicId());
@@ -239,7 +240,7 @@ public class SysUserController extends BaseController {
             }
         }
         String expireTime = sysConfigService.getSysConfig("expireTime");
-        redisUtil.set(Constants.PREFIX_USER_SESSION_OBJECT + sysUser.getUserId(), sessionObject, Long.parseLong(expireTime));
+        redisUtil.set(Constants.PREFIX_USER_SESSION_OBJECT + redisUserId, sessionObject, Long.parseLong(expireTime));
         return Result.ok(sessionObject);
     }
 
