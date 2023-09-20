@@ -142,7 +142,7 @@ public class CreateMybatisMapperXml {
         String where = "1=1";
         for (TableObject tableObject : list) {
             if ("delete_type".equals(tableObject.getColumnNameEn())) {
-                where = "a.delete_type=0";
+                where = "a.delete_type = '1900-01-01 00:00:00'";
                 break;
             }
         }

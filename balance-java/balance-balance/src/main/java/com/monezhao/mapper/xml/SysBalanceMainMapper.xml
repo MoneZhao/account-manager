@@ -28,7 +28,10 @@
         left join t_sys_user o ON o.user_id=a.user_id
         where 1=1
         <if test="entity.deleteType != null">
-            <![CDATA[	AND a.delete_type = #{entity.deleteType}]]>
+            <![CDATA[	AND a.delete_type != '1900-01-01 00:00:00' ]]>
+        </if>
+        <if test="entity.deleteType == null">
+            <![CDATA[	AND a.delete_type = '1900-01-01 00:00:00' ]]>
         </if>
         <if test="entity.accountDate != null">
             <![CDATA[	AND a.account_date = #{entity.accountDate}]]>
@@ -49,7 +52,7 @@
                         b.account_date,
                         COUNT( b.account_date ) count
                     FROM
-                        ( SELECT date_format( a.account_date, '%Y-%m' ) account_date FROM `t_sys_balance_main` a ORDER BY a.account_date ) b
+                        ( SELECT date_format( a.account_date, '%Y-%m' ) account_date FROM `t_sys_balance_main` a WHERE a.delete_type = '1900-01-01 00:00:00' ORDER BY a.account_date ) b
                     GROUP BY
                         b.account_date
                     HAVING
@@ -68,7 +71,7 @@
                         b.account_date,
                         COUNT( b.account_date ) count
                     FROM
-                        ( SELECT date_format( a.account_date, '%Y-%m' ) account_date FROM `t_sys_balance_main` a ORDER BY a.account_date ) b
+                        ( SELECT date_format( a.account_date, '%Y-%m' ) account_date FROM `t_sys_balance_main` a WHERE a.delete_type = '1900-01-01 00:00:00' ORDER BY a.account_date ) b
                     GROUP BY
                         b.account_date
                     HAVING
@@ -80,8 +83,8 @@
         order by a.account_date desc
     </select>
     <update id="restore">
-        update t_sys_balance_main a set a.delete_type=0
-        where a.delete_type=1
+        update t_sys_balance_main a set a.delete_type = '1900-01-01 00:00:00'
+        where a.delete_type != '1900-01-01 00:00:00'
         AND a.balance_main_id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -90,7 +93,7 @@
     <select id="listAllDate" resultType="java.util.Date">
         SELECT distinct a.account_date
         FROM t_sys_balance_main a
-        WHERE a.user_id = #{id}
+        WHERE a.user_id = #{id} and a.delete_type = '1900-01-01 00:00:00'
         ORDER BY a.account_date DESC
     </select>
 </mapper>

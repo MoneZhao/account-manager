@@ -61,7 +61,7 @@ public class GlobalMetaObjectHandler implements MetaObjectHandler {
         }
         Object deleteType = getFieldValByName(DELETE_TYPE, metaObject);
         if (deleteType == null) {
-            setFieldValByName(DELETE_TYPE, 0, metaObject);
+            setFieldValByName(DELETE_TYPE, DateUtil.strToDate("1900-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss"), metaObject);
         }
     }
 

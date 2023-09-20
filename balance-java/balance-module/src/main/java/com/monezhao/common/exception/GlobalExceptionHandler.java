@@ -51,8 +51,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateKeyException.class)
     public Result handleDuplicateKeyException(DuplicateKeyException e) {
-        log.error(e.getMessage(), e);
-        return Result.error("数据库中已存在该记录");
+        log.error(e.getCause().getLocalizedMessage());
+        return Result.error("存在重复记录");
     }
 
     @ExceptionHandler(AuthorizationException.class)

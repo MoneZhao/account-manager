@@ -29,8 +29,8 @@ mybatis-plus:
   global-config:
     db-config:
       logic-delete-field: flag
-      logic-delete-value: 1
-      logic-not-delete-value: 0
+      logic-delete-value: 'now()'
+      logic-not-delete-value: '"1900-01-01 00:00:00"'
     banner: false
   configuration:
     map-underscore-to-camel-case: true
@@ -80,7 +80,7 @@ knife4j:
     enableVersion: false
     enableFooter: false
     enableFooterCustom: true
-#    footerCustomContent: Copyright © MoneZhao(monezhao@163.com). All rights reserved.
+    #    footerCustomContent: Copyright © MoneZhao(monezhao@163.com). All rights reserved.
     enableSwaggerModels: true
     swaggerModelName: 实体类列表
     enableFilterMultipartApis: true

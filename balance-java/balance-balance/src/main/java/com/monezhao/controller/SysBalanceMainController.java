@@ -92,7 +92,7 @@ public class SysBalanceMainController extends BaseController {
     public Result listDelete(SysBalanceMain sysBalanceMain, @RequestParam Integer current, @RequestParam Integer size) {
         SysUser sysUser = ShiroUtils.getSysUser();
         sysBalanceMain.setUserId(sysUser.getUserId());
-        sysBalanceMain.setDeleteType(1);
+        sysBalanceMain.setDeleteType(new Date());
         IPage<SysBalanceMain> pageList = sysBalanceMainService.list(new Page<>(current, size), sysBalanceMain);
         return Result.ok(pageList);
     }

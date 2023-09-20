@@ -31,7 +31,7 @@
         LEFT JOIN t_sys_code_info ci ON ci.code_type_id = 'balanceType' AND ci.value = a.balance_type
         left join t_sys_balance_main m on m.balance_main_id = a.balance_main_id
         LEFT JOIN t_sys_balance_count bc on bc.user_id = m.user_id and ci.code_info_id = bc.code_info_id
-        where a.delete_type=0
+        where a.delete_type = '1900-01-01 00:00:00'
         <if test="entity.balanceType != null and entity.balanceType !=''">
             <![CDATA[    AND a.balance_type = #{entity.balanceType}    ]]>
         </if>
@@ -47,7 +47,7 @@
     <select id="account" resultType="java.math.BigDecimal">
         select sum(account) account
         from t_sys_balance_detail a
-        where a.delete_type = 0
+        where a.delete_type = '1900-01-01 00:00:00'
           AND a.balance_main_id = #{id}
           AND a.balance_type NOT IN (SELECT c.`value`
                                      FROM t_sys_balance_count b
@@ -71,7 +71,7 @@
         from t_sys_balance_detail a
         LEFT JOIN t_sys_code_info ci ON ci.code_type_id = 'balanceType' AND ci.value = a.balance_type
         left join t_sys_balance_main m on m.balance_main_id = a.balance_main_id
-        where a.delete_type=0
+        where a.delete_type = '1900-01-01 00:00:00'
         <if test="userId != null and userId !=''">
             <![CDATA[    AND a.user_id = #{userId}    ]]>
         </if>
@@ -95,7 +95,7 @@
         from t_sys_balance_detail a
                  LEFT JOIN t_sys_code_info ci ON ci.code_type_id = 'balanceType' AND ci.value = a.balance_type
                  left join t_sys_balance_main m on m.balance_main_id = a.balance_main_id
-        where a.delete_type = 0
+        where a.delete_type = '1900-01-01 00:00:00'
           AND a.user_id = #{userId}
           AND a.balance_type = #{balanceType}
         <![CDATA[   AND m.account_date >= #{startMonth}
@@ -103,8 +103,8 @@
         order by m.account_date, ci.sort_no
     </select>
     <update id="restore">
-        update t_sys_balance_detail a set a.delete_type=0
-        where a.delete_type=1
+        update t_sys_balance_detail a set a.delete_type = '1900-01-01 00:00:00'
+        where a.delete_type != '1900-01-01 00:00:00'
         AND a.balance_main_id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
