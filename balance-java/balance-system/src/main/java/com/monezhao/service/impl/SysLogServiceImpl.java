@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monezhao.bean.sys.SysLog;
 import com.monezhao.common.base.BaseServiceImpl;
+import com.monezhao.common.util.Ip2Region;
 import com.monezhao.excel.UploadSysLogListener;
 import com.monezhao.mapper.SysLogMapper;
 import com.monezhao.service.SysLogService;
@@ -35,12 +36,20 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLogMapper, SysLog>
     @Autowired
     private TransactionDefinition transactionDefinition;
 
+    @Autowired
+    private Ip2Region ip2Region;
+
     @Override
     public IPage<SysLog> list(IPage<SysLog> page, SysLog sysLog) {
         List<SysLog> records = baseMapper.list(page, sysLog);
         if (page == null) {
             page = new Page<>();
             page.setTotal(records != null ? records.size() : 0L);
+        }
+        if (records != null && !records.isEmpty()) {
+            for (SysLog record : records) {
+                record.setIpRegion(ip2Region.getAddr(record.getIp()));
+            }
         }
         return page.setRecords(records);
     }

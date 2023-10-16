@@ -41,8 +41,8 @@
               <el-descriptions-item label="今日登录次数" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
                 {{ todayVisitCount ? todayVisitCount : "0" }}
               </el-descriptions-item>
-              <el-descriptions-item label="本机IP" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
-                {{ ipAddr ? ipAddr : "火星" }}
+              <el-descriptions-item label="IP属地" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
+                {{ ipAddr }}
               </el-descriptions-item>
               <el-descriptions-item label="总登录次数" :label-style="{'text-align':'center'}" :content-style="{'text-align':'center'}">
                 {{ totalVisitCount ? totalVisitCount : "0" }}

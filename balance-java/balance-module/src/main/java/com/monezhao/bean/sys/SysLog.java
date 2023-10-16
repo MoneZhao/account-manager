@@ -161,4 +161,9 @@ public class SysLog extends BaseEntity {
     @ApiModelProperty(hidden = true)
     @ExcelProperty("操作时间")
     private Date createTime;
+
+    @TableField(exist = false)
+    @ExcelIgnore
+    @ApiModelProperty(hidden = true)
+    private String ipRegion;
 }

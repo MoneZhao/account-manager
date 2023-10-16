@@ -4,6 +4,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.monezhao.bean.utilsVo.RedisInfo;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
+import com.monezhao.common.util.Ip2Region;
 import com.monezhao.common.util.IpUtils;
 import com.monezhao.service.RedisService;
 import io.swagger.annotations.Api;
@@ -17,10 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author monezhao@163.com
@@ -35,6 +33,9 @@ public class MonitorController extends BaseController {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private Ip2Region ip2Region;
 
     @GetMapping("/redis/info")
     @ApiOperation("redis信息")
@@ -89,6 +90,10 @@ public class MonitorController extends BaseController {
     public Result getRequestIp(HttpServletRequest request) {
         String ipAddr = IpUtils.getIpAddr(request);
         log.info("ipAddr: " + ipAddr);
-        return Result.ok(ipAddr);
+        String regionAddr = ip2Region.getAddr(ipAddr);
+        log.info("ipRegion: " + regionAddr);
+        return Result.ok(
+                Objects.equals(ip2Region.getUnknown(), regionAddr) ? ipAddr : regionAddr
+        );
     }
 }
