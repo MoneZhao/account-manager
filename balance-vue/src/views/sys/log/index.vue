@@ -6,15 +6,15 @@
         <el-button v-permission="'sys:log:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>
       </el-button-group>
       <el-button-group>
-        <el-button v-permission="'sys:log:import'" icon="el-icon-upload" type="primary" class="filter-item" @click="btnImport">导入</el-button>
-        <el-button v-permission="'sys:log:export'" icon="el-icon-download" class="filter-item" :loading="exportLoading" @click="btnExport">导出
+        <el-button v-permission="'sys:log:import'" icon="el-icon-upload" type="primary" class="filter-item" @click="btnImport">导入日志</el-button>
+        <el-button v-permission="'sys:log:export'" icon="el-icon-download" class="filter-item" :loading="exportLoading" @click="btnExport">导出全部
         </el-button>
       </el-button-group>
       <div style="float: right">
         <el-select v-model="listQuery.logType" placeholder="日志类型" class="filter-item"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value" /></el-select>
+        <el-input v-model="listQuery.userName" placeholder="操作用户" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
+        <!-- <el-input v-model="listQuery.userId" placeholder="用户登录账户" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" /> -->
         <el-select v-model="listQuery.success" placeholder="操作是否成功" class="filter-item"><el-option v-for="(item, index) in dicts.yesOrNo" :key="index" :label="item.content" :value="item.value" /></el-select>
-        <el-input v-model="listQuery.userId" placeholder="用户登录名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
-        <el-input v-model="listQuery.userName" placeholder="操作用户姓名" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" />
         <!-- <el-input v-model="listQuery.ip" placeholder="IP地址" style="width: 200px;" class="filter-item" @keyup.enter.native="btnQuery" /> -->
         <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
           <i class="el-icon-search el-icon--left" />查询
@@ -32,19 +32,29 @@
         fit
         highlight-current-row
         style="width: 100%;"
-        :cell-style="{padding:'3px'}"
+        :cell-style="cellStyle"
         @cell-dblclick="btnView"
         @selection-change="selectionChange"
     >
       <el-table-column fixed type="selection" align="center" />
       <el-table-column fixed type="index" label="#" align="center" width="50" />
-      <el-table-column label="日志类型" prop="logType" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.logType,scope.row.logType)" /></template></el-table-column>            <el-table-column label="日志内容" prop="logContent" align="center"><template slot-scope="scope"><span>{{ scope.row.logContent }}</span></template></el-table-column>
-      <el-table-column label="操作用户姓名" prop="userName" align="center"><template slot-scope="scope"><span>{{ scope.row.userName }}</span></template></el-table-column>
+      <el-table-column label="日志类型" prop="logType" align="center" width="80"><template slot-scope="scope"><span v-html="formatDictText(dicts.logType,scope.row.logType)" /></template></el-table-column>
+      <el-table-column label="操作用户" prop="userName" align="center" width="100"><template slot-scope="scope"><span>{{ scope.row.userName }}</span></template></el-table-column>
+      <el-table-column label="耗时(ms)" prop="costTime" align="center" width="100"><template slot-scope="scope"><span>{{ scope.row.costTime }}</span></template></el-table-column>
+      <el-table-column label="日志内容" prop="logContent" align="center"><template slot-scope="scope"><span>{{ scope.row.logContent }}</span></template></el-table-column>
       <el-table-column label="IP" prop="ip" align="center"><template slot-scope="scope"><span>{{ scope.row.ip }}</span></template></el-table-column>
       <el-table-column label="IP属地" prop="ipRegion" align="center"><template slot-scope="scope"><span>{{ scope.row.ipRegion }}</span></template></el-table-column>
-      <el-table-column label="耗时" prop="costTime" align="center"><template slot-scope="scope"><span>{{ scope.row.costTime }}</span></template></el-table-column>
-      <el-table-column label="操作是否成功" prop="success" align="center"><template slot-scope="scope"><span v-html="formatDictText(dicts.yesOrNo,scope.row.success)" /></template></el-table-column>
-      <el-table-column label="操作时间" prop="createTime" align="center"><template slot-scope="scope"><span>{{ scope.row.createTime }}</span></template></el-table-column>
+      <el-table-column label="操作是否成功" prop="success" align="center" width="120">
+        <template slot-scope="scope">
+          <el-badge
+              is-dot
+              class="dot-position"
+              :type="scope.row.success === '1' ? 'success' : 'danger'"
+          />
+          <span v-html="formatDictText(dicts.yesOrNo,scope.row.success)" />
+        </template>
+      </el-table-column>
+      <el-table-column label="操作时间" prop="createTime" align="center" width="150"><template slot-scope="scope"><span>{{ scope.row.createTime }}</span></template></el-table-column>
       <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="{row}">
           <el-dropdown trigger="click">
@@ -70,20 +80,22 @@
 
     <el-dialog title="系统日志" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="auto">
-        <!-- <el-form-item label="UUID" prop="logId"><el-input v-model="temp.logId" :readonly="dialogStatus==='update'" /></el-form-item> -->
-        <el-form-item label="日志类型" prop="logType"><el-select v-model="temp.logType" placeholder="日志类型"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item>
-        <el-form-item label="日志内容" prop="logContent"><el-input v-model="temp.logContent" /></el-form-item>
-        <el-form-item label="用户登录名" prop="userId"><el-input v-model="temp.userId" /></el-form-item>
-        <el-form-item label="操作用户姓名" prop="userName"><el-input v-model="temp.userName" /></el-form-item>
-        <el-form-item label="IP地址" prop="ip"><el-input v-model="temp.ip" /></el-form-item>
-        <el-form-item label="请求方法" prop="method"><el-input v-model="temp.method" /></el-form-item>
-        <el-form-item label="请求路径" prop="requestUrl"><el-input v-model="temp.requestUrl" /></el-form-item>
-        <el-form-item label="请求参数" prop="requestParam"><el-input v-model="temp.requestParam" /></el-form-item>
-        <el-form-item label="请求类型" prop="requestType"><el-input v-model="temp.requestType" /></el-form-item>
-        <el-form-item label="操作结果" prop="operateResult"><el-input v-model="temp.operateResult" /></el-form-item>
-        <el-form-item label="耗时" prop="costTime"><el-input v-model="temp.costTime" /></el-form-item>
-        <el-form-item label="操作时间" prop="createTime"><el-input v-model="temp.createTime" /></el-form-item>
-      </el-form>
+        <el-row>
+          <!-- <el-col :span="12"><el-form-item label="UUID" prop="logId"><el-input v-model="temp.logId" :readonly="dialogStatus==='update'" /></el-form-item></el-col> -->
+          <el-col :span="12"><el-form-item label="日志类型" prop="logType"><el-select v-model="temp.logType" placeholder="日志类型"><el-option v-for="(item, index) in dicts.logType" :key="index" :label="item.content" :value="item.value" /></el-select></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="日志内容" prop="logContent"><el-input v-model="temp.logContent" /></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="用户登录名" prop="userId"><el-input v-model="temp.userId" /></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="操作用户" prop="userName"><el-input v-model="temp.userName" /></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="IP地址" prop="ip"><el-input v-model="temp.ip" /></el-form-item></el-col>
+          <el-col :span="12"><el-form-item v-if="dialogStatus == 'view'" label="IP属地" prop="ipRegion"><el-input v-model="temp.ipRegion" /></el-form-item></el-col>
+          <el-col :span="24"><el-form-item label="请求方法" prop="method"><el-input v-model="temp.method" /></el-form-item></el-col>
+          <el-col :span="6"><el-form-item label="请求类型" prop="requestType"><el-input v-model="temp.requestType" /></el-form-item></el-col>
+          <el-col :span="18"><el-form-item label="请求路径" prop="requestUrl"><el-input v-model="temp.requestUrl" /></el-form-item></el-col>
+          <el-col :span="24"><el-form-item label="请求参数" prop="requestParam"><el-input v-model="temp.requestParam" /></el-form-item></el-col>
+          <el-col :span="24"><el-form-item label="操作结果" prop="operateResult"><el-input v-model="temp.operateResult" /></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="耗时(ms)" prop="costTime"><el-input v-model="temp.costTime" /></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="操作时间" prop="createTime"><el-input v-model="temp.createTime" /></el-form-item></el-col>
+        </el-row></el-form>
       <div slot="footer" class="dialog-footer">
         <el-button icon="el-icon-close" @click="dialogFormVisible = false">取消</el-button>
         <el-button v-if="dialogStatus!=='view'" icon="el-icon-check" type="primary" @click="dialogStatus==='create'?createData():updateData()">确定</el-button>
@@ -201,6 +213,15 @@ export default {
         costTime: ''
       }
     },
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      const style = {
+        padding: '3px'
+      }
+      if (columnIndex === 7 && row.ipRegion.indexOf('内网IP') === -1) {
+        style.color = '#ff5c33'
+      }
+      return style
+    },
     btnView(row) {
       this.temp = Object.assign({}, row)
       this.dialogStatus = 'view'
@@ -291,3 +312,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.dot-position {
+  margin-top: 10px;
+  margin-right: 5px;
+}
+</style>

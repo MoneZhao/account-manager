@@ -1,7 +1,6 @@
 package com.monezhao.controller;
 
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
-import com.monezhao.bean.utilsVo.RedisInfo;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.common.util.Ip2Region;
@@ -37,24 +36,24 @@ public class MonitorController extends BaseController {
     @Autowired
     private Ip2Region ip2Region;
 
-    @GetMapping("/redis/info")
-    @ApiOperation("redis信息")
-    public Result getRedisInfo() throws Exception {
-        List<RedisInfo> infoList = redisService.getInfo();
-        return Result.ok(infoList);
-    }
-
-    @GetMapping("/redis/keysSize")
-    @ApiOperation("redis key容量")
-    public Map<String, Object> getKeysSize() throws Exception {
-        return redisService.getKeysSize();
-    }
-
-    @GetMapping("/redis/memoryInfo")
-    @ApiOperation("内存信息")
-    public Map<String, Object> getMemoryInfo() throws Exception {
-        return redisService.getMemoryInfo();
-    }
+//    @GetMapping("/redis/info")
+//    @ApiOperation("redis信息")
+//    public Result getRedisInfo() throws Exception {
+//        List<RedisInfo> infoList = redisService.getInfo();
+//        return Result.ok(infoList);
+//    }
+//
+//    @GetMapping("/redis/keysSize")
+//    @ApiOperation("redis key容量")
+//    public Map<String, Object> getKeysSize() throws Exception {
+//        return redisService.getKeysSize();
+//    }
+//
+//    @GetMapping("/redis/memoryInfo")
+//    @ApiOperation("redis内存信息")
+//    public Map<String, Object> getMemoryInfo() throws Exception {
+//        return redisService.getMemoryInfo();
+//    }
 
     @GetMapping("/queryDiskInfo")
     @ApiOperation("磁盘信息")

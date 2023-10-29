@@ -23,9 +23,9 @@ export default {
   data() {
     return {
       sizeOptions: [
-        { label: '超小', value: 'mini' },
+        { label: '迷你', value: 'mini' },
         { label: '小号', value: 'small' },
-        { label: '大号', value: 'medium' }
+        { label: '中号', value: 'medium' }
       ]
     }
   },
