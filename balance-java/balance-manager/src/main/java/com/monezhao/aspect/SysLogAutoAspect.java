@@ -15,6 +15,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -43,6 +44,8 @@ public class SysLogAutoAspect {
     private SysLogService sysLogService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private TomcatServletWebServerFactory tomcatServletWebServerFactory;
 
     @Around("@annotation(sysLogAuto)")
     public Object around(ProceedingJoinPoint joinPoint, SysLogAuto sysLogAuto) throws Throwable {
@@ -55,11 +58,17 @@ public class SysLogAutoAspect {
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = signature.getName();
         sysLog.setMethod(className + "." + methodName + "()");
+
+        String contextPath = tomcatServletWebServerFactory.getContextPath();
         // 获取request并设置IP地址
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest();
         sysLog.setIp(IpUtils.getIpAddr(request));
-        sysLog.setRequestUrl(request.getRequestURI());
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith(contextPath)) {
+            requestURI = requestURI.substring(contextPath.length());
+        }
+        sysLog.setRequestUrl(requestURI);
         sysLog.setRequestType(request.getMethod());
         SysUser sysUser = null;
         // 1-用户登录
