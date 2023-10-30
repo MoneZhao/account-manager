@@ -4,13 +4,22 @@
       <span>字典类别</span>
     </div>
     <div class="filter-container">
-      <el-button
-        v-permission="'sys:codeType:save'"
-        icon="el-icon-plus"
-        type="primary"
-        class="filter-item"
-        @click="btnCreate"
-      >新增</el-button>
+      <el-button-group>
+        <el-button
+          v-permission="'sys:codeType:save'"
+          icon="el-icon-plus"
+          type="primary"
+          class="filter-item"
+          @click="btnCreate"
+        >新增</el-button>
+        <el-button
+          v-permission="'sys:codeType:save'"
+          icon="el-icon-refresh"
+          type="warning"
+          class="filter-item"
+          @click="btnFlush"
+        >刷新缓存</el-button>
+      </el-button-group>
 
       <div style="float: right;">
         <el-input
@@ -20,13 +29,13 @@
           class="filter-item"
           @keyup.enter.native="btnQuery"
         />
-        <el-input
+        <!-- <el-input
           v-model="listQuery.codeTypeName"
           placeholder="代码类别名称"
           style="width: 150px;"
           class="filter-item"
           @keyup.enter.native="btnQuery"
-        />
+        /> -->
         <el-dropdown split-button type="primary" class="filter-item" @click="btnQuery">
           <i class="el-icon-search el-icon--left" />查询
           <el-dropdown-menu slot="dropdown">
@@ -252,6 +261,19 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+      })
+    },
+    btnFlush() {
+      this.$confirm('此操作将刷新缓存数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        postAction('/sys/codeType/flush', this.temp).then(({ msg }) => {
+          this.dialogFormVisible = false
+          Message.success(msg)
+          this.list()
+        })
       })
     },
     createData() {

@@ -3,6 +3,7 @@
     <div class="filter-container">
       <el-button-group>
         <el-button v-permission="'sys:config:save'" icon="el-icon-plus" type="primary" class="filter-item" @click="btnCreate">新增</el-button>
+        <el-button v-permission="'sys:config:save'" icon="el-icon-refresh" type="warning" class="filter-item" @click="btnFlush">刷新缓存</el-button>
         <!--        <el-button v-permission="'sys:config:delete'" icon="el-icon-delete" class="filter-item" @click="btnDelete()">批量删除</el-button>-->
       </el-button-group>
       <div style="float: right">
@@ -222,6 +223,19 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteAction('/sys/config/delete', { ids: ids.toString() }).then(({ msg }) => {
+          Message.success(msg)
+          this.list()
+        })
+      })
+    },
+    btnFlush() {
+      this.$confirm('此操作将刷新缓存数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        postAction('/sys/config/flush', this.temp).then(({ msg }) => {
+          this.dialogFormVisible = false
           Message.success(msg)
           this.list()
         })

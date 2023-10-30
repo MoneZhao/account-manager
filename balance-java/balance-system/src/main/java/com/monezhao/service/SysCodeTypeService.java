@@ -16,4 +16,9 @@ public interface SysCodeTypeService extends BaseService<SysCodeType> {
      * @param ids
      */
     void deleteSysCodeType(String ids);
+
+    /**
+     * 刷新缓存数据
+     */
+    void flush();
 }

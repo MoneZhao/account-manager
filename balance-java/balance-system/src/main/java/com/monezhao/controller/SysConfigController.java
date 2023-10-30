@@ -105,4 +105,17 @@ public class SysConfigController extends BaseController {
         sysConfigService.deleteSysConfig(ids);
         return Result.ok();
     }
+
+    /**
+     * 刷新缓存数据
+     * @功能：刷新缓存数据
+     */
+    @SysLogAuto(value = "刷新系统参数缓存数据")
+    @RequiresPermissions("sys:config:save")
+    @PostMapping(value = "/flush")
+    @ApiOperation("刷新缓存数据")
+    public Result flush() {
+        sysConfigService.flush();
+        return Result.ok();
+    }
 }

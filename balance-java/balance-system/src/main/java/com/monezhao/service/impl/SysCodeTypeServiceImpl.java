@@ -59,4 +59,9 @@ public class SysCodeTypeServiceImpl extends BaseServiceImpl<SysCodeTypeMapper, S
             redisUtil.del(Constants.PREFIX_SYS_CODE_TYPE + codeTypeId);
         }
     }
+
+    @Override
+    public void flush() {
+        sysCodeInfoService.loadSysCodeInfoToRedis(null);
+    }
 }

@@ -105,4 +105,17 @@ public class SysCodeTypeController extends BaseController {
         sysCodeTypeService.deleteSysCodeType(ids);
         return Result.ok();
     }
+
+    /**
+     * 刷新缓存数据
+     * @功能：刷新缓存数据
+     */
+    @SysLogAuto(value = "刷新数据字典缓存数据")
+    @RequiresPermissions("sys:codeType:save")
+    @PostMapping(value = "/flush")
+    @ApiOperation("刷新缓存数据")
+    public Result flush() {
+        sysCodeTypeService.flush();
+        return Result.ok();
+    }
 }

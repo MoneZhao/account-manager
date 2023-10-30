@@ -45,4 +45,9 @@ public interface SysConfigService extends BaseService<SysConfig> {
      * @return SysConfig
      */
     String getSysConfig(String configId);
+
+    /**
+     * 刷新缓存数据
+     */
+    void flush();
 }

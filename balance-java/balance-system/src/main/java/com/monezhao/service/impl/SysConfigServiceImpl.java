@@ -128,4 +128,9 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfigMapper, SysCo
         }
         return sysConfigValue;
     }
+
+    @Override
+    public void flush() {
+        this.loadSysConfigToRedis(null);
+    }
 }
