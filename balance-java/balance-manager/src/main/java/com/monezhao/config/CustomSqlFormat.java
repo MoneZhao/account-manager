@@ -19,7 +19,11 @@ public class CustomSqlFormat implements MessageFormattingStrategy {
             if (elapsed > 200) {
                 log.info("用时超过200ms!!!");
             }
-            return "\n# " + now + " | 执行sql用时 " + elapsed + "ms" + "\n==>    SQl开始:\n" + sql + "\n<==    SQL结束";
+            return "\n================================= " + now + " | 执行sql用时 " + elapsed + " ms ================================"
+                    + "\n==>    sql开始:"
+                    + "\n" + sql
+                    + "\n<==    sql结束"
+                    + "\n========================================================================================================";
         }
     }
 }

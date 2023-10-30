@@ -26,9 +26,9 @@
             <OnMismatch>ACCEPT</OnMismatch>
             <OnMatch>DENY</OnMatch>
         </filter>
-        <File>${LOG_FILE_LOCATION}/@contextPath@.log</File>
+        <File>${LOG_FILE_LOCATION}/info.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_FILE_LOCATION}/history/@contextPath@.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+            <FileNamePattern>${LOG_FILE_LOCATION}/history/info.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
             <!-- Keep 10 day log -->
             <maxHistory>15</maxHistory>
         </rollingPolicy>
@@ -91,6 +91,8 @@
     </appender>
 
     <logger name="webLog" level="info" additivity="false">
+        <appender-ref ref="ASYNC-FILE"/>
+        <appender-ref ref="ASYNC-FILE-ERROR"/>
         <appender-ref ref="ASYNC-FILE-WEBLOG"/>
     </logger>
 
