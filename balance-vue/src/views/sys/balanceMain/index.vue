@@ -338,7 +338,7 @@ export default {
   computed: {
     diff() {
       if (this.compareTemp.selectAccount && this.compareTemp.compareAccount) {
-        return this.formatMoney(this.compareTemp.selectAccount - this.compareTemp.compareAccount)
+        return this.formatMoney(Math.abs(this.compareTemp.selectAccount - this.compareTemp.compareAccount))
       } else {
         return ''
       }
