@@ -8,6 +8,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.system.ApplicationPid;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +45,7 @@ public class BalanceRunner implements ApplicationRunner {
             String host = InetAddress.getLocalHost().getHostAddress();
             int port = tomcatServletWebServerFactory.getPort();
             String contextPath = tomcatServletWebServerFactory.getContextPath();
-            log.info("---------启动成功,访问: ");
+            log.info("---------启动成功, 进程号 {}, 访问路径: ", new ApplicationPid());
             log.info("-----------Local: http://" + "127.0.0.1:" + port + contextPath + "/");
             log.info("-----------Network: http://" + host + ":" + port + contextPath + "/");
         } catch (UnknownHostException | NoSuchBeanDefinitionException ignored) {
