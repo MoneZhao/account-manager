@@ -6,7 +6,7 @@
 
 ```bash
 
-# 安装依赖
+# 安装依赖, 需要Node 16版本
 
     cd balance-vue
 
