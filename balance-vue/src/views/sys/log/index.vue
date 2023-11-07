@@ -25,16 +25,16 @@
       </div>
     </div>
     <el-table
-        ref="multipleTable"
-        v-loading="listLoading"
-        :data="records"
-        border
-        fit
-        highlight-current-row
-        style="width: 100%;"
-        :cell-style="cellStyle"
-        @cell-dblclick="btnView"
-        @selection-change="selectionChange"
+      ref="multipleTable"
+      v-loading="listLoading"
+      :data="records"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      :cell-style="cellStyle"
+      @cell-dblclick="btnView"
+      @selection-change="selectionChange"
     >
       <el-table-column fixed type="selection" align="center" />
       <el-table-column fixed type="index" label="#" align="center" width="50" />
@@ -47,9 +47,9 @@
       <el-table-column label="操作是否成功" prop="success" align="center" width="120">
         <template slot-scope="scope">
           <el-badge
-              is-dot
-              class="dot-position"
-              :type="scope.row.success === '1' ? 'success' : 'danger'"
+            is-dot
+            class="dot-position"
+            :type="scope.row.success === '1' ? 'success' : 'danger'"
           />
           <span v-html="formatDictText(dicts.yesOrNo,scope.row.success)" />
         </template>
@@ -70,11 +70,11 @@
     </el-table>
     <div class="pagination-position">
       <pagination
-          v-show="total>0"
-          :total="total"
-          :current.sync="listQuery.current"
-          :size.sync="listQuery.size"
-          @pagination="list"
+        v-show="total>0"
+        :total="total"
+        :current.sync="listQuery.current"
+        :size.sync="listQuery.size"
+        @pagination="list"
       />
     </div>
 
@@ -104,11 +104,11 @@
 
     <el-dialog title="文件导入" :visible.sync="dialogImportVisible">
       <el-upload
-          class="upload-demo"
-          drag
-          action
-          :show-file-list="false"
-          :http-request="doImport"
+        class="upload-demo"
+        drag
+        action
+        :show-file-list="false"
+        :http-request="doImport"
       >
         <i class="el-icon-upload" />
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
