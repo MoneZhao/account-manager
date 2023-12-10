@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.monezhao.mapper.SysTravelExpenseMapper">
+
+    <!-- 多表查询:根据条件得到多条记录List(查询条件按需修改!) -->
+    <select id="list" resultType="com.monezhao.bean.sys.SysTravelExpense">
+        select
+            a.travel_expense_id as travelExpenseId,
+            a.travel_place as travelPlace,
+            a.request_date as requestDate,
+            a.get_date as getDate,
+            a.use_day as useDay,
+            a.use_number as useNumber,
+            a.request_number as requestNumber,
+            a.get_number as getNumber,
+            a.add_number as addNumber,
+            a.remark as remark,
+            a.delete_type as deleteType
+
+        from t_sys_travel_expense a
+        where a.delete_type = '1900-01-01 00:00:00'
+        <if test="entity.travelPlace != null and entity.travelPlace !=''">
+            <![CDATA[    AND a.travel_place like concat('%',#{entity.travelPlace},'%')    ]]>
+        </if>
+        order by a.request_date desc, a.get_date desc
+    </select>
+</mapper>

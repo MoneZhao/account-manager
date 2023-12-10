@@ -23,10 +23,10 @@ public class CreateFirst {
     public static void main(String[] args) {
         CodeUtil.databaseType = CreateSql.MYSQL;
         CodeUtil.module = "balance-balance";
-        CodeUtil.excelDesignPath = CodeUtil.projectPath + "db" + File.separator + "数据库设计(balance_计入总资产).xlsx";
+        CodeUtil.excelDesignPath = CodeUtil.projectPath + "db" + File.separator + "数据库设计(balance_出差报销).xlsx";
         List<String> createTableNames = Arrays.asList(
                 //"t_sys_pic_up_down",
-                "t_sys_balance_count"
+                "t_sys_travel_expense"
         );
         for (String createTableName : createTableNames) {
             CodeUtil.createTableName = createTableName;
