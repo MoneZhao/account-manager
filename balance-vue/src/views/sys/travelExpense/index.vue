@@ -159,10 +159,8 @@
                 rules: {
                     travelPlace: [{required: true, message: '该项不能为空', trigger: 'change'}],
                     requestDate: [{required: true, message: '该项不能为空', trigger: 'change'}],
-                    getDate: [{required: true, message: '该项不能为空', trigger: 'change'}],
                     useNumber: [{required: true, message: '该项不能为空', trigger: 'change'}],
                     requestNumber: [{required: true, message: '该项不能为空', trigger: 'change'}],
-                    getNumber: [{required: true, message: '该项不能为空', trigger: 'change'}],
                 }
             }
         },

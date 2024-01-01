@@ -58,7 +58,6 @@ public class SysTravelExpense extends BaseEntity {
     /**
      * 到账日期
      */
-    @NotNull
     @ApiModelProperty(value = "到账日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -90,7 +89,6 @@ public class SysTravelExpense extends BaseEntity {
     /**
      * 到账金额
      */
-    @NotNull
     @ApiModelProperty(value = "到账金额")
     @DecimalMax("999999999.99")
     private BigDecimal getNumber;

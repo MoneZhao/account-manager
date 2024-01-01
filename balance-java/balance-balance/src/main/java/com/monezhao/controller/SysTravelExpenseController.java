@@ -69,17 +69,21 @@ public class SysTravelExpenseController extends BaseController {
             "travelExpenseId",
     })
     public Result save(@Valid @RequestBody SysTravelExpense sysTravelExpense) {
-        sysTravelExpense.setUseDay(Math.abs(
-                DateUtil.getDateDiff(
-                    sysTravelExpense.getRequestDate(),
-                    sysTravelExpense.getGetDate()
-                )
-        ));
-        sysTravelExpense.setAddNumber(
-                sysTravelExpense.getGetNumber().subtract(
-                        sysTravelExpense.getUseNumber()
-                ).abs()
-        );
+        if (sysTravelExpense.getGetDate() != null) {
+            sysTravelExpense.setUseDay(Math.abs(
+                    DateUtil.getDateDiff(
+                        sysTravelExpense.getRequestDate(),
+                        sysTravelExpense.getGetDate()
+                    )
+            ));
+        }
+        if (sysTravelExpense.getGetNumber() != null) {
+            sysTravelExpense.setAddNumber(
+                    sysTravelExpense.getGetNumber().subtract(
+                            sysTravelExpense.getUseNumber()
+                    ).abs()
+            );
+        }
         sysTravelExpenseService.save(sysTravelExpense);
         return Result.ok();
     }
@@ -94,17 +98,21 @@ public class SysTravelExpenseController extends BaseController {
     @ApiOperation("出差报销修改")
     @SysLogAuto(value = "出差报销修改")
     public Result update(@Valid @RequestBody SysTravelExpense sysTravelExpense) {
-        sysTravelExpense.setUseDay(Math.abs(
-                DateUtil.getDateDiff(
-                        sysTravelExpense.getRequestDate(),
-                        sysTravelExpense.getGetDate()
-                )
-        ));
-        sysTravelExpense.setAddNumber(
-                sysTravelExpense.getGetNumber().subtract(
-                        sysTravelExpense.getUseNumber()
-                ).abs()
-        );
+        if (sysTravelExpense.getGetDate() != null) {
+            sysTravelExpense.setUseDay(Math.abs(
+                    DateUtil.getDateDiff(
+                            sysTravelExpense.getRequestDate(),
+                            sysTravelExpense.getGetDate()
+                    )
+            ));
+        }
+        if (sysTravelExpense.getGetNumber() != null) {
+            sysTravelExpense.setAddNumber(
+                    sysTravelExpense.getGetNumber().subtract(
+                            sysTravelExpense.getUseNumber()
+                    ).abs()
+            );
+        }
         sysTravelExpenseService.updateById(sysTravelExpense);
         return Result.ok();
     }
