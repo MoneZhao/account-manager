@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.xiaonuo.biz.modular.balancecount.mapper.BizBalanceCountMapper">
+
+    <select id="list" resultType="vip.xiaonuo.biz.modular.balancecount.entity.BizBalanceCount">
+        SELECT
+        a.ID AS id,
+        b.ID AS codeInfoId,
+        b.DICT_LABEL as dictLabel,
+        IFNULL(a.count_type, "1") AS countType,
+        a.user_id AS userId
+        FROM
+        dev_dict b
+        LEFT JOIN biz_balance_count a ON b.ID = a.CODE_INFO_ID AND a.user_id = #{entity.userId}
+        WHERE
+        b.PARENT_ID = #{entity.searchKey}
+        <if test="entity.codeInfoId != null and entity.codeInfoId !=''">
+            <![CDATA[    AND b.ID = #{entity.codeInfoId}    ]]>
+        </if>
+        <if test='entity.countType != null and entity.countType == "0"'>
+            <![CDATA[    AND a.count_type = #{entity.countType}    ]]>
+        </if>
+        <if test='entity.countType != null and entity.countType == "1"'>
+            <![CDATA[    AND (a.count_type is null or a.count_type = #{entity.countType})     ]]>
+        </if>
+        ORDER BY
+        b.SORT_CODE
+    </select>
+</mapper>

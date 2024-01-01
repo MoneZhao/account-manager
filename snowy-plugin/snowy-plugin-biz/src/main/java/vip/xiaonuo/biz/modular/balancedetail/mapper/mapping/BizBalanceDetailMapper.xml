@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.xiaonuo.biz.modular.balancedetail.mapper.BizBalanceDetailMapper">
+    <select id="list" resultType="vip.xiaonuo.biz.modular.balancedetail.entity.BizBalanceDetail">
+        select
+        a.ID as id,
+        a.ACCOUNT as account,
+        a.BALANCE_TYPE as balanceType,
+        ci.DICT_LABEL as balanceName,
+        m.ACCOUNT_DATE as accountDate,
+        IFNULL(bc.count_type, "1") AS countType,
+        a.BALANCE_MAIN_ID as balanceMainId,
+        a.USER_ID as userId,
+        a.DELETE_FLAG as deleteFlag,
+        a.REMARK as remark
+
+        from biz_balance_detail a
+        LEFT JOIN dev_dict ci ON ci.PARENT_ID = #{entity.searchKey} AND ci.DICT_VALUE = a.BALANCE_TYPE
+        left join biz_balance_main m on m.ID = a.BALANCE_MAIN_ID
+        LEFT JOIN biz_balance_count bc on bc.user_id = m.user_id and ci.ID = bc.code_info_id
+        where a.DELETE_FLAG = '1000-01-01 00:00:00'
+        <if test="entity.balanceType != null and entity.balanceType !=''">
+            <![CDATA[    AND a.BALANCE_TYPE = #{entity.balanceType}    ]]>
+        </if>
+        <if test="entity.balanceMainId != null and entity.balanceMainId !=''">
+            <![CDATA[    AND a.BALANCE_MAIN_ID = #{entity.balanceMainId}    ]]>
+        </if>
+        <if test="entity.userId != null and entity.userId !=''">
+            <![CDATA[    AND a.USER_ID = #{entity.userId}]]>
+        </if>
+        order by m.account_date,ci.SORT_CODE
+    </select>
+
+    <select id="account" resultType="java.math.BigDecimal">
+        select sum(account)
+        from biz_balance_detail a
+        where a.DELETE_FLAG = '1000-01-01 00:00:00'
+          AND a.BALANCE_MAIN_ID = #{id}
+          AND a.BALANCE_TYPE NOT IN (SELECT c.DICT_VALUE
+                                     FROM biz_balance_count b
+                                              LEFT JOIN dev_dict c ON c.ID = b.CODE_INFO_ID
+                                     WHERE b.user_id = #{userId}
+                                       AND b.count_type = '0')
+    </select>
+
+    <update id="restore">
+        update biz_balance_detail a set a.DELETE_FLAG = '1000-01-01 00:00:00'
+        where a.DELETE_FLAG != '1000-01-01 00:00:00'
+        AND a.balance_main_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

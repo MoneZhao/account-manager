@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.xiaonuo.biz.modular.balancemain.mapper.BizBalanceMainMapper">
+
+    <delete id="deleteMainIds">
+        delete
+        from biz_balance_main a
+        where a.ID in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="list" resultType="vip.xiaonuo.biz.modular.balancemain.entity.BizBalanceMain">
+        select
+        a.ID as id,
+        a.ACCOUNT as account,
+        a.ACCOUNT_DATE as accountDate,
+        a.USER_ID as userId,
+        a.REMARK as remark,
+        a.DELETE_FLAG as deleteFlag,
+        o.NAME as userName
+
+        from biz_balance_main a
+        left join sys_user o ON o.ID=a.USER_ID
+        where 1=1
+        <if test="entity.deleteFlag != null">
+            <![CDATA[	AND a.DELETE_FLAG != '1000-01-01 00:00:00' ]]>
+        </if>
+        <if test="entity.deleteFlag == null">
+            <![CDATA[	AND a.DELETE_FLAG = '1000-01-01 00:00:00' ]]>
+        </if>
+        <if test="entity.accountDate != null">
+            <![CDATA[	AND a.ACCOUNT_DATE = #{entity.accountDate}]]>
+        </if>
+        <if test="entity.startAccountDate != null and entity.endAccountDate != null">
+            <![CDATA[	AND a.ACCOUNT_DATE >= #{entity.startAccountDate} and a.account_date < #{entity.endAccountDate} ]]>
+        </if>
+        <if test="entity.userId != null and entity.userId !=''">
+            <![CDATA[	AND a.USER_ID = #{entity.userId}]]>
+        </if>
+        <if test='entity.multiData != null and entity.multiData =="0"'>
+            <![CDATA[	AND date_format( a.ACCOUNT_DATE, '%Y-%m' ) NOT IN (
+                SELECT
+                    c.account_date
+                FROM
+                    (
+                    SELECT
+                        b.account_date,
+                        COUNT( b.account_date ) count
+                    FROM
+                        ( SELECT date_format( a.ACCOUNT_DATE, '%Y-%m' ) account_date FROM `biz_balance_main` a WHERE a.DELETE_FLAG = '1000-01-01 00:00:00' ORDER BY a.ACCOUNT_DATE ) b
+                    GROUP BY
+                        b.account_date
+                    HAVING
+                        count >= 2
+                    ) c
+                )
+            ]]>
+        </if>
+        <if test='entity.multiData != null and entity.multiData =="1"'>
+            <![CDATA[	AND date_format( a.account_date, '%Y-%m' ) IN (
+                SELECT
+                    c.account_date
+                FROM
+                    (
+                    SELECT
+                        b.account_date,
+                        COUNT( b.account_date ) count
+                    FROM
+                        ( SELECT date_format( a.account_date, '%Y-%m' ) account_date FROM `biz_balance_main` a WHERE a.DELETE_FLAG = '1000-01-01 00:00:00' ORDER BY a.ACCOUNT_DATE ) b
+                    GROUP BY
+                        b.account_date
+                    HAVING
+                        count >= 2
+                    ) c
+                )
+            ]]>
+        </if>
+        order by a.account_date desc
+    </select>
+
+    <update id="restore">
+        update biz_balance_main a set a.DELETE_FLAG = '1000-01-01 00:00:00'
+        where a.DELETE_FLAG != '1000-01-01 00:00:00'
+        AND a.ID in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="listAllDate" resultType="java.util.Date">
+        SELECT distinct a.ACCOUNT_DATE
+        FROM biz_balance_main a
+        WHERE a.USER_ID = #{id} and a.DELETE_FLAG = '1000-01-01 00:00:00'
+        ORDER BY a.ACCOUNT_DATE DESC
+    </select>
+</mapper>

@@ -1,0 +1,110 @@
+package vip.xiaonuo.biz.modular.balancemain.service.impl;
+
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollStreamUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.biz.modular.balancemain.entity.BizBalanceMain;
+import vip.xiaonuo.biz.modular.balancemain.mapper.BizBalanceMainMapper;
+import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainAddParam;
+import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainEditParam;
+import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainIdParam;
+import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainPageParam;
+import vip.xiaonuo.biz.modular.balancemain.service.BizBalanceMainService;
+import vip.xiaonuo.common.exception.CommonException;
+import vip.xiaonuo.common.page.CommonPageRequest;
+
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 账户余额Service接口实现类
+ *
+ * @author monezhao
+ * @date  2023/12/25 16:56
+ **/
+@Service
+public class BizBalanceMainServiceImpl extends ServiceImpl<BizBalanceMainMapper, BizBalanceMain> implements BizBalanceMainService {
+
+    @Override
+    public Page<BizBalanceMain> page(BizBalanceMainPageParam bizBalanceMainPageParam) {
+        return baseMapper.list(CommonPageRequest.defaultPage(), bizBalanceMainPageParam);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void add(BizBalanceMainAddParam bizBalanceMainAddParam) {
+        BizBalanceMain bizBalanceMain = BeanUtil.toBean(bizBalanceMainAddParam, BizBalanceMain.class);
+        bizBalanceMain.setUserId(StpUtil.getLoginIdAsString());
+        if (!this.exist(bizBalanceMain)) {
+            this.save(bizBalanceMain);
+        } else {
+            throw new CommonException("已存在当日数据");
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void edit(BizBalanceMainEditParam bizBalanceMainEditParam) {
+        BizBalanceMain bizBalanceMain = this.queryEntity(bizBalanceMainEditParam.getId());
+        BeanUtil.copyProperties(bizBalanceMainEditParam, bizBalanceMain);
+        bizBalanceMain.setUserId(StpUtil.getLoginIdAsString());
+        if (!this.exist(bizBalanceMain)) {
+            this.updateById(bizBalanceMain);
+        } else {
+            throw new CommonException("已存在当日数据");
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void delete(List<BizBalanceMainIdParam> bizBalanceMainIdParamList) {
+        // 执行删除
+        this.removeByIds(CollStreamUtil.toList(bizBalanceMainIdParamList, BizBalanceMainIdParam::getId));
+    }
+
+    @Override
+    public BizBalanceMain detail(BizBalanceMainIdParam bizBalanceMainIdParam) {
+        return this.queryEntity(bizBalanceMainIdParam.getId());
+    }
+
+    @Override
+    public BizBalanceMain queryEntity(String id) {
+        BizBalanceMain bizBalanceMain = this.getById(id);
+        if(ObjectUtil.isEmpty(bizBalanceMain)) {
+            throw new CommonException("账户余额不存在，id值为：{}", id);
+        }
+        return bizBalanceMain;
+    }
+
+    @Override
+    public boolean exist(BizBalanceMain bizBalanceMain) {
+        QueryWrapper<BizBalanceMain> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(BizBalanceMain::getUserId, bizBalanceMain.getUserId())
+                .eq(BizBalanceMain::getAccountDate, bizBalanceMain.getAccountDate());
+        if (StringUtils.isNotEmpty(bizBalanceMain.getId())) {
+            queryWrapper.lambda()
+                    .ne(BizBalanceMain::getId, bizBalanceMain.getId());
+        }
+        List<BizBalanceMain> list = this.list(queryWrapper);
+        return list != null && !list.isEmpty();
+    }
+
+    @Override
+    public void restore(List<String> idsArr) {
+        baseMapper.restore(idsArr);
+    }
+
+    @Override
+    public List<Date> rangDate() {
+        return baseMapper.listAllDate(StpUtil.getLoginIdAsString());
+    }
+
+}
