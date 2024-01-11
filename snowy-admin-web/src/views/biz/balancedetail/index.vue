@@ -61,6 +61,8 @@
               <a-popconfirm title="确定要删除吗？" @confirm="deleteBizBalanceDetail(record)">
                 <a-button type="link" danger size="small">删除</a-button>
               </a-popconfirm>
+              <a-divider type="vertical" />
+              <a @click="openCompare(record)">对比</a>
             </a-space>
           </template>
         </template>
@@ -70,14 +72,17 @@
       <a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
     </template>
     <Form ref="formRef" @successful="table.refresh(true)" />
+    <DetailCompare ref="compareRef" @successful="table.refresh(true)" />
   </xn-form-container>
 </template>
 
 <script setup name="balancedetail">
   import tool from '@/utils/tool'
+  import DetailCompare from './compare.vue'
   import Form from './form.vue'
   import bizBalanceDetailApi from '@/api/biz/bizBalanceDetailApi'
   import { cloneDeep } from 'lodash-es'
+  import { message } from 'ant-design-vue'
   let searchFormState = reactive({})
   const searchFormRef = ref()
   const table = ref()
@@ -120,9 +125,7 @@
     },
     {
       title: '操作',
-      dataIndex: 'action',
-      align: 'center',
-      width: '150px'
+      dataIndex: 'action'
     }
   ]
   const selectedRowKeys = ref([])
@@ -171,6 +174,14 @@
     })
   }
   const balanceTypeOptions = tool.dictList('BALANCE_TYPE')
+  const compareRef = ref()
+  const openCompare = (record) => {
+    if (record) {
+      compareRef.value.onOpen(record)
+    } else {
+      message.warn('未选中数据')
+    }
+  }
   // 抛出函数
   defineExpose({
     onOpen

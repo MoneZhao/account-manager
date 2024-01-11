@@ -1,14 +1,25 @@
 package vip.xiaonuo.biz.modular.balancemain.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import vip.xiaonuo.biz.core.util.DateTimeUtil;
+import vip.xiaonuo.biz.core.vo.YearMonthDayStartAndEnd;
+import vip.xiaonuo.biz.modular.balancedetail.entity.BizBalanceDetail;
+import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailCompareParam;
 import vip.xiaonuo.biz.modular.balancedetail.service.BizBalanceDetailService;
 import vip.xiaonuo.biz.modular.balancemain.entity.BizBalanceMain;
 import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainAddParam;
@@ -25,13 +36,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
  * 账户余额控制器
  *
  * @author monezhao
- * @date  2023/12/25 16:56
+ * @date 2023/12/25 16:56
  */
 @Api(tags = "账户余额控制器")
 @ApiSupport(author = "SNOWY_TEAM", order = 1)
@@ -43,13 +56,13 @@ public class BizBalanceMainController {
     private BizBalanceMainService bizBalanceMainService;
 
     @Resource
-    private BizBalanceDetailService detailService;
+    private BizBalanceDetailService bizBalanceDetailService;
 
     /**
      * 获取账户余额分页
      *
      * @author monezhao
-     * @date  2023/12/25 16:56
+     * @date 2023/12/25 16:56
      */
     @ApiOperationSupport(order = 1)
     @ApiOperation("获取账户余额分页")
@@ -63,7 +76,7 @@ public class BizBalanceMainController {
      * 获取账户余额分页
      *
      * @author monezhao
-     * @date  2023/12/25 16:56
+     * @date 2023/12/25 16:56
      */
     @ApiOperationSupport(order = 1)
     @ApiOperation("获取账户余额回收站分页")
@@ -79,7 +92,7 @@ public class BizBalanceMainController {
      * 添加账户余额
      *
      * @author monezhao
-     * @date  2023/12/25 16:56
+     * @date 2023/12/25 16:56
      */
     @ApiOperationSupport(order = 2)
     @ApiOperation("添加账户余额")
@@ -95,7 +108,7 @@ public class BizBalanceMainController {
      * 账户余额复制
      *
      * @author monezhao
-     * @date  2023/12/25 16:56
+     * @date 2023/12/25 16:56
      */
     @ApiOperationSupport(order = 2)
     @ApiOperation("账户余额复制")
@@ -103,7 +116,7 @@ public class BizBalanceMainController {
     @SaCheckPermission("/biz/balancemain/add")
     @PostMapping("/biz/balancemain/copy")
     public CommonResult<String> copy(@RequestBody @Valid BizBalanceMainAddParam bizBalanceMainAddParam) {
-        detailService.copy(bizBalanceMainAddParam);
+        bizBalanceDetailService.copy(bizBalanceMainAddParam);
         return CommonResult.ok();
     }
 
@@ -111,7 +124,7 @@ public class BizBalanceMainController {
      * 编辑账户余额
      *
      * @author monezhao
-     * @date  2023/12/25 16:56
+     * @date 2023/12/25 16:56
      */
     @ApiOperationSupport(order = 3)
     @ApiOperation("编辑账户余额")
@@ -127,7 +140,7 @@ public class BizBalanceMainController {
      * 删除账户余额
      *
      * @author monezhao
-     * @date  2023/12/25 16:56
+     * @date 2023/12/25 16:56
      */
     @ApiOperationSupport(order = 4)
     @ApiOperation("删除账户余额")
@@ -135,8 +148,8 @@ public class BizBalanceMainController {
     @SaCheckPermission("/biz/balancemain/delete")
     @PostMapping("/biz/balancemain/delete")
     public CommonResult<String> delete(@RequestBody @Valid @NotEmpty(message = "集合不能为空")
-                                                   CommonValidList<BizBalanceMainIdParam> bizBalanceMainIdParamList) {
-        detailService.deleteMain(
+                                       CommonValidList<BizBalanceMainIdParam> bizBalanceMainIdParamList) {
+        bizBalanceDetailService.deleteMain(
                 bizBalanceMainIdParamList.stream().map(BizBalanceMainIdParam::getId).collect(Collectors.toList())
         );
         return CommonResult.ok();
@@ -146,7 +159,7 @@ public class BizBalanceMainController {
      * 获取账户余额详情
      *
      * @author monezhao
-     * @date  2023/12/25 16:56
+     * @date 2023/12/25 16:56
      */
     @ApiOperationSupport(order = 5)
     @ApiOperation("获取账户余额详情")
@@ -162,7 +175,7 @@ public class BizBalanceMainController {
     @CommonLog("更新全部账户余额")
     @SaCheckPermission("/biz/balancemain/edit")
     public CommonResult<String> fixBatch() {
-        detailService.fixBatch();
+        bizBalanceDetailService.fixBatch();
         return CommonResult.ok();
     }
 
@@ -176,7 +189,109 @@ public class BizBalanceMainController {
             return CommonResult.error("ids can't be empty");
         }
         String[] idsArr = ids.split(",");
-        detailService.restoreMain(Arrays.asList(idsArr));
+        bizBalanceDetailService.restoreMain(Arrays.asList(idsArr));
         return CommonResult.ok();
+    }
+
+    /**
+     * 账户余额对比
+     *
+     * @author monezhao
+     * @date 2023/12/25 16:56
+     */
+    @ApiOperationSupport(order = 8)
+    @ApiOperation("账户余额对比")
+    @CommonLog("账户余额对比")
+    @SaCheckLogin
+    @PostMapping("/biz/balancemain/compare")
+
+    public CommonResult<BizBalanceMain> compare(@RequestBody @Valid BizBalanceMainAddParam bizBalanceMainAddParam) {
+        QueryWrapper<BizBalanceMain> queryWrapper = new QueryWrapper<>();
+        String userId = StpUtil.getLoginIdAsString();
+        Date date = bizBalanceMainAddParam.getAccountDate();
+        queryWrapper.lambda()
+                .eq(BizBalanceMain::getUserId, userId)
+                .eq(BizBalanceMain::getAccountDate, date);
+        BizBalanceMain balanceMain = bizBalanceMainService.getOne(queryWrapper, false);
+        if (Objects.isNull(balanceMain)) {
+            YearMonthDayStartAndEnd startAndEnd =
+                    DateTimeUtil.dateToYearMonthDayStartAndEnd(date);
+            queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda()
+                    .eq(BizBalanceMain::getUserId, userId)
+                    .between(BizBalanceMain::getAccountDate, startAndEnd.getFirstDayOfMonth(), startAndEnd.getLastDayOfMonth());
+            List<BizBalanceMain> list = bizBalanceMainService.list(queryWrapper);
+            if (list.isEmpty()) {
+                BizBalanceMain res = new BizBalanceMain();
+                res.setRemark("对比月份无记录");
+                return CommonResult.data(res);
+            } else {
+                BizBalanceMain res = new BizBalanceMain();
+                res.setRemark("当前日期无记录, 可选择以下日期" +
+                        list.stream()
+                                .map(vo -> DateUtil.formatDate(vo.getAccountDate()))
+                                .collect(Collectors.joining(", ", "[", "]"))
+                );
+                return CommonResult.data(res);
+            }
+        } else {
+            return CommonResult.data(balanceMain);
+        }
+    }
+
+    /**
+     * 账户详情对比
+     *
+     * @author monezhao
+     * @date 2023/12/25 16:56
+     */
+    @ApiOperationSupport(order = 9)
+    @ApiOperation("账户详情对比")
+    @CommonLog("账户详情对比")
+    @SaCheckLogin
+    @PostMapping("/biz/balancemain/compareDetail")
+    public CommonResult<BizBalanceDetail> compare(@RequestBody @Valid BizBalanceDetailCompareParam compareParam) {
+        QueryWrapper<BizBalanceMain> queryWrapper = new QueryWrapper<>();
+        String userId = StpUtil.getLoginIdAsString();
+        Date date = compareParam.getAccountDate();
+        queryWrapper.lambda()
+                .eq(BizBalanceMain::getUserId, userId)
+                .eq(BizBalanceMain::getAccountDate, date);
+        BizBalanceMain sysBalanceMain = bizBalanceMainService.getOne(queryWrapper, false);
+        if (Objects.isNull(sysBalanceMain)) {
+            YearMonthDayStartAndEnd startAndEnd =
+                    DateTimeUtil.dateToYearMonthDayStartAndEnd(date);
+            queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda()
+                    .eq(BizBalanceMain::getUserId, userId)
+                    .between(BizBalanceMain::getAccountDate, startAndEnd.getFirstDayOfMonth(), startAndEnd.getLastDayOfMonth());
+            List<BizBalanceMain> list = bizBalanceMainService.list(queryWrapper);
+            if (list.isEmpty()) {
+                BizBalanceDetail res = new BizBalanceDetail();
+                res.setRemark("对比月份无记录");
+                return CommonResult.data(res);
+            } else {
+                BizBalanceDetail res = new BizBalanceDetail();
+                res.setRemark("当前日期无记录, 可选择以下日期" +
+                        list.stream()
+                                .map(vo -> DateUtil.formatDate(vo.getAccountDate()))
+                                .collect(Collectors.joining(", ", "[", "]"))
+                );
+                return CommonResult.data(res);
+            }
+        } else {
+            QueryWrapper<BizBalanceDetail> detailQueryWrapper = new QueryWrapper<>();
+            detailQueryWrapper.lambda()
+                    .eq(BizBalanceDetail::getBalanceMainId, sysBalanceMain.getId())
+                    .eq(BizBalanceDetail::getBalanceType, compareParam.getBalanceType());
+            BizBalanceDetail detail = bizBalanceDetailService.getOne(detailQueryWrapper, false);
+            if (detail == null) {
+                BizBalanceDetail res = new BizBalanceDetail();
+                res.setRemark("对比日期无类型记录");
+                return CommonResult.data(res);
+            } else {
+                return CommonResult.data(detail);
+            }
+        }
     }
 }

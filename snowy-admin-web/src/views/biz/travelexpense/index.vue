@@ -42,6 +42,12 @@
             {{ record.useDay }}
           </a-tag>
         </template>
+        <template v-if="column.dataIndex === 'requestDate'">
+          {{ $TOOL.formatDate(record.requestDate) }}
+        </template>
+        <template v-if="column.dataIndex === 'getDate'">
+          {{ $TOOL.formatDate(record.getDate) }}
+        </template>
         <template v-if="column.dataIndex === 'addNumber'">
           <a-tag color="blue">
             {{ $TOOL.formatMoney(record.addNumber) }}

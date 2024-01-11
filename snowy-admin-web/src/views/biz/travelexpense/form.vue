@@ -14,6 +14,8 @@
         <a-date-picker
           v-model:value="formData.requestDate"
           value-format="YYYY-MM-DD"
+          format="YYYY 年 MM 月 DD 日"
+          :disabled-date="disabledDate"
           placeholder="请选择报销日期"
           style="width: 100%"
         />
@@ -22,6 +24,8 @@
         <a-date-picker
           v-model:value="formData.getDate"
           value-format="YYYY-MM-DD"
+          format="YYYY 年 MM 月 DD 日"
+          :disabled-date="disabledDate"
           placeholder="请选择到账日期"
           style="width: 100%"
         />
@@ -68,6 +72,7 @@
   import { cloneDeep } from 'lodash-es'
   import { required } from '@/utils/formRules'
   import bizTravelExpenseApi from '@/api/biz/bizTravelExpenseApi'
+  import dayjs from 'dayjs'
   // 抽屉状态
   const visible = ref(false)
   const emit = defineEmits({ successful: null })
@@ -112,6 +117,9 @@
           submitLoading.value = false
         })
     })
+  }
+  const disabledDate = (current) => {
+    return current > dayjs().add(1, 'days')
   }
   // 抛出函数
   defineExpose({

@@ -13,7 +13,11 @@
         </a-col>
         <a-col :span="6">
           <a-form-item label="记录时间" name="accountDate">
-            <a-range-picker v-model:value="searchFormState.accountDate" value-format="YYYY-MM-DD" />
+            <a-range-picker
+              v-model:value="searchFormState.accountDate"
+              value-format="YYYY-MM-DD"
+              :disabled-date="disabledDate"
+            />
           </a-form-item>
         </a-col>
         <a-col :span="6">
@@ -90,10 +94,10 @@
                     <a @click="openDetail(record)">详情</a>
                   </a-menu-item>
                   <a-menu-item>
-                    <a href="javascript:;">复制</a>
+                    <a @click="openCopy(record)">复制</a>
                   </a-menu-item>
                   <a-menu-item>
-                    <a href="javascript:;">对比</a>
+                    <a @click="openCompare(record)">对比</a>
                   </a-menu-item>
                 </a-menu>
               </template>
@@ -106,20 +110,24 @@
   <Form ref="formRef" @successful="table.refresh(true)" />
   <Trash ref="trashRef" @successful="table.refresh(true)" />
   <Detail ref="detailRef" @successful="table.refresh(true)" />
+  <Compare ref="compareRef" @successful="table.refresh(true)" />
 </template>
 
 <script setup name="balancemain">
   import Form from './form.vue'
   import Trash from './trash.vue'
+  import Compare from './compare.vue'
+  import Detail from '../balancedetail/index.vue'
   import bizBalanceMainApi from '@/api/biz/bizBalanceMainApi'
   import tool from '@/utils/tool'
-  import Detail from '../balancedetail/index.vue'
+  import dayjs from 'dayjs'
   import { message } from 'ant-design-vue'
   let searchFormState = reactive({})
   const searchFormRef = ref()
   const table = ref()
   const formRef = ref()
   const trashRef = ref()
+  const compareRef = ref()
   const detailRef = ref()
   const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
   const columns = [
@@ -224,5 +232,16 @@
     } else {
       message.warn('未选中数据')
     }
+  }
+  const openCopy = (record) => {}
+  const openCompare = (record) => {
+    if (record) {
+      compareRef.value.onOpen(record)
+    } else {
+      message.warn('未选中数据')
+    }
+  }
+  const disabledDate = (current) => {
+    return current > dayjs().add(1, 'days')
   }
 </script>

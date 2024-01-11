@@ -44,5 +44,13 @@ export default {
   // 更新全部账户余额
   bizBalanceMainRestore(data) {
     return request('restore', data, 'get')
+  },
+  // 账户余额对比
+  bizBalanceMainCompare(data) {
+    return request('compare', data, 'post')
+  },
+  // 账户详情对比
+  bizBalanceMainCompareDetail(data) {
+    return request('compareDetail', data, 'post')
   }
 }

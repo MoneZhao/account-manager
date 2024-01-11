@@ -14,6 +14,8 @@
         <a-date-picker
           v-model:value="formData.accountDate"
           value-format="YYYY-MM-DD"
+          format="YYYY 年 MM 月 DD 日"
+          :disabled-date="disabledDate"
           placeholder="请选择记录时间"
           style="width: 100%"
         />
@@ -33,6 +35,7 @@
   import { cloneDeep } from 'lodash-es'
   import { required } from '@/utils/formRules'
   import bizBalanceMainApi from '@/api/biz/bizBalanceMainApi'
+  import dayjs from 'dayjs'
   // 抽屉状态
   const visible = ref(false)
   const emit = defineEmits({ successful: null })
@@ -75,6 +78,9 @@
           submitLoading.value = false
         })
     })
+  }
+  const disabledDate = (current) => {
+    return current > dayjs().add(1, 'days')
   }
   // 抛出函数
   defineExpose({
