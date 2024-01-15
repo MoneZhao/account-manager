@@ -26,25 +26,14 @@
         <div id="line_chart" style="width: 95%;height: 55vh;margin: 0 .1rem" />
       </el-card>
     </div>
-
-    <el-dialog :title="`${yearMonth.name} - 账户详情`" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
-      <RatioChart v-if="dialogVisible" :cdata="ratioData" />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">关 闭</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getAction, postAction } from '@/api/manage'
-import RatioChart from '../ratioCharts'
+import { postAction } from '@/api/manage'
 
 export default {
   'name': 'StatementTable',
-  components: {
-    RatioChart
-  },
   data() {
     return {
       dicts: [],
@@ -91,7 +80,6 @@ export default {
         selectdData: [],
         seriesData: []
       },
-      dialogVisible: false,
       chart: undefined
     }
   },
@@ -130,7 +118,7 @@ export default {
         this.chart.setOption({
           title: {
             text: data.title,
-            left: 'left'
+            left: 'center'
           },
           xAxis: {
             name: data.xtitle,
@@ -149,6 +137,7 @@ export default {
             }
           },
           legend: {
+            left: 'right',
             data: legend
           },
           yAxis: {
@@ -164,6 +153,8 @@ export default {
             }
           },
           toolbox: {
+            left: 'right',
+            top: 'middle',
             feature: {
               dataView: { show: true, readOnly: true },
               saveAsImage: { show: true }

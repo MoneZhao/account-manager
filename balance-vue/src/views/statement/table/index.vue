@@ -159,7 +159,7 @@ export default {
           countType: item.countType
         }
         obj.seriesData.push(oneObj)
-        obj.selectedData[item.equipmentName] = index < 20
+        obj.selectedData[item.balanceName] = index < 10
       })
       this.ratioData = obj
     },
@@ -194,7 +194,7 @@ export default {
         this.chart.setOption({
           title: {
             text: data.title,
-            left: 'left'
+            left: 'center'
           },
           xAxis: {
             name: data.xtitle,
@@ -213,6 +213,7 @@ export default {
             }
           },
           legend: {
+            left: 'right',
             data: legend
           },
           yAxis: {
@@ -228,6 +229,8 @@ export default {
             }
           },
           toolbox: {
+            left: 'right',
+            top: 'middle',
             feature: {
               dataView: { show: true, readOnly: true },
               saveAsImage: { show: true }
