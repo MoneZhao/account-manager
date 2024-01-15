@@ -39,7 +39,7 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'useDay'">
           <a-tag color="blue">
-            {{ record.useDay }}
+            {{ record.useDay ? record.useDay : '-' }}
           </a-tag>
         </template>
         <template v-if="column.dataIndex === 'requestDate'">

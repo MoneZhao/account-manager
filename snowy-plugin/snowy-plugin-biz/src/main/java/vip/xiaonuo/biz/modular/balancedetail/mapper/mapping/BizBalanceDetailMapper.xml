@@ -51,4 +51,25 @@
             #{item}
         </foreach>
     </update>
+
+    <select id="queryDetail" resultType="vip.xiaonuo.biz.modular.balancedetail.entity.BizBalanceDetail">
+        select a.ID              as id,
+               a.ACCOUNT         as account,
+               a.BALANCE_TYPE    as balanceType,
+               m.ACCOUNT_DATE    as accountDate,
+               a.BALANCE_MAIN_ID as balanceMainId,
+               a.USER_ID         as userId,
+               a.DELETE_FLAG     as deleteFlag,
+               a.REMARK          as remark
+
+        from biz_balance_detail a
+                 LEFT JOIN dev_dict ci ON ci.PARENT_ID = #{searchKey} AND ci.DICT_VALUE = a.BALANCE_TYPE
+                 left join biz_balance_main m on m.ID = a.BALANCE_MAIN_ID
+        where a.DELETE_FLAG = '1000-01-01 00:00:00'
+          AND a.USER_ID = #{userId}
+          AND a.BALANCE_TYPE = #{balanceType}
+        <![CDATA[   AND m.ACCOUNT_DATE >= #{startMonth}
+          and m.ACCOUNT_DATE <= #{endMonth} ]]>
+        order by m.ACCOUNT_DATE, ci.SORT_CODE
+    </select>
 </mapper>

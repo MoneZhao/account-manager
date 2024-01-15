@@ -9,6 +9,7 @@ import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailIdParam;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailPageParam;
 import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainAddParam;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +27,8 @@ public interface BizBalanceDetailService extends IService<BizBalanceDetail> {
      * @date  2023/12/25 16:57
      */
     Page<BizBalanceDetail> page(BizBalanceDetailPageParam bizBalanceDetailPageParam);
+
+    List<BizBalanceDetail> list(BizBalanceDetailPageParam query);
 
     /**
      * 添加账户明细
@@ -93,4 +96,6 @@ public interface BizBalanceDetailService extends IService<BizBalanceDetail> {
      * @param bizBalanceMain bizBalanceMain
      */
     boolean copy(BizBalanceMainAddParam bizBalanceMainAddParam);
+
+    List<BizBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType);
 }

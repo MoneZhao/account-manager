@@ -26,6 +26,7 @@ import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.dev.api.DevDictApi;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +50,16 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
         String parentId = devDictApi.getIdByDictValue("BALANCE_TYPE");
         bizBalanceDetailPageParam.setSearchKey(parentId);
         bizBalanceDetailPageParam.setUserId(StpUtil.getLoginIdAsString());
-        return baseMapper.list(CommonPageRequest.defaultPage(), bizBalanceDetailPageParam);
+        Page<BizBalanceDetail> page = CommonPageRequest.defaultPage();
+        return page.setRecords(baseMapper.list(page, bizBalanceDetailPageParam));
+    }
+
+    @Override
+    public List<BizBalanceDetail> list(BizBalanceDetailPageParam query) {
+        String parentId = devDictApi.getIdByDictValue("BALANCE_TYPE");
+        query.setSearchKey(parentId);
+        query.setUserId(StpUtil.getLoginIdAsString());
+        return baseMapper.list(null, query);
     }
 
     public boolean exist(BizBalanceDetail bizBalanceDetail) {
@@ -191,5 +201,11 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
         this.fix(bizBalanceMain.getId());
 
         return true;
+    }
+
+    @Override
+    public List<BizBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType) {
+        String parentId = devDictApi.getIdByDictValue("BALANCE_TYPE");
+        return baseMapper.queryDetail(userId, startMonth, endMonth, balanceType, parentId);
     }
 }

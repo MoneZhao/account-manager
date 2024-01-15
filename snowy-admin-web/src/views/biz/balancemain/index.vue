@@ -15,8 +15,11 @@
           <a-form-item label="记录时间" name="accountDate">
             <a-range-picker
               v-model:value="searchFormState.accountDate"
-              value-format="YYYY-MM-DD"
+              picker="month"
+              value-format="YYYY-MM"
+              format="YYYY年MM月"
               :disabled-date="disabledDate"
+              :ranges="ranges"
             />
           </a-form-item>
         </a-col>
@@ -171,11 +174,14 @@
   const loadData = (parameter) => {
     const searchFormParam = JSON.parse(JSON.stringify(searchFormState))
     // accountDate范围查询条件重载
-    if (searchFormParam.accountDate) {
-      searchFormParam.startAccountDate = searchFormParam.accountDate[0]
-      searchFormParam.endAccountDate = searchFormParam.accountDate[1]
-      delete searchFormParam.accountDate
+    if (searchFormParam.accountDate && searchFormParam.accountDate.length === 2) {
+      searchFormParam.startAccountDate = searchFormParam.accountDate[0] + '-01'
+      searchFormParam.endAccountDate = dayjs(searchFormParam.accountDate[1] + '-01', 'YYYY-MM-DD')
+        .add(1, 'months')
+        .add(-1, 'days')
+        .format('YYYY-MM-DD')
     }
+    delete searchFormParam.accountDate
     return bizBalanceMainApi.bizBalanceMainPage(Object.assign(parameter, searchFormParam)).then((data) => {
       return data
     })
@@ -244,4 +250,9 @@
   const disabledDate = (current) => {
     return current > dayjs().add(1, 'days')
   }
+  const ranges = ref({
+    今年至今: [dayjs(new Date(new Date().getFullYear(), 0)), dayjs()],
+    最近一年: [dayjs().add(-1, 'y'), dayjs()],
+    最近两年: [dayjs().add(-2, 'y'), dayjs()]
+  })
 </script>

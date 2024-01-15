@@ -7,6 +7,7 @@ import vip.xiaonuo.biz.modular.balancedetail.entity.BizBalanceDetail;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailPageParam;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  **/
 public interface BizBalanceDetailMapper extends BaseMapper<BizBalanceDetail> {
 
-    Page<BizBalanceDetail> list(Page<BizBalanceDetail> page, @Param("entity") BizBalanceDetailPageParam bizBalanceDetailPageParam);
+    List<BizBalanceDetail> list(Page<BizBalanceDetail> page, @Param("entity") BizBalanceDetailPageParam bizBalanceDetailPageParam);
 
     BigDecimal account(@Param("id") String id, @Param("userId") String userId);
 
@@ -26,4 +27,8 @@ public interface BizBalanceDetailMapper extends BaseMapper<BizBalanceDetail> {
      */
     void restore(@Param("list") List<String> idsArr);
 
+    /**
+     * 报表查询列表
+     */
+    List<BizBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType, String searchKey);
 }

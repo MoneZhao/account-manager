@@ -156,6 +156,9 @@ tool.formatMoney = (number, places, symbol = '￥', thousand = ',', decimal = '.
 
 // 格式化日期
 tool.formatDate = (date) => {
+  if (!date) {
+    return ''
+  }
   return dayjs(date, 'YYYY-MM-DD').format('YYYY 年 MM 月 DD 日')
 }
 
