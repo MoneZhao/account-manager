@@ -194,6 +194,7 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
         
         for (BizBalanceDetail detail : details) {
             detail.setBalanceMainId(bizBalanceMain.getId());
+            detail.setId(null);
             detail.setUserId(bizBalanceMain.getUserId());
         }
         this.saveBatch(details);

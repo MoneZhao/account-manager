@@ -80,6 +80,8 @@
         </template>
         <template v-if="column.dataIndex === 'action'">
           <a-space>
+            <a @click="openCopy(record)">复制</a>
+            <a-divider type="vertical" v-if="hasPerm(['bizBalanceMainEdit', 'bizBalanceMainDelete'], 'and')" />
             <a @click="formRef.onOpen(record)" v-if="hasPerm('bizBalanceMainEdit')">编辑</a>
             <a-divider type="vertical" v-if="hasPerm(['bizBalanceMainEdit', 'bizBalanceMainDelete'], 'and')" />
             <a-popconfirm title="确定要删除吗？" @confirm="deleteBizBalanceMain(record)">
@@ -112,6 +114,7 @@
   </a-card>
   <Form ref="formRef" @successful="table.refresh(true)" />
   <Trash ref="trashRef" @successful="table.refresh(true)" />
+  <Copy ref="copyRef" @successful="table.refresh(true)" />
   <Detail ref="detailRef" @successful="table.refresh(true)" />
   <Compare ref="compareRef" @successful="table.refresh(true)" />
 </template>
@@ -119,6 +122,7 @@
 <script setup name="balancemain">
   import Form from './form.vue'
   import Trash from './trash.vue'
+  import Copy from './copy.vue'
   import Compare from './compare.vue'
   import Detail from '../balancedetail/index.vue'
   import bizBalanceMainApi from '@/api/biz/bizBalanceMainApi'
@@ -130,6 +134,7 @@
   const table = ref()
   const formRef = ref()
   const trashRef = ref()
+  const copyRef = ref()
   const compareRef = ref()
   const detailRef = ref()
   const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
@@ -239,7 +244,13 @@
       message.warn('未选中数据')
     }
   }
-  const openCopy = (record) => {}
+  const openCopy = (record) => {
+    if (record) {
+      copyRef.value.onOpen(record)
+    } else {
+      message.warn('未选中数据')
+    }
+  }
   const openCompare = (record) => {
     if (record) {
       compareRef.value.onOpen(record)

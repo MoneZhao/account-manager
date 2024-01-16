@@ -1,6 +1,7 @@
 package vip.xiaonuo.biz.modular.balancedetail.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -17,6 +18,7 @@ import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailEditParam;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailIdParam;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailPageParam;
 import vip.xiaonuo.biz.modular.balancedetail.service.BizBalanceDetailService;
+import vip.xiaonuo.biz.modular.balancedetail.vo.BizBalanceDetailListVo;
 import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonValidList;
@@ -24,6 +26,7 @@ import vip.xiaonuo.common.pojo.CommonValidList;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * 账户明细控制器
@@ -52,6 +55,21 @@ public class BizBalanceDetailController {
     @GetMapping("/biz/balancedetail/page")
     public CommonResult<Page<BizBalanceDetail>> page(BizBalanceDetailPageParam bizBalanceDetailPageParam) {
         return CommonResult.data(bizBalanceDetailService.page(bizBalanceDetailPageParam));
+    }
+
+    /**
+     * 获取账户明细列表
+     *
+     * @author monezhao
+     * @date  2023/12/25 16:57
+     */
+    @ApiOperationSupport(order = 1)
+    @ApiOperation("获取账户明细列表")
+    @SaCheckLogin
+    @GetMapping("/biz/balancedetail/list")
+    public CommonResult<List<BizBalanceDetailListVo>> list(BizBalanceDetailPageParam bizBalanceDetailPageParam) {
+        List<BizBalanceDetail> list = bizBalanceDetailService.list(bizBalanceDetailPageParam);
+        return CommonResult.data(BeanUtil.copyToList(list, BizBalanceDetailListVo.class));
     }
 
     /**
