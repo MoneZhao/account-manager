@@ -26,57 +26,38 @@ public class BizBalanceDetail extends CommonEntity {
     /** 主键ID */
     @TableId
     @ApiModelProperty(value = "主键ID", position = 1)
+    @ExcelIgnore
     private String id;
 
     /** 账户余额 */
     @ApiModelProperty(value = "账户余额", position = 2)
+    @ExcelProperty("账户余额")
     private BigDecimal account;
 
     /** 账户类型 */
     @ApiModelProperty(value = "账户类型", position = 3)
+    @ExcelIgnore
     private String balanceType;
 
     /** 主表ID */
     @ApiModelProperty(value = "主表ID", position = 4)
+    @ExcelIgnore
     private String balanceMainId;
 
     /** 所属用户ID */
     @ApiModelProperty(value = "所属用户ID", position = 5)
+    @ExcelIgnore
     private String userId;
 
     /** 备注 */
     @ApiModelProperty(value = "备注", position = 6)
+    @ExcelProperty("备注")
     private String remark;
-
-    /** 删除标志 */
-    @ApiModelProperty(value = "删除标志", position = 7)
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    private Date deleteFlag;
-
-    /** 创建时间 */
-    @ApiModelProperty(value = "创建时间", position = 8)
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 9)
-    @TableField(fill = FieldFill.INSERT)
-    private String createUser;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 10)
-    @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 11)
-    @TableField(fill = FieldFill.UPDATE)
-    private String updateUser;
 
     /** 账户类型名 */
     @ApiModelProperty(value = "账户类型名", position = 12)
     @TableField(exist = false)
+    @ExcelProperty("账户类型名")
     private String balanceName;
 
     /**

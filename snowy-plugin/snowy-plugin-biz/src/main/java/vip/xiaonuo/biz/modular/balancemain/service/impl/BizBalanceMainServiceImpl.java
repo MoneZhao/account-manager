@@ -22,6 +22,8 @@ import vip.xiaonuo.common.page.CommonPageRequest;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 账户余额Service接口实现类
@@ -34,6 +36,7 @@ public class BizBalanceMainServiceImpl extends ServiceImpl<BizBalanceMainMapper,
 
     @Override
     public Page<BizBalanceMain> page(BizBalanceMainPageParam bizBalanceMainPageParam) {
+        bizBalanceMainPageParam.setUserId(StpUtil.getLoginIdAsString());
         return baseMapper.list(CommonPageRequest.defaultPage(), bizBalanceMainPageParam);
     }
 
@@ -107,4 +110,26 @@ public class BizBalanceMainServiceImpl extends ServiceImpl<BizBalanceMainMapper,
         return baseMapper.listAllDate(StpUtil.getLoginIdAsString());
     }
 
+    @Override
+    public boolean doImport(List<BizBalanceMain> list) {
+        String userId = StpUtil.getLoginIdAsString();
+        List<Date> dates = list.stream().map(BizBalanceMain::getAccountDate).collect(Collectors.toList());
+        
+        QueryWrapper<BizBalanceMain> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(BizBalanceMain::getUserId, userId)
+                .in(BizBalanceMain::getAccountDate, dates);
+
+        List<BizBalanceMain> mains = this.list(queryWrapper);
+        Map<Date, BizBalanceMain> balanceMainMap = mains.stream()
+                .collect(Collectors.toMap(BizBalanceMain::getAccountDate, e -> e));
+
+        for (BizBalanceMain bizBalanceMain : list) {
+            bizBalanceMain.setUserId(userId);
+            if (balanceMainMap.containsKey(bizBalanceMain.getAccountDate())) {
+                bizBalanceMain.setId(balanceMainMap.get(bizBalanceMain.getAccountDate()).getId());
+            }
+        }
+        return this.saveOrUpdateBatch(list);
+    }
 }

@@ -10,12 +10,11 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.core.util.DateTimeUtil;
 import vip.xiaonuo.biz.core.vo.YearMonthDayStartAndEnd;
 import vip.xiaonuo.biz.modular.balancedetail.entity.BizBalanceDetail;
@@ -28,12 +27,15 @@ import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainIdParam;
 import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainPageParam;
 import vip.xiaonuo.biz.modular.balancemain.service.BizBalanceMainService;
 import vip.xiaonuo.common.annotation.CommonLog;
+import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonValidList;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +52,7 @@ import java.util.stream.Collectors;
 @ApiSupport(author = "SNOWY_TEAM", order = 1)
 @RestController
 @Validated
+@Slf4j
 public class BizBalanceMainController {
 
     @Resource
@@ -292,6 +295,41 @@ public class BizBalanceMainController {
             } else {
                 return CommonResult.data(detail);
             }
+        }
+    }
+
+    /**
+     * 账户余额文件上传
+     *
+     * @author monezhao
+     * @date 2023/12/25 16:56
+     */
+    @ApiOperationSupport(order = 10)
+    @ApiOperation("账户余额文件上传")
+    @CommonLog("账户余额文件上传")
+    @SaCheckPermission("/biz/balancemain/import")
+    @PostMapping("/biz/balancemain/import")
+    public CommonResult<String> doImport(@RequestPart("file") @ApiParam(value = "文件", required = true) MultipartFile file) throws IOException {
+        bizBalanceDetailService.importManager(file);
+        return CommonResult.ok();
+    }
+
+    /**
+     * 导出全部账户余额
+     *
+     * @author monezhao
+     * @date 2023/12/25 16:56
+     */
+    @ApiOperationSupport(order = 10)
+    @ApiOperation("导出全部账户余额")
+    @CommonLog("导出全部账户余额")
+    @SaCheckPermission("/biz/balancemain/export")
+    @PostMapping("/biz/balancemain/export")
+    public void doExport(HttpServletResponse response) {
+        try {
+
+        } catch (Exception e) {
+            throw new CommonException("下载文件失败：" + e.getMessage());
         }
     }
 }

@@ -87,11 +87,11 @@
                 </a-form-item>
               </a-form>
             </a-tab-pane>
-            <a-tab-pane key="userSms" :tab="$t('login.phoneSms')" force-render>
+            <!-- <a-tab-pane key="userSms" :tab="$t('login.phoneSms')" force-render>
               <phone-login-form />
-            </a-tab-pane>
+            </a-tab-pane> -->
           </a-tabs>
-          <three-login />
+          <!-- <three-login /> -->
         </a-card>
       </div>
     </div>

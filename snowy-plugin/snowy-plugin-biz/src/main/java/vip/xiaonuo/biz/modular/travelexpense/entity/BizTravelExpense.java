@@ -1,5 +1,6 @@
 package vip.xiaonuo.biz.modular.travelexpense.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
@@ -64,29 +65,9 @@ public class BizTravelExpense extends CommonEntity {
     @ApiModelProperty(value = "备注", position = 10)
     private String remark;
 
-    /** 删除标志 */
-    @ApiModelProperty(value = "删除标志", position = 11)
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    private Date deleteFlag;
+    /** 所属用户 */
+    @ApiModelProperty(value = "所属用户", position = 11)
+    @ExcelIgnore
+    private String userId;
 
-    /** 创建时间 */
-    @ApiModelProperty(value = "创建时间", position = 12)
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 13)
-    @TableField(fill = FieldFill.INSERT)
-    private String createUser;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 14)
-    @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 15)
-    @TableField(fill = FieldFill.UPDATE)
-    private String updateUser;
 }

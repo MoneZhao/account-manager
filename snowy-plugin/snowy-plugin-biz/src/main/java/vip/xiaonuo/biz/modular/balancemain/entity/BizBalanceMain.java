@@ -1,5 +1,7 @@
 package vip.xiaonuo.biz.modular.balancemain.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,54 +26,34 @@ public class BizBalanceMain extends CommonEntity {
     /** 主键ID */
     @TableId
     @ApiModelProperty(value = "主键ID", position = 1)
+    @ExcelIgnore
     private String id;
 
     /** 账户余额 */
     @ApiModelProperty(value = "账户余额", position = 2)
+    @ExcelProperty("账户余额")
     private BigDecimal account = BigDecimal.valueOf(0);
 
     /** 记录时间 */
     @ApiModelProperty(value = "记录时间", position = 3)
+    @ExcelProperty("记录时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date accountDate;
 
     /** 所属用户 */
     @ApiModelProperty(value = "所属用户", position = 4)
+    @ExcelIgnore
     private String userId;
 
     /** 备注 */
     @ApiModelProperty(value = "备注", position = 5)
+    @ExcelProperty("备注")
     private String remark;
-
-    /** 删除标志 */
-    @ApiModelProperty(value = "删除标志", position = 6)
-    @TableLogic
-    @TableField(fill = FieldFill.INSERT)
-    private Date deleteFlag;
-
-    /** 创建时间 */
-    @ApiModelProperty(value = "创建时间", position = 7)
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /** 创建用户 */
-    @ApiModelProperty(value = "创建用户", position = 8)
-    @TableField(fill = FieldFill.INSERT)
-    private String createUser;
-
-    /** 修改时间 */
-    @ApiModelProperty(value = "修改时间", position = 9)
-    @TableField(fill = FieldFill.UPDATE)
-    private Date updateTime;
-
-    /** 修改用户 */
-    @ApiModelProperty(value = "修改用户", position = 10)
-    @TableField(fill = FieldFill.UPDATE)
-    private String updateUser;
 
     /** 用户名 */
     @ApiModelProperty(value = "用户名", position = 11)
+    @ExcelIgnore
     @TableField(exist = false)
     private String userName;
 }

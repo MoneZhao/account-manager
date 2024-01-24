@@ -4,14 +4,23 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.read.metadata.ReadSheet;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.balancedetail.entity.BizBalanceDetail;
+import vip.xiaonuo.biz.modular.balancedetail.excel.UploadSysBalanceDetailListener;
+import vip.xiaonuo.biz.modular.balancedetail.excel.UploadSysBalanceMainListener;
 import vip.xiaonuo.biz.modular.balancedetail.mapper.BizBalanceDetailMapper;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailAddParam;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailEditParam;
@@ -24,17 +33,18 @@ import vip.xiaonuo.biz.modular.balancemain.service.BizBalanceMainService;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
 import vip.xiaonuo.dev.api.DevDictApi;
+import vip.xiaonuo.dev.core.pojo.DevDictApiPojo;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * 账户明细Service接口实现类
  *
  * @author monezhao
- * @date  2023/12/25 16:57
+ * @date 2023/12/25 16:57
  **/
 @Service
 public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMapper, BizBalanceDetail> implements BizBalanceDetailService {
@@ -44,6 +54,12 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
 
     @Autowired
     private DevDictApi devDictApi;
+
+    @Autowired
+    private DataSourceTransactionManager dataSourceTransactionManager;
+
+    @Autowired
+    private TransactionDefinition transactionDefinition;
 
     @Override
     public Page<BizBalanceDetail> page(BizBalanceDetailPageParam bizBalanceDetailPageParam) {
@@ -75,7 +91,7 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
         List<BizBalanceDetail> list = this.list(queryWrapper);
         return list != null && !list.isEmpty();
     }
-    
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void add(BizBalanceDetailAddParam bizBalanceDetailAddParam) {
@@ -121,7 +137,7 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
     @Override
     public BizBalanceDetail queryEntity(String id) {
         BizBalanceDetail bizBalanceDetail = this.getById(id);
-        if(ObjectUtil.isEmpty(bizBalanceDetail)) {
+        if (ObjectUtil.isEmpty(bizBalanceDetail)) {
             throw new CommonException("账户明细不存在，id值为：{}", id);
         }
         return bizBalanceDetail;
@@ -191,7 +207,7 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
         if (details == null || details.isEmpty()) {
             return true;
         }
-        
+
         for (BizBalanceDetail detail : details) {
             detail.setBalanceMainId(bizBalanceMain.getId());
             detail.setId(null);
@@ -208,5 +224,128 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
     public List<BizBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType) {
         String parentId = devDictApi.getIdByDictValue("BALANCE_TYPE");
         return baseMapper.queryDetail(userId, startMonth, endMonth, balanceType, parentId);
+    }
+
+    @Override
+    public void importManager(MultipartFile file) {
+        try (ExcelReader excelReader = EasyExcel.read(file.getInputStream()).build()) {
+            TransactionStatus transaction = dataSourceTransactionManager.getTransaction(transactionDefinition);
+            ReadSheet readSheet1 = EasyExcel.readSheet(0).head(BizBalanceMain.class).
+                    registerReadListener(
+                            new UploadSysBalanceMainListener(
+                                    mainService,
+                                    dataSourceTransactionManager,
+                                    transaction
+                            )
+                    ).build();
+            ReadSheet readSheet2 = EasyExcel.readSheet(1).head(BizBalanceDetail.class).
+                    registerReadListener(
+                            new UploadSysBalanceDetailListener(
+                                    this,
+                                    dataSourceTransactionManager,
+                                    transaction
+                            )
+                    ).build();
+            excelReader.read(readSheet1, readSheet2);
+            excelReader.finish();
+        } catch (IOException e) {
+            throw new CommonException("Excel文件无法读取");
+        } catch (RuntimeException e) {
+            throw new CommonException(e.getMessage());
+        } catch (Exception e) {
+            throw new CommonException("Excel文件读取错误: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean doImport(List<BizBalanceDetail> list) {
+        String userId = StpUtil.getLoginIdAsString();
+        String parentId = devDictApi.getIdByDictValue("BALANCE_TYPE");
+        Map<String, List<DevDictApiPojo>> stringListMap = devDictApi.getListByParentId(parentId)
+                .stream()
+                .collect(Collectors.groupingBy(DevDictApiPojo::getDictLabel));
+        List<String> unknownDict = new ArrayList<>();
+        for (BizBalanceDetail bizBalanceDetail : list) {
+            String balanceName = bizBalanceDetail.getBalanceName();
+            if (!stringListMap.containsKey(balanceName)) {
+                unknownDict.add(balanceName);
+            } else {
+                bizBalanceDetail.setBalanceType(stringListMap.get(balanceName).get(0).getDictValue());
+            }
+        }
+        if (!unknownDict.isEmpty()) {
+            StringJoiner joiner = new StringJoiner(", ", "[", "]");
+            for (String dict : unknownDict) {
+                joiner.add(dict);
+            }
+            throw new RuntimeException("账户类型不存在: " + joiner);
+        }
+
+        Set<Date> dateSet = list.stream().map(BizBalanceDetail::getAccountDate).collect(Collectors.toSet());
+        QueryWrapper<BizBalanceMain> mainQueryWrapper = new QueryWrapper<>();
+        mainQueryWrapper.lambda()
+                .eq(BizBalanceMain::getUserId, userId)
+                .in(BizBalanceMain::getAccountDate, dateSet);
+        List<BizBalanceMain> balanceMains = mainService.list(mainQueryWrapper);
+
+        Map<Date, List<BizBalanceMain>> mainListMap = balanceMains.stream()
+                .collect(Collectors.groupingBy(BizBalanceMain::getAccountDate));
+        Map<Date, List<BizBalanceDetail>> detailListMap = list.stream()
+                .collect(Collectors.groupingBy(BizBalanceDetail::getAccountDate));
+
+        for (Map.Entry<Date, List<BizBalanceDetail>> entry : detailListMap.entrySet()) {
+            Date k = entry.getKey();
+            List<BizBalanceDetail> v = entry.getValue();
+
+            if (mainListMap.containsKey(k) && !mainListMap.get(k).isEmpty()) {
+                String mainId = mainListMap.get(k).get(0).getId();
+                BizBalanceDetailPageParam query = new BizBalanceDetailPageParam();
+                query.setBalanceMainId(mainId);
+                List<BizBalanceDetail> records = this.list(query);
+                Map<String, List<BizBalanceDetail>> recordListMap = records.stream()
+                        .collect(Collectors.groupingBy(BizBalanceDetail::getBalanceType));
+
+                List<BizBalanceDetail> adds = new ArrayList<>();
+                List<BizBalanceDetail> updates = new ArrayList<>();
+                for (BizBalanceDetail detail : v) {
+                    if (recordListMap.containsKey(detail.getBalanceType())) {
+                        BizBalanceDetail balanceDetail = recordListMap.get(detail.getBalanceType()).get(0);
+                        balanceDetail.setAccount(detail.getAccount());
+                        balanceDetail.setRemark(detail.getRemark() == null ? "" : detail.getRemark());
+                        updates.add(balanceDetail);
+                    } else {
+                        detail.setBalanceMainId(mainId);
+                        detail.setUserId(userId);
+                        adds.add(detail);
+                    }
+                }
+                this.saveBatch(adds);
+                this.updateBatchById(updates);
+
+                BizBalanceMain sysBalanceMain = mainService.getById(mainId);
+                BigDecimal account = baseMapper.account(mainId, sysBalanceMain.getUserId());
+                sysBalanceMain.setAccount(account == null ? BigDecimal.valueOf(0) : account);
+                mainService.updateById(sysBalanceMain);
+            } else {
+                //不存在当前日期数据
+                BizBalanceMain main = new BizBalanceMain();
+                main.setAccountDate(k);
+                main.setUserId(userId);
+                main.setAccount(new BigDecimal(0));
+                mainService.save(main);
+
+                for (BizBalanceDetail detail : v) {
+                    detail.setBalanceMainId(main.getId());
+                    detail.setUserId(userId);
+                }
+                this.saveBatch(v);
+
+                BigDecimal account = baseMapper.account(main.getId(), userId);
+                main.setAccount(account == null ? BigDecimal.valueOf(0) : account);
+                mainService.updateById(main);
+            }
+        }
+
+        return true;
     }
 }

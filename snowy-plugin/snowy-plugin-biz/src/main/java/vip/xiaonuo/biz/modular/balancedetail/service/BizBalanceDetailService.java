@@ -2,6 +2,7 @@ package vip.xiaonuo.biz.modular.balancedetail.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.balancedetail.entity.BizBalanceDetail;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailAddParam;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailEditParam;
@@ -9,6 +10,7 @@ import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailIdParam;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailPageParam;
 import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainAddParam;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -93,9 +95,25 @@ public interface BizBalanceDetailService extends IService<BizBalanceDetail> {
 
     /**
      * 账户余额复制
-     * @param bizBalanceMain bizBalanceMain
+     * @param bizBalanceMainAddParam bizBalanceMainAddParam
      */
     boolean copy(BizBalanceMainAddParam bizBalanceMainAddParam);
 
     List<BizBalanceDetail> queryDetail(String userId, Date startMonth, Date endMonth, String balanceType);
+
+    /**
+     * 导入账户
+     *
+     * @param file file
+     * @throws IOException exception
+     */
+    void importManager(MultipartFile file);
+
+    /**
+     * 导入账户余额
+     *
+     * @param list
+     * @return
+     */
+    boolean doImport(List<BizBalanceDetail> list);
 }

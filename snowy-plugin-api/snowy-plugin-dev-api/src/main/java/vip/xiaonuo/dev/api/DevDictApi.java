@@ -1,5 +1,9 @@
 package vip.xiaonuo.dev.api;
 
+import vip.xiaonuo.dev.core.pojo.DevDictApiPojo;
+
+import java.util.List;
+
 /**
  * 字典API
  *
@@ -9,5 +13,7 @@ package vip.xiaonuo.dev.api;
 public interface DevDictApi {
 
     String getIdByDictValue(String dictValue);
+
+    List<DevDictApiPojo> getListByParentId(String parentId);
 
 }

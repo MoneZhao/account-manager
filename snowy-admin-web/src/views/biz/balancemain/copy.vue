@@ -83,15 +83,18 @@
   const columns = [
     {
       title: '账户类型',
-      dataIndex: 'balanceName'
+      dataIndex: 'balanceName',
+      width: '300px'
     },
     {
       title: '账户余额',
-      dataIndex: 'account'
+      dataIndex: 'account',
+      width: '300px'
     },
     {
       title: '操作',
-      dataIndex: 'action'
+      dataIndex: 'action',
+      width: '300px'
     }
   ]
   const loadData = (parameter) => {

@@ -52,5 +52,15 @@ export default {
   // 账户详情对比
   bizBalanceMainCompareDetail(data) {
     return request('compareDetail', data, 'post')
+  },
+  // 账户余额文件上传
+  bizBalanceMainImport(data) {
+    return request('import', data, 'post')
+  },
+  // 导出全部账户余额
+  bizBalanceMainExport(data) {
+    return request('export', data, 'post', {
+      responseType: 'blob'
+    })
   }
 }

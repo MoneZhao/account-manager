@@ -1,5 +1,6 @@
 package vip.xiaonuo.biz.modular.travelexpense.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollStreamUtil;
 import cn.hutool.core.date.DateUnit;
@@ -36,6 +37,7 @@ public class BizTravelExpenseServiceImpl extends ServiceImpl<BizTravelExpenseMap
     @Override
     public Page<BizTravelExpense> page(BizTravelExpensePageParam bizTravelExpensePageParam) {
         QueryWrapper<BizTravelExpense> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(BizTravelExpense::getUserId, StpUtil.getLoginIdAsString());
         if (ObjectUtil.isNotEmpty(bizTravelExpensePageParam.getTravelPlace())) {
             queryWrapper.lambda().like(BizTravelExpense::getTravelPlace, bizTravelExpensePageParam.getTravelPlace());
         }
@@ -71,6 +73,7 @@ public class BizTravelExpenseServiceImpl extends ServiceImpl<BizTravelExpenseMap
                     ).abs()
             );
         }
+        bizTravelExpense.setUserId(StpUtil.getLoginIdAsString());
         this.save(bizTravelExpense);
     }
 

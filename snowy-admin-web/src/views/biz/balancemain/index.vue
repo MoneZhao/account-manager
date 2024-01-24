@@ -65,6 +65,16 @@
               更新账户余额
             </a-button>
           </a-popconfirm>
+          <a-button @click="ImpExpRef.onOpen()" v-if="hasPerm('bizBalanceMainImport')">
+            <template #icon><import-outlined /></template>
+            <span>{{ $t('common.imports') }}</span>
+          </a-button>
+          <a-popconfirm title="导出所有账户余额, 是否继续？" @confirm="exportAll">
+            <a-button v-if="hasPerm('bizBalanceMainExport')" :loading="exportLoading">
+              <template #icon><export-outlined /></template>
+              {{ $t('common.export') }}
+            </a-button>
+          </a-popconfirm>
           <a-button @click="trashRef.onOpen()">
             <template #icon><RestOutlined /></template>
             回收站
@@ -117,10 +127,12 @@
   <Copy ref="copyRef" @successful="table.refresh(true)" />
   <Detail ref="detailRef" @successful="table.refresh(true)" />
   <Compare ref="compareRef" @successful="table.refresh(true)" />
+  <ImpExp ref="ImpExpRef" @successful="table.refresh(true)" />
 </template>
 
 <script setup name="balancemain">
   import Form from './form.vue'
+  import ImpExp from './impExp.vue'
   import Trash from './trash.vue'
   import Copy from './copy.vue'
   import Compare from './compare.vue'
@@ -129,6 +141,7 @@
   import tool from '@/utils/tool'
   import dayjs from 'dayjs'
   import { message } from 'ant-design-vue'
+  import downloadUtil from '@/utils/downloadUtil'
   let searchFormState = reactive({})
   const searchFormRef = ref()
   const table = ref()
@@ -266,4 +279,18 @@
     最近一年: [dayjs().add(-1, 'y'), dayjs()],
     最近两年: [dayjs().add(-2, 'y'), dayjs()]
   })
+  const exportLoading = ref(false)
+  const exportAll = () => {
+    console.log('exportAll')
+    // exportLoading.value = true
+    // bizBalanceMainApi
+    //   .bizBalanceMainExport({})
+    //   .then((res) => {
+    //     downloadUtil.resultDownload(res)
+    //   })
+    //   .finally(() => {
+    //     exportLoading.value = false
+    //   })
+  }
+  const ImpExpRef = ref()
 </script>

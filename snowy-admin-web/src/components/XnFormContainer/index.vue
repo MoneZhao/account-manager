@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-if="isModal" :visible="visible" @cancel="cancel" v-bind="$attrs">
+  <a-modal v-if="isModal" :mask-closable="false" :visible="visible" @cancel="cancel" v-bind="$attrs">
     <template v-for="slotKey in slotKeys" #[slotKey]>
       <slot :name="slotKey" />
     </template>

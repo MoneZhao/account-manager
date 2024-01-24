@@ -85,4 +85,12 @@ public interface BizBalanceMainService extends IService<BizBalanceMain> {
      * @return List<Date>
      */
     List<Date> rangDate();
+
+    /**
+     * 导入账户余额
+     *
+     * @param list
+     * @return
+     */
+    boolean doImport(List<BizBalanceMain> list);
 }
