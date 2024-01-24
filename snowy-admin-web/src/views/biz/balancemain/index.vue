@@ -281,16 +281,15 @@
   })
   const exportLoading = ref(false)
   const exportAll = () => {
-    console.log('exportAll')
-    // exportLoading.value = true
-    // bizBalanceMainApi
-    //   .bizBalanceMainExport({})
-    //   .then((res) => {
-    //     downloadUtil.resultDownload(res)
-    //   })
-    //   .finally(() => {
-    //     exportLoading.value = false
-    //   })
+    exportLoading.value = true
+    bizBalanceMainApi
+      .bizBalanceMainExport()
+      .then((res) => {
+        downloadUtil.resultDownload(res)
+      })
+      .finally(() => {
+        exportLoading.value = false
+      })
   }
   const ImpExpRef = ref()
 </script>

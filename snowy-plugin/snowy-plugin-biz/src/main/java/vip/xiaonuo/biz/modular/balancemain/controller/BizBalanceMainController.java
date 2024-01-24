@@ -4,6 +4,9 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -18,7 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.core.util.DateTimeUtil;
 import vip.xiaonuo.biz.core.vo.YearMonthDayStartAndEnd;
 import vip.xiaonuo.biz.modular.balancedetail.entity.BizBalanceDetail;
+import vip.xiaonuo.biz.modular.balancedetail.excel.CustomCellWriteHeightConfig;
+import vip.xiaonuo.biz.modular.balancedetail.excel.CustomCellWriteWidthConfig;
+import vip.xiaonuo.biz.modular.balancedetail.excel.EasyExcelStyleStrategy;
 import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailCompareParam;
+import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailPageParam;
 import vip.xiaonuo.biz.modular.balancedetail.service.BizBalanceDetailService;
 import vip.xiaonuo.biz.modular.balancemain.entity.BizBalanceMain;
 import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainAddParam;
@@ -30,16 +37,15 @@ import vip.xiaonuo.common.annotation.CommonLog;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.pojo.CommonResult;
 import vip.xiaonuo.common.pojo.CommonValidList;
+import vip.xiaonuo.common.util.CommonDownloadUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -327,6 +333,32 @@ public class BizBalanceMainController {
     @PostMapping("/biz/balancemain/export")
     public void doExport(HttpServletResponse response) {
         try {
+            List<BizBalanceMain> balanceMains = bizBalanceMainService.list(new BizBalanceMainPageParam());
+            List<BizBalanceDetail> balanceDetails = bizBalanceDetailService.list(new BizBalanceDetailPageParam());
+
+            Collections.reverse(balanceMains);
+            Collections.reverse(balanceDetails);
+
+            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+            ExcelWriter excelWriter = EasyExcel.write(arrayOutputStream)
+                    /*自适应列宽*/
+                    .registerWriteHandler(new CustomCellWriteWidthConfig())
+                    /*自适应行高*/
+                    .registerWriteHandler(new CustomCellWriteHeightConfig())
+                    /*自适应行高*/
+                    .registerWriteHandler(EasyExcelStyleStrategy.getStyleStrategy())
+                    .build();
+
+            WriteSheet writeSheet = EasyExcel.writerSheet(0, "账户余额").head(BizBalanceMain.class).build();
+            excelWriter.write(balanceMains, writeSheet);
+
+            writeSheet = EasyExcel.writerSheet(1, "账户明细").head(BizBalanceDetail.class).build();
+            excelWriter.write(balanceDetails, writeSheet);
+
+            excelWriter.finish();
+
+            String fileName = "用户账户余额" + DateUtil.format(new Date(), "yyyyMMddHHmmss") + ".xlsx";
+            CommonDownloadUtil.download(fileName, arrayOutputStream.toByteArray(), response);
 
         } catch (Exception e) {
             throw new CommonException("下载文件失败：" + e.getMessage());

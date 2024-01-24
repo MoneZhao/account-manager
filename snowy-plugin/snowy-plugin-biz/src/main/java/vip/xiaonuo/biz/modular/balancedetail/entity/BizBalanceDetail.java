@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import vip.xiaonuo.biz.modular.balancedetail.excel.DateConverter;
 import vip.xiaonuo.common.pojo.CommonEntity;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,7 +32,7 @@ public class BizBalanceDetail extends CommonEntity {
 
     /** 账户余额 */
     @ApiModelProperty(value = "账户余额", position = 2)
-    @ExcelProperty("账户余额")
+    @ExcelProperty(value = "账户余额", order = 1)
     private BigDecimal account;
 
     /** 账户类型 */
@@ -51,13 +52,13 @@ public class BizBalanceDetail extends CommonEntity {
 
     /** 备注 */
     @ApiModelProperty(value = "备注", position = 6)
-    @ExcelProperty("备注")
+    @ExcelProperty(value = "备注", order = 4)
     private String remark;
 
     /** 账户类型名 */
     @ApiModelProperty(value = "账户类型名", position = 12)
     @TableField(exist = false)
-    @ExcelProperty("账户类型名")
+    @ExcelProperty(value = "账户类型名", order = 2)
     private String balanceName;
 
     /**
@@ -67,7 +68,7 @@ public class BizBalanceDetail extends CommonEntity {
     @ApiModelProperty(value = "记录时间", position = 13)
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ExcelProperty("记录时间")
+    @ExcelProperty(value = "记录时间", order = 3, converter = DateConverter.class)
     private Date accountDate;
 
     /**

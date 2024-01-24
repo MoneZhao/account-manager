@@ -63,8 +63,7 @@ public class UploadSysBalanceMainListener extends AnalysisEventListener<BizBalan
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {
         dataSourceTransactionManager.rollback(transactionStatus);
-        log.info("解析账户余额出错");
-        throw new RuntimeException("解析账户余额出错: " + exception.getMessage());
+        throw new RuntimeException("解析账户余额onException出错: " + exception.getMessage());
     }
 
     private void saveData() {
@@ -72,8 +71,7 @@ public class UploadSysBalanceMainListener extends AnalysisEventListener<BizBalan
             mainService.doImport(list);
         } catch (Exception e) {
             dataSourceTransactionManager.rollback(transactionStatus);
-            log.info("解析账户余额出错");
-            throw new RuntimeException("解析账户余额出错: " + e.getMessage());
+            throw new RuntimeException("解析账户余额doImport出错: " + e.getMessage());
         }
     }
 }

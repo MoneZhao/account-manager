@@ -3,6 +3,8 @@ package vip.xiaonuo.biz.modular.balancemain.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Param;
+import vip.xiaonuo.biz.modular.balancedetail.entity.BizBalanceDetail;
+import vip.xiaonuo.biz.modular.balancedetail.param.BizBalanceDetailPageParam;
 import vip.xiaonuo.biz.modular.balancemain.entity.BizBalanceMain;
 import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainAddParam;
 import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainEditParam;
@@ -27,6 +29,8 @@ public interface BizBalanceMainService extends IService<BizBalanceMain> {
      * @date  2023/12/25 16:56
      */
     Page<BizBalanceMain> page(BizBalanceMainPageParam bizBalanceMainPageParam);
+
+    List<BizBalanceMain> list(BizBalanceMainPageParam query);
 
     /**
      * 添加账户余额

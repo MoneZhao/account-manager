@@ -24,7 +24,7 @@ public interface BizBalanceMainMapper extends BaseMapper<BizBalanceMain> {
      * @param entity
      * @return
      */
-    Page<BizBalanceMain> list(Page<BizBalanceMain> page, @Param("entity") BizBalanceMainPageParam entity);
+    List<BizBalanceMain> list(Page<BizBalanceMain> page, @Param("entity") BizBalanceMainPageParam entity);
 
     /**
      * 根据id物理删除账户余额

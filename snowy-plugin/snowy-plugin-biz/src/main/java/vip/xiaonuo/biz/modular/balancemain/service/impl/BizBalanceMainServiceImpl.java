@@ -37,7 +37,14 @@ public class BizBalanceMainServiceImpl extends ServiceImpl<BizBalanceMainMapper,
     @Override
     public Page<BizBalanceMain> page(BizBalanceMainPageParam bizBalanceMainPageParam) {
         bizBalanceMainPageParam.setUserId(StpUtil.getLoginIdAsString());
-        return baseMapper.list(CommonPageRequest.defaultPage(), bizBalanceMainPageParam);
+        Page<BizBalanceMain> page = CommonPageRequest.defaultPage();
+        return page.setRecords(baseMapper.list(page, bizBalanceMainPageParam));
+    }
+
+    @Override
+    public List<BizBalanceMain> list(BizBalanceMainPageParam query) {
+        query.setUserId(StpUtil.getLoginIdAsString());
+        return baseMapper.list(null, query);
     }
 
     @Transactional(rollbackFor = Exception.class)

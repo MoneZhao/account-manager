@@ -64,8 +64,7 @@ public class UploadSysBalanceDetailListener extends AnalysisEventListener<BizBal
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {
         dataSourceTransactionManager.rollback(transactionStatus);
-        log.info("解析账户详情出错");
-        throw new RuntimeException("解析账户详情出错: " + exception.getMessage());
+        throw new RuntimeException("解析账户详情onException出错: " + exception.getMessage());
     }
 
     private void saveData() {
@@ -73,8 +72,7 @@ public class UploadSysBalanceDetailListener extends AnalysisEventListener<BizBal
             detailService.doImport(list);
         } catch (Exception e) {
             dataSourceTransactionManager.rollback(transactionStatus);
-            log.info("解析账户详情出错");
-            throw new RuntimeException("解析账户详情出错: " + e.getMessage());
+            throw new RuntimeException("解析账户详情doImport出错: " + e.getMessage());
         }
     }
 
