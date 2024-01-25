@@ -7,9 +7,7 @@ import com.monezhao.common.util.JacksonUtil;
 import com.monezhao.service.SysBalanceMainService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +24,14 @@ public class UploadSysBalanceMainListener extends AnalysisEventListener<SysBalan
     List<SysBalanceMain> list = new ArrayList<>();
 
     private DataSourceTransactionManager dataSourceTransactionManager;
-    private DefaultTransactionDefinition transactionDefinition;
+
     private TransactionStatus transactionStatus;
 
     public UploadSysBalanceMainListener(SysBalanceMainService mainService, DataSourceTransactionManager dataSourceTransactionManager,
-                                        TransactionDefinition transactionDefinition) {
+                                        TransactionStatus transactionStatus) {
         this.mainService = mainService;
         this.dataSourceTransactionManager = dataSourceTransactionManager;
-        this.transactionDefinition = new DefaultTransactionDefinition(transactionDefinition);
-        this.transactionStatus = this.dataSourceTransactionManager.getTransaction(this.transactionDefinition);
+        this.transactionStatus = transactionStatus;
     }
 
     @Override
@@ -59,19 +56,25 @@ public class UploadSysBalanceMainListener extends AnalysisEventListener<SysBalan
         }
         saveData();
         log.info("所有数据解析完成！");
-        if (!transactionStatus.isCompleted()) {
-            // 提交事务
-            dataSourceTransactionManager.commit(transactionStatus);
-        }
+//        if (!transactionStatus.isCompleted()) {
+//            // 提交事务
+//            dataSourceTransactionManager.commit(transactionStatus);
+//        }
     }
 
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {
         dataSourceTransactionManager.rollback(transactionStatus);
-        throw exception;
+        throw new RuntimeException("解析账户余额出错: " + exception.getMessage());
     }
 
     private void saveData() {
-        mainService.doImport(list);
+        try {
+            mainService.doImport(list);
+        } catch (Exception e) {
+            dataSourceTransactionManager.rollback(transactionStatus);
+            log.info("解析账户余额出错");
+            throw new RuntimeException("解析账户余额出错: " + e.getMessage());
+        }
     }
 }

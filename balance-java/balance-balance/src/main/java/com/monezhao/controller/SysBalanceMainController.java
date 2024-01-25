@@ -16,37 +16,21 @@ import com.monezhao.bean.utilsVo.YearMonthDayStartAndEnd;
 import com.monezhao.common.Result;
 import com.monezhao.common.base.BaseController;
 import com.monezhao.common.exception.SysException;
-import com.monezhao.common.util.CommonUtil;
-import com.monezhao.common.util.CustomCellWriteHandler;
-import com.monezhao.common.util.DateTimeUtil;
-import com.monezhao.common.util.DateUtil;
-import com.monezhao.common.util.ShiroUtils;
+import com.monezhao.common.util.*;
 import com.monezhao.service.SysBalanceDetailService;
 import com.monezhao.service.SysBalanceMainService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -382,12 +366,12 @@ public class SysBalanceMainController extends BaseController {
     @PostMapping(value = "/import")
     @RequiresPermissions("sys:balanceMain:import")
     @ApiOperation("账户余额文件上传")
-    public Result doImport(HttpServletRequest request) throws IOException {
+    public Result doImport(HttpServletRequest request) {
         if (!(request instanceof MultipartHttpServletRequest)) {
             throw new IllegalArgumentException("上传文件请求格式错误");
         }
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        if (multipartRequest.getFileMap().size() == 0) {
+        if (multipartRequest.getFileMap().isEmpty()) {
             throw new IllegalArgumentException("上传文件为空");
         }
         MultipartFile file = multipartRequest.getFileMap().values().iterator().next();
@@ -417,7 +401,7 @@ public class SysBalanceMainController extends BaseController {
     @SysLogAuto(value = "还原账户余额")
     @ApiOperation("账户余额还原")
     public Result restore(@RequestParam String ids) {
-        if (ids == null || ids.trim().length() == 0) {
+        if (ids == null || ids.trim().isEmpty()) {
             return Result.error("ids can't be empty");
         }
         String[] idsArr = ids.split(",");

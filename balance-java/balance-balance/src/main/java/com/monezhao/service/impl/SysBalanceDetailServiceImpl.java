@@ -26,18 +26,13 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -158,20 +153,29 @@ public class SysBalanceDetailServiceImpl extends BaseServiceImpl<SysBalanceDetai
 
     @Override
     @Async
-    public void importManager(MultipartFile file) throws IOException {
+    public void importManager(MultipartFile file) {
         //EasyExcel.read(file.getInputStream(), SysBalanceDetail.class,
         //        new UploadSysBalanceDetailListener(sysBalanceDetailService)).sheet(0).doRead();
-        ExcelReader excelReader = EasyExcel.read(file.getInputStream()).build();
-        ReadSheet readSheet1 = EasyExcel.readSheet(0).head(SysBalanceMain.class).
-                registerReadListener(
-                        new UploadSysBalanceMainListener(sysBalanceMainService, dataSourceTransactionManager, transactionDefinition)
-                ).build();
-        ReadSheet readSheet2 = EasyExcel.readSheet(1).head(SysBalanceDetail.class).
-                registerReadListener(
-                        new UploadSysBalanceDetailListener(this, dataSourceTransactionManager, transactionDefinition)
-                ).build();
-        excelReader.read(readSheet1, readSheet2);
-        excelReader.finish();
+        try {
+            ExcelReader excelReader = EasyExcel.read(file.getInputStream()).build();
+            TransactionStatus transaction = dataSourceTransactionManager.getTransaction(transactionDefinition);
+            ReadSheet readSheet1 = EasyExcel.readSheet(0).head(SysBalanceMain.class).
+                    registerReadListener(
+                            new UploadSysBalanceMainListener(sysBalanceMainService, dataSourceTransactionManager, transaction)
+                    ).build();
+            ReadSheet readSheet2 = EasyExcel.readSheet(1).head(SysBalanceDetail.class).
+                    registerReadListener(
+                            new UploadSysBalanceDetailListener(this, dataSourceTransactionManager, transaction)
+                    ).build();
+            excelReader.read(readSheet1, readSheet2);
+            excelReader.finish();
+        } catch (IOException e) {
+            throw new SysException("Excel文件无法读取");
+        } catch (RuntimeException e) {
+            throw new SysException(e.getMessage());
+        } catch (Exception e) {
+            throw new SysException("Excel文件读取错误: " + e.getMessage());
+        }
     }
 
     @Override

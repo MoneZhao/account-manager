@@ -55,7 +55,7 @@ public interface SysBalanceDetailService extends BaseService<SysBalanceDetail> {
      * @param file file
      * @throws IOException exception
      */
-    void importManager(MultipartFile file) throws IOException;
+    void importManager(MultipartFile file);
 
     /**
      * 导入账户明细

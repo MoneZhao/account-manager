@@ -7,9 +7,7 @@ import com.monezhao.common.util.JacksonUtil;
 import com.monezhao.service.SysBalanceDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +24,14 @@ public class UploadSysBalanceDetailListener extends AnalysisEventListener<SysBal
     List<SysBalanceDetail> list = new ArrayList<>();
 
     private DataSourceTransactionManager dataSourceTransactionManager;
-    private DefaultTransactionDefinition transactionDefinition;
+
     private TransactionStatus transactionStatus;
 
     public UploadSysBalanceDetailListener(SysBalanceDetailService detailService, DataSourceTransactionManager dataSourceTransactionManager,
-                                          TransactionDefinition transactionDefinition) {
+                                          TransactionStatus transactionStatus) {
         this.detailService = detailService;
         this.dataSourceTransactionManager = dataSourceTransactionManager;
-        this.transactionDefinition = new DefaultTransactionDefinition(transactionDefinition);
-        this.transactionStatus = this.dataSourceTransactionManager.getTransaction(this.transactionDefinition);
+        this.transactionStatus = transactionStatus;
     }
 
     @Override
@@ -68,10 +65,16 @@ public class UploadSysBalanceDetailListener extends AnalysisEventListener<SysBal
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {
         dataSourceTransactionManager.rollback(transactionStatus);
-        throw exception;
+        throw new RuntimeException("解析账户详情出错: " + exception.getMessage());
     }
 
     private void saveData() {
-        detailService.doImport(list);
+        try {
+            detailService.doImport(list);
+        } catch (Exception e) {
+            dataSourceTransactionManager.rollback(transactionStatus);
+            log.info("解析账户详情出错");
+            throw new RuntimeException("解析账户详情出错: " + e.getMessage());
+        }
     }
 }

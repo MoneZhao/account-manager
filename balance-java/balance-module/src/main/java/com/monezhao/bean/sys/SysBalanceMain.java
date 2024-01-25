@@ -68,9 +68,6 @@ public class SysBalanceMain extends BaseEntity {
 
     /**
      * 用户名
-     *
-     * @TableField(exist = false)之后要加上一行注解
-     * @ApiModelProperty(hidden = true)
      */
     @TableField(exist = false)
     @ExcelIgnore
