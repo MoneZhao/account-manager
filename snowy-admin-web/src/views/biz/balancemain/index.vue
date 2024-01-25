@@ -243,7 +243,6 @@
   const rowClick = (record, index) => {
     return {
       // onClick: (event) => {
-      //   console.log(record.tablename, index, event, '666')
       // },
       onDblclick: (event) => {
         openDetail(record)

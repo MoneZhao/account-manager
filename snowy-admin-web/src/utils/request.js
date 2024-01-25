@@ -24,7 +24,7 @@ const errorCodeMap = {
 const loginBack = ref(false)
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: '/api', // api base_url
+  baseURL: sysConfig.API_URL + '/api', // api base_url
   timeout: sysConfig.TIMEOUT // 请求超时时间
 })
 
@@ -141,7 +141,6 @@ service.interceptors.response.use(
 
 // 适配器, 用于适配不同的请求方式
 export const baseRequest = (url, value = {}, method = 'post', options = {}) => {
-  url = sysConfig.API_URL + url
   if (method === 'post') {
     return service.post(url, value, options)
   } else if (method === 'get') {

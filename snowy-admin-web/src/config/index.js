@@ -72,11 +72,11 @@ const DEFAULT_CONFIG = {
     // 背景图
     SNOWY_SYS_BACK_IMAGE: '',
     // 系统名称
-    SNOWY_SYS_NAME: 'MES',
+    SNOWY_SYS_NAME: '账户管理系统',
     // 版本
     SNOWY_SYS_VERSION: '2.0',
     // 版权
-    SNOWY_SYS_COPYRIGHT: 'MES ©2023',
+    SNOWY_SYS_COPYRIGHT: 'MoneZhao © 2024',
     // 版权跳转URL
     SNOWY_SYS_COPYRIGHT_URL: 'https://monezhao.github.io/',
     // 默认文件存储

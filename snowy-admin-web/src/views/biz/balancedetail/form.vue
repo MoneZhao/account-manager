@@ -53,7 +53,6 @@
   // 打开抽屉
   const onOpen = (record) => {
     visible.value = true
-    console.log(record)
     if (record) {
       let recordData = cloneDeep(record)
       formData.value = Object.assign({}, recordData)

@@ -10,6 +10,7 @@ import tool from '@/utils/tool'
 import { cloneDeep } from 'lodash-es'
 const modules = import.meta.glob('/src/views/**/**.vue')
 import { globalStore, searchStore } from '@/store'
+import sysConfig from '@/config/index'
 
 // 进度条配置
 NProgress.configure({ showSpinner: false, speed: 500 })
@@ -26,7 +27,7 @@ const routes_404 = [
 const routes = [...systemRouter, ...whiteListRouters, ...routes_404]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(sysConfig.API_URL + '/'),
   routes
 })
 
