@@ -77,9 +77,9 @@
                   </a-row>
                 </a-form-item>
 
-                <a-form-item>
+                <!-- <a-form-item>
                   <a href="/findpwd" style="color: #0d84ff">{{ $t('login.forgetPassword') }}？</a>
-                </a-form-item>
+                </a-form-item> -->
                 <a-form-item>
                   <a-button type="primary" class="w-full" :loading="loading" round size="large" @click="login"
                     >{{ $t('login.signIn') }}

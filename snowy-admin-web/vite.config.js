@@ -49,7 +49,7 @@ export default defineConfig(({ command, mode }) => {
   }
 
   return {
-    base: './',
+    base: envConfig.VITE_API_BASEURL,
     server: {
       port: envConfig.VITE_PORT,
       proxy: proxy
@@ -64,10 +64,10 @@ export default defineConfig(({ command, mode }) => {
       __VUE_I18N_PROD_DEVTOOLS__: true
     },
     build: {
-      // sourcemap: true,
+      sourcemap: false,
       manifest: true,
       brotliSize: false,
-      // reportCompressedSize: false,
+      reportCompressedSize: false,
       // minify: "terser", //yarn add terser -D  默认为 Esbuild，它比 terser 快 20-40 倍
       // terserOptions: {
       //   compress: {
@@ -92,7 +92,9 @@ export default defineConfig(({ command, mode }) => {
           refTransform: true
         }
       }),
-      viteCompression(),
+      viteCompression({
+        verbose: false
+      }),
       vueSetupExtend(),
       VueJSX(),
       AutoImport({
