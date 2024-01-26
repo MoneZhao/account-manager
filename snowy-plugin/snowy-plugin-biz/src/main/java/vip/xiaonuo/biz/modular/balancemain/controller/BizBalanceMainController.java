@@ -357,7 +357,7 @@ public class BizBalanceMainController {
 
             excelWriter.finish();
 
-            String fileName = "用户账户余额" + DateUtil.format(new Date(), "yyyyMMddHHmmss") + ".xlsx";
+            String fileName = "账户余额" + DateUtil.format(new Date(), "yyyyMMddHHmmss") + ".xlsx";
             CommonDownloadUtil.download(fileName, arrayOutputStream.toByteArray(), response);
 
         } catch (Exception e) {

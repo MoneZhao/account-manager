@@ -2,6 +2,7 @@ package vip.xiaonuo.biz.modular.travelexpense.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 import vip.xiaonuo.biz.modular.travelexpense.entity.BizTravelExpense;
 import vip.xiaonuo.biz.modular.travelexpense.param.BizTravelExpenseAddParam;
 import vip.xiaonuo.biz.modular.travelexpense.param.BizTravelExpenseEditParam;
@@ -65,4 +66,18 @@ public interface BizTravelExpenseService extends IService<BizTravelExpense> {
      * @date  2023/12/23 19:25
      **/
     BizTravelExpense queryEntity(String id);
+
+    /**
+     * 出差报销文件上传
+     * @param file file
+     */
+    void importManager(MultipartFile file);
+
+    /**
+     * 导入出差报销
+     *
+     * @param list list
+     * @return
+     */
+    void doImport(List<BizTravelExpense> list);
 }

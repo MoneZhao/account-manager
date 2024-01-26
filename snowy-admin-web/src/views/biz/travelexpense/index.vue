@@ -34,8 +34,17 @@
             :selectedRowKeys="selectedRowKeys"
             @batchDelete="deleteBatchBizTravelExpense"
           />
+          <a-button @click="ImpExpRef.onOpen()" v-if="hasPerm('bizTravelExpenseImport')">
+            <template #icon><import-outlined /></template>
+            <span>{{ $t('common.imports') }}</span>
+          </a-button>
+          <a-popconfirm title="导出所有出差报销, 是否继续？" @confirm="exportAll">
+            <a-button v-if="hasPerm('bizTravelExpenseExport')" :loading="exportLoading">
+              <template #icon><export-outlined /></template>
+              {{ $t('common.export') }}
+            </a-button>
+          </a-popconfirm>
         </a-space>
-        <!-- todo 出差报销导入导出 -->
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'useDay'">
@@ -76,11 +85,14 @@
     </s-table>
   </a-card>
   <Form ref="formRef" @successful="table.refresh(true)" />
+  <ImpExp ref="ImpExpRef" @successful="table.refresh(true)" />
 </template>
 
 <script setup name="travelexpense">
   import Form from './form.vue'
+  import ImpExp from './impExp.vue'
   import bizTravelExpenseApi from '@/api/biz/bizTravelExpenseApi'
+  import downloadUtil from "@/utils/downloadUtil";
   let searchFormState = reactive({})
   const searchFormRef = ref()
   const table = ref()
@@ -176,5 +188,18 @@
     bizTravelExpenseApi.bizTravelExpenseDelete(params).then(() => {
       table.value.clearRefreshSelected()
     })
+  }
+  let exportLoading = $ref(false)
+  const ImpExpRef = ref()
+  const exportAll = () => {
+    exportLoading = true
+    bizTravelExpenseApi
+      .bizTravelExpenseExport()
+      .then((res) => {
+        downloadUtil.resultDownload(res)
+      })
+      .finally(() => {
+        exportLoading = false
+      })
   }
 </script>

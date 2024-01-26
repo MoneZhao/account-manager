@@ -28,5 +28,15 @@ export default {
   // 获取出差报销详情
   bizTravelExpenseDetail(data) {
     return request('detail', data, 'get')
+  },
+  // 出差报销文件上传
+  bizTravelExpenseImport(data) {
+    return request('import', data, 'post')
+  },
+  // 导出全部出差报销
+  bizTravelExpenseExport(data) {
+    return request('export', data, 'post', {
+      responseType: 'blob'
+    })
   }
 }

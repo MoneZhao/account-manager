@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2024/1/24 10:10
  */
 @Slf4j
-public class UploadSysBalanceDetailListener extends AnalysisEventListener<BizBalanceDetail> {
+public class UploadBizBalanceDetailListener extends AnalysisEventListener<BizBalanceDetail> {
 
     private static final int BATCH_COUNT = 1000;
     private final BizBalanceDetailService detailService;
@@ -26,7 +26,7 @@ public class UploadSysBalanceDetailListener extends AnalysisEventListener<BizBal
 
     private TransactionStatus transactionStatus;
 
-    public UploadSysBalanceDetailListener(BizBalanceDetailService detailService, DataSourceTransactionManager dataSourceTransactionManager,
+    public UploadBizBalanceDetailListener(BizBalanceDetailService detailService, DataSourceTransactionManager dataSourceTransactionManager,
                                           TransactionStatus transactionStatus) {
         this.detailService = detailService;
         this.dataSourceTransactionManager = dataSourceTransactionManager;
@@ -63,6 +63,7 @@ public class UploadSysBalanceDetailListener extends AnalysisEventListener<BizBal
 
     @Override
     public void onException(Exception exception, AnalysisContext context) throws Exception {
+        log.error("解析账户详情onException出错: " + exception.getMessage(), exception);
         dataSourceTransactionManager.rollback(transactionStatus);
         throw new RuntimeException("解析账户详情onException出错: " + exception.getMessage());
     }
@@ -71,6 +72,7 @@ public class UploadSysBalanceDetailListener extends AnalysisEventListener<BizBal
         try {
             detailService.doImport(list);
         } catch (Exception e) {
+            log.error("解析账户详情onException出错: " + e.getMessage(), e);
             dataSourceTransactionManager.rollback(transactionStatus);
             throw new RuntimeException("解析账户详情doImport出错: " + e.getMessage());
         }
