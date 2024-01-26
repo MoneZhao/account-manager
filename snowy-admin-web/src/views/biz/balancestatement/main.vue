@@ -15,9 +15,9 @@
           <a-form-item label="记录时间" name="accountDate">
             <a-range-picker
               v-model:value="searchFormState.accountDate"
-              picker="month"
-              value-format="YYYY-MM"
-              format="YYYY年MM月"
+              :picker="pickerMod"
+              :value-format="valueFormat"
+              :format="format"
               :disabled-date="disabledDate"
               :ranges="ranges"
               :disabled="disabledDatePicker"
@@ -47,6 +47,9 @@
   let searchFormState = reactive({})
   const searchFormRef = ref()
   let chart = undefined
+  let pickerMod = $ref('month')
+  let valueFormat = $ref('YYYY-MM')
+  let format = $ref('YYYY年MM月')
   const queryTypes = [
     {
       typeId: '0',
@@ -61,19 +64,25 @@
     return current > dayjs().add(1, 'days')
   }
   const ranges = ref({
-    今年至今: [dayjs(new Date(new Date().getFullYear(), 0)), dayjs()],
+    // 今年至今: [dayjs(new Date(new Date().getFullYear(), 0)), dayjs()],
     最近一年: [dayjs().add(-1, 'y'), dayjs()],
-    最近两年: [dayjs().add(-2, 'y'), dayjs()]
+    最近两年: [dayjs().add(-2, 'y'), dayjs()],
+    最近四年: [dayjs().add(-4, 'y'), dayjs()]
   })
   const getChart = () => {
     const searchFormParam = JSON.parse(JSON.stringify(searchFormState))
     // accountDate范围查询条件重载
     if (searchFormParam.accountDate && searchFormParam.accountDate.length === 2) {
-      searchFormParam.startMonth = searchFormParam.accountDate[0]
-      searchFormParam.endMonth = dayjs(searchFormParam.accountDate[1] + '-01', 'YYYY-MM-DD')
-        .add(1, 'months')
-        .add(-1, 'days')
-        .format('YYYY-MM')
+      if (searchFormState.queryType == 0) {
+        searchFormParam.startMonth = searchFormParam.accountDate[0]
+        searchFormParam.endMonth = dayjs(searchFormParam.accountDate[1] + '-01', 'YYYY-MM-DD')
+          .add(1, 'months')
+          .add(-1, 'days')
+          .format('YYYY-MM')
+      } else {
+        searchFormParam.startMonth = searchFormParam.accountDate[0] + '-01'
+        searchFormParam.endMonth = searchFormParam.accountDate[1] + '-01'
+      }
     }
     delete searchFormParam.accountDate
     bizBalanceStatementApi.query(searchFormParam).then((data) => {
@@ -172,6 +181,9 @@
   }
   const reset = () => {
     searchFormState.queryType = '0'
+    pickerMod = 'month'
+    valueFormat = 'YYYY-MM'
+    format = 'YYYY年MM月'
     disabledDatePicker.value = false
     const end = new Date()
     const start = new Date(new Date().getFullYear(), 0)
@@ -180,7 +192,13 @@
   }
   const disabledDatePicker = ref(false)
   const queryTypeChange = () => {
-    disabledDatePicker.value = searchFormState.queryType != 0
+    // disabledDatePicker.value = searchFormState.queryType != 0
+    pickerMod = searchFormState.queryType != 0 ? 'year' : 'month'
+    valueFormat = searchFormState.queryType != 0 ? 'YYYY' : 'YYYY-MM'
+    format = searchFormState.queryType != 0 ? 'YYYY年' : 'YYYY年MM月'
+    const end = new Date()
+    const start = new Date(new Date().getFullYear(), 0)
+    searchFormState.accountDate = [dayjs(start).format('YYYY-MM'), dayjs(end).format('YYYY-MM')]
     getChart()
   }
   onMounted(() => {

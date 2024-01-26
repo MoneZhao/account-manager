@@ -76,20 +76,27 @@ public class BizBalanceStatementServiceImpl implements BizBalanceStatementServic
                 record.put(dateStr, account);
             }
         } else {
+            Integer startYear = Integer.parseInt(DateUtil.dateToStr(command.getStartMonth(), "yyyy"));
+            Integer endYear = Integer.parseInt(DateUtil.dateToStr(command.getEndMonth(), "yyyy"));
             //按年统计
             List<Date> rangDate = bizBalanceMainService.rangDate();
             Map<String, List<Date>> dateMap = rangDate.stream()
-                    .collect(Collectors.groupingBy(e -> DateUtil.dateToStr(e, "yyyy年")));
+                    .collect(Collectors.groupingBy(e -> DateUtil.dateToStr(e, "yyyy")));
             dates = new ArrayList<>(dateMap.size());
             List<String> yearDates = new ArrayList<>(dateMap.size());
             for (Map.Entry<String, List<Date>> entry : dateMap.entrySet()) {
                 String a = entry.getKey();
                 List<Date> b = entry.getValue();
+                int year = Integer.parseInt(a);
+                if (year < startYear || year > endYear) {
+                    continue;
+                }
+
                 dates.add(a);
                 yearDates.add(DateUtil.dateToStr(b.get(0)));
             }
 
-            dates = dates.stream().sorted().collect(Collectors.toList());
+            dates = dates.stream().sorted().map(e -> e + "年").collect(Collectors.toList());
             resultCommand.setX(dates);
 
             QueryWrapper<BizBalanceMain> mainQueryWrapper = new QueryWrapper<>();

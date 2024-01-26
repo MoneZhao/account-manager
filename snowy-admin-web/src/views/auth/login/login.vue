@@ -100,8 +100,8 @@
 
 <script>
   import loginApi from '@/api/auth/loginApi'
-  import phoneLoginForm from './phoneLoginForm.vue'
-  import threeLogin from './threeLogin.vue'
+  // import phoneLoginForm from './phoneLoginForm.vue'
+  // import threeLogin from './threeLogin.vue'
   import smCrypto from '@/utils/smCrypto'
   import { required } from '@/utils/formRules'
   import { afterLogin } from './util'
@@ -114,8 +114,8 @@
   export default {
     name: 'Login',
     components: {
-      phoneLoginForm,
-      threeLogin
+      // phoneLoginForm,
+      // threeLogin
     },
     data() {
       return {

@@ -50,7 +50,8 @@
   const ranges = ref({
     今年至今: [dayjs(new Date(new Date().getFullYear(), 0)), dayjs()],
     最近一年: [dayjs().add(-1, 'y'), dayjs()],
-    最近两年: [dayjs().add(-2, 'y'), dayjs()]
+    最近两年: [dayjs().add(-2, 'y'), dayjs()],
+    最近四年: [dayjs().add(-4, 'y'), dayjs()]
   })
   const getChart = () => {
     const searchFormParam = JSON.parse(JSON.stringify(searchFormState))
