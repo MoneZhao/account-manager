@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
       <a-row :gutter="24">
-        <a-col :span="6">
+        <a-col :md="8" :lg="6">
           <a-form-item label="账户类型" name="balanceType">
             <a-select
               v-model:value="searchFormState.balanceType"
@@ -12,7 +12,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col :span="6">
+        <a-col :md="10" :lg="6">
           <a-form-item label="记录时间" name="accountDate">
             <a-range-picker
               v-model:value="searchFormState.accountDate"
@@ -21,7 +21,6 @@
               format="YYYY年MM月"
               :disabled-date="disabledDate"
               :ranges="ranges"
-              :disabled="disabledDatePicker"
               @change="getChart"
               :allow-clear="false"
             />
@@ -29,7 +28,7 @@
         </a-col>
       </a-row>
     </a-form>
-    <div id="line_chart" style="width: 95%; height: 55vh; margin: 0 0.1rem" />
+    <div id="line_chart" style="width: 95%; height: 55vh; min-height: 300px; margin: 0 0.1rem" />
   </a-card>
 </template>
 
@@ -73,6 +72,14 @@
       let legend = []
       if (data && data.y) {
         legend = data.y.map((e) => e.name)
+        data.y.map((item) => {
+          item.label = {
+            normal: {
+              show: true, //开启显示
+              position: 'top'
+            }
+          }
+        })
       }
       if (!chart) {
         chart = echarts.init(document.getElementById('line_chart'))
@@ -137,6 +144,21 @@
             }
           }
         },
+        dataZoom: [
+          {
+            type: 'slider',
+            show: true
+          },
+          {
+            // 鼠标滚轮在区域内不能控制外部滚动条
+            type: 'inside',
+            // 滚轮是否触发缩放
+            zoomOnMouseWheel: false,
+            // 鼠标滚轮触发滚动
+            moveOnMouseMove: true,
+            moveOnMouseWheel: true
+          }
+        ],
         series: data.y
       })
     })

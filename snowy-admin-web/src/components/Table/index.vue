@@ -162,24 +162,23 @@
           })) ||
         false
       let existIndex = false
-      for (const item of this.columns) {
+      const indexItem = {
+        title: '#',
+        dataIndex: 'index',
+        customRender: (data) => `${data.index + 1}`,
+        width: '50px',
+        fixed: 'left',
+        align: 'center'
+      }
+      for (let item of this.columns) {
         if (item.dataIndex === 'index') {
           existIndex = true
-          item.customRender = (data) => `${data.index + 1}`
+          item = indexItem
         }
       }
       let columnsNew
       if (!existIndex && this.showIndex) {
-        columnsNew = [
-          {
-            title: '#',
-            dataIndex: 'index',
-            customRender: (data) => `${data.index + 1}`,
-            width: '50px',
-            align: 'center'
-          },
-          ...this.columns
-        ]
+        columnsNew = [indexItem, ...this.columns]
       } else {
         columnsNew = this.columns
       }
@@ -252,10 +251,7 @@
         )
         const result = this.data(parameter)
         // eslint-disable-next-line
-        		if (
-					(typeof result === 'object' || typeof result === 'function') &&
-					typeof result.then === 'function'
-				) {
+        if ((typeof result === 'object' || typeof result === 'function') && typeof result.then === 'function') {
           result.then((r) => {
             if (r == null) {
               this.localLoading = false

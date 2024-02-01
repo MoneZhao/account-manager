@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
       <a-row :gutter="24">
-        <a-col :span="6">
+        <a-col :md="10" :lg="6">
           <a-form-item label="出差地点" name="travelPlace">
             <a-input v-model:value="searchFormState.travelPlace" placeholder="请输入出差地点" />
           </a-form-item>
@@ -22,6 +22,8 @@
       :row-key="(record) => record.id"
       :tool-config="toolConfig"
       :row-selection="options.rowSelection"
+      :scroll="{ x: 1600 }"
+      :custom-row="rowClick"
     >
       <template #operator class="table-operator">
         <a-space>
@@ -92,7 +94,7 @@
   import Form from './form.vue'
   import ImpExp from './impExp.vue'
   import bizTravelExpenseApi from '@/api/biz/bizTravelExpenseApi'
-  import downloadUtil from "@/utils/downloadUtil";
+  import downloadUtil from '@/utils/downloadUtil'
   let searchFormState = reactive({})
   const searchFormRef = ref()
   const table = ref()
@@ -101,34 +103,43 @@
   const columns = [
     {
       title: '出差地点',
+      fixed: 'left',
+      width: '100px',
       dataIndex: 'travelPlace'
     },
     {
       title: '报销日期',
+      width: '200px',
       dataIndex: 'requestDate'
     },
     {
       title: '到账日期',
+      width: '200px',
       dataIndex: 'getDate'
     },
     {
       title: '报账天数',
+      width: '150px',
       dataIndex: 'useDay'
     },
     {
       title: '实际花费',
+      width: '150px',
       dataIndex: 'useNumber'
     },
     {
       title: '报销金额',
+      width: '150px',
       dataIndex: 'requestNumber'
     },
     {
       title: '到账金额',
+      width: '150px',
       dataIndex: 'getNumber'
     },
     {
       title: '得利',
+      width: '150px',
       dataIndex: 'addNumber'
     },
     {
@@ -142,8 +153,16 @@
       title: '操作',
       dataIndex: 'action',
       align: 'center',
+      fixed: 'right',
       width: '150px'
     })
+  }
+  const rowClick = (record, index) => {
+    return {
+      onDblclick: (event) => {
+        formRef.value.onOpen(record)
+      }
+    }
   }
   const selectedRowKeys = ref([])
   // 列表选择配置

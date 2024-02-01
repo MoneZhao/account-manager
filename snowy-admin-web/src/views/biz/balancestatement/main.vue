@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
       <a-row :gutter="24">
-        <a-col :span="6">
+        <a-col :md="8" :lg="6">
           <a-form-item label="查询类别" name="queryType">
             <a-select v-model:value="searchFormState.queryType" placeholder="请选择查询类别" @change="queryTypeChange">
               <a-select-option v-for="item in queryTypes" :key="item.typeId" :value="item.typeId">
@@ -11,7 +11,7 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :span="6">
+        <a-col :md="10" :lg="6">
           <a-form-item label="记录时间" name="accountDate">
             <a-range-picker
               v-model:value="searchFormState.accountDate"
@@ -20,7 +20,6 @@
               :format="format"
               :disabled-date="disabledDate"
               :ranges="ranges"
-              :disabled="disabledDatePicker"
               :allow-clear="false"
               @change="getChart"
             />
@@ -32,7 +31,7 @@
         </a-col>
       </a-row>
     </a-form>
-    <div id="line_chart" style="width: 95%; height: 55vh; margin: 0 0.1rem" />
+    <div id="line_chart" style="width: 95%; height: 55vh; min-height: 300px; margin: 0 0.1rem" />
     <RadioChart ref="radioChartRef" />
   </a-card>
 </template>
@@ -89,6 +88,14 @@
       let legend = []
       if (data && data.y) {
         legend = data.y.map((e) => e.name)
+        data.y.map((item) => {
+          item.label = {
+            normal: {
+              show: true, //开启显示
+              position: 'top'
+            }
+          }
+        })
       }
       if (!chart) {
         chart = echarts.init(document.getElementById('line_chart'))
@@ -104,7 +111,7 @@
             const month = chart.getOption().xAxis[0].data[handleIndex]
             const value = chart.getOption().series[0].data[handleIndex]
             formatYearMonth(month, value)
-            chart._dom.childNodes[1].style.display = 'none'
+            // chart._dom.childNodes[1].style.display = 'none'
           }
         })
       }
@@ -156,15 +163,21 @@
             saveAsImage: { show: true }
           }
         },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            crossStyle: {
-              color: '#999'
-            }
+        dataZoom: [
+          {
+            type: 'slider',
+            show: true
+          },
+          {
+            // 鼠标滚轮在区域内不能控制外部滚动条
+            type: 'inside',
+            // 滚轮是否触发缩放
+            zoomOnMouseWheel: false,
+            // 鼠标滚轮触发滚动
+            moveOnMouseMove: true,
+            moveOnMouseWheel: true
           }
-        },
+        ],
         series: data.y
       })
     })
@@ -184,15 +197,12 @@
     pickerMod = 'month'
     valueFormat = 'YYYY-MM'
     format = 'YYYY年MM月'
-    disabledDatePicker.value = false
     const end = new Date()
     const start = new Date(new Date().getFullYear(), 0)
     searchFormState.accountDate = [dayjs(start).format('YYYY-MM'), dayjs(end).format('YYYY-MM')]
     getChart()
   }
-  const disabledDatePicker = ref(false)
   const queryTypeChange = () => {
-    // disabledDatePicker.value = searchFormState.queryType != 0
     pickerMod = searchFormState.queryType != 0 ? 'year' : 'month'
     valueFormat = searchFormState.queryType != 0 ? 'YYYY' : 'YYYY-MM'
     format = searchFormState.queryType != 0 ? 'YYYY年' : 'YYYY年MM月'

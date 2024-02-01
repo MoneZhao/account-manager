@@ -1,9 +1,9 @@
 <template>
-  <xn-form-container :title="config.title" width="80%" :visible="visible" :destroy-on-close="true" @close="onClose">
+  <xn-form-container :title="config.title" width="100%" :visible="visible" :destroy-on-close="true" @close="onClose">
     <a-card :bordered="false">
       <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
         <a-row :gutter="24">
-          <a-col :span="6">
+          <a-col :md="12" :lg="6">
             <a-form-item label="账户类型" name="balanceType">
               <a-select
                 show-search
@@ -14,7 +14,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col :span="6">
+          <a-col :md="12" :lg="6">
             <a-button type="primary" @click="table.refresh(true)">查询</a-button>
             <a-button style="margin: 0 8px" @click="reset">重置</a-button>
           </a-col>

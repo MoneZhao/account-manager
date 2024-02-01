@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
       <a-row :gutter="24">
-        <a-col :span="6">
+        <a-col :md="8" :lg="6">
           <a-form-item label="账户类型" name="codeInfoId">
             <a-select
               v-model:value="searchFormState.codeInfoId"
@@ -11,7 +11,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col :span="6">
+        <a-col :md="10" :lg="6">
           <a-form-item label="是否计入总资产" name="countType">
             <a-select
               v-model:value="searchFormState.countType"
