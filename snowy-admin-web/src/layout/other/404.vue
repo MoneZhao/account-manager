@@ -8,10 +8,11 @@
 </template>
 
 <script>
+  import sysConfig from '@/config/index'
   export default {
     methods: {
       gohome() {
-        location.href = '/'
+        window.location.href = sysConfig.API_URL + '/index'
       },
       goback() {
         this.$router.go(-1)

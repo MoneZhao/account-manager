@@ -12,13 +12,14 @@
 
 <script setup name="threeLogin">
   import thirdApi from '@/api/auth/thirdApi'
+  import sysConfig from '@/config/index'
 
   const getLoginRenderUrl = (platform) => {
     const param = {
       platform: platform
     }
     thirdApi.thirdRender(param).then((data) => {
-      window.location.href = data.authorizeUrl
+      window.location.href = sysConfig.API_URL + data.authorizeUrl
     })
   }
 </script>

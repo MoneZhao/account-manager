@@ -19,6 +19,7 @@
 </template>
 
 <script setup name="loginCallback">
+  import sysConfig from '@/config/index'
   import { message } from 'ant-design-vue'
   import tool from '@/utils/tool'
   import router from '@/router'
@@ -39,7 +40,7 @@
     })
     // 当然了，不可能只有一个参数
     if (argLength < 2) {
-      window.location.href = '/login'
+      window.location.href = sysConfig.API_URL + '/login'
       return
     }
 
@@ -67,7 +68,7 @@
         })
       })
       .catch(() => {
-        window.location.href = '/login'
+        window.location.href = sysConfig.API_URL + '/login'
       })
   })
 </script>
