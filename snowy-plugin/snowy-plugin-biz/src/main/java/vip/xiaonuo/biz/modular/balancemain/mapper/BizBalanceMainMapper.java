@@ -39,6 +39,6 @@ public interface BizBalanceMainMapper extends BaseMapper<BizBalanceMain> {
      */
     void restore(List<String> idsArr);
 
-    List<Date> listAllDate(@Param("id") String id);
+    List<Date> listAllDate(@Param("id") String id, @Param("orgIds") List<String> orgIds);
 
 }

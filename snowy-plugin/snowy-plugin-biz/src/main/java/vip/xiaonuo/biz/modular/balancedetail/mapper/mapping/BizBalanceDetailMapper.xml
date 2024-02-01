@@ -25,9 +25,6 @@
         <if test="entity.balanceMainId != null and entity.balanceMainId !=''">
             <![CDATA[    AND a.BALANCE_MAIN_ID = #{entity.balanceMainId}    ]]>
         </if>
-        <if test="entity.userId != null and entity.userId !=''">
-            <![CDATA[    AND a.USER_ID = #{entity.userId}]]>
-        </if>
         order by m.account_date,ci.SORT_CODE
     </select>
 

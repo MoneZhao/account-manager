@@ -40,43 +40,77 @@
         <if test="entity.userId != null and entity.userId !=''">
             <![CDATA[	AND a.USER_ID = #{entity.userId}]]>
         </if>
+        <if test="entity.orgIds != null">
+            AND o.ORG_ID in
+            <foreach item="item" index="index" collection="entity.orgIds" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
         <if test='entity.multiData != null and entity.multiData =="0"'>
-            <![CDATA[	AND date_format( a.ACCOUNT_DATE, '%Y-%m' ) NOT IN (
+            AND date_format( a.ACCOUNT_DATE, '%Y-%m' ) NOT IN (
                 SELECT
                     c.account_date
                 FROM
+                (
+                SELECT
+                    b.account_date,
+                    COUNT( b.account_date ) count
+                FROM
                     (
-                    SELECT
-                        b.account_date,
-                        COUNT( b.account_date ) count
-                    FROM
-                        ( SELECT date_format( a.ACCOUNT_DATE, '%Y-%m' ) account_date FROM `biz_balance_main` a WHERE a.DELETE_FLAG = '1000-01-01 00:00:00' ORDER BY a.ACCOUNT_DATE ) b
-                    GROUP BY
-                        b.account_date
-                    HAVING
-                        count >= 2
-                    ) c
-                )
-            ]]>
+                     SELECT date_format( a.ACCOUNT_DATE, '%Y-%m' ) account_date
+                        FROM `biz_balance_main` a
+                        left join sys_user o ON o.ID=a.USER_ID
+                        WHERE a.DELETE_FLAG = '1000-01-01 00:00:00'
+                        <if test="entity.userId != null and entity.userId !=''">
+                            <![CDATA[	AND a.USER_ID = #{entity.userId}]]>
+                        </if>
+                        <if test="entity.orgIds != null">
+                            AND o.ORG_ID in
+                            <foreach item="item" index="index" collection="entity.orgIds" open="(" separator="," close=")">
+                                #{item}
+                            </foreach>
+                        </if>
+                        ORDER BY a.ACCOUNT_DATE
+                     ) b
+                GROUP BY
+                    b.account_date
+                HAVING
+                    <![CDATA[ count >= 2 ]]>
+                ) c
+            )
         </if>
         <if test='entity.multiData != null and entity.multiData =="1"'>
-            <![CDATA[	AND date_format( a.account_date, '%Y-%m' ) IN (
+            AND date_format( a.ACCOUNT_DATE, '%Y-%m' ) IN (
                 SELECT
                     c.account_date
                 FROM
-                    (
+                (
                     SELECT
                         b.account_date,
                         COUNT( b.account_date ) count
                     FROM
-                        ( SELECT date_format( a.account_date, '%Y-%m' ) account_date FROM `biz_balance_main` a WHERE a.DELETE_FLAG = '1000-01-01 00:00:00' ORDER BY a.ACCOUNT_DATE ) b
+                    (
+                        SELECT date_format( a.ACCOUNT_DATE, '%Y-%m' ) account_date
+                        FROM `biz_balance_main` a
+                        left join sys_user o ON o.ID=a.USER_ID
+                        WHERE a.DELETE_FLAG = '1000-01-01 00:00:00'
+                        <if test="entity.userId != null and entity.userId !=''">
+                            <![CDATA[	AND a.USER_ID = #{entity.userId}]]>
+                        </if>
+                        <if test="entity.orgIds != null">
+                            AND o.ORG_ID in
+                            <foreach item="item" index="index" collection="entity.orgIds" open="(" separator="," close=")">
+                                #{item}
+                            </foreach>
+                        </if>
+                        ORDER BY a.ACCOUNT_DATE
+                    ) b
                     GROUP BY
                         b.account_date
                     HAVING
-                        count >= 2
-                    ) c
-                )
-            ]]>
+                    <![CDATA[ count >= 2 ]]>
+                ) c
+            )
         </if>
         order by a.account_date desc
     </select>
@@ -93,7 +127,18 @@
     <select id="listAllDate" resultType="java.util.Date">
         SELECT distinct a.ACCOUNT_DATE
         FROM biz_balance_main a
-        WHERE a.USER_ID = #{id} and a.DELETE_FLAG = '1000-01-01 00:00:00'
+            left join sys_user o ON o.ID=a.USER_ID
+        WHERE 1=1
+        <if test="orgIds != null">
+            AND o.ORG_ID in
+            <foreach item="item" index="index" collection="orgIds" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="orgIds == null">
+            AND a.USER_ID = #{id}
+        </if>
+            and a.DELETE_FLAG = '1000-01-01 00:00:00'
         ORDER BY a.ACCOUNT_DATE DESC
     </select>
 </mapper>

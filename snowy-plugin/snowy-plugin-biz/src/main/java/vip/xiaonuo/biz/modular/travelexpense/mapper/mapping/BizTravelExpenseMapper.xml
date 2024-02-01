@@ -2,4 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="vip.xiaonuo.biz.modular.travelexpense.mapper.BizTravelExpenseMapper">
 
+    <select id="list" resultType="vip.xiaonuo.biz.modular.travelexpense.entity.BizTravelExpense">
+        select
+        a.ID, a.TRAVEL_PLACE, a.REQUEST_DATE, a.GET_DATE, a.USE_DAY, a.USE_NUMBER, a.REQUEST_NUMBER, a.GET_NUMBER,
+        a.ADD_NUMBER, a.USER_ID, a.REMARK, o.NAME as userName
+        from biz_travel_expense a
+        left join sys_user o ON o.ID=a.USER_ID
+        where 1=1
+        <if test="entity.travelPlace != null and entity.travelPlace !=''">
+            <![CDATA[	AND a.TRAVEL_PLACE like concat('%', #{entity.travelPlace}, '%') ]]>
+        </if>
+        <if test="entity.userId != null and entity.userId !=''">
+            <![CDATA[	AND a.USER_ID = #{entity.userId}]]>
+        </if>
+        <if test="entity.orgIds != null">
+            AND o.ORG_ID in
+            <foreach item="item" index="index" collection="entity.orgIds" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by a.REQUEST_DATE desc, a.GET_DATE desc
+    </select>
+
 </mapper>

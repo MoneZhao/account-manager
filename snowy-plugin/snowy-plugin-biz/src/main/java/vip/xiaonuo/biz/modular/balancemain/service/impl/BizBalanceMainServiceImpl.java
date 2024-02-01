@@ -7,9 +7,11 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.biz.modular.balancemain.entity.BizBalanceMain;
 import vip.xiaonuo.biz.modular.balancemain.mapper.BizBalanceMainMapper;
 import vip.xiaonuo.biz.modular.balancemain.param.BizBalanceMainAddParam;
@@ -32,18 +34,30 @@ import java.util.stream.Collectors;
  * @date  2023/12/25 16:56
  **/
 @Service
+@Slf4j
 public class BizBalanceMainServiceImpl extends ServiceImpl<BizBalanceMainMapper, BizBalanceMain> implements BizBalanceMainService {
 
     @Override
     public Page<BizBalanceMain> page(BizBalanceMainPageParam bizBalanceMainPageParam) {
-        bizBalanceMainPageParam.setUserId(StpUtil.getLoginIdAsString());
+        List<String> loginUserDataScope = StpLoginUserUtil.getLoginUserDataScope();
+        if (ObjectUtil.isNotEmpty(loginUserDataScope)) {
+            bizBalanceMainPageParam.setOrgIds(loginUserDataScope);
+        } else {
+            bizBalanceMainPageParam.setUserId(StpUtil.getLoginIdAsString());
+        }
+
         Page<BizBalanceMain> page = CommonPageRequest.defaultPage();
         return page.setRecords(baseMapper.list(page, bizBalanceMainPageParam));
     }
 
     @Override
     public List<BizBalanceMain> list(BizBalanceMainPageParam query) {
-        query.setUserId(StpUtil.getLoginIdAsString());
+        List<String> loginUserDataScope = StpLoginUserUtil.getLoginUserDataScope();
+        if (ObjectUtil.isNotEmpty(loginUserDataScope)) {
+            query.setOrgIds(loginUserDataScope);
+        } else {
+            query.setUserId(StpUtil.getLoginIdAsString());
+        }
         return baseMapper.list(null, query);
     }
 
@@ -114,7 +128,11 @@ public class BizBalanceMainServiceImpl extends ServiceImpl<BizBalanceMainMapper,
 
     @Override
     public List<Date> rangDate() {
-        return baseMapper.listAllDate(StpUtil.getLoginIdAsString());
+        List<String> loginUserDataScope = StpLoginUserUtil.getLoginUserDataScope();
+        if (ObjectUtil.isEmpty(loginUserDataScope)) {
+            loginUserDataScope = null;
+        }
+        return baseMapper.listAllDate(StpUtil.getLoginIdAsString(), loginUserDataScope);
     }
 
     @Override

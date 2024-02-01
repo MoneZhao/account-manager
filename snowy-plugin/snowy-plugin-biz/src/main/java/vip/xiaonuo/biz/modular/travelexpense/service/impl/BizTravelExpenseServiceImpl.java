@@ -20,6 +20,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import vip.xiaonuo.auth.core.util.StpLoginUserUtil;
 import vip.xiaonuo.biz.modular.travelexpense.entity.BizTravelExpense;
 import vip.xiaonuo.biz.modular.travelexpense.excel.UploadBizTravelExpenseListener;
 import vip.xiaonuo.biz.modular.travelexpense.mapper.BizTravelExpenseMapper;
@@ -28,7 +29,6 @@ import vip.xiaonuo.biz.modular.travelexpense.param.BizTravelExpenseEditParam;
 import vip.xiaonuo.biz.modular.travelexpense.param.BizTravelExpenseIdParam;
 import vip.xiaonuo.biz.modular.travelexpense.param.BizTravelExpensePageParam;
 import vip.xiaonuo.biz.modular.travelexpense.service.BizTravelExpenseService;
-import vip.xiaonuo.common.enums.CommonSortOrderEnum;
 import vip.xiaonuo.common.exception.CommonException;
 import vip.xiaonuo.common.page.CommonPageRequest;
 
@@ -52,21 +52,14 @@ public class BizTravelExpenseServiceImpl extends ServiceImpl<BizTravelExpenseMap
 
     @Override
     public Page<BizTravelExpense> page(BizTravelExpensePageParam bizTravelExpensePageParam) {
-        QueryWrapper<BizTravelExpense> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(BizTravelExpense::getUserId, StpUtil.getLoginIdAsString());
-        if (ObjectUtil.isNotEmpty(bizTravelExpensePageParam.getTravelPlace())) {
-            queryWrapper.lambda().like(BizTravelExpense::getTravelPlace, bizTravelExpensePageParam.getTravelPlace());
-        }
-        if (ObjectUtil.isAllNotEmpty(bizTravelExpensePageParam.getSortField(), bizTravelExpensePageParam.getSortOrder())) {
-            CommonSortOrderEnum.validate(bizTravelExpensePageParam.getSortOrder());
-            queryWrapper.orderBy(true, bizTravelExpensePageParam.getSortOrder().equals(CommonSortOrderEnum.ASC.getValue()),
-                    StrUtil.toUnderlineCase(bizTravelExpensePageParam.getSortField()));
+        List<String> loginUserDataScope = StpLoginUserUtil.getLoginUserDataScope();
+        if (ObjectUtil.isNotEmpty(loginUserDataScope)) {
+            bizTravelExpensePageParam.setOrgIds(loginUserDataScope);
         } else {
-            queryWrapper.lambda()
-                    .orderByDesc(BizTravelExpense::getRequestDate)
-                    .orderByDesc(BizTravelExpense::getGetDate);
+            bizTravelExpensePageParam.setUserId(StpUtil.getLoginIdAsString());
         }
-        return this.page(CommonPageRequest.defaultPage(), queryWrapper);
+        Page<BizTravelExpense> page = CommonPageRequest.defaultPage();
+        return page.setRecords(baseMapper.list(page, bizTravelExpensePageParam));
     }
 
     @Transactional(rollbackFor = Exception.class)

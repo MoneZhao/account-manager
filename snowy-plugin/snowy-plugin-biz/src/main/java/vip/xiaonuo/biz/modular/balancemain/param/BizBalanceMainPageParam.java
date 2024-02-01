@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 账户余额查询参数
@@ -41,6 +42,10 @@ public class BizBalanceMainPageParam {
     /** 所属用户 */
     @ApiModelProperty(value = "所属用户")
     private String userId;
+
+    /** 所属组织 */
+    @ApiModelProperty(value = "所属组织")
+    private List<String> orgIds;
 
     /**
      * 当月是否多条数据

@@ -65,7 +65,6 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
     public Page<BizBalanceDetail> page(BizBalanceDetailPageParam bizBalanceDetailPageParam) {
         String parentId = devDictApi.getIdByDictValue("BALANCE_TYPE");
         bizBalanceDetailPageParam.setSearchKey(parentId);
-        bizBalanceDetailPageParam.setUserId(StpUtil.getLoginIdAsString());
         Page<BizBalanceDetail> page = CommonPageRequest.defaultPage();
         return page.setRecords(baseMapper.list(page, bizBalanceDetailPageParam));
     }
@@ -74,7 +73,6 @@ public class BizBalanceDetailServiceImpl extends ServiceImpl<BizBalanceDetailMap
     public List<BizBalanceDetail> list(BizBalanceDetailPageParam query) {
         String parentId = devDictApi.getIdByDictValue("BALANCE_TYPE");
         query.setSearchKey(parentId);
-        query.setUserId(StpUtil.getLoginIdAsString());
         return baseMapper.list(null, query);
     }
 

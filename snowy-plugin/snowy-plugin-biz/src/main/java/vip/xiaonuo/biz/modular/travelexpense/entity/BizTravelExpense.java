@@ -2,9 +2,11 @@ package vip.xiaonuo.biz.modular.travelexpense.entity;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fhs.core.trans.vo.TransPojo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +25,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("biz_travel_expense")
-public class BizTravelExpense extends CommonEntity {
+public class BizTravelExpense extends CommonEntity implements TransPojo {
 
     /** 主键id */
     @TableId
@@ -81,6 +83,13 @@ public class BizTravelExpense extends CommonEntity {
     /** 所属用户 */
     @ApiModelProperty(value = "所属用户", position = 11)
     @ExcelIgnore
+    //@Trans(type = TransType.SIMPLE, target = BizUser.class, fields = "name", alias = "user", ref = "userName")
     private String userId;
+
+    /** 用户名 */
+    @ApiModelProperty(value = "用户名", position = 12)
+    @ExcelIgnore
+    @TableField(exist = false)
+    private String userName;
 
 }

@@ -92,7 +92,6 @@ public class BizBalanceMainController {
     @SaCheckPermission("/biz/balancemain/page")
     @GetMapping("/biz/balancemain/pageDelete")
     public CommonResult<Page<BizBalanceMain>> pageDelete(BizBalanceMainPageParam bizBalanceMainPageParam) {
-        bizBalanceMainPageParam.setUserId(StpUtil.getLoginIdAsString());
         bizBalanceMainPageParam.setDeleteFlag(new Date());
         return CommonResult.data(bizBalanceMainService.page(bizBalanceMainPageParam));
     }

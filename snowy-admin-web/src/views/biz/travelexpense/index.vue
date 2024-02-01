@@ -22,7 +22,7 @@
       :row-key="(record) => record.id"
       :tool-config="toolConfig"
       :row-selection="options.rowSelection"
-      :scroll="{ x: 1600 }"
+      :scroll="{ x: scrollX }"
       :custom-row="rowClick"
     >
       <template #operator class="table-operator">
@@ -141,12 +141,21 @@
       title: '得利',
       width: '150px',
       dataIndex: 'addNumber'
-    },
-    {
-      title: '备注',
-      dataIndex: 'remark'
     }
   ]
+  let scrollX = $ref(1600)
+  // 用户名通过权限判断是否显示
+  if (hasPerm(['bizTravelExpenseUserName'])) {
+    columns.push({
+      title: '所属用户',
+      dataIndex: 'userName'
+    })
+    scrollX = 1700
+  }
+  columns.push({
+    title: '备注',
+    dataIndex: 'remark'
+  })
   // 操作栏通过权限判断是否显示
   if (hasPerm(['bizTravelExpenseEdit', 'bizTravelExpenseDelete'])) {
     columns.push({

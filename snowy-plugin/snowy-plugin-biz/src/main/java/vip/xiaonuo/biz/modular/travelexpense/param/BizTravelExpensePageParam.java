@@ -3,8 +3,8 @@ package vip.xiaonuo.biz.modular.travelexpense.param;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import java.math.BigDecimal;
-import java.util.Date;
+
+import java.util.List;
 
 /**
  * 出差报销查询参数
@@ -39,5 +39,13 @@ public class BizTravelExpensePageParam {
     /** 出差地点 */
     @ApiModelProperty(value = "出差地点")
     private String travelPlace;
+
+    /** 所属用户 */
+    @ApiModelProperty(value = "所属用户")
+    private String userId;
+
+    /** 所属组织 */
+    @ApiModelProperty(value = "所属组织")
+    private List<String> orgIds;
 
 }

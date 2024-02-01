@@ -157,12 +157,19 @@
     {
       title: '账户余额',
       dataIndex: 'account'
-    },
-    {
-      title: '备注',
-      dataIndex: 'remark'
     }
   ]
+  // 用户名通过权限判断是否显示
+  if (hasPerm(['bizBalanceMainUserName'])) {
+    columns.push({
+      title: '所属用户',
+      dataIndex: 'userName'
+    })
+  }
+  columns.push({
+    title: '备注',
+    dataIndex: 'remark'
+  })
   // 操作栏通过权限判断是否显示
   if (hasPerm(['bizBalanceMainEdit', 'bizBalanceMainDelete'])) {
     columns.push({
