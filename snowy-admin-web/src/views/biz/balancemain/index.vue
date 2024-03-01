@@ -2,16 +2,16 @@
   <a-card :bordered="false">
     <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
       <a-row :gutter="24">
-        <a-col :md="8" :lg="6">
-          <a-form-item label="当月是否多条数据" name="multiData">
+        <a-col :md="8" :lg="8" :xl="6" :xxl="6">
+          <a-form-item label="多条数据" name="multiData">
             <a-select
               v-model:value="searchFormState.multiData"
-              placeholder="请选择当月是否多条数据"
+              placeholder="请选择当月多条数据"
               :options="multiDataOptions"
             />
           </a-form-item>
         </a-col>
-        <a-col :md="10" :lg="6">
+        <a-col :md="10" :lg="10" :xl="8" :xxl="6">
           <a-form-item label="记录时间" name="accountDate">
             <a-range-picker
               v-model:value="searchFormState.accountDate"

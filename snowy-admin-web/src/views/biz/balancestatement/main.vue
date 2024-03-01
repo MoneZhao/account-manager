@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
       <a-row :gutter="24">
-        <a-col :md="8" :lg="6">
+        <a-col :md="6" :lg="6" :xl="6" :xxl="6">
           <a-form-item label="查询类别" name="queryType">
             <a-select v-model:value="searchFormState.queryType" placeholder="请选择查询类别" @change="queryTypeChange">
               <a-select-option v-for="item in queryTypes" :key="item.typeId" :value="item.typeId">
@@ -11,7 +11,7 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col :md="10" :lg="6">
+        <a-col :md="12" :lg="12" :xl="8" :xxl="6">
           <a-form-item label="记录时间" name="accountDate">
             <a-range-picker
               v-model:value="searchFormState.accountDate"

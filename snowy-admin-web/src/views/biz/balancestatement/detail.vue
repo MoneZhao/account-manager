@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
       <a-row :gutter="24">
-        <a-col :md="8" :lg="6">
+        <a-col :md="12" :lg="12" :xl="6" :xxl="6">
           <a-form-item label="账户类型" name="balanceType">
             <a-select
               v-model:value="searchFormState.balanceType"
@@ -12,7 +12,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col :md="10" :lg="6">
+        <a-col :md="12" :lg="12" :xl="8" :xxl="6">
           <a-form-item label="记录时间" name="accountDate">
             <a-range-picker
               v-model:value="searchFormState.accountDate"

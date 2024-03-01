@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
       <a-row :gutter="24">
-        <a-col :md="10" :lg="6">
+        <a-col :md="10" :lg="8" :xl="6">
           <a-form-item label="出差地点" name="travelPlace">
             <a-input v-model:value="searchFormState.travelPlace" placeholder="请输入出差地点" />
           </a-form-item>
