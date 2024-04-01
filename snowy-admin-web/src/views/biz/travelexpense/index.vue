@@ -113,16 +113,6 @@
       dataIndex: 'requestDate'
     },
     {
-      title: '到账日期',
-      width: '200px',
-      dataIndex: 'getDate'
-    },
-    {
-      title: '报账天数',
-      width: '150px',
-      dataIndex: 'useDay'
-    },
-    {
       title: '实际花费',
       width: '150px',
       dataIndex: 'useNumber'
@@ -133,9 +123,19 @@
       dataIndex: 'requestNumber'
     },
     {
+      title: '到账日期',
+      width: '200px',
+      dataIndex: 'getDate'
+    },
+    {
       title: '到账金额',
       width: '150px',
       dataIndex: 'getNumber'
+    },
+    {
+      title: '报账天数',
+      width: '150px',
+      dataIndex: 'useDay'
     },
     {
       title: '得利',

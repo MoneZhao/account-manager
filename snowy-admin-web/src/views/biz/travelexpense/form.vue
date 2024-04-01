@@ -20,16 +20,6 @@
           style="width: 100%"
         />
       </a-form-item>
-      <a-form-item label="到账日期：" name="getDate">
-        <a-date-picker
-          v-model:value="formData.getDate"
-          value-format="YYYY-MM-DD"
-          format="YYYY 年 MM 月 DD 日"
-          :disabled-date="disabledDate"
-          placeholder="请选择到账日期"
-          style="width: 100%"
-        />
-      </a-form-item>
       <a-form-item label="实际花费：" name="useNumber">
         <a-input-number
           v-model:value="formData.useNumber"
@@ -46,6 +36,16 @@
           allow-clear
           style="width: 100%"
           :min="1"
+        />
+      </a-form-item>
+      <a-form-item label="到账日期：" name="getDate">
+        <a-date-picker
+          v-model:value="formData.getDate"
+          value-format="YYYY-MM-DD"
+          format="YYYY 年 MM 月 DD 日"
+          :disabled-date="disabledDate"
+          placeholder="请选择到账日期"
+          style="width: 100%"
         />
       </a-form-item>
       <a-form-item label="到账金额：" name="getNumber">
