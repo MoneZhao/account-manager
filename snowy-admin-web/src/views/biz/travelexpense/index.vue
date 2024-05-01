@@ -108,6 +108,16 @@
       dataIndex: 'travelPlace'
     },
     {
+      title: '得利',
+      width: '150px',
+      dataIndex: 'addNumber'
+    },
+    {
+      title: '报账天数',
+      width: '150px',
+      dataIndex: 'useDay'
+    },
+    {
       title: '报销日期',
       width: '200px',
       dataIndex: 'requestDate'
@@ -131,16 +141,6 @@
       title: '到账金额',
       width: '150px',
       dataIndex: 'getNumber'
-    },
-    {
-      title: '报账天数',
-      width: '150px',
-      dataIndex: 'useDay'
-    },
-    {
-      title: '得利',
-      width: '150px',
-      dataIndex: 'addNumber'
     }
   ]
   let scrollX = $ref(1600)
