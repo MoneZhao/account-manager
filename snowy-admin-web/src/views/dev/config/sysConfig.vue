@@ -117,6 +117,7 @@
   const param = {
     category: 'SYS_BASE'
   }
+  let originPassword = ''
   configApi.configList(param).then((data) => {
     loadSpinning.value = false
     if (data) {
@@ -126,6 +127,9 @@
           formData.value[item.configKey] = [item.configValue]
           // 让其回显
           imageUrl.value = item.configValue
+        } else if (item.configKey === 'SNOWY_SYS_DEFAULT_PASSWORD') {
+          originPassword = item.configValue
+          formData.value[item.configKey] = item.configValue
         } else if (item.configKey === 'SNOWY_SYS_DEFAULT_WORKBENCH_DATA') {
           try {
             menuTreeSelectRef.value.setSelectData(JSON.parse(item.configValue).shortcut)
@@ -192,6 +196,9 @@
         submitLoading.value = true
         let submitParam = cloneDeep(formData.value)
         submitParam.SNOWY_SYS_LOGO = submitParam.SNOWY_SYS_LOGO[0]
+        if (originPassword == submitParam.SNOWY_SYS_DEFAULT_PASSWORD) {
+          delete submitParam.SNOWY_SYS_DEFAULT_PASSWORD
+        }
         const param = Object.entries(submitParam).map((item) => {
           return {
             configKey: item[0],
