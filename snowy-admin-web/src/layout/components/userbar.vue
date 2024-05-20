@@ -30,19 +30,19 @@
         </a-menu>
       </template>
     </a-dropdown>
-    <a-dropdown v-if="!ismobile" class="panel-item">
-      <global-outlined />
-      <template #overlay>
-        <a-menu :selected-keys="lang">
-          <a-menu-item key="zh-cn" @click="handleIn18('zh-cn')">
-            <span>简体中文</span>
-          </a-menu-item>
-          <a-menu-item key="en" @click="handleIn18('en')">
-            <span>English</span>
-          </a-menu-item>
-        </a-menu>
-      </template>
-    </a-dropdown>
+    <!--    <a-dropdown v-if="!ismobile" class="panel-item">-->
+    <!--      <global-outlined />-->
+    <!--      <template #overlay>-->
+    <!--        <a-menu :selected-keys="lang">-->
+    <!--          <a-menu-item key="zh-cn" @click="handleIn18('zh-cn')">-->
+    <!--            <span>简体中文</span>-->
+    <!--          </a-menu-item>-->
+    <!--          <a-menu-item key="en" @click="handleIn18('en')">-->
+    <!--            <span>English</span>-->
+    <!--          </a-menu-item>-->
+    <!--        </a-menu>-->
+    <!--      </template>-->
+    <!--    </a-dropdown>-->
     <div v-if="setDeawer === 'true'" class="setting panel-item" @click="openSetting">
       <layout-outlined />
     </div>

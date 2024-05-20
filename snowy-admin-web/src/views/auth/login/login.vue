@@ -2,24 +2,24 @@
   <div class="login_background">
     <div class="login_background_front"></div>
     <div class="login_main">
-      <div class="login_config">
-        <a-dropdown>
-          <global-outlined />
-          <template #overlay>
-            <a-menu>
-              <a-menu-item
-                v-for="item in lang"
-                :key="item.value"
-                :command="item"
-                :class="{ selected: config.lang === item.value }"
-                @click="configLang(item.value)"
-              >
-                {{ item.name }}
-              </a-menu-item>
-            </a-menu>
-          </template>
-        </a-dropdown>
-      </div>
+      <!--      <div class="login_config">-->
+      <!--        <a-dropdown>-->
+      <!--          <global-outlined />-->
+      <!--          <template #overlay>-->
+      <!--            <a-menu>-->
+      <!--              <a-menu-item-->
+      <!--                v-for="item in lang"-->
+      <!--                :key="item.value"-->
+      <!--                :command="item"-->
+      <!--                :class="{ selected: config.lang === item.value }"-->
+      <!--                @click="configLang(item.value)"-->
+      <!--              >-->
+      <!--                {{ item.name }}-->
+      <!--              </a-menu-item>-->
+      <!--            </a-menu>-->
+      <!--          </template>-->
+      <!--        </a-dropdown>-->
+      <!--      </div>-->
       <div class="login-form">
         <a-card>
           <div class="login-header">
