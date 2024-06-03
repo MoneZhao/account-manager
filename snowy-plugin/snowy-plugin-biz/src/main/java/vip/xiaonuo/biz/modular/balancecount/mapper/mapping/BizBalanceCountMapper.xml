@@ -13,9 +13,10 @@
         dev_dict b
         LEFT JOIN biz_balance_count a ON b.ID = a.CODE_INFO_ID AND a.user_id = #{entity.userId}
         WHERE
-        b.PARENT_ID = #{entity.searchKey}
+        b.DELETE_FLAG = '1000-01-01 00:00:00'
+        AND b.PARENT_ID = #{entity.searchKey}
         <if test="entity.codeInfoId != null and entity.codeInfoId !=''">
-            <![CDATA[    AND b.ID = #{entity.codeInfoId}    ]]>
+            <![CDATA[    AND b.DICT_VALUE = #{entity.codeInfoId}    ]]>
         </if>
         <if test='entity.countType != null and entity.countType == "0"'>
             <![CDATA[    AND a.count_type = #{entity.countType}    ]]>

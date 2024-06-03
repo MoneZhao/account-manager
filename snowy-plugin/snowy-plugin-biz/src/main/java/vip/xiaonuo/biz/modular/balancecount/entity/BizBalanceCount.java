@@ -58,8 +58,13 @@ public class BizBalanceCount {
     @TableField(fill = FieldFill.UPDATE)
     private String updateUser;
 
+    /** 字典Label */
+    @ApiModelProperty(value = "字典Label", position = 9)
+    @TableField(exist = false)
+    private String dictLabel;
+
     /** 字典值 */
     @ApiModelProperty(value = "字典值", position = 9)
     @TableField(exist = false)
-    private String dictLabel;
+    private String dictValue;
 }

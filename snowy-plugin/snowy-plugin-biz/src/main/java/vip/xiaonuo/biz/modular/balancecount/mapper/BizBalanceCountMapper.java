@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import vip.xiaonuo.biz.modular.balancecount.entity.BizBalanceCount;
 import vip.xiaonuo.biz.modular.balancecount.param.BizBalanceCountPageParam;
 
+import java.util.List;
+
 /**
  * 计入总资产Mapper接口
  *
@@ -14,6 +16,6 @@ import vip.xiaonuo.biz.modular.balancecount.param.BizBalanceCountPageParam;
  **/
 public interface BizBalanceCountMapper extends BaseMapper<BizBalanceCount> {
 
-    Page<BizBalanceCount> list(Page<Object> objectPage,@Param("entity")  BizBalanceCountPageParam bizBalanceCountPageParam);
+    List<BizBalanceCount> list(Page<BizBalanceCount> objectPage, @Param("entity")  BizBalanceCountPageParam bizBalanceCountPageParam);
 
 }

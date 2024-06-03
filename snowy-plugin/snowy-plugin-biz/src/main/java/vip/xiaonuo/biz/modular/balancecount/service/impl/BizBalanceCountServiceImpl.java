@@ -39,7 +39,8 @@ public class BizBalanceCountServiceImpl extends ServiceImpl<BizBalanceCountMappe
         String parentId = devDictApi.getIdByDictValue("BALANCE_TYPE");
         bizBalanceCountPageParam.setSearchKey(parentId);
         bizBalanceCountPageParam.setUserId(StpUtil.getLoginIdAsString());
-        return baseMapper.list(CommonPageRequest.defaultPage(), bizBalanceCountPageParam);
+        Page<BizBalanceCount> page = CommonPageRequest.defaultPage();
+        return page.setRecords(baseMapper.list(page, bizBalanceCountPageParam));
     }
 
     @Transactional(rollbackFor = Exception.class)
