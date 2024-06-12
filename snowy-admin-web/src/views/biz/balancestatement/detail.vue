@@ -28,7 +28,7 @@
         </a-col>
       </a-row>
     </a-form>
-    <div id="line_chart" style="width: 95%; height: 55vh; min-height: 300px; margin: 0 0.1rem" />
+    <div id="line_chart" style="width: 95%; height: 65vh; min-height: 300px; margin: 0 0.1rem" />
   </a-card>
 </template>
 
