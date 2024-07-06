@@ -120,11 +120,11 @@
       </template>
     </s-table>
   </a-card>
-  <Form ref="formRef" @successful="table.refresh(true)" />
+  <Form ref="formRef" @successful="table.refresh(false)" />
   <Trash ref="trashRef" @successful="table.refresh(true)" />
   <Copy ref="copyRef" @successful="table.refresh(true)" />
-  <Detail ref="detailRef" @successful="table.refresh(true)" />
-  <Compare ref="compareRef" @successful="table.refresh(true)" />
+  <Detail ref="detailRef" @successful="table.refresh(false)" />
+  <Compare ref="compareRef" @successful="table.refresh(false)" />
   <ImpExp ref="ImpExpRef" @successful="table.refresh(true)" />
 </template>
 
