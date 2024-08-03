@@ -37,6 +37,17 @@
               新增
             </a-button>
             <xn-batch-delete :selectedRowKeys="selectedRowKeys" @batchDelete="deleteBatchBizBalanceDetail" />
+            <a-popover>
+              <template #content>
+                <span>{{ $TOOL.formatMoney(totalCount) }}</span>
+              </template>
+              <a-button type="dashed" size="default" shape="round">
+                <template #icon>
+                  <credit-card-outlined />
+                </template>
+                总计余额
+              </a-button>
+            </a-popover>
           </a-space>
         </template>
         <template #bodyCell="{ column, record }">
@@ -87,6 +98,7 @@
   const searchFormRef = ref()
   const table = ref()
   const formRef = ref()
+  let totalCount = $ref(0)
   const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
   // 抽屉状态
   const visible = ref(false)
@@ -148,6 +160,10 @@
     const searchFormParam = JSON.parse(JSON.stringify(searchFormState))
     searchFormParam.balanceMainId = config.value.balanceMainId
     return bizBalanceDetailApi.bizBalanceDetailPage(Object.assign(parameter, searchFormParam)).then((data) => {
+      totalCount = 0
+      for (let item of data.records) {
+        totalCount += item.account
+      }
       return data
     })
   }
