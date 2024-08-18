@@ -29,10 +29,10 @@
           :min="1"
         />
       </a-form-item>
-      <a-form-item label="报销金额：" name="requestNumber">
+      <a-form-item label="发票金额：" name="requestNumber">
         <a-input-number
           v-model:value="formData.requestNumber"
-          placeholder="请输入报销金额"
+          placeholder="请输入发票金额"
           allow-clear
           style="width: 100%"
           :min="1"
@@ -100,7 +100,7 @@
     travelPlace: [required('请输入出差地点')],
     requestDate: [required('请输入报销日期')],
     useNumber: [required('请输入实际花费')],
-    requestNumber: [required('请输入报销金额')]
+    requestNumber: [required('请输入发票金额')]
   }
   // 验证并提交数据
   const onSubmit = () => {

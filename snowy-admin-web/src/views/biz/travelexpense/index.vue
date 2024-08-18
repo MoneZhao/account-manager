@@ -46,6 +46,17 @@
               {{ $t('common.export') }}
             </a-button>
           </a-popconfirm>
+          <a-popover>
+            <template #content>
+              <span>{{ total() }}</span>
+            </template>
+            <a-button type="dashed" size="default" shape="round">
+              <template #icon>
+                <credit-card-outlined />
+              </template>
+              总计得利
+            </a-button>
+          </a-popover>
         </a-space>
       </template>
       <template #bodyCell="{ column, record }">
@@ -95,6 +106,7 @@
   import ImpExp from './impExp.vue'
   import bizTravelExpenseApi from '@/api/biz/bizTravelExpenseApi'
   import downloadUtil from '@/utils/downloadUtil'
+  import tool from '@/utils/tool'
   let searchFormState = reactive({})
   const searchFormRef = ref()
   const table = ref()
@@ -128,7 +140,7 @@
       dataIndex: 'useNumber'
     },
     {
-      title: '报销金额',
+      title: '发票金额',
       width: '150px',
       dataIndex: 'requestNumber'
     },
@@ -174,6 +186,7 @@
     }
   }
   const selectedRowKeys = ref([])
+  const selectedRowDatas = ref([])
   // 列表选择配置
   const options = {
     // columns数字类型字段加入 needTotal: true 可以勾选自动算账
@@ -186,6 +199,7 @@
     rowSelection: {
       onChange: (selectedRowKey, selectedRows) => {
         selectedRowKeys.value = selectedRowKey
+        selectedRowDatas.value = selectedRows
       }
     }
   }
@@ -229,5 +243,13 @@
       .finally(() => {
         exportLoading = false
       })
+  }
+  const total = () => {
+    const rows = JSON.parse(JSON.stringify(selectedRowDatas.value))
+    let totalCount = 0
+    for (let row of rows) {
+      totalCount += row.addNumber
+    }
+    return tool.formatMoney(totalCount)
   }
 </script>
