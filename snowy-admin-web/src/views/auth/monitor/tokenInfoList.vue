@@ -1,5 +1,5 @@
 <template>
-  <xn-form-container title="令牌列表" :width="650" :visible="visible" :destroy-on-close="true" @close="onClose">
+  <xn-form-container title="令牌列表" :width="700" :visible="visible" :destroy-on-close="true" @close="onClose">
     <a-button
       danger
       style="margin-bottom: 10px"
@@ -83,7 +83,7 @@
       title: '令牌',
       dataIndex: 'tokenValue',
       ellipsis: true,
-      width: 80
+      width: 200
     }
   ]
   if (hasPerm('authForceQuit')) {

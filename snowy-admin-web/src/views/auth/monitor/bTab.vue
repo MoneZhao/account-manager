@@ -1,5 +1,13 @@
 <template>
-  <s-table ref="table" :columns="columns" :data="loadDataB" :alert="false" bordered :row-key="(record) => record.id">
+  <s-table
+    ref="table"
+    :columns="columns"
+    :data="loadDataB"
+    :alert="false"
+    bordered
+    :row-key="(record) => record.id"
+    :tool-config="toolConfig"
+  >
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'avatar'">
         <a-avatar :src="record.avatar" style="width: 25px; height: 25px" />
@@ -26,6 +34,7 @@
   import TokenInfoList from './tokenInfoList.vue'
   const table = ref(null)
   const tokenInfoList = ref()
+  const toolConfig = { refresh: true, height: false, columnSetting: false, striped: false }
   const columns = [
     {
       title: '头像',
