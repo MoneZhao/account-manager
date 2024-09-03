@@ -1,7 +1,11 @@
 package ${packageName}.${moduleName}.modular.${busName}.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Param;
 import ${packageName}.${moduleName}.modular.${busName}.entity.${className};
+import ${packageName}.${moduleName}.modular.${busName}.param.${className}PageParam;
+import java.util.List;
 
 /**
  * ${functionName}Mapper接口
@@ -10,4 +14,5 @@ import ${packageName}.${moduleName}.modular.${busName}.entity.${className};
  * @date ${genTime}
  **/
 public interface ${className}Mapper extends BaseMapper<${className}> {
+    List<${className}> list(Page<${className}> page, @Param("entity") ${className}PageParam entity);
 }

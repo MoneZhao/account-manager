@@ -27,6 +27,14 @@ public interface ${className}Service extends IService<${className}> {
     Page<${className}> page(${className}PageParam ${classNameFirstLower}PageParam);
 
     /**
+     * 获取${functionName} List
+     *
+     * @author ${authorName}
+     * @date ${genTime}
+     */
+    List<${className}> list(${className}PageParam ${classNameFirstLower}PageParam);
+
+    /**
      * 添加${functionName}
      *
      * @author ${authorName}

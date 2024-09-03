@@ -605,7 +605,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
                         // 排除删除标志
                         String logicDeleteField = mybatisPlusProperties.getGlobalConfig().getDbConfig().getLogicDeleteField();
                         if(ObjectUtil.isEmpty(logicDeleteField)) {
-                            logicDeleteField = "DELETE_FLAG";
+                            logicDeleteField = DELETE_FLAG_KEY;
                         }
                         if(genConfig.getFieldName().equalsIgnoreCase(logicDeleteField)) {
                             configItem.set("needAdd", false);
@@ -614,6 +614,7 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
                             configItem.set("needPageType", "none");
                             configItem.set("required", false);
                             configItem.set("needTableId", false);
+                            configItem.set("logicDelete", true);
                         } else {
                             boolean needAddAndUpdate = genConfig.getWhetherAddUpdate().equalsIgnoreCase(GenYesNoEnum.Y.getValue());
                             configItem.set("needAdd", needAddAndUpdate);
@@ -636,6 +637,8 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
                     configItem.set("dictTypeCode", genConfig.getDictTypeCode());
                     // 实体类型
                     configItem.set("fieldJavaType", genConfig.getFieldJavaType());
+                    // 字段名
+                    configItem.set("fieldName", genConfig.getFieldName());
                     // 字段驼峰名
                     configItem.set("fieldNameCamelCase", StrUtil.toCamelCase(genConfig.getFieldName().toLowerCase()));
                     // 字段驼峰首字母大写名
@@ -657,6 +660,126 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
         bindingJsonObject.set("configList", configList);
         // 有排序字段
         bindingJsonObject.set("hasSortCodeField", hasSortCodeField.get());
+        // xml page sql列表字段
+        bindingJsonObject.set("searchColumns", getSearchColumns(configList));
+        // xml page sql查询字段
+        bindingJsonObject.set("whereConditions", getWhereConditions(configList));
         return bindingJsonObject;
     }
+
+    /**
+     * 得到查询list的列表字段--字符串
+     * @param list
+     * @return
+     */
+    private static String getSearchColumns(List<JSONObject> list) {
+        StringBuilder stringBuffer = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            JSONObject tableObject = list.get(i);
+            if ((Boolean) tableObject.getOrDefault("logicDelete", false)) {
+                continue;
+            }
+            if (i == 0) {
+                stringBuffer.append("            ");
+            } else {
+                stringBuffer.append(",\r\n            ");
+            }
+            stringBuffer.append("a.")
+                    .append((String) tableObject.get("fieldName"))
+                    .append(" as ")
+                    .append(tableObject.get("fieldNameCamelCase"));
+        }
+        return stringBuffer.toString();
+    }
+
+    /**
+     * 得到查询list的查询条件--字符串
+     * @param list
+     * @return
+     */
+    private static String getWhereConditions(List<JSONObject> list) {
+        JSONObject logicDelete = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            JSONObject tableObject = list.get(i);
+            if ((Boolean) tableObject.getOrDefault("needLogicDelete", false)) {
+                logicDelete = BeanUtil.copyProperties(tableObject, JSONObject.class);
+                continue;
+            }
+            if (!((Boolean) tableObject.getOrDefault("needPage", false))) {
+                continue;
+            }
+
+            String needPageType = tableObject.get("needPageType") + "";
+            String effectType = tableObject.get("effectType") + "";
+            if ("datepicker".equals(effectType)) {
+                String fieldNameCamelCaseFirstUpper = tableObject.get("fieldNameCamelCaseFirstUpper") + "";
+                String start = "start" + fieldNameCamelCaseFirstUpper;
+                String end = "end" + fieldNameCamelCaseFirstUpper;
+                String sql1 = String.format("<if test=\"entity.%s != null and entity.%s !='' and entity.%s != null and entity.%s !=''\">",
+                        start, start, end, end);
+                String sql2 = String.format("<![CDATA[    AND a.%s BETWEEN #{entity.%s} AND #{entity.%s}    ]]>",
+                        tableObject.get("fieldName"), start, end);
+                String sql3 = String.format("</if>");
+
+                stringBuilder.append("\r\n        ").append(sql1);
+                stringBuilder.append("\r\n        ").append(sql2);
+                stringBuilder.append("\r\n        ").append(sql3);
+            } else {
+                String fieldNameCamelCase = tableObject.get("fieldNameCamelCase") + "";
+                String fieldName = tableObject.get("fieldName") + "";
+                String sql1 = String.format("<if test=\"entity.%s != null and entity.%s !=''\">",
+                        fieldNameCamelCase, fieldNameCamelCase);
+                String sql2;
+                String sql3 = String.format("</if>");
+
+                switch (needPageType) {
+                    case "like":
+                        sql2 = String.format("<![CDATA[    AND a.%s like concat('%%', #{entity.%s}, '%%')    ]]>",
+                                fieldName, fieldNameCamelCase);
+                        break;
+                    case "notLike":
+                        sql2 = String.format("<![CDATA[    AND a.%s not like concat('%%', #{entity.%s}, '%%')    ]]>",
+                                fieldName, fieldNameCamelCase);
+                        break;
+                    case "eq":
+                        sql2 = String.format("<![CDATA[    AND a.%s = #{entity.%s}    ]]>",
+                                fieldName, fieldNameCamelCase);
+                        break;
+                    case "ne":
+                        sql2 = String.format("<![CDATA[    AND a.%s != #{entity.%s}    ]]>",
+                                fieldName, fieldNameCamelCase);
+                        break;
+                    case "gt":
+                        sql2 = String.format("<![CDATA[    AND a.%s > #{entity.%s}    ]]>",
+                                fieldName, fieldNameCamelCase);
+                        break;
+                    case "ge":
+                        sql2 = String.format("<![CDATA[    AND a.%s >= #{entity.%s}    ]]>",
+                                fieldName, fieldNameCamelCase);
+                        break;
+                    case "lt":
+                        sql2 = String.format("<![CDATA[    AND a.%s < #{entity.%s}    ]]>",
+                                fieldName, fieldNameCamelCase);
+                        break;
+                    case "le":
+                        sql2 = String.format("<![CDATA[    AND a.%s <= #{entity.%s}    ]]>",
+                                fieldName, fieldNameCamelCase);
+                        break;
+                    default:
+                        continue;
+                }
+
+                stringBuilder.append("\r\n        ").append(sql1);
+                stringBuilder.append("\r\n        ").append(sql2);
+                stringBuilder.append("\r\n        ").append(sql3);
+            }
+        }
+        if (logicDelete != null) {
+            String sql = String.format("        AND a.%s = '1000-01-01 00:00:00'", logicDelete.get("fieldName"));
+            stringBuilder.insert(0, sql);
+        }
+        return stringBuilder.toString();
+    }
+
 }
