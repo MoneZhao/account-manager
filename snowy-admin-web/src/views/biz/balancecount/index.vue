@@ -62,6 +62,11 @@
   const toolConfig = { refresh: true, height: true, columnSetting: true, striped: false }
   const columns = [
     {
+      title: '#',
+      dataIndex: 'index',
+      customRender: (data) => `${data.index + 1}`
+    },
+    {
       title: '账户类型',
       dataIndex: 'dictLabel'
     },
