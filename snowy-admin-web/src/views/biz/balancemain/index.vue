@@ -86,7 +86,9 @@
           {{ $TOOL.formatDate(record.accountDate) }}
         </template>
         <template v-if="column.dataIndex === 'account'">
-          {{ $TOOL.formatMoney(record.account) }}
+          <a-tag color="green">
+            {{ $TOOL.formatMoney(record.account) }}
+          </a-tag>
         </template>
         <template v-if="column.dataIndex === 'action'">
           <a-space>
@@ -168,7 +170,9 @@
   }
   columns.push({
     title: '备注',
-    dataIndex: 'remark'
+    dataIndex: 'remark',
+    width: '150px',
+    ellipsis: true
   })
   // 操作栏通过权限判断是否显示
   if (hasPerm(['bizBalanceMainEdit', 'bizBalanceMainDelete'])) {

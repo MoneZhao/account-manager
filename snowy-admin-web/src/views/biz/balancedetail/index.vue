@@ -55,10 +55,12 @@
             {{ $TOOL.dictTypeData('BALANCE_TYPE', record.balanceType) }}
           </template>
           <template v-if="column.dataIndex === 'account'">
-            {{ $TOOL.formatMoney(record.account) }}
+            <a-tag color="green">
+              {{ $TOOL.formatMoney(record.account) }}
+            </a-tag>
           </template>
           <template v-if="column.dataIndex === 'countType'">
-            <a-tag v-if="record.countType === '1'" color="green">
+            <a-tag v-if="record.countType === '1'" color="blue">
               {{ $TOOL.dictTypeData('YES_OR_NO', record.countType) }}
             </a-tag>
             <a-tag v-if="record.countType === '0'" color="red">
@@ -133,7 +135,9 @@
     },
     {
       title: '备注',
-      dataIndex: 'remark'
+      dataIndex: 'remark',
+      width: '150px',
+      ellipsis: true
     },
     {
       title: '操作',
