@@ -10,6 +10,15 @@
       <a-form-item label="出差地点：" name="travelPlace">
         <a-input v-model:value="formData.travelPlace" placeholder="请输入出差地点" allow-clear />
       </a-form-item>
+      <a-form-item label="出差天数：" name="remark">
+        <a-input-number
+          v-model:value="formData.remark"
+          placeholder="请输入出差天数"
+          allow-clear
+          style="width: 100%"
+          :min="1"
+        />
+      </a-form-item>
       <a-form-item label="报销日期：" name="requestDate">
         <a-date-picker
           v-model:value="formData.requestDate"
@@ -57,9 +66,6 @@
           :min="1"
         />
       </a-form-item>
-      <a-form-item label="备注：" name="remark">
-        <a-input v-model:value="formData.remark" placeholder="请输入备注" allow-clear />
-      </a-form-item>
     </a-form>
     <template #footer>
       <a-button style="margin-right: 8px" @click="onClose">关闭</a-button>
@@ -98,6 +104,7 @@
   // 默认要校验的
   const formRules = {
     travelPlace: [required('请输入出差地点')],
+    remark: [required('请输入出差天数')],
     requestDate: [required('请输入报销日期')],
     useNumber: [required('请输入实际花费')],
     requestNumber: [required('请输入发票金额')]

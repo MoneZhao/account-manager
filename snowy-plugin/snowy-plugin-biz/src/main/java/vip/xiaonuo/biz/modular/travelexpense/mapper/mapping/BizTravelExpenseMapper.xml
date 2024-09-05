@@ -8,12 +8,15 @@
         a.ADD_NUMBER, a.USER_ID, a.REMARK, o.NAME as userName
         from biz_travel_expense a
         left join sys_user o ON o.ID=a.USER_ID
-        where 1=1
+        where a.DELETE_FLAG = '1000-01-01 00:00:00'
         <if test="entity.travelPlace != null and entity.travelPlace !=''">
             <![CDATA[	AND a.TRAVEL_PLACE like concat('%', #{entity.travelPlace}, '%') ]]>
         </if>
         <if test="entity.userId != null and entity.userId !=''">
             <![CDATA[	AND a.USER_ID = #{entity.userId}]]>
+        </if>
+        <if test="entity.travelYear != null">
+            <![CDATA[	AND a.request_date between concat(#{entity.travelYear}, '-01-01') AND concat(#{entity.travelYear}, '-12-31')     ]]>
         </if>
         <if test="entity.orgIds != null">
             AND o.ORG_ID in

@@ -48,4 +48,8 @@ public class BizTravelExpensePageParam {
     @ApiModelProperty(value = "所属组织")
     private List<String> orgIds;
 
+    /** 出差年份 */
+    @ApiModelProperty(value = "出差年份")
+    private Integer travelYear;
+
 }

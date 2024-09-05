@@ -2,9 +2,23 @@
   <a-card :bordered="false">
     <a-form ref="searchFormRef" name="advanced_search" :model="searchFormState" class="ant-advanced-search-form">
       <a-row :gutter="24">
-        <a-col :md="10" :lg="8" :xl="6">
+        <a-col :md="6" :lg="6" :xl="6" :xxl="6">
           <a-form-item label="出差地点" name="travelPlace">
             <a-input v-model:value="searchFormState.travelPlace" placeholder="请输入出差地点" />
+          </a-form-item>
+        </a-col>
+        <a-col :md="12" :lg="12" :xl="8" :xxl="6">
+          <a-form-item label="出差年份" name="travelYear">
+            <a-date-picker
+              placeholder="请选择出差年份"
+              picker="year"
+              value-format="YYYY"
+              format="YYYY年"
+              v-model:value="searchFormState.travelYear"
+              :allowClear="false"
+              :disabled-date="disabledDate"
+              style="width: 100%"
+            />
           </a-form-item>
         </a-col>
         <a-col :span="6">
@@ -62,7 +76,12 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'useDay'">
           <a-tag color="blue">
-            {{ record.useDay ? record.useDay : '-' }}
+            {{ record.useDay ? record.useDay + '天' : '-' }}
+          </a-tag>
+        </template>
+        <template v-if="column.dataIndex === 'remark'">
+          <a-tag color="cyan">
+            {{ record.remark ? record.remark + '天' : '-' }}
           </a-tag>
         </template>
         <template v-if="column.dataIndex === 'requestDate'">
@@ -72,18 +91,24 @@
           {{ $TOOL.formatDate(record.getDate) }}
         </template>
         <template v-if="column.dataIndex === 'addNumber'">
-          <a-tag color="blue">
+          <a-tag color="green">
             {{ $TOOL.formatMoney(record.addNumber) }}
           </a-tag>
         </template>
         <template v-if="column.dataIndex === 'useNumber'">
-          {{ $TOOL.formatMoney(record.useNumber) }}
+          <a-tag color="green">
+            {{ $TOOL.formatMoney(record.useNumber) }}
+          </a-tag>
         </template>
         <template v-if="column.dataIndex === 'requestNumber'">
-          {{ $TOOL.formatMoney(record.requestNumber) }}
+          <a-tag color="green">
+            {{ $TOOL.formatMoney(record.requestNumber) }}
+          </a-tag>
         </template>
         <template v-if="column.dataIndex === 'getNumber'">
-          {{ $TOOL.formatMoney(record.getNumber) }}
+          <a-tag color="green">
+            {{ $TOOL.formatMoney(record.getNumber) }}
+          </a-tag>
         </template>
         <template v-if="column.dataIndex === 'action'">
           <a-space>
@@ -107,6 +132,7 @@
   import bizTravelExpenseApi from '@/api/biz/bizTravelExpenseApi'
   import downloadUtil from '@/utils/downloadUtil'
   import tool from '@/utils/tool'
+  import dayjs from 'dayjs'
   let searchFormState = reactive({})
   const searchFormRef = ref()
   const table = ref()
@@ -120,39 +146,44 @@
       dataIndex: 'travelPlace'
     },
     {
+      title: '出差天数',
+      // width: '100px',
+      dataIndex: 'remark'
+    },
+    {
       title: '得利',
-      width: '150px',
+      // width: '100px',
       dataIndex: 'addNumber'
     },
     {
-      title: '报账天数',
-      width: '150px',
-      dataIndex: 'useDay'
-    },
-    {
       title: '报销日期',
-      width: '200px',
+      // width: '150px',
       dataIndex: 'requestDate'
     },
     {
       title: '实际花费',
-      width: '150px',
+      // width: '100px',
       dataIndex: 'useNumber'
     },
     {
       title: '发票金额',
-      width: '150px',
+      // width: '100px',
       dataIndex: 'requestNumber'
     },
     {
       title: '到账日期',
-      width: '200px',
+      // width: '150px',
       dataIndex: 'getDate'
     },
     {
       title: '到账金额',
-      width: '150px',
+      // width: '100px',
       dataIndex: 'getNumber'
+    },
+    {
+      title: '报账天数',
+      // width: '100px',
+      dataIndex: 'useDay'
     }
   ]
   let scrollX = $ref(1600)
@@ -164,10 +195,6 @@
     })
     scrollX = 1700
   }
-  columns.push({
-    title: '备注',
-    dataIndex: 'remark'
-  })
   // 操作栏通过权限判断是否显示
   if (hasPerm(['bizTravelExpenseEdit', 'bizTravelExpenseDelete'])) {
     columns.push({
@@ -251,5 +278,8 @@
       totalCount += row.addNumber
     }
     return tool.formatMoney(totalCount)
+  }
+  const disabledDate = (current) => {
+    return current > dayjs().add(1, 'days')
   }
 </script>
