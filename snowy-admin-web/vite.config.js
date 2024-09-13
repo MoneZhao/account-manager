@@ -45,6 +45,12 @@ export default defineConfig(({ command, mode }) => {
     target: envConfig.VITE_API_TARGETURL,
     ws: false,
     changeOrigin: true,
+    // configure: (proxy, options) => {
+    //   proxy.on('proxyReq', (proxyReq, req, res) => {
+    //     // 删除响应头中的 'Cookie' 字段
+    //     proxyReq.removeHeader('Cookie')
+    //   })
+    // },
     rewrite: (path) => path.replace(regex, '')
   }
 
@@ -64,8 +70,11 @@ export default defineConfig(({ command, mode }) => {
       __VUE_I18N_PROD_DEVTOOLS__: true
     },
     build: {
+      outDir: '../../../../Application/nginx/web/balance/dist',
+      // outDir: './dist',
+      emptyOutDir: true,
       sourcemap: false,
-      manifest: true,
+      manifest: false,
       brotliSize: false,
       reportCompressedSize: false,
       // minify: "terser", //yarn add terser -D  默认为 Esbuild，它比 terser 快 20-40 倍
@@ -77,6 +86,17 @@ export default defineConfig(({ command, mode }) => {
       // },
       rollupOptions: {
         output: {
+          chunkFileNames: 'static/js/[name]-[hash].js',
+          entryFileNames: 'static/js/[name]-[hash].js',
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.type === 'asset' && /\.(jpe?g|png|gif|svg)$/i.test(assetInfo.name)) {
+              return 'static/img/[name].[hash][ext]'
+            }
+            if (assetInfo.type === 'asset' && /\.(ttf|woff|woff2|eot)$/i.test(assetInfo.name)) {
+              return 'static/fonts/[name].[hash][ext]'
+            }
+            return 'static/[ext]/name1-[hash].[ext]'
+          },
           manualChunks: {
             echarts: ['echarts'],
             'ant-design-vue': ['ant-design-vue'],
@@ -84,7 +104,7 @@ export default defineConfig(({ command, mode }) => {
           }
         }
       },
-      chunkSizeWarningLimit: 1000
+      chunkSizeWarningLimit: 1500
     },
     plugins: [
       vue({
@@ -93,7 +113,10 @@ export default defineConfig(({ command, mode }) => {
         }
       }),
       viteCompression({
-        verbose: false
+        disable: false,
+        verbose: false,
+        threshold: 10240,
+        deleteOriginFile: false
       }),
       vueSetupExtend(),
       VueJSX(),
@@ -107,8 +130,8 @@ export default defineConfig(({ command, mode }) => {
         dirs: [r('src/components')],
         dts: false,
         resolvers: []
-      }),
-      visualizer()
+      })
+      //visualizer()
     ],
     css: {
       preprocessorOptions: {

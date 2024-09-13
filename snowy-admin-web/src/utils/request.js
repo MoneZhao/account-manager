@@ -98,7 +98,7 @@ service.interceptors.response.use(
       // }
     } else {
       // 统一成功提示
-      const responseUrl = response.config.url
+      const responseUrls = response.config.url.split('/')
       const apiNameArray = [
         'add',
         'edit',
@@ -119,7 +119,7 @@ service.interceptors.response.use(
         'saveDraft'
       ]
       apiNameArray.forEach((apiName) => {
-        if (responseUrl.includes(apiName)) {
+        if (responseUrls[responseUrls.length - 1].includes(apiName)) {
           message.success(data.msg)
         }
       })
