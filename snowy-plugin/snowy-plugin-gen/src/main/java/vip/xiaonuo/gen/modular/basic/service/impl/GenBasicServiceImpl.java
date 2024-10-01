@@ -54,6 +54,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -74,6 +75,9 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
     private static final String DB_PASSWORD_KEY = "spring.datasource.dynamic.datasource.master.password";
 
     private static final String GEN_PROJECT_FRONT_PLUGIN_KEY = "snowy-admin-web";
+
+    // 前端是否在后端项目内部
+    private static final Boolean GEN_PROJECT_FRONT_SAME_PATH = Boolean.TRUE;
 
     private static final String GEN_PROJECT_PLUGIN_KEY = "snowy-plugin";
 
@@ -356,7 +360,14 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
     public void execGenPro(GenBasicIdParam genBasicIdParam, HttpServletResponse response) throws IOException {
         File tempFolder = this.genTempFolder(genBasicIdParam, response, false);
         // 定义前端生成的目录
-        String genProjectFrontendPath = System.getProperty("user.dir") + File.separator + GEN_PROJECT_FRONT_PLUGIN_KEY + File.separator + "src";
+        String genProjectFrontendPath;
+        if (GEN_PROJECT_FRONT_SAME_PATH) {
+            genProjectFrontendPath = System.getProperty("user.dir") + File.separator
+                    + GEN_PROJECT_FRONT_PLUGIN_KEY + File.separator + "src";
+        } else {
+            genProjectFrontendPath = System.getProperty("user.dir") + File.separator + ".." + File.separator
+                    + GEN_PROJECT_FRONT_PLUGIN_KEY + File.separator + "src";
+        }
 
         if(!FileUtil.exist(genProjectFrontendPath)) {
             throw new CommonException("前端代码生成位置：{}不存在，请检查位置", genProjectFrontendPath);
@@ -502,11 +513,31 @@ public class GenBasicServiceImpl extends ServiceImpl<GenBasicMapper, GenBasic> i
                 String fileTemplatePath = fileJsonObject.getStr("path");
                 GenBasicPreviewResult.GenBasicCodeResult genBasicCodeBackendResult = new GenBasicPreviewResult.GenBasicCodeResult();
                 Template templateBackend = groupTemplateBackEnd.getTemplate(fileTemplateName);
-                templateBackend.binding(bindingJsonObject);
+                JSONObject newBinding;
                 String resultName = StrUtil.removeSuffix(fileTemplateName, ".btl");
                 if(fileTemplateName.equalsIgnoreCase("Entity.java.btl")) {
                     resultName = ".java";
+                    newBinding = JSONUtil.parseObj(JSONUtil.toJsonStr(bindingJsonObject));
+                    List<JSONObject> configList = (List<JSONObject>) newBinding.get("configList");
+                    String logicDeleteField = mybatisPlusProperties.getGlobalConfig().getDbConfig().getLogicDeleteField();
+                    if(ObjectUtil.isEmpty(logicDeleteField)) {
+                        logicDeleteField = DELETE_FLAG_KEY;
+                    }
+                    for (Iterator<JSONObject> iterator = configList.iterator(); iterator.hasNext(); ) {
+                        JSONObject configItem = iterator.next();
+                        String fieldName = (String) configItem.get("fieldName");
+                        if (CREATE_USER_KEY.equalsIgnoreCase(fieldName) ||
+                                CREATE_TIME_KEY.equalsIgnoreCase(fieldName) ||
+                                UPDATE_USER_KEY.equalsIgnoreCase(fieldName) ||
+                                UPDATE_TIME_KEY.equalsIgnoreCase(fieldName) ||
+                                logicDeleteField.equalsIgnoreCase(fieldName)) {
+                            iterator.remove();
+                        }
+                    }
+                } else {
+                    newBinding = bindingJsonObject;
                 }
+                templateBackend.binding(newBinding);
                 genBasicCodeBackendResult.setCodeFileName(genBasic.getClassName() + resultName);
                 genBasicCodeBackendResult.setCodeFileWithPathName(genBackendBasicPath + fileTemplatePath + File.separator + genBasic.getClassName() + resultName);
                 genBasicCodeBackendResult.setCodeFileContent(templateBackend.render());

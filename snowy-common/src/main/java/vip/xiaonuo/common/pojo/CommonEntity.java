@@ -38,6 +38,8 @@ public class CommonEntity implements Serializable {
     /** 创建时间 */
     @ApiModelProperty(value = "创建时间", position = 1000)
     @TableField(fill = FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ExcelIgnore
     private Date createTime;
 
@@ -50,6 +52,8 @@ public class CommonEntity implements Serializable {
     /** 更新时间 */
     @ApiModelProperty(value = "更新时间", position = 1002)
     @TableField(fill = FieldFill.UPDATE)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ExcelIgnore
     private Date updateTime;
 

@@ -137,8 +137,8 @@
 
     <logger name="webLog" level="info" additivity="false">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="ASYNC-FILE"/>
-        <appender-ref ref="ASYNC-FILE-ERROR"/>
+<!--        <appender-ref ref="ASYNC-FILE"/>-->
+<!--        <appender-ref ref="ASYNC-FILE-ERROR"/>-->
         <appender-ref ref="ASYNC-FILE-WEBLOG"/>
     </logger>
 
