@@ -217,6 +217,7 @@
   const reset = () => {
     searchFormRef.value.resetFields()
     table.value.refresh(true)
+    table.value.clearSelected()
   }
   // 删除
   const deleteBizBalanceMain = (record) => {

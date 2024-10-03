@@ -86,6 +86,7 @@
   const reset = () => {
     searchFormRef.value.resetFields()
     table.value.refresh(true)
+    table.value.clearSelected()
   }
   const codeInfoIdOptions = tool.dictList('BALANCE_TYPE')
   const countTypeOptions = tool.dictList('YES_OR_NO')

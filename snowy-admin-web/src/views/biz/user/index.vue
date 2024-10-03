@@ -235,6 +235,7 @@
   const reset = () => {
     searchFormRef.value.resetFields()
     table.value.refresh(true)
+    table.value.clearSelected()
   }
   // 左侧树查询
   bizUserApi

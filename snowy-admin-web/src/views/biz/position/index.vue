@@ -149,6 +149,7 @@
   const reset = () => {
     searchFormRef.value.resetFields()
     table.value.refresh(true)
+    table.value.clearSelected()
   }
   // 加载左侧的树
   bizOrgApi
