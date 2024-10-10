@@ -35,3 +35,6 @@ tmp/
 
 # Mac
 .DS_Store
+
+#jrebel
+rebel.xml

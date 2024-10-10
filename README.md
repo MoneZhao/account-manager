@@ -1,8 +1,49 @@
-#druid加密密码
-java -cp druid-1.2.8.jar com.alibaba.druid.filter.config.ConfigTools your password
+# account-manager
 
-privateKey:
-MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAxaJNW11cVWuAUcMMoQtkzRLLCRZjcqO6A33R5jlKiCifWPxjQKU8XufHcW4TukB4EqK/sKEhLS+/H/n1ZSkqZQIDAQABAkAN8PACBOjxgZ7QpbCrX5FhwfSelHy5ZoFFo8d9tQbj6dHOrfwHsRqAkAxGoZ/ivhDKUYf/G7eSwVUqv2H0T1m1AiEA9jRLwNL4/R5HhqfqNVMIF+GbuBhtM+HHPFOoOCR0f4sCIQDNf0ulYZf4DuyDiDuvpWjMtLEuNgnN0LOo1iVKFtM7zwIgfcdfwAXIEEAM2H0mSNG/e7vVeup3t56r02UFtpDhN1sCIQCGhrnnx07sJiDxLoMcRmWn9PY0sU2TvfePJLl+mhiogwIhAPPckbPRPJP52gutyn8GGNV28absrzjA6thi6KAej1aC
-publicKey:
-MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMWiTVtdXFVrgFHDDKELZM0SywkWY3KjugN90eY5Sogon1j8Y0ClPF7nx3FuE7pAeBKiv7ChIS0vvx/59WUpKmUCAwEAAQ==
-password:DDnBgo6jKfgn7z+Qhn4/KTbzKzyT/ByFi7JDJA2w6yP/t++OQUjHJyApYeWaN4qVFV3V4fq0HbqTmkyWVj44yA==
+管理账户余额, 测试用户 admin/123456
+
+## 前端
+
+```bash
+
+# 安装依赖, 需要Node 16版本
+
+    cd snowy-admin-web
+
+    npm install
+    # 或者
+    yarn install
+
+# 开发
+
+    npm run dev
+    # 或者
+    yarn run dev
+
+# 构建
+
+    npm run build
+    # 或者
+    yarn run build
+
+```
+
+## 后端
+
+```bash
+
+cd _sql
+
+# 执行 db_init.sql， init_tables.sql 初始化数据库
+
+cd ..
+
+mvn clean package
+
+```
+
+打包成功后, 运行
+
+```bash
+java -jar account.jar
+```
